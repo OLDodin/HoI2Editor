@@ -46,7 +46,7 @@
     
     mimetype: application/x-microsoft.net.object.binary.base64
     value   : The object must be serialized with 
-            : System.Serialization.Formatters.Binary.BinaryFormatter
+            : System.Runtime.Serialization.Formatters.Binary.BinaryFormatter
             : and then encoded with base64 encoding.
     
     mimetype: application/x-microsoft.net.object.soap.base64
@@ -60,6 +60,7 @@
             : and then encoded with base64 encoding.
     -->
   <xsd:schema id="root" xmlns="" xmlns:xsd="http://www.w3.org/2001/XMLSchema" xmlns:msdata="urn:schemas-microsoft-com:xml-msdata">
+    <xsd:import namespace="http://www.w3.org/XML/1998/namespace" />
     <xsd:element name="root" msdata:IsDataSet="true">
       <xsd:complexType>
         <xsd:choice maxOccurs="unbounded">
@@ -68,9 +69,10 @@
               <xsd:sequence>
                 <xsd:element name="value" type="xsd:string" minOccurs="0" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" />
+              <xsd:attribute name="name" use="required" type="xsd:string" />
               <xsd:attribute name="type" type="xsd:string" />
               <xsd:attribute name="mimetype" type="xsd:string" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="assembly">
@@ -85,9 +87,10 @@
                 <xsd:element name="value" type="xsd:string" minOccurs="0" msdata:Ordinal="1" />
                 <xsd:element name="comment" type="xsd:string" minOccurs="0" msdata:Ordinal="2" />
               </xsd:sequence>
-              <xsd:attribute name="name" type="xsd:string" msdata:Ordinal="1" />
+              <xsd:attribute name="name" type="xsd:string" use="required" msdata:Ordinal="1" />
               <xsd:attribute name="type" type="xsd:string" msdata:Ordinal="3" />
               <xsd:attribute name="mimetype" type="xsd:string" msdata:Ordinal="4" />
+              <xsd:attribute ref="xml:space" />
             </xsd:complexType>
           </xsd:element>
           <xsd:element name="resheader">
@@ -109,10 +112,10 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <data name="OpenBitmapFileDialogFilter" xml:space="preserve">
     <value>Bitmap (*.bmp)|*.bmp|All files (*.*)|*.*</value>
@@ -4028,5 +4031,50 @@
   </data>
   <data name="UnitTreeNewUnit" xml:space="preserve">
     <value>&lt;New Unit&gt;</value>
+  </data>
+  <data name="MiscEnumCountriesLeaveBadRelationAlliance0" xml:space="preserve">
+    <value>Disabled</value>
+  </data>
+  <data name="MiscEnumCountriesLeaveBadRelationAlliance1" xml:space="preserve">
+    <value>Allowed</value>
+  </data>
+  <data name="MiscLabelBombingEntrenchedArmiesModifier" xml:space="preserve">
+    <value>Penalty for Bombing to Entrenched Armies</value>
+  </data>
+  <data name="MiscLabelCountriesLeaveBadRelationAlliance" xml:space="preserve">
+    <value>Allow AI countries to leave alliance because of bad relations</value>
+  </data>
+  <data name="MiscLabelDefendingEntrenchedArmiesModifier" xml:space="preserve">
+    <value>Bonus for defending entrenched armies</value>
+  </data>
+  <data name="MiscLabelDigIncreaseDayDH105" xml:space="preserve">
+    <value>Dig Increase per Day</value>
+  </data>
+  <data name="MiscLabelEnergyProductionEfficiency" xml:space="preserve">
+    <value>Energy production efficiency</value>
+  </data>
+  <data name="MiscLabelMaxLandDigDH105" xml:space="preserve">
+    <value>Max Land Dig</value>
+  </data>
+  <data name="MiscLabelMetalProductionEfficiency" xml:space="preserve">
+    <value>Metal production efficiency</value>
+  </data>
+  <data name="MiscLabelMoneyProduction Efficiency" xml:space="preserve">
+    <value>Money from CG production efficiency</value>
+  </data>
+  <data name="MiscLabelOffensiveSupplyESEBonus" xml:space="preserve">
+    <value>ESE bonus from offensive supply</value>
+  </data>
+  <data name="MiscLabelOilProductionEfficiency" xml:space="preserve">
+    <value>Oil production efficiency</value>
+  </data>
+  <data name="MiscLabelRareMaterialsProductionEfficiency" xml:space="preserve">
+    <value>Rare Materials production efficiency</value>
+  </data>
+  <data name="MiscLabelSupplyDistanceModCalculationModifier" xml:space="preserve">
+    <value>Modifier on distance which is used for supply distance mod calculation</value>
+  </data>
+  <data name="MiscLabelSupplyToUpdateModifier" xml:space="preserve">
+    <value>Reinforce to Upgrade Modifier</value>
   </data>
 </root>

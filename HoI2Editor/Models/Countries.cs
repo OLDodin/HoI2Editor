@@ -665,7 +665,7 @@ namespace HoI2Editor.Models
             Country.U96,
             Country.U97,
             Country.U98,
-            Country.U99
+            Country.U99,
         };
 
         /// <summary>
@@ -1042,7 +1042,13 @@ namespace HoI2Editor.Models
             {
                 case GameType.HeartsOfIron2:
                 case GameType.DarkestHour:
-                    Tags = TagsHoI2;
+                    if( Game.Version >= 105 )
+                    {
+                        Tags = TagsAoD;
+                    } else
+                    {
+                        Tags = TagsHoI2;
+                    }
                     break;
 
                 case GameType.ArsenalOfDemocracy:

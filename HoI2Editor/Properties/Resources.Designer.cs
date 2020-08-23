@@ -19,7 +19,7 @@ namespace HoI2Editor.Properties {
     // または Visual Studio のようなツールを使用して自動生成されました。
     // メンバーを追加または削除するには、.ResX ファイルを編集して、/str オプションと共に
     // ResGen を実行し直すか、または VS プロジェクトをビルドし直します。
-    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "4.0.0.0")]
+    [global::System.CodeDom.Compiler.GeneratedCodeAttribute("System.Resources.Tools.StronglyTypedResourceBuilder", "16.0.0.0")]
     [global::System.Diagnostics.DebuggerNonUserCodeAttribute()]
     [global::System.Runtime.CompilerServices.CompilerGeneratedAttribute()]
     internal class Resources {
@@ -47,7 +47,7 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
-        ///   厳密に型指定されたこのリソース クラスを使用して、すべての検索リソースに対し、
+        ///   すべてについて、現在のスレッドの CurrentUICulture プロパティをオーバーライドします
         ///   現在のスレッドの CurrentUICulture プロパティをオーバーライドします。
         /// </summary>
         [global::System.ComponentModel.EditorBrowsableAttribute(global::System.ComponentModel.EditorBrowsableState.Advanced)]
@@ -2001,6 +2001,24 @@ namespace HoI2Editor.Properties {
         internal static string MiscEnumConvoySystemOptionsAllied2 {
             get {
                 return ResourceManager.GetString("MiscEnumConvoySystemOptionsAllied2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Disabled に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscEnumCountriesLeaveBadRelationAlliance0 {
+            get {
+                return ResourceManager.GetString("MiscEnumCountriesLeaveBadRelationAlliance0", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Allowed に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscEnumCountriesLeaveBadRelationAlliance1 {
+            get {
+                return ResourceManager.GetString("MiscEnumCountriesLeaveBadRelationAlliance1", resourceCulture);
             }
         }
         
@@ -4705,6 +4723,15 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   Penalty for Bombing to Entrenched Armies に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelBombingEntrenchedArmiesModifier {
+            get {
+                return ResourceManager.GetString("MiscLabelBombingEntrenchedArmiesModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Bonus on Detection Friendly に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MiscLabelBonusDetectionFriendly {
@@ -5398,6 +5425,15 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   Allow AI countries to leave alliance because of bad relations に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelCountriesLeaveBadRelationAlliance {
+            get {
+                return ResourceManager.GetString("MiscLabelCountriesLeaveBadRelationAlliance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Country Logger に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MiscLabelCountryLogger {
@@ -5668,6 +5704,15 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   Bonus for defending entrenched armies に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelDefendingEntrenchedArmiesModifier {
+            get {
+                return ResourceManager.GetString("MiscLabelDefendingEntrenchedArmiesModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Defensive Combined Arms Bonus に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MiscLabelDefensiveCombinedArmsBonus {
@@ -5808,6 +5853,15 @@ namespace HoI2Editor.Properties {
         internal static string MiscLabelDigIncreaseDay {
             get {
                 return ResourceManager.GetString("MiscLabelDigIncreaseDay", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Dig Increase per Day に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelDigIncreaseDayDH105 {
+            get {
+                return ResourceManager.GetString("MiscLabelDigIncreaseDayDH105", resourceCulture);
             }
         }
         
@@ -6087,6 +6141,15 @@ namespace HoI2Editor.Properties {
         internal static string MiscLabelEnemyIntelligenceChance {
             get {
                 return ResourceManager.GetString("MiscLabelEnemyIntelligenceChance", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Energy production efficiency に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelEnergyProductionEfficiency {
+            get {
+                return ResourceManager.GetString("MiscLabelEnergyProductionEfficiency", resourceCulture);
             }
         }
         
@@ -7675,6 +7738,15 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   Max Land Dig に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelMaxLandDigDH105 {
+            get {
+                return ResourceManager.GetString("MiscLabelMaxLandDigDH105", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Max Manpower に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MiscLabelMaxManpower {
@@ -7797,6 +7869,15 @@ namespace HoI2Editor.Properties {
         internal static string MiscLabelMergeTradeDeals {
             get {
                 return ResourceManager.GetString("MiscLabelMergeTradeDeals", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Metal production efficiency に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelMetalProductionEfficiency {
+            get {
+                return ResourceManager.GetString("MiscLabelMetalProductionEfficiency", resourceCulture);
             }
         }
         
@@ -8013,6 +8094,15 @@ namespace HoI2Editor.Properties {
         internal static string MiscLabelMinSoftnessBrigades {
             get {
                 return ResourceManager.GetString("MiscLabelMinSoftnessBrigades", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Money from CG production efficiency に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelMoneyProduction_Efficiency {
+            get {
+                return ResourceManager.GetString("MiscLabelMoneyProduction Efficiency", resourceCulture);
             }
         }
         
@@ -8872,6 +8962,24 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   ESE bonus from offensive supply に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelOffensiveSupplyESEBonus {
+            get {
+                return ResourceManager.GetString("MiscLabelOffensiveSupplyESEBonus", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Oil production efficiency に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelOilProductionEfficiency {
+            get {
+                return ResourceManager.GetString("MiscLabelOilProductionEfficiency", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   ORG Regain Air に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MiscLabelOrgRegainAir {
@@ -9498,6 +9606,15 @@ namespace HoI2Editor.Properties {
         internal static string MiscLabelRaderStationMultiplier {
             get {
                 return ResourceManager.GetString("MiscLabelRaderStationMultiplier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Rare Materials production efficiency に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelRareMaterialsProductionEfficiency {
+            get {
+                return ResourceManager.GetString("MiscLabelRareMaterialsProductionEfficiency", resourceCulture);
             }
         }
         
@@ -10411,6 +10528,15 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   Modifier on distance which is used for supply distance mod calculation に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelSupplyDistanceModCalculationModifier {
+            get {
+                return ResourceManager.GetString("MiscLabelSupplyDistanceModCalculationModifier", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Supply Distance Modifier に類似しているローカライズされた文字列を検索します。
         /// </summary>
         internal static string MiscLabelSupplyDistanceModifier {
@@ -10587,6 +10713,15 @@ namespace HoI2Editor.Properties {
         internal static string MiscLabelSupplyStockNaval {
             get {
                 return ResourceManager.GetString("MiscLabelSupplyStockNaval", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Reinforce to Upgrade Modifier に類似しているローカライズされた文字列を検索します。
+        /// </summary>
+        internal static string MiscLabelSupplyToUpdateModifier {
+            get {
+                return ResourceManager.GetString("MiscLabelSupplyToUpdateModifier", resourceCulture);
             }
         }
         
