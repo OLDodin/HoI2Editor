@@ -1,10 +1,10 @@
-Alternative HoI2 Editor Ver 0.53
+Alternative HoI2 Editor Ver 0.54
 
 ■はじめに
   HoI2/AoD/DHのゲームデータを編集するためのツールです。
 
 ■使用方法
-  1. .NET Framework 3.5 SP1をインストールして下さい。
+  1. .NET Framework 4.0をインストールして下さい（Windows XPの場合のみ。Vista以降では不要）。
   2. 適当なフォルダにHoI2Editor.exeとjaフォルダを展開してください。
   3. HoI2Editor.exeを起動します。
   4. ゲームフォルダ名、MOD名を入力すると、編集ボタンが有効になります。

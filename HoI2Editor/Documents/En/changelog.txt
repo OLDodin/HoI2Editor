@@ -1,5 +1,11 @@
 Alternative HoI2 Editor Changelog
 
+- 23 Aug 2020; Ver 0.54
+
+Modified by G.B.Endo that has no relationship with original author, nkodama.
+Supported a part of DH 1.05 features.
+Now you have to have .NET Framework 4.0 environment.
+
 - 6 Feb 2016; Ver 0.53
 
 Fixed a write error when saving scenario files.

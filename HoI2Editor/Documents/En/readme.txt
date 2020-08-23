@@ -1,4 +1,4 @@
-Alternative HoI2 Editor Ver 0.53
+Alternative HoI2 Editor Ver 0.54
 
 - What is this?
 
@@ -10,7 +10,7 @@ It also supports moddir.
 
 - How to use?
 
-1. Install .NET Framework 3.5
+1. Install .NET Framework 4.0(Only needed for Windows XP users).
 2. Decompress the archive and place .exe file to some folder.
 3. Launch .exe file.
 4. Drag and drop a game folder to the editor's window, and editor buttons are active.
