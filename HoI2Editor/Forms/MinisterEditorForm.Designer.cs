@@ -262,8 +262,8 @@
             // 
             resources.ApplyResources(this.startYearNumericUpDown, "startYearNumericUpDown");
             this.startYearNumericUpDown.Maximum = new decimal(new int[] {
-            9999,
-            0,
+            2005032704,
+            1,
             0,
             0});
             this.startYearNumericUpDown.Name = "startYearNumericUpDown";
@@ -283,8 +283,8 @@
             // 
             resources.ApplyResources(this.endYearNumericUpDown, "endYearNumericUpDown");
             this.endYearNumericUpDown.Maximum = new decimal(new int[] {
-            9999,
-            0,
+            2005032704,
+            1,
             0,
             0});
             this.endYearNumericUpDown.Name = "endYearNumericUpDown";
@@ -404,8 +404,8 @@
             // 
             resources.ApplyResources(this.retirementYearNumericUpDown, "retirementYearNumericUpDown");
             this.retirementYearNumericUpDown.Maximum = new decimal(new int[] {
-            9999,
-            0,
+            2005032704,
+            1,
             0,
             0});
             this.retirementYearNumericUpDown.Name = "retirementYearNumericUpDown";

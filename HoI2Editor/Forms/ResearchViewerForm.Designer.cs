@@ -42,6 +42,7 @@
             this.techComponentsColumnHeader = ((System.Windows.Forms.ColumnHeader)(new System.Windows.Forms.ColumnHeader()));
             this.techGroupBox = new System.Windows.Forms.GroupBox();
             this.optionGroupBox = new System.Windows.Forms.GroupBox();
+            this.techteamstartyearCheckBox = new System.Windows.Forms.CheckBox();
             this.dayNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.monthNumericUpDown = new System.Windows.Forms.NumericUpDown();
             this.specifiedRadioButton = new System.Windows.Forms.RadioButton();
@@ -132,6 +133,7 @@
             // optionGroupBox
             // 
             resources.ApplyResources(this.optionGroupBox, "optionGroupBox");
+            this.optionGroupBox.Controls.Add(this.techteamstartyearCheckBox);
             this.optionGroupBox.Controls.Add(this.dayNumericUpDown);
             this.optionGroupBox.Controls.Add(this.monthNumericUpDown);
             this.optionGroupBox.Controls.Add(this.specifiedRadioButton);
@@ -146,6 +148,13 @@
             this.optionGroupBox.Controls.Add(this.yearNumericUpDown);
             this.optionGroupBox.Name = "optionGroupBox";
             this.optionGroupBox.TabStop = false;
+            // 
+            // techteamstartyearCheckBox
+            // 
+            resources.ApplyResources(this.techteamstartyearCheckBox, "techteamstartyearCheckBox");
+            this.techteamstartyearCheckBox.Name = "techteamstartyearCheckBox";
+            this.techteamstartyearCheckBox.UseVisualStyleBackColor = true;
+            this.techteamstartyearCheckBox.CheckedChanged += new System.EventHandler(this.OnConsiderStartYearCheckBoxCheckedChanged);
             // 
             // dayNumericUpDown
             // 
@@ -292,6 +301,7 @@
             this.teamSpecialityColumnHeader});
             this.teamListView.FullRowSelect = true;
             this.teamListView.GridLines = true;
+            this.teamListView.HideSelection = false;
             this.teamListView.MultiSelect = false;
             this.teamListView.Name = "teamListView";
             this.teamListView.OwnerDraw = true;
@@ -409,5 +419,6 @@
         private System.Windows.Forms.ColumnHeader teamEndDateColumnHeader;
         private System.Windows.Forms.NumericUpDown dayNumericUpDown;
         private System.Windows.Forms.NumericUpDown monthNumericUpDown;
+        private System.Windows.Forms.CheckBox techteamstartyearCheckBox;
     }
 }

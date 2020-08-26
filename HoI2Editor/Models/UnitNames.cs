@@ -101,7 +101,114 @@ namespace HoI2Editor.Models
             "NAME_DESTROYER",
             "NAME_SUBMARINE",
             "NAME_NUCLEAR_SUBMARINE",
-            "NAME_TRANSPORT"
+            "NAME_TRANSPORT",
+            "NAME_D_RSV_33",
+            "NAME_D_RSV_34",
+            "NAME_D_RSV_35",
+            "NAME_D_RSV_36",
+            "NAME_D_RSV_37",
+            "NAME_D_RSV_38",
+            "NAME_D_RSV_39",
+            "NAME_D_RSV_40",
+            "NAME_D_01",
+            "NAME_D_02",
+            "NAME_D_03",
+            "NAME_D_04",
+            "NAME_D_05",
+            "NAME_D_06",
+            "NAME_D_07",
+            "NAME_D_08",
+            "NAME_D_09",
+            "NAME_D_10",
+            "NAME_D_11",
+            "NAME_D_12",
+            "NAME_D_13",
+            "NAME_D_14",
+            "NAME_D_15",
+            "NAME_D_16",
+            "NAME_D_17",
+            "NAME_D_18",
+            "NAME_D_19",
+            "NAME_D_20",
+            "NAME_D_21",
+            "NAME_D_22",
+            "NAME_D_23",
+            "NAME_D_24",
+            "NAME_D_25",
+            "NAME_D_26",
+            "NAME_D_27",
+            "NAME_D_28",
+            "NAME_D_29",
+            "NAME_D_30",
+            "NAME_D_31",
+            "NAME_D_32",
+            "NAME_D_33",
+            "NAME_D_34",
+            "NAME_D_35",
+            "NAME_D_36",
+            "NAME_D_37",
+            "NAME_D_38",
+            "NAME_D_39",
+            "NAME_D_40",
+            "NAME_D_41",
+            "NAME_D_42",
+            "NAME_D_43",
+            "NAME_D_44",
+            "NAME_D_45",
+            "NAME_D_46",
+            "NAME_D_47",
+            "NAME_D_48",
+            "NAME_D_49",
+            "NAME_D_50",
+            "NAME_D_51",
+            "NAME_D_52",
+            "NAME_D_53",
+            "NAME_D_54",
+            "NAME_D_55",
+            "NAME_D_56",
+            "NAME_D_57",
+            "NAME_D_58",
+            "NAME_D_59",
+            "NAME_D_60",
+            "NAME_D_61",
+            "NAME_D_62",
+            "NAME_D_63",
+            "NAME_D_64",
+            "NAME_D_65",
+            "NAME_D_66",
+            "NAME_D_67",
+            "NAME_D_68",
+            "NAME_D_69",
+            "NAME_D_70",
+            "NAME_D_71",
+            "NAME_D_72",
+            "NAME_D_73",
+            "NAME_D_74",
+            "NAME_D_75",
+            "NAME_D_76",
+            "NAME_D_77",
+            "NAME_D_78",
+            "NAME_D_79",
+            "NAME_D_80",
+            "NAME_D_81",
+            "NAME_D_82",
+            "NAME_D_83",
+            "NAME_D_84",
+            "NAME_D_85",
+            "NAME_D_86",
+            "NAME_D_87",
+            "NAME_D_88",
+            "NAME_D_89",
+            "NAME_D_90",
+            "NAME_D_91",
+            "NAME_D_92",
+            "NAME_D_93",
+            "NAME_D_94",
+            "NAME_D_95",
+            "NAME_D_96",
+            "NAME_D_97",
+            "NAME_D_98",
+            "NAME_D_99"
         };
 
         #endregion
@@ -146,7 +253,114 @@ namespace HoI2Editor.Models
             "DD",
             "SS",
             "NS",
-            "TP"
+            "TP",
+            "33",
+            "34",
+            "35",
+            "36",
+            "37",
+            "38",
+            "39",
+            "40",
+            "41",
+            "42",
+            "43",
+            "44",
+            "45",
+            "46",
+            "47",
+            "48",
+            "49",
+            "50",
+            "51",
+            "52",
+            "53",
+            "54",
+            "55",
+            "56",
+            "57",
+            "58",
+            "59",
+            "60",
+            "61",
+            "62",
+            "63",
+            "64",
+            "65",
+            "66",
+            "67",
+            "68",
+            "69",
+            "70",
+            "71",
+            "72",
+            "73",
+            "74",
+            "75",
+            "76",
+            "77",
+            "78",
+            "79",
+            "80",
+            "81",
+            "82",
+            "83",
+            "84",
+            "85",
+            "86",
+            "87",
+            "88",
+            "89",
+            "90",
+            "91",
+            "92",
+            "93",
+            "94",
+            "95",
+            "96",
+            "97",
+            "98",
+            "99",
+            "100",
+            "101",
+            "102",
+            "103",
+            "104",
+            "105",
+            "106",
+            "107",
+            "108",
+            "109",
+            "110",
+            "111",
+            "112",
+            "113",
+            "114",
+            "115",
+            "116",
+            "117",
+            "118",
+            "119",
+            "120",
+            "121",
+            "122",
+            "123",
+            "124",
+            "125",
+            "126",
+            "127",
+            "128",
+            "129",
+            "130",
+            "131",
+            "132",
+            "133",
+            "134",
+            "135",
+            "136",
+            "137",
+            "138",
+            "139"
         };
 
         /// <summary>
@@ -226,7 +440,114 @@ namespace HoI2Editor.Models
             UnitNameType.Destroyer,
             UnitNameType.Submarine,
             UnitNameType.NuclearSubmarine,
-            UnitNameType.Transport
+            UnitNameType.Transport,
+            UnitNameType.ReserveDivision33,
+            UnitNameType.ReserveDivision34,
+            UnitNameType.ReserveDivision35,
+            UnitNameType.ReserveDivision36,
+            UnitNameType.ReserveDivision37,
+            UnitNameType.ReserveDivision38,
+            UnitNameType.ReserveDivision39,
+            UnitNameType.ReserveDivision40,
+            UnitNameType.Division01,
+            UnitNameType.Division02,
+            UnitNameType.Division03,
+            UnitNameType.Division04,
+            UnitNameType.Division05,
+            UnitNameType.Division06,
+            UnitNameType.Division07,
+            UnitNameType.Division08,
+            UnitNameType.Division09,
+            UnitNameType.Division10,
+            UnitNameType.Division11,
+            UnitNameType.Division12,
+            UnitNameType.Division13,
+            UnitNameType.Division14,
+            UnitNameType.Division15,
+            UnitNameType.Division16,
+            UnitNameType.Division17,
+            UnitNameType.Division18,
+            UnitNameType.Division19,
+            UnitNameType.Division20,
+            UnitNameType.Division21,
+            UnitNameType.Division22,
+            UnitNameType.Division23,
+            UnitNameType.Division24,
+            UnitNameType.Division25,
+            UnitNameType.Division26,
+            UnitNameType.Division27,
+            UnitNameType.Division28,
+            UnitNameType.Division29,
+            UnitNameType.Division30,
+            UnitNameType.Division31,
+            UnitNameType.Division32,
+            UnitNameType.Division33,
+            UnitNameType.Division34,
+            UnitNameType.Division35,
+            UnitNameType.Division36,
+            UnitNameType.Division37,
+            UnitNameType.Division38,
+            UnitNameType.Division39,
+            UnitNameType.Division40,
+            UnitNameType.Division41,
+            UnitNameType.Division42,
+            UnitNameType.Division43,
+            UnitNameType.Division44,
+            UnitNameType.Division45,
+            UnitNameType.Division46,
+            UnitNameType.Division47,
+            UnitNameType.Division48,
+            UnitNameType.Division49,
+            UnitNameType.Division50,
+            UnitNameType.Division51,
+            UnitNameType.Division52,
+            UnitNameType.Division53,
+            UnitNameType.Division54,
+            UnitNameType.Division55,
+            UnitNameType.Division56,
+            UnitNameType.Division57,
+            UnitNameType.Division58,
+            UnitNameType.Division59,
+            UnitNameType.Division60,
+            UnitNameType.Division61,
+            UnitNameType.Division62,
+            UnitNameType.Division63,
+            UnitNameType.Division64,
+            UnitNameType.Division65,
+            UnitNameType.Division66,
+            UnitNameType.Division67,
+            UnitNameType.Division68,
+            UnitNameType.Division69,
+            UnitNameType.Division70,
+            UnitNameType.Division71,
+            UnitNameType.Division72,
+            UnitNameType.Division73,
+            UnitNameType.Division74,
+            UnitNameType.Division75,
+            UnitNameType.Division76,
+            UnitNameType.Division77,
+            UnitNameType.Division78,
+            UnitNameType.Division79,
+            UnitNameType.Division80,
+            UnitNameType.Division81,
+            UnitNameType.Division82,
+            UnitNameType.Division83,
+            UnitNameType.Division84,
+            UnitNameType.Division85,
+            UnitNameType.Division86,
+            UnitNameType.Division87,
+            UnitNameType.Division88,
+            UnitNameType.Division89,
+            UnitNameType.Division90,
+            UnitNameType.Division91,
+            UnitNameType.Division92,
+            UnitNameType.Division93,
+            UnitNameType.Division94,
+            UnitNameType.Division95,
+            UnitNameType.Division96,
+            UnitNameType.Division97,
+            UnitNameType.Division98,
+            UnitNameType.Division99
         };
 
         #endregion
@@ -887,6 +1208,113 @@ namespace HoI2Editor.Models
         Destroyer, // 駆逐艦
         Submarine, // 潜水艦
         NuclearSubmarine, // 原子力潜水艦
-        Transport // 輸送艦
+        Transport, // 輸送艦
+        ReserveDivision33, // 予備師団33
+        ReserveDivision34, // 予備師団34
+        ReserveDivision35, // 予備師団35
+        ReserveDivision36, // 予備師団36
+        ReserveDivision37, // 予備師団37
+        ReserveDivision38, // 予備師団38
+        ReserveDivision39, // 予備師団39
+        ReserveDivision40, // 予備師団40
+        Division01, // ユーザー定義師団01
+        Division02, // ユーザー定義師団02
+        Division03, // ユーザー定義師団03
+        Division04, // ユーザー定義師団04
+        Division05, // ユーザー定義師団05
+        Division06, // ユーザー定義師団06
+        Division07, // ユーザー定義師団07
+        Division08, // ユーザー定義師団08
+        Division09, // ユーザー定義師団09
+        Division10, // ユーザー定義師団10
+        Division11, // ユーザー定義師団11
+        Division12, // ユーザー定義師団12
+        Division13, // ユーザー定義師団13
+        Division14, // ユーザー定義師団14
+        Division15, // ユーザー定義師団15
+        Division16, // ユーザー定義師団16
+        Division17, // ユーザー定義師団17
+        Division18, // ユーザー定義師団18
+        Division19, // ユーザー定義師団19
+        Division20, // ユーザー定義師団20
+        Division21, // ユーザー定義師団21
+        Division22, // ユーザー定義師団22
+        Division23, // ユーザー定義師団23
+        Division24, // ユーザー定義師団24
+        Division25, // ユーザー定義師団25
+        Division26, // ユーザー定義師団26
+        Division27, // ユーザー定義師団27
+        Division28, // ユーザー定義師団28
+        Division29, // ユーザー定義師団29
+        Division30, // ユーザー定義師団30
+        Division31, // ユーザー定義師団31
+        Division32, // ユーザー定義師団32
+        Division33, // ユーザー定義師団33
+        Division34, // ユーザー定義師団34
+        Division35, // ユーザー定義師団35
+        Division36, // ユーザー定義師団36
+        Division37, // ユーザー定義師団37
+        Division38, // ユーザー定義師団38
+        Division39, // ユーザー定義師団39
+        Division40, // ユーザー定義師団40
+        Division41, // ユーザー定義師団41
+        Division42, // ユーザー定義師団42
+        Division43, // ユーザー定義師団43
+        Division44, // ユーザー定義師団44
+        Division45, // ユーザー定義師団45
+        Division46, // ユーザー定義師団46
+        Division47, // ユーザー定義師団47
+        Division48, // ユーザー定義師団48
+        Division49, // ユーザー定義師団49
+        Division50, // ユーザー定義師団50
+        Division51, // ユーザー定義師団51
+        Division52, // ユーザー定義師団52
+        Division53, // ユーザー定義師団53
+        Division54, // ユーザー定義師団54
+        Division55, // ユーザー定義師団55
+        Division56, // ユーザー定義師団56
+        Division57, // ユーザー定義師団57
+        Division58, // ユーザー定義師団58
+        Division59, // ユーザー定義師団59
+        Division60, // ユーザー定義師団60
+        Division61, // ユーザー定義師団61
+        Division62, // ユーザー定義師団62
+        Division63, // ユーザー定義師団63
+        Division64, // ユーザー定義師団64
+        Division65, // ユーザー定義師団65
+        Division66, // ユーザー定義師団66
+        Division67, // ユーザー定義師団67
+        Division68, // ユーザー定義師団68
+        Division69, // ユーザー定義師団69
+        Division70, // ユーザー定義師団70
+        Division71, // ユーザー定義師団71
+        Division72, // ユーザー定義師団72
+        Division73, // ユーザー定義師団73
+        Division74, // ユーザー定義師団74
+        Division75, // ユーザー定義師団75
+        Division76, // ユーザー定義師団76
+        Division77, // ユーザー定義師団77
+        Division78, // ユーザー定義師団78
+        Division79, // ユーザー定義師団79
+        Division80, // ユーザー定義師団80
+        Division81, // ユーザー定義師団81
+        Division82, // ユーザー定義師団82
+        Division83, // ユーザー定義師団83
+        Division84, // ユーザー定義師団84
+        Division85, // ユーザー定義師団85
+        Division86, // ユーザー定義師団86
+        Division87, // ユーザー定義師団87
+        Division88, // ユーザー定義師団88
+        Division89, // ユーザー定義師団89
+        Division90, // ユーザー定義師団90
+        Division91, // ユーザー定義師団91
+        Division92, // ユーザー定義師団92
+        Division93, // ユーザー定義師団93
+        Division94, // ユーザー定義師団94
+        Division95, // ユーザー定義師団95
+        Division96, // ユーザー定義師団96
+        Division97, // ユーザー定義師団97
+        Division98, // ユーザー定義師団98
+        Division99 // ユーザー定義師団99
     }
 }

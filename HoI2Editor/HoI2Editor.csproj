@@ -55,6 +55,9 @@
     <StartupObject>
     </StartupObject>
   </PropertyGroup>
+  <PropertyGroup>
+    <RunPostBuildEvent>OnBuildSuccess</RunPostBuildEvent>
+  </PropertyGroup>
   <ItemGroup>
     <Reference Include="System" />
     <Reference Include="System.Core" />
@@ -341,6 +344,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ModelNameEditorForm.resx">
       <DependentUpon>ModelNameEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\ProvinceEditorForm.ja.resx">
       <DependentUpon>ProvinceEditorForm.cs</DependentUpon>
@@ -389,6 +393,7 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\UnitNameEditorForm.resx">
       <DependentUpon>UnitNameEditorForm.cs</DependentUpon>
+      <SubType>Designer</SubType>
     </EmbeddedResource>
     <EmbeddedResource Include="Properties\Resources.resx">
       <Generator>ResXFileCodeGenerator</Generator>
@@ -436,6 +441,18 @@
     <Content Include="Documents\Jp\readme.txt" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <PropertyGroup>
+    <PostBuildEvent>cd $(SolutionDir)..\
+mkdir HoI2Editor
+mkdir HoI2Editor\ja
+del HoI2Editor\* /q
+rd /s /q HoI2Editor\ja
+copy $(TargetPath) HoI2Editor\$(TargetFileName)
+echo D | xcopy $(TargetDir)\ja HoI2Editor\ja
+copy $(ProjectDir)\Documents\Jp\*.txt HoI2Editor\
+del HoI2Editor.zip /q
+"C:\Program Files (x86)\Lhaplus\Lhaplus.exe" /c:zip /o:.\ .\HoI2Editor</PostBuildEvent>
+  </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

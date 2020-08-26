@@ -59,6 +59,7 @@
             this.pasteButton = new System.Windows.Forms.Button();
             this.undoButton = new System.Windows.Forms.Button();
             this.copyButton = new System.Windows.Forms.Button();
+            ((System.ComponentModel.ISupportInitialize)(this.listSplitContainer)).BeginInit();
             this.listSplitContainer.Panel1.SuspendLayout();
             this.listSplitContainer.Panel2.SuspendLayout();
             this.listSplitContainer.SuspendLayout();
@@ -84,8 +85,8 @@
             // 
             // countryListBox
             // 
-            resources.ApplyResources(this.countryListBox, "countryListBox");
             this.countryListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
+            resources.ApplyResources(this.countryListBox, "countryListBox");
             this.countryListBox.FormattingEnabled = true;
             this.countryListBox.Name = "countryListBox";
             this.countryListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnCountryListBoxDrawItem);
@@ -93,9 +94,9 @@
             // 
             // typeListBox
             // 
-            resources.ApplyResources(this.typeListBox, "typeListBox");
             this.typeListBox.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.typeListBox.FormattingEnabled = true;
+            resources.ApplyResources(this.typeListBox, "typeListBox");
             this.typeListBox.Name = "typeListBox";
             this.typeListBox.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnTypeListBoxDrawItem);
             this.typeListBox.SelectedIndexChanged += new System.EventHandler(this.OnTypeListBoxSelectedIndexChanged);
@@ -320,7 +321,6 @@
             // 
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
-            this.Controls.Add(this.listSplitContainer);
             this.Controls.Add(this.copyButton);
             this.Controls.Add(this.undoButton);
             this.Controls.Add(this.pasteButton);
@@ -332,6 +332,7 @@
             this.Controls.Add(this.closeButton);
             this.Controls.Add(this.saveButton);
             this.Controls.Add(this.reloadButton);
+            this.Controls.Add(this.listSplitContainer);
             this.Name = "UnitNameEditorForm";
             this.FormClosing += new System.Windows.Forms.FormClosingEventHandler(this.OnFormClosing);
             this.FormClosed += new System.Windows.Forms.FormClosedEventHandler(this.OnFormClosed);
@@ -340,6 +341,7 @@
             this.Resize += new System.EventHandler(this.OnFormResize);
             this.listSplitContainer.Panel1.ResumeLayout(false);
             this.listSplitContainer.Panel2.ResumeLayout(false);
+            ((System.ComponentModel.ISupportInitialize)(this.listSplitContainer)).EndInit();
             this.listSplitContainer.ResumeLayout(false);
             this.optionGroupBox.ResumeLayout(false);
             this.optionGroupBox.PerformLayout();

@@ -1,5 +1,10 @@
 Alternative HoI2 Editor Changelog
 
+- 26 Aug 2020; Ver 0.55
+Fixed a data writing error which cannot edit user defined division's name.
+Fixed a crash when minister file has values over 10000 at Start/End/Retirement year.
+Added a function in Research speed viewer that consider tech team's start and end year. 
+
 - 23 Aug 2020; Ver 0.54
 
 Modified by G.B.Endo that has no relationship with original author, nkodama.

@@ -900,6 +900,46 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
+        ///     文字列を取得する（参照モード取得版）
+        /// </summary>
+        /// <param name="key">文字列の定義名</param>
+        /// <returns>取得した文字列</returns>
+        public static string GetText(string key, ref bool isComplemented)
+        {
+            isComplemented = false;
+            if (string.IsNullOrEmpty(key))
+            {
+                return "";
+            }
+            key = key.ToUpper();
+
+            // 置き換え文字列変換テーブルに登録されていれば優先して参照する
+            if (ReplacedText.ContainsKey(key))
+            {
+                isComplemented = false;
+                return ReplacedText[key][LangIndex];
+            }
+
+            // 文字列変換テーブルに登録されていれば参照する
+            if (Text.ContainsKey(key))
+            {
+                isComplemented = false;
+                return Text[key][LangIndex];
+            }
+
+            // 補完文字列変換テーブルに登録されていれば参照する
+            if (ComplementedText.ContainsKey(key))
+            {
+                isComplemented = true;
+                return ComplementedText[key][LangIndex];
+            }
+
+            // テーブルに登録されていなければ定義名を返す
+            Log.Warning("[Config] GetText failed: {0}", key);
+            return key;
+        }
+
+        /// <summary>
         ///     文字列を取得する
         /// </summary>
         /// <param name="id">文字列ID</param>

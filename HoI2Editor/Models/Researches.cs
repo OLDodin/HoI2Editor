@@ -44,6 +44,11 @@ namespace HoI2Editor.Models
         /// </summary>
         public static double Modifier { get; set; }
 
+        /// <summary>
+        ///     研究機関の開始年の考慮
+        /// </summary>
+        public static bool ConsiderStartYear { get; set; }
+
         #endregion
 
         #region 初期化
@@ -74,6 +79,25 @@ namespace HoI2Editor.Models
             foreach (Team team in teams)
             {
                 Research research = new Research(tech, team);
+
+                // 研究機関の開始年・終了年を考慮する場合
+                if( ConsiderStartYear )
+                {
+                    GameDate date;    
+                    if( DateMode == ResearchDateMode.Specified )
+                    {
+                        date = SpecifiedDate;
+                    } else
+                    {
+                        date = new GameDate(tech.Year);
+                    }
+                    // 研究機関が終了年を過ぎている
+                    if ( team.EndYear <= date.Year )
+                    {
+                        continue;   /* リストに入れない */
+                    }
+                }
+
                 Items.Add(research);
             }
 

@@ -112,21 +112,18 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="listSplitContainer.Location" type="System.Drawing.Point, System.Drawing">
     <value>12, 12</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="listSplitContainer.Orientation" type="System.Windows.Forms.Orientation, System.Windows.Forms">
     <value>Horizontal</value>
-  </data>
-  <data name="countryListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="countryListBox.Font" type="System.Drawing.Font, System.Drawing">
     <value>Lucida Console, 9pt</value>
@@ -137,7 +134,7 @@
   <data name="countryListBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>120, 186</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="countryListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
   </data>
@@ -145,7 +142,7 @@
     <value>countryListBox</value>
   </data>
   <data name="&gt;&gt;countryListBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;countryListBox.Parent" xml:space="preserve">
     <value>listSplitContainer.Panel1</value>
@@ -157,16 +154,13 @@
     <value>listSplitContainer.Panel1</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Panel1.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Panel1.Parent" xml:space="preserve">
     <value>listSplitContainer</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Panel1.ZOrder" xml:space="preserve">
     <value>0</value>
-  </data>
-  <data name="typeListBox.Dock" type="System.Windows.Forms.DockStyle, System.Windows.Forms">
-    <value>Fill</value>
   </data>
   <data name="typeListBox.ItemHeight" type="System.Int32, mscorlib">
     <value>12</value>
@@ -175,7 +169,7 @@
     <value>0, 0</value>
   </data>
   <data name="typeListBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>120, 222</value>
+    <value>120, 220</value>
   </data>
   <data name="typeListBox.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -184,7 +178,7 @@
     <value>typeListBox</value>
   </data>
   <data name="&gt;&gt;typeListBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ListBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;typeListBox.Parent" xml:space="preserve">
     <value>listSplitContainer.Panel2</value>
@@ -196,7 +190,7 @@
     <value>listSplitContainer.Panel2</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Panel2.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitterPanel, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Panel2.Parent" xml:space="preserve">
     <value>listSplitContainer</value>
@@ -217,13 +211,13 @@
     <value>listSplitContainer</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Type" xml:space="preserve">
-    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.SplitContainer, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;listSplitContainer.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>11</value>
   </data>
   <data name="closeButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -232,7 +226,7 @@
     <value>NoControl</value>
   </data>
   <data name="closeButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>537, 407</value>
+    <value>580, 407</value>
   </data>
   <data name="closeButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -247,13 +241,13 @@
     <value>closeButton</value>
   </data>
   <data name="&gt;&gt;closeButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;closeButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;closeButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>8</value>
   </data>
   <data name="saveButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -262,7 +256,7 @@
     <value>NoControl</value>
   </data>
   <data name="saveButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>456, 407</value>
+    <value>499, 407</value>
   </data>
   <data name="saveButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -277,13 +271,13 @@
     <value>saveButton</value>
   </data>
   <data name="&gt;&gt;saveButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;saveButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;saveButton.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>9</value>
   </data>
   <data name="reloadButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Bottom, Right</value>
@@ -292,7 +286,7 @@
     <value>NoControl</value>
   </data>
   <data name="reloadButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>375, 407</value>
+    <value>418, 407</value>
   </data>
   <data name="reloadButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -307,19 +301,19 @@
     <value>reloadButton</value>
   </data>
   <data name="&gt;&gt;reloadButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;reloadButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;reloadButton.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>10</value>
   </data>
   <data name="nameTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
   </data>
   <data name="nameTextBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>138, 12</value>
+    <value>148, 12</value>
   </data>
   <data name="nameTextBox.Multiline" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -328,7 +322,7 @@
     <value>Both</value>
   </data>
   <data name="nameTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>258, 389</value>
+    <value>291, 389</value>
   </data>
   <data name="nameTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -337,13 +331,13 @@
     <value>nameTextBox</value>
   </data>
   <data name="&gt;&gt;nameTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;nameTextBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;nameTextBox.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>7</value>
   </data>
   <data name="optionGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -367,7 +361,7 @@
     <value>allUnitTypeCheckBox</value>
   </data>
   <data name="&gt;&gt;allUnitTypeCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;allUnitTypeCheckBox.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -394,7 +388,7 @@
     <value>regexCheckBox</value>
   </data>
   <data name="&gt;&gt;regexCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;regexCheckBox.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -421,7 +415,7 @@
     <value>allCountryCheckBox</value>
   </data>
   <data name="&gt;&gt;allCountryCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;allCountryCheckBox.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -430,7 +424,7 @@
     <value>2</value>
   </data>
   <data name="optionGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>402, 253</value>
+    <value>445, 253</value>
   </data>
   <data name="optionGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>210, 85</value>
@@ -445,13 +439,13 @@
     <value>optionGroupBox</value>
   </data>
   <data name="&gt;&gt;optionGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;optionGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;optionGroupBox.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>6</value>
   </data>
   <data name="replaceButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>13, 70</value>
@@ -469,7 +463,7 @@
     <value>replaceButton</value>
   </data>
   <data name="&gt;&gt;replaceButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;replaceButton.Parent" xml:space="preserve">
     <value>replaceGroupBox</value>
@@ -490,7 +484,7 @@
     <value>toComboBox</value>
   </data>
   <data name="&gt;&gt;toComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toComboBox.Parent" xml:space="preserve">
     <value>replaceGroupBox</value>
@@ -511,7 +505,7 @@
     <value>withComboBox</value>
   </data>
   <data name="&gt;&gt;withComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;withComboBox.Parent" xml:space="preserve">
     <value>replaceGroupBox</value>
@@ -535,7 +529,7 @@
     <value>startNumericUpDown</value>
   </data>
   <data name="&gt;&gt;startNumericUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;startNumericUpDown.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -559,7 +553,7 @@
     <value>endNumericUpDown</value>
   </data>
   <data name="&gt;&gt;endNumericUpDown.Type" xml:space="preserve">
-    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.NumericUpDown, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;endNumericUpDown.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -583,7 +577,7 @@
     <value>interpolateButton</value>
   </data>
   <data name="&gt;&gt;interpolateButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;interpolateButton.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -604,7 +598,7 @@
     <value>prefixComboBox</value>
   </data>
   <data name="&gt;&gt;prefixComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;prefixComboBox.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -628,7 +622,7 @@
     <value>addButton</value>
   </data>
   <data name="&gt;&gt;addButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;addButton.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -658,7 +652,7 @@
     <value>withLabel</value>
   </data>
   <data name="&gt;&gt;withLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;withLabel.Parent" xml:space="preserve">
     <value>replaceGroupBox</value>
@@ -685,7 +679,7 @@
     <value>toLabel</value>
   </data>
   <data name="&gt;&gt;toLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;toLabel.Parent" xml:space="preserve">
     <value>replaceGroupBox</value>
@@ -694,7 +688,7 @@
     <value>1</value>
   </data>
   <data name="replaceGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>402, 12</value>
+    <value>445, 12</value>
   </data>
   <data name="replaceGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>210, 101</value>
@@ -709,13 +703,13 @@
     <value>replaceGroupBox</value>
   </data>
   <data name="&gt;&gt;replaceGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;replaceGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;replaceGroupBox.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>5</value>
   </data>
   <data name="sequentialGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -742,7 +736,7 @@
     <value>suffixLabel</value>
   </data>
   <data name="&gt;&gt;suffixLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;suffixLabel.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -763,7 +757,7 @@
     <value>suffixComboBox</value>
   </data>
   <data name="&gt;&gt;suffixComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;suffixComboBox.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -790,7 +784,7 @@
     <value>prefixLabel</value>
   </data>
   <data name="&gt;&gt;prefixLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;prefixLabel.Parent" xml:space="preserve">
     <value>sequentialGroupBox</value>
@@ -799,7 +793,7 @@
     <value>2</value>
   </data>
   <data name="sequentialGroupBox.Location" type="System.Drawing.Point, System.Drawing">
-    <value>402, 119</value>
+    <value>445, 119</value>
   </data>
   <data name="sequentialGroupBox.Size" type="System.Drawing.Size, System.Drawing">
     <value>210, 128</value>
@@ -814,13 +808,13 @@
     <value>sequentialGroupBox</value>
   </data>
   <data name="&gt;&gt;sequentialGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;sequentialGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;sequentialGroupBox.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>4</value>
   </data>
   <data name="cutButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -829,7 +823,7 @@
     <value>NoControl</value>
   </data>
   <data name="cutButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 373</value>
+    <value>451, 373</value>
   </data>
   <data name="cutButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -844,13 +838,13 @@
     <value>cutButton</value>
   </data>
   <data name="&gt;&gt;cutButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;cutButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;cutButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>3</value>
   </data>
   <data name="pasteButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -859,7 +853,7 @@
     <value>NoControl</value>
   </data>
   <data name="pasteButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>489, 373</value>
+    <value>532, 373</value>
   </data>
   <data name="pasteButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -874,13 +868,13 @@
     <value>pasteButton</value>
   </data>
   <data name="&gt;&gt;pasteButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;pasteButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;pasteButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>2</value>
   </data>
   <data name="undoButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -889,7 +883,7 @@
     <value>NoControl</value>
   </data>
   <data name="undoButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>408, 344</value>
+    <value>451, 344</value>
   </data>
   <data name="undoButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -904,13 +898,13 @@
     <value>undoButton</value>
   </data>
   <data name="&gt;&gt;undoButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;undoButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;undoButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>1</value>
   </data>
   <data name="copyButton.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Right</value>
@@ -919,7 +913,7 @@
     <value>NoControl</value>
   </data>
   <data name="copyButton.Location" type="System.Drawing.Point, System.Drawing">
-    <value>488, 344</value>
+    <value>531, 344</value>
   </data>
   <data name="copyButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>75, 23</value>
@@ -934,25 +928,25 @@
     <value>copyButton</value>
   </data>
   <data name="&gt;&gt;copyButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;copyButton.Parent" xml:space="preserve">
     <value>$this</value>
   </data>
   <data name="&gt;&gt;copyButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>0</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
     <value>96, 96</value>
   </data>
   <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
-    <value>624, 442</value>
+    <value>667, 442</value>
   </data>
   <data name="$this.MinimumSize" type="System.Drawing.Size, System.Drawing">
-    <value>640, 480</value>
+    <value>660, 480</value>
   </data>
   <data name="$this.StartPosition" type="System.Windows.Forms.FormStartPosition, System.Windows.Forms">
     <value>Manual</value>
@@ -964,6 +958,6 @@
     <value>UnitNameEditorForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

@@ -361,11 +361,23 @@ namespace HoI2Editor.Forms
         /// </summary>
         private void InitTypeListBox()
         {
+            bool isComplemented = false ;
             typeListBox.BeginUpdate();
             typeListBox.Items.Clear();
+
             foreach (UnitNameType type in UnitNames.Types)
             {
-                typeListBox.Items.Add(Config.GetText(UnitNames.TypeNames[(int) type]));
+                string UnitType = Config.GetText(UnitNames.TypeNames[(int)type],ref isComplemented);   /* テキストとテキストの辞書内の状況を取得 */
+                if(!isComplemented)
+                {
+                    typeListBox.Items.Add(UnitType);
+                }
+                else
+                {
+                    //UnitType = string.Empty;
+                    UnitType = UnitNames.TypeNames[(int)type].Remove(0, 5).ToLower();
+                    typeListBox.Items.Add(UnitType);
+                }
             }
 
             // 選択中のユニット種類を反映する

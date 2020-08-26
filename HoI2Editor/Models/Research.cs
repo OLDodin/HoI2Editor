@@ -66,6 +66,17 @@ namespace HoI2Editor.Models
             int offset = date.Difference(new GameDate(tech.Year));
             int days = 0;
 
+            // 研究機関の開始年の考慮
+            if (Researches.ConsiderStartYear)
+            {
+                // 研究を開始した西暦が研究機関の開始西暦より小さい
+                if (date.Year < team.StartYear)
+                {
+                    offset -= date.Difference(new GameDate(team.StartYear));
+                    days -= date.Difference(new GameDate(team.StartYear));   /* 研究開始日時と研究機関スタート日だけ実施日を変更 */
+                }
+            }
+
             foreach (TechComponent component in tech.Components)
             {
                 int day = GetComponentDays(component, offset, team);

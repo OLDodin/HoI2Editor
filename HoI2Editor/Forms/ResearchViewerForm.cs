@@ -869,6 +869,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
+        ///     研究機関開始年考慮チェックボックスの状態変更時の処理
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnConsiderStartYearCheckBoxCheckedChanged(object sender, EventArgs e)
+        {
+            Researches.ConsiderStartYear = techteamstartyearCheckBox.Checked;
+
+            // 研究機関リストを更新する
+            UpdateTeamList();
+        }
+
+        /// <summary>
         ///     研究速度補正の値変更時の処理
         /// </summary>
         /// <param name="sender"></param>
