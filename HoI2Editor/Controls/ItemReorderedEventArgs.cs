@@ -5,31 +5,31 @@ using System.Linq;
 namespace HoI2Editor.Controls
 {
     /// <summary>
-    ///     項目並び替えイベントのパラメータ
+    ///     Item sort event parameters
     /// </summary>
     public class ItemReorderedEventArgs : CancelEventArgs
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     前の表示位置
+        ///     Previous display position
         /// </summary>
         public int[] OldDisplayIndices { get; private set; }
 
         /// <summary>
-        ///     新しい表示位置
+        ///     New display position
         /// </summary>
         public int NewDisplayIndex { get; private set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="oldDisplayIndices">前の表示位置</param>
-        /// <param name="newDisplayIndex">新しい表示位置</param>
+        /// <param name="oldDisplayIndices">Previous display position</param>
+        /// <param name="newDisplayIndex">New display position</param>
         public ItemReorderedEventArgs(IEnumerable<int> oldDisplayIndices, int newDisplayIndex)
         {
             OldDisplayIndices = oldDisplayIndices.ToArray();

@@ -8,26 +8,26 @@ using HoI2Editor.Models;
 namespace HoI2Editor.Controllers
 {
     /// <summary>
-    ///     マップパネルのコントローラクラス
+    ///     Map panel controller class
     /// </summary>
     public class MapPanelController
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マップレベル
+        ///     Map level
         /// </summary>
         public MapLevel Level { get; set; }
 
         /// <summary>
-        ///     フィルターモード
+        ///     Filter mode
         /// </summary>
         public MapFilterMode FilterMode
         {
             get { return _mode; }
             set
             {
-                // プロヴィンス単位でマップ画像を更新する
+                // Update map image by provision
                 if (Maps.IsLoaded[(int) Level])
                 {
                     List<ushort> prev = GetHighlightedProvinces(_mode, _country);
@@ -35,20 +35,20 @@ namespace HoI2Editor.Controllers
                     UpdateProvinces(prev, next);
                 }
 
-                // フィルターモードを更新する
+                // Update filter mode
                 _mode = value;
             }
         }
 
         /// <summary>
-        ///     選択国
+        ///     Selected country
         /// </summary>
         public Country SelectedCountry
         {
             get { return _country; }
             set
             {
-                // プロヴィンス単位でマップ画像を更新する
+                // Update map image by provision
                 if (Maps.IsLoaded[(int) Level])
                 {
                     List<ushort> prev = GetHighlightedProvinces(_mode, _country);
@@ -56,89 +56,89 @@ namespace HoI2Editor.Controllers
                     UpdateProvinces(prev, next);
                 }
 
-                // 選択国を更新する
+                // Update selected countries
                 _country = value;
             }
         }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     マップパネル
+        ///     Map panel
         /// </summary>
         private readonly Panel _panel;
 
         /// <summary>
-        ///     マップパネルのピクチャーボックス
+        ///     Map panel picture box
         /// </summary>
         private readonly PictureBox _pictureBox;
 
         /// <summary>
-        ///     フィルターモード
+        ///     Filter mode
         /// </summary>
         private MapFilterMode _mode;
 
         /// <summary>
-        ///     選択国
+        ///     Selected country
         /// </summary>
         private Country _country;
 
         /// <summary>
-        ///     ドラッグアンドドロップの開始位置
+        ///     Drag and drop start position
         /// </summary>
         private static Point _dragPoint = Point.Empty;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     マップ表示のフィルターモード
+        ///     Map display filter mode
         /// </summary>
         public enum MapFilterMode
         {
-            None, // フィルターなし
-            Core, // 中核プロヴィンス
-            Owned, // 保有プロヴィンス
-            Controlled, // 支配プロヴィンス
-            Claimed // 領有権主張プロヴィンス
+            None, // No filter
+            Core, // Core Providence
+            Owned, // Owned Providence
+            Controlled, // Domination Providence
+            Claimed // Province claim
         }
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     カラーインデックス
+        ///     Color index
         /// </summary>
         private enum MapColorIndex
         {
-            Land, // 陸地
-            Sea, // 海洋
-            Highlighted, // 強調表示
-            Invalid // 無効
+            Land, // Land
+            Sea, // Ocean
+            Highlighted, // Highlighting
+            Invalid // invalid
         }
 
         #endregion
 
-        #region 公開イベント
+        #region Public event
 
         /// <summary>
-        ///     プロヴィンスマウスクリック時のイベント
+        ///     Providence Mouse click event
         /// </summary>
         public event EventHandler<ProvinceEventArgs> ProvinceMouseClick;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="panel">マップパネル</param>
-        /// <param name="pictureBox">マップパネルのピクチャーボックス</param>
+        /// <param name="panel">Map panel</param>
+        /// <param name="pictureBox">Map panel picture box</param>
         public MapPanelController(Panel panel, PictureBox pictureBox)
         {
             _panel = panel;
@@ -149,17 +149,17 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region マップ画像表示
+        #region Map image display
 
         /// <summary>
-        ///     マップ画像を表示する
+        ///     Display map image
         /// </summary>
         public void Show()
         {
-            // カラーパレットを初期化する
+            // Initialize the color palette
             InitColorPalette();
 
-            // 海洋/無効プロヴィンスリストを生成する
+            // Ocean / / Generate an invalid provision list
             List<ushort> seaList = new List<ushort>();
             List<ushort> invalidList = new List<ushort>();
             int maxId = Maps.BoundBoxes.Length;
@@ -183,31 +183,31 @@ namespace HoI2Editor.Controllers
                 }
             }
 
-            // 海洋プロヴィンスのカラーインデックスを変更する
+            // Change the color index of marine provinces
             Maps.SetColorIndex(seaList, (int) MapColorIndex.Sea);
 
-            // 無効プロヴィンスのカラーインデックスを変更する
+            // Change the color index of invalid provinces
             Maps.SetColorIndex(invalidList, (int) MapColorIndex.Invalid);
 
-            // プロヴィンス単位でマップ画像を更新する
+            // Update map image by provision
             Map map = Maps.Data[(int) Level];
             map.UpdateProvinces(seaList);
             map.UpdateProvinces(invalidList);
 
-            // カラーパレットを更新する
+            // Update the color palette
             map.UpdateColorPalette();
 
-            // ピクチャーボックスに画像を設定する
+            // Set an image in the picture box
             Image prev = _pictureBox.Image;
             _pictureBox.Image = map.Image;
             prev?.Dispose();
 
-            // イベントハンドラを初期化する
+            // Initialize the event handler
             InitEventHandler();
         }
 
         /// <summary>
-        ///     カラーパレットを初期化する
+        ///     Initialize the color palette
         /// </summary>
         private static void InitColorPalette()
         {
@@ -218,12 +218,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     指定プロヴィンスが表示されるようにスクロールする
+        ///     Scroll to see the specified province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         public void ScrollToProvince(int id)
         {
-            // 未読み込みならば何もしない
+            // Do nothing if unloaded
             if (!Maps.IsLoaded[(int) Level])
             {
                 return;
@@ -239,7 +239,7 @@ namespace HoI2Editor.Controllers
             int panelWidth = _panel.Width;
             int panelHeight = _panel.Height;
 
-            // 指定プロヴィンスの全体が表示されていれば何もしない
+            // Do nothing if the entire specified provision is displayed
             if ((provLeft >= panelX) &&
                 (provTop >= panelY) &&
                 (provLeft + provWidth <= panelX + panelWidth) &&
@@ -248,7 +248,7 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 指定プロヴィンスが中央に表示されるようにスクロールする
+            // Scroll so that the specified provision is displayed in the center
             int x = provLeft + provWidth / 2 - panelWidth / 2;
             int mapWidth = _pictureBox.Width;
             if (x < 0)
@@ -274,63 +274,63 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     プロヴィンス単位でマップ画像を更新する
+        ///     Update map image by provision
         /// </summary>
-        /// <param name="id">更新対象のプロヴィンスID</param>
-        /// <param name="highlighted">強調表示の有無</param>
+        /// <param name="id">Providence to be updated ID</param>
+        /// <param name="highlighted">With or without highlighting</param>
         public void UpdateProvince(ushort id, bool highlighted)
         {
-            // 未読み込みならば何もしない
+            // Do nothing if unloaded
             if (!Maps.IsLoaded[(int) Level])
             {
                 return;
             }
 
-            // 対象プロヴィンスのカラーインデックスを変更する
+            // Change the color index of the target Providence
             Maps.SetColorIndex(id, (int) (highlighted ? MapColorIndex.Highlighted : MapColorIndex.Land));
 
-            // プロヴィンス単位でマップ画像を更新する
+            // Update map image by provision
             Map map = Maps.Data[(int) Level];
             map.UpdateProvince(id);
 
-            // ピクチャーボックスを再描画する
+            // Redraw the picture box
             _pictureBox.Refresh();
         }
 
         /// <summary>
-        ///     プロヴィンス単位でマップ画像を更新する
+        ///     Update map image by provision
         /// </summary>
-        /// <param name="prev">更新前に強調表示していたプロヴィンス</param>
-        /// <param name="next">更新後に強調表示するプロヴィンス</param>
+        /// <param name="prev">Providence highlighted before the update</param>
+        /// <param name="next">Providence to highlight after update</param>
         private void UpdateProvinces(List<ushort> prev, List<ushort> next)
         {
-            // 通常表示対象のプロヴィンスリストを取得する
+            // Get the provision list that is normally displayed
             List<ushort> normal = prev.Where(id => !next.Contains(id)).ToList();
 
-            // 強調表示対象のプロヴィンスリストを取得する
+            // Get the provided list to be highlighted
             List<ushort> highlighted = next.Where(id => !prev.Contains(id)).ToList();
 
-            // 通常表示プロヴィンスのカラーインデックスを変更する
+            // Change the color index of the normal display provisions
             Maps.SetColorIndex(normal, (int) MapColorIndex.Land);
 
-            // 強調表示プロヴィンスのカラーインデックスを変更する
+            // Change the color index of the highlighting provision
             Maps.SetColorIndex(highlighted, (int) MapColorIndex.Highlighted);
 
-            // プロヴィンス単位でマップ画像を更新する
+            // Update map image by provision
             Map map = Maps.Data[(int) Level];
             map.UpdateProvinces(normal);
             map.UpdateProvinces(highlighted);
 
-            // ピクチャーボックスを再描画する
+            // Redraw the picture box
             _pictureBox.Refresh();
         }
 
         /// <summary>
-        ///     強調表示するプロヴィンスのリストを取得する
+        ///     Get a list of provinces to highlight
         /// </summary>
-        /// <param name="mode">フィルターモード</param>
-        /// <param name="country">対象国</param>
-        /// <returns>強調表示するプロヴィンスのリスト</returns>
+        /// <param name="mode">Filter mode</param>
+        /// <param name="country">Target country</param>
+        /// <returns>List of provisions to highlight</returns>
         private static List<ushort> GetHighlightedProvinces(MapFilterMode mode, Country country)
         {
             if (mode == MapFilterMode.None)
@@ -372,10 +372,10 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region マウスイベントハンドラ
+        #region Mouse event handler
 
         /// <summary>
-        ///     イベントハンドラを初期化する
+        ///     Initialize the event handler
         /// </summary>
         private void InitEventHandler()
         {
@@ -389,7 +389,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     マウスクリック時の処理
+        ///     Processing when mouse clicks
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -401,13 +401,13 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     右マウスダウン時の処理
+        ///     Processing when right mouse down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureBoxMouseDown(object sender, MouseEventArgs e)
         {
-            // 左ボタンダウンでなければドラッグ状態を解除する
+            // If the left button is not down, the drag state is canceled.
             if (e.Button != MouseButtons.Right)
             {
                 _dragPoint = Point.Empty;
@@ -415,36 +415,36 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // ドラッグ開始位置を設定する
+            // Set the drag start position
             _dragPoint = new Point(e.X - _panel.HorizontalScroll.Value, e.Y - _panel.VerticalScroll.Value);
         }
 
         /// <summary>
-        ///     マウスアップ時の処理
+        ///     Processing when mouse up
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnPictureBoxMouseUp(object sender, MouseEventArgs e)
         {
-            // ドラッグ状態を解除する
+            // Release the drag state
             _dragPoint = Point.Empty;
             Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
-        ///     マウス移動時の処理
+        ///     Processing when moving the mouse
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureBoxMouseMove(object sender, MouseEventArgs e)
         {
-            // ドラッグ中でなければ何もしない
+            // Do nothing unless you are dragging
             if (_dragPoint == Point.Empty)
             {
                 return;
             }
 
-            // ドラッグ判定サイズを超えていなければ何もしない
+            // Do nothing if the drag judgment size is not exceeded
             Size dragSize = SystemInformation.DragSize;
             Rectangle dragRect = new Rectangle(_dragPoint.X - dragSize.Width / 2, _dragPoint.Y - dragSize.Height / 2,
                 dragSize.Width, dragSize.Height);
@@ -453,15 +453,15 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // ドラッグアンドドロップを開始する
+            // Start drag and drop
             _pictureBox.DoDragDrop(sender, DragDropEffects.Move);
 
-            // ドラッグ状態を解除する
+            // Release the drag state
             _dragPoint = Point.Empty;
         }
 
         /// <summary>
-        ///     ドラッグ中のカーソル更新処理
+        ///     Cursor update process while dragging
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -479,7 +479,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     ドラッグ開始時の処理
+        ///     Processing at the start of dragging
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -492,13 +492,13 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     ドロップした時の処理
+        ///     Processing when dropped
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPanelDragDrop(object sender, DragEventArgs e)
         {
-            // マップをスクロールさせる
+            // Scroll the map
             Point point = _panel.PointToClient(new Point(e.X, e.Y));
             int panelWidth = _panel.Width - SystemInformation.VerticalScrollBarWidth;
             int panelHeight = _panel.Height - SystemInformation.HorizontalScrollBarHeight;
@@ -528,23 +528,23 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 内部クラス
+        #region Inner class
 
         /// <summary>
-        ///     プロヴィンスイベントのパラメータ
+        ///     Providence event parameters
         /// </summary>
         public class ProvinceEventArgs : MouseEventArgs
         {
             /// <summary>
-            ///     プロヴィンスID
+            ///     Providence ID
             /// </summary>
             public int Id { get; private set; }
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
-            /// <param name="id">プロヴィンスID</param>
-            /// <param name="e">マウスイベントのパラメータ</param>
+            /// <param name="id">Providence ID</param>
+            /// <param name="e">Mouse event parameters</param>
             public ProvinceEventArgs(int id, MouseEventArgs e) : base(e.Button, e.Clicks, e.X, e.Y, e.Delta)
             {
                 Id = id;

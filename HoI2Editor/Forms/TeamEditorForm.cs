@@ -13,34 +13,34 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     研究機関エディタのフォーム
+    ///     Research institution editor form
     /// </summary>
     public partial class TeamEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     絞り込み後の研究機関リスト
+        ///     List of research institutes after narrowing down
         /// </summary>
         private readonly List<Team> _list = new List<Team>();
 
         /// <summary>
-        ///     研究特性コンボボックスの配列
+        ///     Arrangement of research characteristics combo boxes
         /// </summary>
         private readonly ComboBox[] _specialityComboBoxes;
 
         /// <summary>
-        ///     ソート対象
+        ///     Sort target
         /// </summary>
         private SortKey _key = SortKey.None;
 
         /// <summary>
-        ///     ソート順
+        ///     Sort order
         /// </summary>
         private SortOrder _order = SortOrder.Ascendant;
 
         /// <summary>
-        ///     ソート対象
+        ///     Sort target
         /// </summary>
         private enum SortKey
         {
@@ -55,7 +55,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ソート順
+        ///     Sort order
         /// </summary>
         private enum SortOrder
         {
@@ -65,24 +65,24 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     研究機関リストビューの列の数
+        ///     Number of columns in the research institution list view
         /// </summary>
         public const int TeamListColumnCount = 7;
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     編集可能な特性の数
+        ///     Number of editable characteristics
         /// </summary>
         private const int MaxEditableSpecialities = 7;
 
         /// <summary>
-        ///     研究特性の項目ID
+        ///     Items of research characteristics ID
         /// </summary>
         private static readonly TeamItemId[] SpecialityItemIds =
         {
@@ -97,16 +97,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public TeamEditorForm()
         {
             InitializeComponent();
 
-            // 研究特性コンボボックスの配列を初期化する
+            // Initialize the array of research property combo boxes
             _specialityComboBoxes = new[]
             {
                 specialityComboBox1,
@@ -118,61 +118,61 @@ namespace HoI2Editor.Forms
                 specialityComboBox7
             };
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 研究機関リストを絞り込む
+            // Narrow down the list of research institutes
             NarrowTeamList();
 
-            // 研究機関リストをソートする
+            // Sort the list of research institutes
             SortTeamList();
 
-            // 研究機関リストの表示を更新する
+            // Update the display of the research institute list
             UpdateTeamList();
 
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
-            // 何もしない
+            // do nothing
         }
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // 研究機関リストビュー
+            // Research institution list view
             countryColumnHeader.Width = HoI2EditorController.Settings.TeamEditor.ListColumnWidth[0];
             idColumnHeader.Width = HoI2EditorController.Settings.TeamEditor.ListColumnWidth[1];
             nameColumnHeader.Width = HoI2EditorController.Settings.TeamEditor.ListColumnWidth[2];
@@ -181,11 +181,11 @@ namespace HoI2Editor.Forms
             endYearColumnHeader.Width = HoI2EditorController.Settings.TeamEditor.ListColumnWidth[5];
             specialityColumnHeader.Width = HoI2EditorController.Settings.TeamEditor.ListColumnWidth[6];
 
-            // 国家リストボックス
+            // National list box
             countryListBox.ColumnWidth = DeviceCaps.GetScaledWidth(countryListBox.ColumnWidth);
             countryListBox.ItemHeight = DeviceCaps.GetScaledHeight(countryListBox.ItemHeight);
 
-            // 特性コンボボックス
+            // Characteristic combo box
             specialityComboBox1.ItemHeight = DeviceCaps.GetScaledHeight(specialityComboBox1.ItemHeight);
             specialityComboBox2.ItemHeight = DeviceCaps.GetScaledHeight(specialityComboBox2.ItemHeight);
             specialityComboBox3.ItemHeight = DeviceCaps.GetScaledHeight(specialityComboBox3.ItemHeight);
@@ -194,60 +194,60 @@ namespace HoI2Editor.Forms
             specialityComboBox6.ItemHeight = DeviceCaps.GetScaledHeight(specialityComboBox6.ItemHeight);
             specialityComboBox7.ItemHeight = DeviceCaps.GetScaledHeight(specialityComboBox7.ItemHeight);
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.TeamEditor.Location;
             Size = HoI2EditorController.Settings.TeamEditor.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // 研究特性を初期化する
+            // Initialize research characteristics
             Techs.InitSpecialities();
 
-            // ゲーム設定ファイルを読み込む
+            // Load the game settings file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 研究機関リストビューの高さを設定するためにダミーのイメージリストを作成する
+            // Create a dummy image list to set the height of the research institution list view
             teamListView.SmallImageList = new ImageList { ImageSize = new Size(1, DeviceCaps.GetScaledHeight(18)) };
 
-            // 編集項目を初期化する
+            // Initialize edit items
             InitEditableItems();
 
-            // 国家リストボックスを初期化する
+            // Initialize the national list box
             InitCountryListBox();
 
-            // 研究機関ファイルを読み込む
+            // Read research institution files
             Teams.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -265,7 +265,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -275,7 +275,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -288,7 +288,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -301,7 +301,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     一括編集ボタン押下時の処理
+        ///     Processing when the batch edit button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -311,32 +311,32 @@ namespace HoI2Editor.Forms
             args.TargetCountries.AddRange(from string name in countryListBox.SelectedItems
                 select Countries.StringMap[name]);
 
-            // 一括編集ダイアログを表示する
+            // Display the batch edit dialog
             TeamBatchDialog dialog = new TeamBatchDialog(args);
             if (dialog.ShowDialog() == DialogResult.Cancel)
             {
                 return;
             }
 
-            // 一括編集処理
+            // Bulk editing process
             Teams.BatchEdit(args);
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             NarrowTeamList();
             UpdateTeamList();
 
-            // 国家リストボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the national list box
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -355,7 +355,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -365,7 +365,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -376,17 +376,17 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 研究機関リストビュー
+        #region Research institution list view
 
         /// <summary>
-        ///     研究機関リストの表示を更新する
+        ///     Update the display of the research institute list
         /// </summary>
         private void UpdateTeamList()
         {
             teamListView.BeginUpdate();
             teamListView.Items.Clear();
 
-            // 項目を順に登録する
+            // Register items in order
             foreach (Team team in _list)
             {
                 teamListView.Items.Add(CreateTeamListViewItem(team));
@@ -394,16 +394,16 @@ namespace HoI2Editor.Forms
 
             if (teamListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 teamListView.Items[0].Focused = true;
                 teamListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEditableItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableEditableItems();
             }
 
@@ -411,30 +411,30 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストを国タグで絞り込む
+        ///     Narrow down the list of research institutions by country tag
         /// </summary>
         private void NarrowTeamList()
         {
             _list.Clear();
 
-            // 選択中の国家リストを作成する
+            // Create a list of selected nations
             List<Country> tags = (from string s in countryListBox.SelectedItems select Countries.StringMap[s]).ToList();
 
-            // 選択中の国家に所属する研究機関を順に絞り込む
+            // Narrow down the research institutions belonging to the selected country in order
             _list.AddRange(Teams.Items.Where(team => tags.Contains(team.Country)));
         }
 
         /// <summary>
-        ///     研究機関リストをソートする
+        ///     Sort the list of research institutes
         /// </summary>
         private void SortTeamList()
         {
             switch (_key)
             {
-                case SortKey.None: // ソートなし
+                case SortKey.None: // No sort
                     break;
 
-                case SortKey.Tag: // 国タグ
+                case SortKey.Tag: // Country tag
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((team1, team2) => team1.Country - team2.Country);
@@ -456,7 +456,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Name: // 名前
+                case SortKey.Name: // name
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((team1, team2) => string.CompareOrdinal(team1.Name, team2.Name));
@@ -467,7 +467,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Skill: // スキル
+                case SortKey.Skill: // skill
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((team1, team2) => team1.Skill - team2.Skill);
@@ -478,7 +478,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.StartYear: // 開始年
+                case SortKey.StartYear: // Start year
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((team1, team2) => team1.StartYear - team2.StartYear);
@@ -489,7 +489,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.EndYear: // 終了年
+                case SortKey.EndYear: // End year
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((team1, team2) => team1.EndYear - team2.EndYear);
@@ -500,7 +500,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Speciality: // 特性
+                case SortKey.Speciality: // Characteristic
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((team1, team2) =>
@@ -632,7 +632,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューのサブ項目描画処理
+        ///     Research institution list view sub-item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -640,7 +640,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.ColumnIndex)
             {
-                case 6: // 研究特性
+                case 6: // Research characteristics
                     e.Graphics.FillRectangle(
                         teamListView.SelectedIndices.Count > 0 && e.ItemIndex == teamListView.SelectedIndices[0]
                             ? (teamListView.Focused ? SystemBrushes.Highlight : SystemBrushes.Control)
@@ -655,10 +655,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの研究特性アイコン描画処理
+        ///     Research characteristic icon drawing process of research institution list view
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="team">研究機関データ</param>
+        /// <param name="team">Research institution data</param>
         private static void DrawTechSpecialityIcon(DrawListViewSubItemEventArgs e, Team team)
         {
             if (team == null)
@@ -670,13 +670,13 @@ namespace HoI2Editor.Forms
                 DeviceCaps.GetScaledHeight(16));
             for (int i = 0; i < Team.SpecialityLength; i++)
             {
-                // 研究特性なしならば何もしない
+                // Do nothing without research characteristics
                 if (team.Specialities[i] == TechSpeciality.None)
                 {
                     continue;
                 }
 
-                // 研究特性アイコンを描画する
+                // Draw a research characteristic icon
                 if ((int) team.Specialities[i] - 1 < Techs.SpecialityImages.Images.Count)
                 {
                     e.Graphics.DrawImage(
@@ -687,7 +687,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの列ヘッダ描画処理
+        ///     Column header drawing process of research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -697,18 +697,18 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTeamListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     研究機関リストビューの項目編集前の処理
+        ///     Processing before editing items in the research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -716,7 +716,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 国タグ
+                case 0: // Country tag
                     e.Type = ItemEditType.List;
                     e.Items = countryComboBox.Items.Cast<string>();
                     e.Index = countryComboBox.SelectedIndex;
@@ -728,22 +728,22 @@ namespace HoI2Editor.Forms
                     e.Text = idNumericUpDown.Text;
                     break;
 
-                case 2: // 名前
+                case 2: // name
                     e.Type = ItemEditType.Text;
                     e.Text = nameTextBox.Text;
                     break;
 
-                case 3: // スキル
+                case 3: // skill
                     e.Type = ItemEditType.Text;
                     e.Text = skillNumericUpDown.Text;
                     break;
 
-                case 4: // 開始年
+                case 4: // Start year
                     e.Type = ItemEditType.Text;
                     e.Text = startYearNumericUpDown.Text;
                     break;
 
-                case 5: // 終了年
+                case 5: // End year
                     e.Type = ItemEditType.Text;
                     e.Text = endYearNumericUpDown.Text;
                     break;
@@ -751,7 +751,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの項目編集後の処理
+        ///     Processing after editing items in the research institute list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -759,7 +759,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 国タグ
+                case 0: // Country tag
                     countryComboBox.SelectedIndex = e.Index;
                     break;
 
@@ -767,35 +767,35 @@ namespace HoI2Editor.Forms
                     idNumericUpDown.Text = e.Text;
                     break;
 
-                case 2: // 名前
+                case 2: // name
                     nameTextBox.Text = e.Text;
                     break;
 
-                case 3: // スキル
+                case 3: // skill
                     skillNumericUpDown.Text = e.Text;
                     break;
 
-                case 4: // 開始年
+                case 4: // Start year
                     startYearNumericUpDown.Text = e.Text;
                     break;
 
-                case 5: // 終了年
+                case 5: // End year
                     endYearNumericUpDown.Text = e.Text;
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     研究機関リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTeamListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 自前で項目を入れ替えるのでキャンセル扱いにする
+            // I will replace the items on my own, so I will treat it as canceled
             e.Cancel = true;
 
             int srcIndex = e.OldDisplayIndices[0];
@@ -816,16 +816,16 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 研究機関リストの項目を移動する
+            // Move items in the research institute list
             Teams.MoveItem(src, dest);
             MoveListItem(srcIndex, destIndex);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Teams.SetDirty(src.Country);
         }
 
         /// <summary>
-        ///     研究機関リストビューのカラムクリック時の処理
+        ///     Processing when a column is clicked in the research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -833,7 +833,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 国タグ
+                case 0: // Country tag
                     if (_key == SortKey.Tag)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -855,7 +855,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 2: // 名前
+                case 2: // name
                     if (_key == SortKey.Name)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -866,7 +866,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 3: // スキル
+                case 3: // skill
                     if (_key == SortKey.Skill)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -877,7 +877,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 4: // 開始年
+                case 4: // Start year
                     if (_key == SortKey.StartYear)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -888,7 +888,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 5: // 終了年
+                case 5: // End year
                     if (_key == SortKey.EndYear)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -899,7 +899,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 6: // 特性
+                case 6: // Characteristic
                     if (_key == SortKey.Speciality)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -911,19 +911,19 @@ namespace HoI2Editor.Forms
                     break;
 
                 default:
-                    // 項目のない列をクリックした時には何もしない
+                    // Do nothing when clicking on a column with no items
                     return;
             }
 
-            // 研究機関リストをソートする
+            // Sort the list of research institutes
             SortTeamList();
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     研究機関リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -937,7 +937,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     新規ボタン押下時の処理
+        ///     Processing when a new button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -947,7 +947,7 @@ namespace HoI2Editor.Forms
             Team selected = GetSelectedTeam();
             if (selected != null)
             {
-                // 選択項目がある場合、国タグやIDを引き継いで項目を作成する
+                // If there is a choice, the country tag or ID To take over and create an item
                 team = new Team(selected)
                 {
                     Id = Teams.GetNewId(selected.Country),
@@ -955,17 +955,17 @@ namespace HoI2Editor.Forms
                     PictureName = ""
                 };
 
-                // 研究機関ごとの編集済みフラグを設定する
+                // Set edited flags for each research institution
                 team.SetDirtyAll();
 
-                // 研究機関リストに項目を挿入する
+                // Insert an item in the research institution list
                 Teams.InsertItem(team, selected);
                 InsertListItem(team, teamListView.SelectedIndices[0] + 1);
             }
             else
             {
                 Country country = Countries.Tags[countryListBox.SelectedIndex];
-                // 新規項目を作成する
+                // Create a new item
                 team = new Team
                 {
                     Country = country,
@@ -975,24 +975,24 @@ namespace HoI2Editor.Forms
                     EndYear = 1970
                 };
 
-                // 研究機関ごとの編集済みフラグを設定する
+                // Set edited flags for each research institution
                 team.SetDirtyAll();
 
-                // 研究機関リストに項目を追加する
+                // Add an item to the research institution list
                 Teams.AddItem(team);
                 AddListItem(team);
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEditableItems();
             }
 
-            // 国家ごとの編集済みフラグを設定する
+            // Set edited flags for each country
             Teams.SetDirty(team.Country);
 
-            // 研究機関リストの更新を通知する
+            // Notify the update of the research institute list
             HoI2EditorController.OnItemChanged(EditorItemId.TeamList, this);
 
-            // ファイル一覧に存在しなければ追加する
+            // If it does not exist in the file list, add it
             if (!Teams.FileNameMap.ContainsKey(team.Country))
             {
                 Teams.FileNameMap.Add(team.Country, Game.GetTeamFileName(team.Country));
@@ -1001,85 +1001,85 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     複製ボタン押下時の処理
+        ///     Processing when the duplicate button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCloneButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team selected = GetSelectedTeam();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目を引き継いで項目を作成する
+            // Create an item by taking over the selected item
             Team team = new Team(selected)
             {
                 Id = Teams.GetNewId(selected.Country)
             };
 
-            // 研究機関ごとの編集済みフラグを設定する
+            // Set edited flags for each research institution
             team.SetDirtyAll();
 
-            // 研究機関リストに項目を挿入する
+            // Insert an item in the research institution list
             Teams.InsertItem(team, selected);
             InsertListItem(team, teamListView.SelectedIndices[0] + 1);
 
-            // 国家ごとの編集済みフラグを設定する
+            // Set edited flags for each country
             Teams.SetDirty(team.Country);
 
-            // 研究機関リストの更新を通知する
+            // Notify the update of the research institute list
             HoI2EditorController.OnItemChanged(EditorItemId.TeamList, this);
         }
 
         /// <summary>
-        ///     削除ボタン押下時の処理
+        ///     Processing when the delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team selected = GetSelectedTeam();
             if (selected == null)
             {
                 return;
             }
 
-            // 研究機関リストから項目を削除する
+            // Remove an item from the research institute list
             Teams.RemoveItem(selected);
             RemoveItem(teamListView.SelectedIndices[0]);
 
-            // リストから項目がなくなれば編集項目を無効化する
+            // Disable edit items when there are no items in the list
             if (teamListView.Items.Count == 0)
             {
                 DisableEditableItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Teams.SetDirty(selected.Country);
 
-            // 研究機関リストの更新を通知する
+            // Notify the update of the research institute list
             HoI2EditorController.OnItemChanged(EditorItemId.TeamList, this);
         }
 
         /// <summary>
-        ///     先頭へボタン押下時の処理
+        ///     Processing when the button is pressed to the beginning
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTopButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team selected = GetSelectedTeam();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの先頭ならば何もしない
+            // Do nothing if the selection is at the top of the list
             int index = teamListView.SelectedIndices[0];
             if (index == 0)
             {
@@ -1092,29 +1092,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 研究機関リストの項目を移動する
+            // Move items in the research institute list
             Teams.MoveItem(selected, top);
             MoveListItem(index, 0);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Teams.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     上へボタン押下時の処理
+        ///     Processing when pressing the up button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team selected = GetSelectedTeam();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの先頭ならば何もしない
+            // Do nothing if the selection is at the top of the list
             int index = teamListView.SelectedIndices[0];
             if (index == 0)
             {
@@ -1127,29 +1127,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 研究機関リストの項目を移動する
+            // Move items in the research institute list
             Teams.MoveItem(selected, upper);
             MoveListItem(index, index - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Teams.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     下へボタン押下時の処理
+        ///     Processing when the down button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDownButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team selected = GetSelectedTeam();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの末尾ならば何もしない
+            // Do nothing if the selection is at the end of the list
             int index = teamListView.SelectedIndices[0];
             if (index == teamListView.Items.Count - 1)
             {
@@ -1162,29 +1162,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 研究機関リストの項目を移動する
+            // Move items in the research institute list
             Teams.MoveItem(selected, lower);
             MoveListItem(index, index + 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Teams.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     末尾へボタン押下時の処理
+        ///     Processing when the button is pressed to the end
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBottomButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team selected = GetSelectedTeam();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの末尾ならば何もしない
+            // Do nothing if the selection is at the end of the list
             int index = teamListView.SelectedIndices[0];
             if (teamListView.SelectedIndices[0] == teamListView.Items.Count - 1)
             {
@@ -1197,64 +1197,64 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 研究機関リストの項目を移動する
+            // Move items in the research institute list
             Teams.MoveItem(selected, bottom);
             MoveListItem(index, teamListView.Items.Count - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Teams.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     研究機関リストに項目を追加する
+        ///     Add an item to the research institution list
         /// </summary>
-        /// <param name="team">追加対象の項目</param>
+        /// <param name="team">Items to be added</param>
         private void AddListItem(Team team)
         {
-            // 絞り込みリストに項目を追加する
+            // Add an item to the refined list
             _list.Add(team);
 
-            // 研究機関リストビューに項目を追加する
+            // Add an item to the research institute list view
             teamListView.Items.Add(CreateTeamListViewItem(team));
 
-            // 追加した項目を選択する
+            // Select the added item
             teamListView.Items[teamListView.Items.Count - 1].Focused = true;
             teamListView.Items[teamListView.Items.Count - 1].Selected = true;
             teamListView.EnsureVisible(teamListView.Items.Count - 1);
         }
 
         /// <summary>
-        ///     研究機関リストに項目を挿入する
+        ///     Insert an item in the research institution list
         /// </summary>
-        /// <param name="team">挿入対象の項目</param>
-        /// <param name="index">挿入先の位置</param>
+        /// <param name="team">Items to be inserted</param>
+        /// <param name="index">Insertion destination position</param>
         private void InsertListItem(Team team, int index)
         {
-            // 絞り込みリストに項目を挿入する
+            // Insert an item in the refined list
             _list.Insert(index, team);
 
-            // 研究機関リストビューに項目を挿入する
+            // Insert an item in the laboratory list view
             teamListView.Items.Insert(index, CreateTeamListViewItem(team));
 
-            // 挿入した項目を選択する
+            // Select the inserted item
             teamListView.Items[index].Focused = true;
             teamListView.Items[index].Selected = true;
             teamListView.EnsureVisible(index);
         }
 
         /// <summary>
-        ///     研究機関リストから項目を削除する
+        ///     Remove an item from the research institute list
         /// </summary>
-        /// <param name="index">削除対象の位置</param>
+        /// <param name="index">Position to be deleted</param>
         private void RemoveItem(int index)
         {
-            // 絞り込みリストから項目を削除する
+            // Remove an item from the refined list
             _list.RemoveAt(index);
 
-            // 研究機関リストビューから項目を削除する
+            // Remove an item from the laboratory list view
             teamListView.Items.RemoveAt(index);
 
-            // 削除した項目の次の項目を選択する
+            // Select the next item after the deleted item
             if (index < teamListView.Items.Count)
             {
                 teamListView.Items[index].Focused = true;
@@ -1262,55 +1262,55 @@ namespace HoI2Editor.Forms
             }
             else if (index - 1 >= 0)
             {
-                // リストの末尾ならば、削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 teamListView.Items[index - 1].Focused = true;
                 teamListView.Items[index - 1].Selected = true;
             }
         }
 
         /// <summary>
-        ///     研究機関リストの項目を移動する
+        ///     Move items in the research institute list
         /// </summary>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="src">Source position</param>
+        /// <param name="dest">Destination position</param>
         private void MoveListItem(int src, int dest)
         {
             Team team = _list[src];
 
             if (src > dest)
             {
-                // 上へ移動する場合
-                // 絞り込みリストの項目を移動する
+                // When moving up
+                // Move items in the refined list
                 _list.Insert(dest, team);
                 _list.RemoveAt(src + 1);
 
-                // 研究機関リストビューの項目を移動する
+                // Move items in the research institute list view
                 teamListView.Items.Insert(dest, CreateTeamListViewItem(team));
                 teamListView.Items.RemoveAt(src + 1);
             }
             else
             {
-                // 下へ移動する場合
-                // 絞り込みリストの項目を移動する
+                // When moving down
+                // Move items in the refined list
                 _list.Insert(dest + 1, team);
                 _list.RemoveAt(src);
 
-                // 研究機関リストビューの項目を移動する
+                // Move items in the research institute list view
                 teamListView.Items.Insert(dest + 1, CreateTeamListViewItem(team));
                 teamListView.Items.RemoveAt(src);
             }
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             teamListView.Items[dest].Focused = true;
             teamListView.Items[dest].Selected = true;
             teamListView.EnsureVisible(dest);
         }
 
         /// <summary>
-        ///     研究機関リストビューの項目を作成する
+        ///     Create an item in the research institution list view
         /// </summary>
-        /// <param name="team">研究機関データ</param>
-        /// <returns>研究機関リストビューの項目</returns>
+        /// <param name="team">Research institution data</param>
+        /// <returns>Items in the research institution list view</returns>
         private static ListViewItem CreateTeamListViewItem(Team team)
         {
             if (team == null)
@@ -1334,12 +1334,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中の研究機関データを取得する
+        ///     Get the data of the selected research institution
         /// </summary>
-        /// <returns>選択中の研究機関データ</returns>
+        /// <returns>Selected research institute data</returns>
         private Team GetSelectedTeam()
         {
-            // 選択項目がない場合
+            // If there is no selection
             if (teamListView.SelectedItems.Count == 0)
             {
                 return null;
@@ -1350,10 +1350,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家リストボックス
+        #region National list box
 
         /// <summary>
-        ///     国家リストボックスを初期化する
+        ///     Initialize the national list box
         /// </summary>
         private void InitCountryListBox()
         {
@@ -1364,9 +1364,9 @@ namespace HoI2Editor.Forms
                 countryListBox.Items.Add(Countries.Strings[(int) country]);
             }
 
-            // 選択イベントを処理すると時間がかかるので、一時的に無効化する
+            // Processing selection events takes time, so temporarily disable it
             countryListBox.SelectedIndexChanged -= OnCountryListBoxSelectedIndexChanged;
-            // 選択中の国家を反映する
+            // Reflect the selected nation
             foreach (Country country in HoI2EditorController.Settings.TeamEditor.Countries)
             {
                 int index = Array.IndexOf(Countries.Tags, country);
@@ -1375,39 +1375,39 @@ namespace HoI2Editor.Forms
                     countryListBox.SetSelected(Array.IndexOf(Countries.Tags, country), true);
                 }
             }
-            // 選択イベントを元に戻す
+            // Undo selection event
             countryListBox.SelectedIndexChanged += OnCountryListBoxSelectedIndexChanged;
 
             int count = countryListBox.SelectedItems.Count;
-            // 選択数に合わせて全選択/全解除を切り替える
+            // Select all according to the number of selections / / Switch all cancellations
             countryAllButton.Text = count <= 1 ? Resources.KeySelectAll : Resources.KeyUnselectAll;
-            // 選択数がゼロの場合は新規追加ボタンを無効化する
+            // Disable the add new button if the number of selections is zero
             newButton.Enabled = count > 0;
 
             countryListBox.EndUpdate();
         }
 
         /// <summary>
-        ///     国家リストボックスの項目描画処理
+        ///     Item drawing process of national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 Country country = Countries.Tags[e.Index];
                 brush = Teams.IsDirty(country)
                     ? new SolidBrush(Color.Red)
@@ -1421,12 +1421,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1434,23 +1434,23 @@ namespace HoI2Editor.Forms
         {
             int count = countryListBox.SelectedItems.Count;
 
-            // 選択数に合わせて全選択/全解除を切り替える
+            // Select all according to the number of selections / / Switch all cancellations
             countryAllButton.Text = count <= 1 ? Resources.KeySelectAll : Resources.KeyUnselectAll;
 
-            // 選択数がゼロの場合は新規追加ボタンを無効化する
+            // Disable the add new button if the number of selections is zero
             newButton.Enabled = count > 0;
 
-            // 選択中の国家を保存する
+            // Save the selected nation
             HoI2EditorController.Settings.TeamEditor.Countries =
                 countryListBox.SelectedIndices.Cast<int>().Select(index => Countries.Tags[index]).ToList();
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             NarrowTeamList();
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     国家リストボックスの全選択/全解除ボタン押下時の処理
+        ///     Select all national list boxes / / Processing when all release buttons are pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1458,12 +1458,12 @@ namespace HoI2Editor.Forms
         {
             countryListBox.BeginUpdate();
 
-            // 選択イベントを処理すると時間がかかるので、一時的に無効化する
+            // Processing selection events takes time, so temporarily disable it
             countryListBox.SelectedIndexChanged -= OnCountryListBoxSelectedIndexChanged;
 
             if (countryListBox.SelectedItems.Count <= 1)
             {
-                // スクロール位置を先頭に設定するため、逆順で選択する
+                // Select in reverse order to set the scroll position to the beginning
                 for (int i = countryListBox.Items.Count - 1; i >= 0; i--)
                 {
                     countryListBox.SetSelected(i, true);
@@ -1477,10 +1477,10 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 選択イベントを元に戻す
+            // Undo selection event
             countryListBox.SelectedIndexChanged += OnCountryListBoxSelectedIndexChanged;
 
-            // 研究機関リスト絞り込みのため、ダミーでイベント発行する
+            // Issue a dummy event to narrow down the list of research institutes
             OnCountryListBoxSelectedIndexChanged(sender, e);
 
             countryListBox.EndUpdate();
@@ -1488,17 +1488,17 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 編集項目
+        #region Edit items
 
         /// <summary>
-        ///     編集項目を初期化する
+        ///     Initialize edit items
         /// </summary>
         private void InitEditableItems()
         {
             Graphics g = Graphics.FromHwnd(Handle);
             int margin = DeviceCaps.GetScaledWidth(2) + 1;
 
-            // 国タグ
+            // Country tag
             countryComboBox.BeginUpdate();
             countryComboBox.Items.Clear();
             int width = countryComboBox.Width;
@@ -1516,7 +1516,7 @@ namespace HoI2Editor.Forms
             countryComboBox.DropDownWidth = width;
             countryComboBox.EndUpdate();
 
-            // 研究特性
+            // Research characteristics
             for (int i = 0; i < MaxEditableSpecialities; i++)
             {
                 _specialityComboBoxes[i].Tag = i;
@@ -1530,7 +1530,7 @@ namespace HoI2Editor.Forms
                 {
                     _specialityComboBoxes[i].Items.Add(s);
                 }
-                // 研究特性アイコンの幅を追加している
+                // Adding the width of the research characteristic icon
                 width = Math.Max(width,
                     (int) g.MeasureString(s, specialityComboBox1.Font).Width + additional);
             }
@@ -1541,24 +1541,24 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を更新する
+        ///     Update edit items
         /// </summary>
         private void UpdateEditableItems()
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItemsValue(team);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateEditableItemsColor(team);
 
-            // 項目移動ボタンの状態更新
+            // Item move button status update
             topButton.Enabled = teamListView.SelectedIndices[0] != 0;
             upButton.Enabled = teamListView.SelectedIndices[0] != 0;
             downButton.Enabled = teamListView.SelectedIndices[0] != teamListView.Items.Count - 1;
@@ -1566,9 +1566,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="team">研究機関データ</param>
+        /// <param name="team">Research institution data</param>
         private void UpdateEditableItemsValue(Team team)
         {
             countryComboBox.SelectedIndex = team.Country != Country.None ? (int) team.Country - 1 : -1;
@@ -1586,19 +1586,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="team">研究機関データ</param>
+        /// <param name="team">Research institution data</param>
         private void UpdateEditableItemsColor(Team team)
         {
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             countryComboBox.Refresh();
             for (int i = 0; i < MaxEditableSpecialities; i++)
             {
                 _specialityComboBoxes[i].Refresh();
             }
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             idNumericUpDown.ForeColor = team.IsDirty(TeamItemId.Id) ? Color.Red : SystemColors.WindowText;
             nameTextBox.ForeColor = team.IsDirty(TeamItemId.Name) ? Color.Red : SystemColors.WindowText;
             skillNumericUpDown.ForeColor = team.IsDirty(TeamItemId.Skill) ? Color.Red : SystemColors.WindowText;
@@ -1608,7 +1608,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を有効化する
+        ///     Enable edit items
         /// </summary>
         private void EnableEditableItems()
         {
@@ -1625,7 +1625,7 @@ namespace HoI2Editor.Forms
                 _specialityComboBoxes[i].Enabled = true;
             }
 
-            // 無効化時にクリアした文字列を再設定する
+            // Reset the character string cleared at the time of invalidation
             idNumericUpDown.Text = IntHelper.ToString((int) idNumericUpDown.Value);
             skillNumericUpDown.Text = IntHelper.ToString((int) skillNumericUpDown.Value);
             startYearNumericUpDown.Text = IntHelper.ToString((int) startYearNumericUpDown.Value);
@@ -1636,7 +1636,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を無効化する
+        ///     Disable edit items
         /// </summary>
         private void DisableEditableItems()
         {
@@ -1672,22 +1672,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家コンボボックスの項目描画処理
+        ///     Item drawing process of national combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Team team = GetSelectedTeam();
             if (team != null)
             {
@@ -1705,18 +1705,18 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     研究特性コンボボックスの項目描画処理
+        ///     Item drawing process of research characteristic combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpecialityComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
@@ -1729,13 +1729,13 @@ namespace HoI2Editor.Forms
             }
             int no = (int) comboBox.Tag;
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
             Team team = GetSelectedTeam();
             if (team != null)
             {
-                // アイコンを描画する
+                // Draw an icon
                 if (e.Index > 0 && e.Index - 1 < Techs.SpecialityImages.Images.Count)
                 {
                     Rectangle gr = new Rectangle(e.Bounds.X + 1, e.Bounds.Y + 1, DeviceCaps.GetScaledWidth(16),
@@ -1743,7 +1743,7 @@ namespace HoI2Editor.Forms
                     e.Graphics.DrawImage(Techs.SpecialityImages.Images[e.Index - 1], gr);
                 }
 
-                // 項目の文字列を描画する
+                // Draw a string of items
                 Brush brush;
                 if ((Techs.Specialities[e.Index] == team.Specialities[no]) && team.IsDirty(SpecialityItemIds[no]))
                 {
@@ -1760,14 +1760,14 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     研究機関画像ピクチャーボックスの項目を更新する
+        ///     Update the items in the research institution image picture box
         /// </summary>
-        /// <param name="team">研究機関データ</param>
+        /// <param name="team">Research institution data</param>
         private void UpdateTeamPicture(Team team)
         {
             if (!string.IsNullOrEmpty(team.PictureName) &&
@@ -1784,76 +1784,76 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国タグ変更時の処理
+        ///     Processing when changing country tag
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             Country country = Countries.Tags[countryComboBox.SelectedIndex];
             if (country == team.Country)
             {
                 return;
             }
 
-            // 変更前の国タグの編集済みフラグを設定する
+            // Set the edited flag for the country tag before the change
             Teams.SetDirty(team.Country);
 
             Log.Info("[Team] country: {0} -> {1} ({2}: {3})", Countries.Strings[(int) team.Country],
                 Countries.Strings[(int) country], team.Id, team.Name);
 
-            // 値を更新する
+            // Update value
             team.Country = country;
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.SelectedItems[0].Text = Countries.Strings[(int) team.Country];
 
-            // 研究機関ごとの編集済みフラグを設定する
+            // Set edited flags for each research institution
             team.SetDirty(TeamItemId.Country);
 
-            // 変更後の国タグの編集済みフラグを設定する
+            // Set the edited flag of the changed country tag
             Teams.SetDirty(team.Country);
 
-            // ファイル一覧に存在しなければ追加する
+            // If it does not exist in the file list, add it
             if (!Teams.FileNameMap.ContainsKey(team.Country))
             {
                 Teams.FileNameMap.Add(team.Country, Game.GetTeamFileName(team.Country));
                 Teams.SetDirtyList();
             }
 
-            // 国家コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the national combo box
             countryComboBox.Refresh();
 
-            // 国家リストボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the national list box
             countryListBox.Refresh();
 
-            // 研究機関の所属国家の更新を通知する
+            // Notify the renewal of the nation to which the research institution belongs
             HoI2EditorController.OnItemChanged(EditorItemId.TeamCountry, this);
         }
 
         /// <summary>
-        ///     ID変更時の処理
+        ///     ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int id = (int) idNumericUpDown.Value;
             if (id == team.Id)
             {
@@ -1862,38 +1862,38 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Team] id: {0} -> {1} ({2})", team.Id, id, team.Name);
 
-            // 値を更新する
+            // Update value
             team.Id = id;
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.SelectedItems[0].SubItems[1].Text = IntHelper.ToString(team.Id);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             team.SetDirty(TeamItemId.Id);
             Teams.SetDirty(team.Country);
 
-            // 文字色を変更する
+            // Change the font color
             idNumericUpDown.ForeColor = Color.Red;
 
-            // 研究機関IDの更新を通知する
+            // research Institute ID Notify for updates
             HoI2EditorController.OnItemChanged(EditorItemId.TeamId, this);
         }
 
         /// <summary>
-        ///     名前文字列変更時の処理
+        ///     Processing when changing the name string
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string name = nameTextBox.Text;
             if (string.IsNullOrEmpty(name))
             {
@@ -1912,38 +1912,38 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Team] name: {0} -> {1} ({2})", team.Name, name, team.Id);
 
-            // 値を更新する
+            // Update value
             team.Name = name;
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.SelectedItems[0].SubItems[2].Text = team.Name;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             team.SetDirty(TeamItemId.Name);
             Teams.SetDirty(team.Country);
 
-            // 文字色を変更する
+            // Change the font color
             nameTextBox.ForeColor = Color.Red;
 
-            // 研究機関名の更新を通知する
+            // Notify the update of the research institute name
             HoI2EditorController.OnItemChanged(EditorItemId.TeamName, this);
         }
 
         /// <summary>
-        ///     スキル変更時の処理
+        ///     Processing when changing skills
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSkillNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int skill = (int) skillNumericUpDown.Value;
             if (skill == team.Skill)
             {
@@ -1952,38 +1952,38 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Team] skill: {0} -> {1} ({2}: {3})", team.Skill, skill, team.Id, team.Name);
 
-            // 値を更新する
+            // Update value
             team.Skill = skill;
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.SelectedItems[0].SubItems[3].Text = IntHelper.ToString(team.Skill);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             team.SetDirty(TeamItemId.Skill);
             Teams.SetDirty(team.Country);
 
-            // 文字色を変更する
+            // Change the font color
             skillNumericUpDown.ForeColor = Color.Red;
 
-            // 研究機関のスキルの更新を通知する
+            // Notify research institution skill updates
             HoI2EditorController.OnItemChanged(EditorItemId.TeamSkill, this);
         }
 
         /// <summary>
-        ///     開始年変更時の処理
+        ///     Processing when changing the start year
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnStartYearNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int startYear = (int) startYearNumericUpDown.Value;
             if (startYear == team.StartYear)
             {
@@ -1992,35 +1992,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Team] start year: {0} -> {1} ({2}: {3})", team.StartYear, startYear, team.Id, team.Name);
 
-            // 値を更新する
+            // Update value
             team.StartYear = startYear;
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.SelectedItems[0].SubItems[4].Text = IntHelper.ToString(team.StartYear);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             team.SetDirty(TeamItemId.StartYear);
             Teams.SetDirty(team.Country);
 
-            // 文字色を変更する
+            // Change the font color
             startYearNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     終了年変更時の処理
+        ///     Processing when changing the end year
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEndYearNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int endYear = (int) endYearNumericUpDown.Value;
             if (endYear == team.EndYear)
             {
@@ -2029,28 +2029,28 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Team] end year: {0} -> {1} ({2}: {3})", team.EndYear, endYear, team.Id, team.Name);
 
-            // 値を更新する
+            // Update value
             team.EndYear = endYear;
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.SelectedItems[0].SubItems[5].Text = IntHelper.ToString(team.EndYear);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             team.SetDirty(TeamItemId.EndYear);
             Teams.SetDirty(team.Country);
 
-            // 文字色を変更する
+            // Change the font color
             endYearNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     研究特性変更時の処理
+        ///     Processing when changing research characteristics
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpecialityComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
@@ -2064,7 +2064,7 @@ namespace HoI2Editor.Forms
             }
             int no = (int) comboBox.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             TechSpeciality speciality = Techs.Specialities[comboBox.SelectedIndex];
             if (speciality == team.Specialities[no])
             {
@@ -2074,47 +2074,47 @@ namespace HoI2Editor.Forms
             Log.Info("[Team] speciality{0}: {1} -> {2} ({3}: {4})", no, Techs.GetSpecialityName(team.Specialities[no]),
                 Techs.GetSpecialityName(speciality), team.Id, team.Name);
 
-            // 研究特性を変更する
+            // Change research characteristics
             ChangeTechSpeciality(team, no, speciality);
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.Refresh();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItemsValue(team);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateEditableItemsColor(team);
 
-            // 研究機関の特性の更新を通知する
+            // Notify the update of the characteristics of the research institution
             HoI2EditorController.OnItemChanged(EditorItemId.TeamSpeciality, this);
         }
 
         /// <summary>
-        ///     研究特性を変更する
+        ///     Change research characteristics
         /// </summary>
-        /// <param name="team">対象の研究機関</param>
-        /// <param name="no">研究特性の番号</param>
-        /// <param name="speciality">研究特性</param>
+        /// <param name="team">Target research institution</param>
+        /// <param name="no">Research characteristic number</param>
+        /// <param name="speciality">Research characteristics</param>
         private static void ChangeTechSpeciality(Team team, int no, TechSpeciality speciality)
         {
             if (speciality == TechSpeciality.None)
             {
-                // 特性なしに変更された場合、後ろの項目を詰める
+                // If changed without characteristics, fill in the following items
                 for (int i = no; i < MaxEditableSpecialities; i++)
                 {
                     if (team.Specialities[i] != TechSpeciality.None || team.Specialities[i + 1] != TechSpeciality.None)
                     {
-                        // 1つ前に詰める
+                        // 1 Pack in front
                         team.Specialities[i] = team.Specialities[i + 1];
-                        // 編集済みフラグを設定する
+                        // Set the edited flag
                         team.SetDirty(SpecialityItemIds[i]);
                     }
                 }
             }
             else
             {
-                // 変更した箇所よりも前に空きがあれば詰める
+                // If there is a vacancy before the changed part, pack it
                 for (int i = 0; i < no; i++)
                 {
                     if (team.Specialities[i] == TechSpeciality.None)
@@ -2123,7 +2123,7 @@ namespace HoI2Editor.Forms
                         break;
                     }
                 }
-                // 重複項目を検索する
+                // Search for duplicate items
                 for (int i = 0; i < MaxEditableSpecialities; i++)
                 {
                     if (i == no)
@@ -2133,43 +2133,43 @@ namespace HoI2Editor.Forms
 
                     if (speciality == team.Specialities[i])
                     {
-                        // 他の項目と重複していてかつ元が特性なしならば何もしない
+                        // Do nothing if it overlaps with other items and the original has no characteristics
                         if (team.Specialities[no] == TechSpeciality.None)
                         {
                             return;
                         }
-                        // 重複している項目と特性を交換する
+                        // Swap characteristics with duplicate items
                         team.Specialities[i] = team.Specialities[no];
-                        // 交換対象の編集済みフラグを設定する
+                        // Set the edited flag to be exchanged
                         team.SetDirty(SpecialityItemIds[i]);
                         break;
                     }
                 }
-                // 対象項目の値を更新する
+                // Update the value of the target item
                 team.Specialities[no] = speciality;
-                // 対象項目の編集済みフラグを設定する
+                // Set the edited flag of the target item
                 team.SetDirty(SpecialityItemIds[no]);
             }
 
-            // 国別の編集済みフラグを設定する
+            // Set edited flags by country
             Teams.SetDirty(team.Country);
         }
 
         /// <summary>
-        ///     画像ファイル名変更時の処理
+        ///     Processing when changing the image file name
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string pictureName = pictureNameTextBox.Text;
             if (string.IsNullOrEmpty(pictureName))
             {
@@ -2188,28 +2188,28 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Team] picture name: {0} -> {1} ({2}: {3})", team.PictureName, pictureName, team.Id, team.Name);
 
-            // 値を更新する
+            // Update value
             team.PictureName = pictureName;
 
-            // 画像ファイルを更新する
+            // Update image file
             UpdateTeamPicture(team);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             team.SetDirty(TeamItemId.PictureName);
             Teams.SetDirty(team.Country);
 
-            // 文字色を変更する
+            // Change the font color
             pictureNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     画像ファイル名参照ボタン押下時の処理
+        ///     Processing when the image file name reference button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureNameReferButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
@@ -2229,49 +2229,49 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ID順ボタン押下時の処理
+        ///     ID Processing when the forward button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSortIdButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 研究特性をID順にソートする
+            // Research characteristics ID Sort in order
             SortSpeciality(team, new IdComparer());
         }
 
         /// <summary>
-        ///     ABC順ボタン押下時の処理
+        ///     ABC Processing when the forward button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSortAbcButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Team team = GetSelectedTeam();
             if (team == null)
             {
                 return;
             }
 
-            // 研究特性をABC順にソートする
+            // Research characteristics ABC Sort in order
             SortSpeciality(team, new AbcComparer());
         }
 
         /// <summary>
-        ///     研究特性をソートする
+        ///     Sort research characteristics
         /// </summary>
-        /// <param name="team">ソート対象の研究機関</param>
-        /// <param name="comparer">ソート用</param>
+        /// <param name="team">Research institutes to be sorted</param>
+        /// <param name="comparer">For sorting</param>
         private void SortSpeciality(Team team, IComparer<TechSpeciality> comparer)
         {
-            // ソート前の項目を退避する
+            // Save items before sorting
             const int max = 7;
             TechSpeciality[] old = new TechSpeciality[max];
             for (int i = 0; i < max; i++)
@@ -2279,76 +2279,76 @@ namespace HoI2Editor.Forms
                 old[i] = team.Specialities[i];
             }
 
-            // ソートする
+            // Sort
             Array.Sort(team.Specialities, 0, max, comparer);
 
-            // 研究特性1の更新チェック
+            // Research characteristics 1 Update check
             if (team.Specialities[0] != old[0])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality1);
                 Teams.SetDirty(team.Country);
             }
-            // 研究特性2の更新チェック
+            // Research characteristics 2 Update check
             if (team.Specialities[1] != old[1])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality2);
                 Teams.SetDirty(team.Country);
             }
-            // 研究特性3の更新チェック
+            // Research characteristics 3Update check
             if (team.Specialities[2] != old[2])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality3);
                 Teams.SetDirty(team.Country);
             }
-            // 研究特性4の更新チェック
+            // Research characteristics Four Update check
             if (team.Specialities[3] != old[3])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality4);
                 Teams.SetDirty(team.Country);
             }
-            // 研究特性5の更新チェック
+            // Research characteristics Five Update check
             if (team.Specialities[4] != old[4])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality5);
                 Teams.SetDirty(team.Country);
             }
-            // 研究特性6の更新チェック
+            // Research characteristics 6 Update check
             if (team.Specialities[5] != old[5])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality6);
                 Teams.SetDirty(team.Country);
             }
-            // 研究特性7の更新チェック
+            // Research characteristics 7 Update check
             if (team.Specialities[6] != old[6])
             {
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 team.SetDirty(TeamItemId.Speciality7);
                 Teams.SetDirty(team.Country);
             }
 
-            // 研究機関リストビューの項目を更新する
+            // Update the items in the research institution list view
             teamListView.Refresh();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItemsValue(team);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateEditableItemsColor(team);
         }
 
         /// <summary>
-        ///     研究特性のABC順ソート用
+        ///     Of research characteristics ABC For forward sorting
         /// </summary>
         private class AbcComparer : IComparer<TechSpeciality>
         {
             /// <summary>
-            ///     ABC順優先度
+            ///     ABC Priority
             /// </summary>
             private static readonly int[] Priorities =
             {
@@ -2465,7 +2465,7 @@ namespace HoI2Editor.Forms
             };
 
             /// <summary>
-            ///     研究特性を比較する
+            ///     Compare research characteristics
             /// </summary>
             /// <param name="x"></param>
             /// <param name="y"></param>
@@ -2477,19 +2477,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究特性のID順ソート用
+        ///     Of research characteristics ID For forward sorting
         /// </summary>
         private class IdComparer : IComparer<TechSpeciality>
         {
             /// <summary>
-            ///     研究特性を比較する
+            ///     Compare research characteristics
             /// </summary>
             /// <param name="x"></param>
             /// <param name="y"></param>
             /// <returns></returns>
             public int Compare(TechSpeciality x, TechSpeciality y)
             {
-                // 指定なしの場合は後ろへ移動する
+                // Move backward if not specified
                 if (x == TechSpeciality.None)
                 {
                     return 1;

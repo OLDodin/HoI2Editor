@@ -6,17 +6,17 @@ using HoI2Editor.Models;
 namespace HoI2Editor.Writers
 {
     /// <summary>
-    ///     技術データのファイル書き込みを担当するクラス
+    ///     Class responsible for writing technical data files
     /// </summary>
     public static class TechWriter
     {
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     技術グループをファイルへ書き込む
+        ///     Write a technical group to a file
         /// </summary>
-        /// <param name="grp">技術グループデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="grp">Technology group data</param>
+        /// <param name="fileName">file name</param>
         public static void Write(TechGroup grp, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -35,10 +35,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     項目を書き出す
+        ///     Export items
         /// </summary>
-        /// <param name="item">項目</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="item">item</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteTechItem(ITechItem item, StreamWriter writer)
         {
             TechItem techItem = item as TechItem;
@@ -63,10 +63,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     labelセクションを書き出す
+        ///     label labelExport a section
         /// </summary>
-        /// <param name="item">技術ラベル項目</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="item">Technical label item</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteLabel(TechLabel item, StreamWriter writer)
         {
             writer.WriteLine("  label =");
@@ -79,10 +79,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     eventセクションを書き出す
+        ///     event event Export a section
         /// </summary>
-        /// <param name="item">技術イベント項目</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="item">Technical event items</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteEvent(TechEvent item, StreamWriter writer)
         {
             writer.WriteLine("  event =");
@@ -96,10 +96,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     applicationセクションを書き出す
+        ///     application Export a section
         /// </summary>
-        /// <param name="item">技術項目</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="item">Technical items</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteApplication(TechItem item, StreamWriter writer)
         {
             writer.WriteLine("  # {0}", Config.ExistsKey(item.Name) ? Config.GetText(item.Name) : "");
@@ -133,10 +133,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     componentセクションを書き出す
+        ///     component Export a section
         /// </summary>
-        /// <param name="component">小研究データ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="component">Small research data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteComponent(TechComponent component, StreamWriter writer)
         {
             writer.WriteLine("    # {0}", Config.ExistsKey(component.Name) ? Config.GetText(component.Name) : "");
@@ -154,10 +154,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     requiredセクションを書き出す
+        ///     required Export a section
         /// </summary>
-        /// <param name="techs">要求技術IDリスト</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="techs">Required technology ID list</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteRequired(IEnumerable<RequiredTech> techs, StreamWriter writer)
         {
             writer.Write("    required  = {");
@@ -169,10 +169,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     or_requiredセクションを書き出す
+        ///     or_required Export a section
         /// </summary>
-        /// <param name="techs">要求技術IDリスト</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="techs">Required technology ID list</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteOrRequired(IEnumerable<RequiredTech> techs, StreamWriter writer)
         {
             writer.Write("    or_required = {");
@@ -184,10 +184,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     effectsセクションを書き出す
+        ///     effects effects Export a section
         /// </summary>
-        /// <param name="effects">技術効果データ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="effects">Technique effect data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteEffects(List<Command> effects, StreamWriter writer)
         {
             if (effects.Count == 0)

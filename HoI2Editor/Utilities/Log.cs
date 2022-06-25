@@ -9,14 +9,14 @@ using HoI2Editor.Properties;
 namespace HoI2Editor.Utilities
 {
     /// <summary>
-    ///     ログの管理
+    ///     Log management
     /// </summary>
     public static class Log
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     ログ出力レベル
+        ///     Log output level
         /// </summary>
         public static int Level
         {
@@ -47,43 +47,43 @@ namespace HoI2Editor.Utilities
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     ログ出力スイッチ
+        ///     Log output switch
         /// </summary>
         private static readonly TraceSwitch Sw = new TraceSwitch(LogFileIdentifier, HoI2EditorController.Name);
 
         /// <summary>
-        ///     ログファイル書き込み用
+        ///     For writing log files
         /// </summary>
         private static StreamWriter _writer;
 
         /// <summary>
-        ///     ログファイル書き込み用
+        ///     For writing log files
         /// </summary>
         private static TextWriterTraceListener _listener;
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     ログファイル名
+        ///     Log file name
         /// </summary>
         private const string LogFileName = "HoI2Editor.log";
 
         /// <summary>
-        ///     ログファイル識別子
+        ///     Log file identifier
         /// </summary>
         private const string LogFileIdentifier = "HoI2EditorLog";
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     ログを初期化する
+        ///     Initialize the log
         /// </summary>
         public static void Init()
         {
@@ -103,7 +103,7 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     ログを終了する
+        ///     End logging
         /// </summary>
         public static void Terminate()
         {
@@ -117,14 +117,14 @@ namespace HoI2Editor.Utilities
 
         #endregion
 
-        #region ログ出力
+        #region Log output
 
         /// <summary>
-        ///     無効トークンエラーをログ出力する
+        ///     Log invalid token error
         /// </summary>
-        /// <param name="categoryName">カテゴリ名</param>
-        /// <param name="token">トークン</param>
-        /// <param name="lexer">字句解析器</param>
+        /// <param name="categoryName">Category name</param>
+        /// <param name="token">token</param>
+        /// <param name="lexer">Lexical analyzer</param>
         public static void InvalidToken(string categoryName, Token token, TextLexer lexer)
         {
             Warning("[{0}] Invalid token: {1} ({2} L{3})",
@@ -132,22 +132,22 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     クローズ解析エラーをログ出力する
+        ///     Log the close analysis error
         /// </summary>
-        /// <param name="categoryName">カテゴリ名</param>
-        /// <param name="clauseName">クローズ名</param>
-        /// <param name="lexer">字句解析器</param>
+        /// <param name="categoryName">Category name</param>
+        /// <param name="clauseName">Close name</param>
+        /// <param name="lexer">Lexical analyzer</param>
         public static void InvalidClause(string categoryName, string clauseName, TextLexer lexer)
         {
             Warning("[{0}] Parse failed: {1} clause ({2} L{3})", categoryName, clauseName, lexer.FileName, lexer.LineNo);
         }
 
         /// <summary>
-        ///     セクション解析エラーをログ出力する
+        ///     Log section analysis error
         /// </summary>
-        /// <param name="categoryName">カテゴリ名</param>
-        /// <param name="sectionName">セクション名</param>
-        /// <param name="lexer">字句解析器</param>
+        /// <param name="categoryName">Category name</param>
+        /// <param name="sectionName">Section name</param>
+        /// <param name="lexer">Lexical analyzer</param>
         public static void InvalidSection(string categoryName, string sectionName, TextLexer lexer)
         {
             Warning("[{0}] Parse failed: {1} section ({2} L{3})", categoryName, sectionName, lexer.FileName,
@@ -155,11 +155,11 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     閉じ括弧忘れエラーをログ出力する
+        ///     Log output of forgetting closing parenthesis error
         /// </summary>
-        /// <param name="categoryName">カテゴリ名</param>
-        /// <param name="sectionName">セクション名</param>
-        /// <param name="lexer">字句解析器</param>
+        /// <param name="categoryName">Category name</param>
+        /// <param name="sectionName">Section name</param>
+        /// <param name="lexer">Lexical analyzer</param>
         public static void MissingCloseBrace(string categoryName, string sectionName, TextLexer lexer)
         {
             Warning("[{0}] Missing close brace: {1} section ({2} L{3})", categoryName, sectionName, lexer.FileName,
@@ -167,12 +167,12 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     範囲外エラーをログ出力
+        ///     Log output of out-of-range errors
         /// </summary>
-        /// <param name="categoryName">カテゴリ名</param>
-        /// <param name="itemName">項目名</param>
-        /// <param name="o">対象の値</param>
-        /// <param name="lexer">字句解析器</param>
+        /// <param name="categoryName">Category name</param>
+        /// <param name="itemName">item name</param>
+        /// <param name="o">Target value</param>
+        /// <param name="lexer">Lexical analyzer</param>
         public static void OutOfRange(string categoryName, string itemName, Object o, TextLexer lexer)
         {
             Warning("[{0}] Out of range: {1} at {2} ({3} L{4})",
@@ -180,87 +180,87 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     エラーログを出力する
+        ///     Output error log
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public static void Error(string s, params object[] args)
         {
             WriteLine(TraceLevel.Error, s, args);
         }
 
         /// <summary>
-        ///     エラーログを出力する
+        ///     Output error log
         /// </summary>
-        /// <param name="s">対象文字列</param>
+        /// <param name="s">Target character string</param>
         public static void Error(string s)
         {
             WriteLine(TraceLevel.Error, s);
         }
 
         /// <summary>
-        ///     警告ログを出力する
+        ///     Output warning log
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public static void Warning(string s, params object[] args)
         {
             WriteLine(TraceLevel.Warning, s, args);
         }
 
         /// <summary>
-        ///     警告ログを出力する
+        ///     Output warning log
         /// </summary>
-        /// <param name="s">対象文字列</param>
+        /// <param name="s">Target character string</param>
         public static void Warning(string s)
         {
             WriteLine(TraceLevel.Warning, s);
         }
 
         /// <summary>
-        ///     情報ログを出力する
+        ///     Output information log
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public static void Info(string s, params object[] args)
         {
             WriteLine(TraceLevel.Info, s, args);
         }
 
         /// <summary>
-        ///     情報ログを出力する
+        ///     Output information log
         /// </summary>
-        /// <param name="s">対象文字列</param>
+        /// <param name="s">Target character string</param>
         public static void Info(string s)
         {
             WriteLine(TraceLevel.Info, s);
         }
 
         /// <summary>
-        ///     詳細ログを出力する
+        ///     Output detailed log
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public static void Verbose(string s, params object[] args)
         {
             WriteLine(TraceLevel.Verbose, s, args);
         }
 
         /// <summary>
-        ///     詳細ログを出力する
+        ///     Output detailed log
         /// </summary>
-        /// <param name="s">対象文字列</param>
+        /// <param name="s">Target character string</param>
         public static void Verbose(string s)
         {
             WriteLine(TraceLevel.Verbose, s);
         }
 
         /// <summary>
-        ///     ログを出力する
+        ///     Output log
         /// </summary>
-        /// <param name="level">ログ出力レベル</param>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="level">Log output level</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         private static void WriteLine(TraceLevel level, string s, params object[] args)
         {
             bool condition;

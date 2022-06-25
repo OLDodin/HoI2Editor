@@ -4,41 +4,41 @@ using System.Linq;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     研究速度計算クラス
+    ///     Research speed calculation class
     /// </summary>
     public class Research
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     対象技術
+        ///     Target technology
         /// </summary>
         public TechItem Tech { get; private set; }
 
         /// <summary>
-        ///     対象研究機関
+        ///     Target research institute
         /// </summary>
         public Team Team { get; private set; }
 
         /// <summary>
-        ///     研究に要する日数
+        ///     Number of days required for research
         /// </summary>
         public int Days { get; }
 
         /// <summary>
-        ///     研究が完了する日付
+        ///     Date when the study is completed
         /// </summary>
         public GameDate EndDate { get; private set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="tech">技術項目</param>
-        /// <param name="team">研究機関</param>
+        /// <param name="tech">Technical items</param>
+        /// <param name="team">research Institute</param>
         public Research(TechItem tech, Team team)
         {
             Tech = tech;
@@ -52,24 +52,24 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 研究速度計算
+        #region Research speed calculation
 
         /// <summary>
-        ///     技術の研究に要する日数を取得する
+        ///     Get the number of days required for technology research
         /// </summary>
-        /// <param name="tech">技術項目</param>
-        /// <param name="team">研究機関</param>
-        /// <param name="date">開始日</param>
-        /// <returns>研究に要する日数</returns>
+        /// <param name="tech">Technical items</param>
+        /// <param name="team">research Institute</param>
+        /// <param name="date">start date</param>
+        /// <returns>Number of days required for research</returns>
         private static int GetTechDays(TechItem tech, Team team, GameDate date)
         {
             int offset = date.Difference(new GameDate(tech.Year));
             int days = 0;
 
-            // 研究機関の開始年の考慮
+            // Consideration of the starting year of the research institute
             if (Researches.ConsiderStartYear)
             {
-                // 研究を開始した西暦が研究機関の開始西暦より小さい
+                // The year when the research started is smaller than the year when the research institution started
                 if (date.Year < team.StartYear)
                 {
                     offset -= date.Difference(new GameDate(team.StartYear));
@@ -88,23 +88,23 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究速度の基本進捗率を取得する
+        ///     Get the basic progress rate of research speed
         /// </summary>
-        /// <param name="component">小研究</param>
-        /// <param name="team">研究機関</param>
-        /// <returns>研究速度の基本進捗率</returns>
+        /// <param name="component">Small study</param>
+        /// <param name="team">research Institute</param>
+        /// <returns>Basic progress rate of research speed</returns>
         private static double GetBaseProgress(TechComponent component, Team team)
         {
             int d = component.Difficulty + 2;
             int s = team.Skill;
 
-            // 特性が一致する場合はスキルを倍にして6を加える
+            // If the characteristics match, double the skill 6 Add
             if (team.Specialities.Contains(component.Speciality))
             {
                 s += team.Skill + 6;
             }
 
-            // 研究施設がある場合は施設の規模を設定する
+            // If there is a research facility, set the scale of the facility
             int t = 0;
             switch (component.Speciality)
             {
@@ -118,7 +118,7 @@ namespace HoI2Editor.Models
                     break;
             }
 
-            // ゲームごとの基本進捗率を取得する
+            // Get the basic progress rate for each game
             double progress;
             switch (Game.Type)
             {
@@ -135,77 +135,77 @@ namespace HoI2Editor.Models
                     break;
 
                 default:
-                    // ゲームの種類が不明な場合はHoI2として扱う
+                    // If you don't know the type of game HoI2 Treat as
                     progress = (9.3 + 1.5 * s + 10 * t) / d;
                     break;
             }
 
-            // 2倍時間設定の場合は進捗率半分として扱う
+            // 2 In case of double time setting, it is treated as half progress rate
             if (component.DoubleTime)
             {
                 progress /= 2;
             }
 
-            // 青写真補正
+            // Blueprint correction
             if (Researches.Blueprint)
             {
                 progress *= Misc.BlueprintBonus;
             }
 
-            // AoDの場合Miscの補正を考慮
+            // AoD in the case of Misc Consider the correction of
             if (Game.Type == GameType.ArsenalOfDemocracy)
             {
                 progress *= Misc.TechSpeedModifier;
             }
 
-            // その他諸々の補正(計算機技術/閣僚/難易度/シナリオ設定など)
+            // Various other corrections (( Computer technology / / Minister / / difficulty / / Scenario settings, etc. )
             progress *= Researches.Modifier;
 
             return progress;
         }
 
         /// <summary>
-        ///     小研究に必要な日数を取得する
+        ///     Get the number of days required for a quiz
         /// </summary>
-        /// <param name="component">小研究</param>
-        /// <param name="offset">史実年度との差分日数</param>
-        /// <param name="team">研究機関</param>
-        /// <returns>日数</returns>
+        /// <param name="component">Small study</param>
+        /// <param name="offset">Number of days difference from the historical year</param>
+        /// <param name="team">research Institute</param>
+        /// <returns>Days</returns>
         private static int GetComponentDays(TechComponent component, int offset, Team team)
         {
             int totalDays = 0;
             double totalProgress = 0;
 
-            // 基準となる進捗率を求める
+            // Find the standard progress rate
             double baseProgress = GetBaseProgress(component, team);
 
-            // STEP1: 史実年度前ペナルティ下限値で研究する日数を求める
+            // STEP1: STEP1: Find the number of days to study at the lower limit of the pre-historical penalty
             if ((offset < 0) && (Misc.PreHistoricalDateModifier < 0))
             {
-                // 史実年度前ペナルティを求める
+                // Seeking a pre-historical penalty
                 double preHistoricalModifier = Misc.PreHistoricalDateModifier;
 
-                // 史実年度前ペナルティの下限値を求める
+                // Find the lower limit of the pre-historical penalty
                 double preHistoricalLimit = Game.Type == GameType.ArsenalOfDemocracy
                     ? Misc.PreHistoricalPenaltyLimit
                     : 0.1;
 
-                // 史実年度前ペナルティが下限値になる日を求める
+                // Find the day when the pre-historical penalty reaches the lower limit
                 int preHistoricalLimitOffset = (int) Math.Floor((1 - preHistoricalLimit) / preHistoricalModifier);
 
-                // 差分日数が下限値日数を超える場合
+                // When the number of days of difference exceeds the lower limit of days
                 if (offset <= preHistoricalLimitOffset)
                 {
-                    // 下限値で研究完了する日数を求める
+                    // Find the number of days to complete the study at the lower limit
                     int preHistoricalLimitDays = (int) Math.Ceiling(100 / (baseProgress * preHistoricalLimit));
 
-                    // 下限値で研究完了する場合は日数を返す
+                    // Returns the number of days if the study is completed at the lower limit
                     if (offset + preHistoricalLimitDays <= preHistoricalLimitOffset)
                     {
                         return preHistoricalLimitDays;
                     }
 
-                    // 下限値で研究する日数と進捗を加算する
+                    // Add the number of days to study and the progress at the lower limit
                     preHistoricalLimitDays = preHistoricalLimitOffset - offset;
                     totalDays = preHistoricalLimitDays;
                     totalProgress = baseProgress * preHistoricalLimit * preHistoricalLimitDays;
@@ -213,55 +213,55 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // STEP2: 下限未達の史実年度前ペナルティで研究する日数を求める
+            // STEP2: Find the number of days to study with a pre-year penalty that does not reach the lower limit
             if (offset < 0)
             {
-                // 史実年度前ペナルティを求める
+                // Seeking a pre-historical penalty
                 double preHistoricalModifier = Misc.PreHistoricalDateModifier;
 
-                // 史実年度前ペナルティありで研究する日数を求める
+                // Find the number of days to study with a penalty before the historical year
                 int preHistricalDays = GetPreHistoricalDays(baseProgress, 100 - totalProgress, offset,
                     preHistoricalModifier);
 
-                // 史実年度前に研究完了する場合は日数を返す
+                // Returns the number of days if the study is completed before the historical year
                 if (offset + preHistricalDays <= 0)
                 {
                     totalDays += preHistricalDays;
                     return totalDays;
                 }
 
-                // 史実年度前に研究する日数と進捗を加算する
+                // Add the number of days and progress to study before the historical year
                 preHistricalDays = -offset;
                 totalDays += preHistricalDays;
                 totalProgress += GetPreHistoricalProgress(baseProgress, preHistricalDays, offset, preHistoricalModifier);
                 offset = 0;
             }
 
-            // STEP3: 史実年度前後の補正がない状態で研究する日数を求める
+            // STEP3: Find the number of days to study without correction before and after the historical year
 
-            // HoI2の場合史実年度後補正がない
+            // HoI2 In the case of, there is no post-correction after the historical year
             if (Game.Type == GameType.HeartsOfIron2)
             {
                 totalDays += (int) Math.Ceiling((100 - totalProgress) / baseProgress);
                 return totalDays;
             }
 
-            // 史実年度後ボーナスを求める
+            // Ask for a bonus after the historical year
             double postHistoricalModifier = Game.Type == GameType.ArsenalOfDemocracy
                 ? Misc.PostHistoricalDateModifierAoD
                 : Misc.PostHistoricalDateModifierDh;
 
-            // 史実年度後ボーナスがない場合
+            // If there is no bonus after the historical year
             if (postHistoricalModifier <= 0)
             {
                 totalDays += (int) Math.Ceiling((100 - totalProgress) / baseProgress);
                 return totalDays;
             }
 
-            // DHの場合、1年経過までは補正なし
+            // DH in the case of, 1 No correction until the end of the year
             if (Game.Type == GameType.DarkestHour)
             {
-                // ロケット技術/核技術には史実年度後ボーナスが適用されない
+                // Rocket technology / / Post-historical bonuses do not apply to nuclear technology
                 switch (component.Speciality)
                 {
                     case TechSpeciality.Rocketry:
@@ -274,17 +274,17 @@ namespace HoI2Editor.Models
                 offset -= 360;
                 if (offset < 0)
                 {
-                    // 史実年度後ボーナスなしで研究する日数を求める
+                    // Find the number of days to study after the historical year without bonus
                     int historicalDays = (int) Math.Ceiling((100 - totalProgress) / baseProgress);
 
-                    // 史実年度後ボーナスなしの機関に研究が完了する場合
+                    // When the research is completed at an institution without bonus after the historical year
                     if (offset + historicalDays < 0)
                     {
                         totalDays += historicalDays;
                         return totalDays;
                     }
 
-                    // 史実年度後ボーナスなしで研究する日数と進捗を加算する
+                    // Add days and progress to study without bonus after historical year
                     historicalDays = -offset;
                     totalDays += historicalDays;
                     totalProgress += baseProgress * historicalDays;
@@ -292,50 +292,50 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // STEP4: 上限未達の史実年度後ボーナスで研究する日数を求める
+            // STEP4: Find the number of days to study with a bonus after the historical year when the upper limit is not reached
 
-            // 史実年度後ボーナスの上限値を求める
+            // Find the upper limit of the bonus after the historical year
             double postHistoricalLimit = Game.Type == GameType.ArsenalOfDemocracy
                 ? Misc.PostHistoricalBonusLimit
                 : Misc.BlueprintBonus;
 
-            // 史実年度後ボーナスが上限値になる日を求める
+            // Find the day when the bonus will reach the upper limit after the historical year
             int postHistoricalLimitOffset =
                 (int) Math.Ceiling(Math.Abs((postHistoricalLimit - 1) / postHistoricalModifier));
 
             if (offset < postHistoricalLimitOffset)
             {
-                // 史実年度後ボーナスありで研究する日数を求める
+                // Find the number of days to study with a bonus after the historical year
                 int postHistoricalDays = GetPostHistoricalDays(baseProgress, 100 - totalProgress, offset,
                     postHistoricalModifier);
 
-                // 史実年度後ボーナスが上限値に到達する前に研究が完了する場合
+                // If the study is completed before the bonus reaches the upper limit after the historical year
                 if (offset + postHistoricalDays < postHistoricalLimitOffset)
                 {
                     totalDays += postHistoricalDays;
                     return totalDays;
                 }
 
-                // 史実年度後に研究する日数と進捗を加算する
+                // Add the number of days and progress to study after the historical year
                 postHistoricalDays = postHistoricalLimitOffset - offset - 1;
                 totalDays += postHistoricalDays;
                 totalProgress += GetPostHistoricalProgress(baseProgress, postHistoricalDays, offset,
                     postHistoricalModifier);
             }
 
-            // STEP5: 史実年度後ボーナス上限値で研究する日数を求める
+            // STEP5: Find the number of days to study with the bonus upper limit after the historical year
             totalDays += (int) Math.Ceiling((100 - totalProgress) / (baseProgress * postHistoricalLimit));
             return totalDays;
         }
 
         /// <summary>
-        ///     史実年度前の研究に必要な日数を取得する
+        ///     Obtain the number of days required for research before the historical year
         /// </summary>
-        /// <param name="progress">基本進捗率</param>
-        /// <param name="target">目標進捗率</param>
-        /// <param name="offset">史実年度との差分日数</param>
-        /// <param name="modifier">1日ごとの進捗率補正</param>
-        /// <returns>日数</returns>
+        /// <param name="progress">Basic progress rate</param>
+        /// <param name="target">Target progress rate</param>
+        /// <param name="offset">Number of days difference from the historical year</param>
+        /// <param name="modifier">1 Daily progress rate correction</param>
+        /// <returns>Days</returns>
         private static int GetPreHistoricalDays(double progress, double target, int offset, double modifier)
         {
             return (int) Math.Ceiling(GetPositiveSolutionQuadraticEquation(
@@ -345,26 +345,26 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     史実年度前補正を考慮した進捗率を取得する
+        ///     Obtain the progress rate considering the pre-historical correction
         /// </summary>
-        /// <param name="progress">基本進捗率</param>
-        /// <param name="offset">史実年度との差分日数</param>
-        /// <param name="days">対象日数</param>
-        /// <param name="modifier">1日ごとの進捗率補正</param>
-        /// <returns>進捗率</returns>
+        /// <param name="progress">Basic progress rate</param>
+        /// <param name="offset">Number of days difference from the historical year</param>
+        /// <param name="days">Target days</param>
+        /// <param name="modifier">1 Daily progress rate correction</param>
+        /// <returns>Progress rate</returns>
         private static double GetPreHistoricalProgress(double progress, int days, int offset, double modifier)
         {
             return progress * days * (2 - (2 * offset + days + 1) * modifier) / 2;
         }
 
         /// <summary>
-        ///     史実年度後の研究に必要な日数を取得する
+        ///     Obtain the number of days required for research after the historical year
         /// </summary>
-        /// <param name="progress">基本進捗率</param>
-        /// <param name="target">目標進捗率</param>
-        /// <param name="offset">史実年度との差分日数</param>
-        /// <param name="modifier">1日ごとの進捗率補正</param>
-        /// <returns>日数</returns>
+        /// <param name="progress">Basic progress rate</param>
+        /// <param name="target">Target progress rate</param>
+        /// <param name="offset">Number of days difference from the historical year</param>
+        /// <param name="modifier">1 Daily progress rate correction</param>
+        /// <returns>Days</returns>
         private static int GetPostHistoricalDays(double progress, double target, int offset, double modifier)
         {
             return (int) Math.Ceiling(GetPositiveSolutionQuadraticEquation(
@@ -374,31 +374,31 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     史実年度後補正を考慮した進捗率を取得する
+        ///     Obtain the progress rate considering the post-historical correction
         /// </summary>
-        /// <param name="progress">基本進捗率</param>
-        /// <param name="offset">史実年度との差分日数</param>
-        /// <param name="days">対象日数</param>
-        /// <param name="modifier">1日ごとの進捗率補正</param>
-        /// <returns>進捗率</returns>
+        /// <param name="progress">Basic progress rate</param>
+        /// <param name="offset">Number of days difference from the historical year</param>
+        /// <param name="days">Target days</param>
+        /// <param name="modifier">1 Daily progress rate correction</param>
+        /// <returns>Progress rate</returns>
         private static double GetPostHistoricalProgress(double progress, int days, int offset, double modifier)
         {
             return progress * days * (2 + (2 * offset + days + 1) * modifier) / 2;
         }
 
         /// <summary>
-        ///     2次方程式の正の解を求める
+        ///     2 Find the positive solution of the following equation
         /// </summary>
         /// <param name="a"></param>
         /// <param name="b"></param>
         /// <param name="c"></param>
-        /// <returns>正の解のみを返す</returns>
+        /// <returns>Returns only positive answers</returns>
         /// <remarks>
-        ///     a * x^2 + b * x + c = 0
-        ///     b' = b/2a, c'=c/aとして
-        ///     x = -b' +- sqrt(b'^2 - c)
-        ///     このうち+の方が正の解となる
-        /// </remarks>
+        ///     a * x ^ 2 + b * x + c = 0
+        ///     b'= b / 2a, c'= c / a As
+        ///     x = -b'+-sqrt (b'^ 2 --c)
+        ///     this house + Is the correct answer
+        /// </ remarks>
         private static double GetPositiveSolutionQuadraticEquation(double a, double b, double c)
         {
             double bb = b / a / 2;

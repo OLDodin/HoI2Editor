@@ -8,27 +8,27 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Controllers
 {
     /// <summary>
-    ///     データチェック処理
+    ///     Data check process
     /// </summary>
     public static class DataChecker
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     チェック結果出力フォーム
+        ///     Check result output form
         /// </summary>
         private static DataCheckerForm _form;
 
         #endregion
 
-        #region シナリオ
+        #region scenario
 
         /// <summary>
-        ///     シナリオデータをチェックする
+        ///     Check scenario data
         /// </summary>
         public static void CheckScenario()
         {
-            // シナリオ読み込み前ならば何もしない
+            // Do nothing before loading the scenario
             if (!Scenarios.IsLoaded())
             {
                 return;
@@ -44,9 +44,9 @@ namespace HoI2Editor.Controllers
                     : provinces.Where(province => Scenarios.Data.Map.Yes.Contains(province.Id)).ToList();
             }
 
-            // 保有プロヴィンス
+            // Owned Providence
             CheckOwnedProvinces(provinces);
-            // 支配プロヴィンス
+            // Domination Providence
             CheckControlledProvinces(provinces);
 
             WriteLine(Resources.CheckMessageDone);
@@ -54,9 +54,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     保有プロヴィンスのチェック
+        ///     Checking owned provisions
         /// </summary>
-        /// <param name="provinces">プロヴィンスリスト</param>
+        /// <param name="provinces">Provincial list</param>
         private static void CheckOwnedProvinces(IEnumerable<Province> provinces)
         {
             foreach (Province province in provinces)
@@ -83,9 +83,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     支配プロヴィンスのチェック
+        ///     Check for Domination Province
         /// </summary>
-        /// <param name="provinces">プロヴィンスリスト</param>
+        /// <param name="provinces">Provincial list</param>
         private static void CheckControlledProvinces(IEnumerable<Province> provinces)
         {
             foreach (Province province in provinces)
@@ -114,13 +114,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region チェック結果出力
+        #region Check result output
 
         /// <summary>
-        ///     チェック結果を出力する
+        ///     Output check result
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public static void Write(string s, params object[] args)
         {
             if (_form == null)
@@ -135,10 +135,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     チェック結果を出力する
+        ///     Output check result
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public static void WriteLine(string s, params object[] args)
         {
             if (_form == null)
@@ -153,7 +153,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     チェック結果を出力する
+        ///     Output check result
         /// </summary>
         public static void WriteLine()
         {

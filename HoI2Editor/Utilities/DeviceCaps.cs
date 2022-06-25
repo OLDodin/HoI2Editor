@@ -4,32 +4,32 @@ using System.Runtime.InteropServices;
 namespace HoI2Editor.Utilities
 {
     /// <summary>
-    ///     デバイス情報のラッパークラス
+    ///     Device information wrapper class
     /// </summary>
     public static class DeviceCaps
     {
         /// <summary>
-        ///     標準のX方向解像度
+        ///     standard XDirectional resolution
         /// </summary>
         private const int DefaultDpiX = 96;
 
         /// <summary>
-        ///     標準のY方向解像度
+        ///     standard Y Directional resolution
         /// </summary>
         private const int DefaultDpiY = 96;
 
         /// <summary>
-        ///     X方向解像度
+        ///     X Directional resolution
         /// </summary>
         private static readonly int DpiX;
 
         /// <summary>
-        ///     Y方向解像度
+        ///     Y Directional resolution
         /// </summary>
         private static readonly int DpiY;
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static DeviceCaps()
         {
@@ -39,47 +39,47 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     スケーリング後の幅を取得する
+        ///     Get the scaled width
         /// </summary>
-        /// <param name="x">スケーリング前の幅</param>
-        /// <returns>スケーリング後の幅</returns>
+        /// <param name="x">Width before scaling</param>
+        /// <returns>Width after scaling</returns>
         public static int GetScaledWidth(int x)
         {
             return NativeMethods.MulDiv(x, DpiX, DefaultDpiX);
         }
 
         /// <summary>
-        ///     スケーリング後の高さを取得する
+        ///     Get the height after scaling
         /// </summary>
-        /// <param name="y">スケーリング前の高さ</param>
-        /// <returns>スケーリング後の高さ</returns>
+        /// <param name="y">Height before scaling</param>
+        /// <returns>Height after scaling</returns>
         public static int GetScaledHeight(int y)
         {
             return NativeMethods.MulDiv(y, DpiY, DefaultDpiY);
         }
 
         /// <summary>
-        ///     スケーリング前の幅を取得する
+        ///     Get the width before scaling
         /// </summary>
-        /// <param name="x">スケーリング後の幅</param>
-        /// <returns>スケーリング前の幅</returns>
+        /// <param name="x">Width after scaling</param>
+        /// <returns>Width before scaling</returns>
         public static int GetUnscaledWidth(int x)
         {
             return NativeMethods.MulDiv(x, DefaultDpiX, DpiX);
         }
 
         /// <summary>
-        ///     スケーリング前の高さを取得する
+        ///     Get the height before scaling
         /// </summary>
-        /// <param name="y">スケーリング後の高さ</param>
-        /// <returns>スケーリング前の高さ</returns>
+        /// <param name="y">Height after scaling</param>
+        /// <returns>Height before scaling</returns>
         public static int GetUnscaledHeight(int y)
         {
             return NativeMethods.MulDiv(y, DefaultDpiY, DpiY);
         }
 
         /// <summary>
-        ///     GetDeviceCapsの取得対象項目
+        ///     GetDeviceCaps Items to be acquired
         /// </summary>
         private enum DeviceCapsIndices
         {
@@ -88,7 +88,7 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     P/Invokeメソッド定義用クラス
+        ///     P / Invoke Method definition class
         /// </summary>
         private static class NativeMethods
         {

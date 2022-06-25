@@ -13,100 +13,100 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     閣僚データ群
+    ///     Ministerial data group
     /// </summary>
     public static class Ministers
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マスター閣僚リスト
+        ///     Master Minister List
         /// </summary>
         public static List<Minister> Items { get; }
 
         /// <summary>
-        ///     国タグと閣僚ファイル名の対応付け
+        ///     Correspondence between country tag and ministerial file name
         /// </summary>
         public static Dictionary<Country, string> FileNameMap { get; }
 
         /// <summary>
-        ///     使用済みIDリスト
+        ///     Already used ID list
         /// </summary>
         public static HashSet<int> IdSet { get; }
 
         /// <summary>
-        ///     閣僚特性一覧
+        ///     List of ministerial characteristics
         /// </summary>
         public static MinisterPersonalityInfo[] Personalities { get; private set; }
 
         /// <summary>
-        ///     閣僚地位と特性の対応付け
+        ///     Correspondence between ministerial status and characteristics
         /// </summary>
         public static List<int>[] PositionPersonalityTable { get; }
 
         /// <summary>
-        ///     忠誠度名
+        ///     Loyalty name
         /// </summary>
         public static string[] LoyaltyNames { get; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     閣僚地位文字列とIDの対応付け
+        ///     With the ministerial status string ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, MinisterPosition> PositionStringMap =
             new Dictionary<string, MinisterPosition>();
 
         /// <summary>
-        ///     閣僚特性文字列とIDの対応付け
+        ///     With the ministerial characteristic character string ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, int> PersonalityStringMap = new Dictionary<string, int>();
 
         /// <summary>
-        ///     イデオロギー文字列とIDの対応付け
+        ///     With ideological strings ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, MinisterIdeology> IdeologyStringMap =
             new Dictionary<string, MinisterIdeology>();
 
         /// <summary>
-        ///     忠誠度文字列とIDの対応付け
+        ///     Loyalty string and ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, MinisterLoyalty> LoyaltyStringMap =
             new Dictionary<string, MinisterLoyalty>();
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For lazy loading
         /// </summary>
         private static readonly BackgroundWorker Worker = new BackgroundWorker();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static readonly bool[] DirtyFlags = new bool[Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     閣僚リストファイルの編集済みフラグ
+        ///     Edited flag in ministerial list file
         /// </summary>
         private static bool _dirtyListFlag;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     閣僚地位名
+        ///     Ministerial status name
         /// </summary>
         public static readonly TextId[] PositionNames =
         {
@@ -124,7 +124,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     イデオロギー名
+        ///     Ideology name
         /// </summary>
         public static readonly TextId[] IdeologyNames =
         {
@@ -143,10 +143,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     閣僚地位文字列
+        ///     Ministerial status string
         /// </summary>
         private static readonly string[] PositionStrings =
         {
@@ -164,7 +164,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     閣僚特性文字列(HoI2)
+        ///     Ministerial characteristic string (HoI2)
         /// </summary>
         private static readonly string[] PersonalityStringsHoI2 =
         {
@@ -251,7 +251,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     閣僚特性名(HoI2)
+        ///     Ministerial characteristic name (HoI2)
         /// </summary>
         private static readonly string[] PersonalityNamesHoI2 =
         {
@@ -338,7 +338,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     国家元首の特性(HoI2)
+        ///     Characteristics of the head of state (HoI2)
         /// </summary>
         private static readonly int[] HeadOfStatePersonalitiesHoI2 =
         {
@@ -358,7 +358,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     政府首班の特性(HoI2)
+        ///     Characteristics of government leaders (HoI2)
         /// </summary>
         private static readonly int[] HeadOfGovernmentPersonalitiesHoI2 =
         {
@@ -378,7 +378,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     外務大臣の特性(HoI2)
+        ///     Characteristics of the Minister of Foreign Affairs (HoI2)
         /// </summary>
         private static readonly int[] ForeignMinisterPersonalitiesHoI2 =
         {
@@ -393,7 +393,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     軍需大臣の特性(HoI2)
+        ///     Characteristics of the Minister of Military Demand (HoI2)
         /// </summary>
         private static readonly int[] MinisterOfArmamentPersonalitiesHoI2 =
         {
@@ -415,7 +415,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     内務大臣の特性(HoI2)
+        ///     Characteristics of the Minister of Interior (HoI2)
         /// </summary>
         private static readonly int[] MinisterOfSecurityPersonalitiesHoI2 =
         {
@@ -431,7 +431,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     情報大臣の特性(HoI2)
+        ///     Characteristics of the Minister of Information (HoI2)
         /// </summary>
         private static readonly int[] HeadOfMilitaryIntelligencePersonalitiesHoI2 =
         {
@@ -445,7 +445,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     統合参謀総長の特性(HoI2)
+        ///     Characteristics of the Integrated Chief of Staff (HoI2)
         /// </summary>
         private static readonly int[] ChiefOfStaffPersonalitiesHoI2 =
         {
@@ -458,7 +458,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     陸軍総司令官の特性(HoI2)
+        ///     Characteristics of Army General Commander (HoI2)
         /// </summary>
         private static readonly int[] ChiefOfArmyPersonalitiesHoI2 =
         {
@@ -471,7 +471,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     海軍総司令官の特性(HoI2)
+        ///     Characteristics of Navy Commander (HoI2)
         /// </summary>
         private static readonly int[] ChiefOfNavyPersonalitiesHoI2 =
         {
@@ -484,7 +484,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     空軍総司令官の特性(HoI2)
+        ///     Characteristics of Air Force Commander (HoI2)
         /// </summary>
         private static readonly int[] ChiefOfAirForcePersonalitiesHoI2 =
         {
@@ -497,7 +497,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     閣僚地位と特性の対応付け(HoI2)
+        ///     Correspondence between ministerial status and characteristics (HoI2)
         /// </summary>
         private static readonly int[][] PositionPersonalityTableHoI2 =
         {
@@ -515,7 +515,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     イデオロギー文字列
+        ///     Ideology string
         /// </summary>
         private static readonly string[] IdeologyStrings =
         {
@@ -533,7 +533,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     忠誠度文字列
+        ///     Loyalty string
         /// </summary>
         private static readonly string[] LoyaltyStrings =
         {
@@ -548,7 +548,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     閣僚特性文字列の先頭大文字変換の特例
+        ///     Special case of conversion to the first capital of the cabinet characteristic character string
         /// </summary>
         private static readonly Dictionary<string, string> PersonalityStringCaseMap
             = new Dictionary<string, string>
@@ -596,7 +596,7 @@ namespace HoI2Editor.Models
             };
 
         /// <summary>
-        ///     閣僚特性文字列のよくある綴り間違いと正しい値の関連付け
+        ///     Correlation of common spelling mistakes in ministerial characteristic strings with correct values
         /// </summary>
         private static readonly Dictionary<string, string> PersonalityStringTypoMap
             = new Dictionary<string, string>
@@ -619,141 +619,141 @@ namespace HoI2Editor.Models
             };
 
         /// <summary>
-        ///     閣僚特性(HoI2)
+        ///     Ministerial characteristics (HoI2)
         /// </summary>
         private enum MinisterPersonalityHoI2
         {
-            // 汎用
-            UndistinguishedSuit, // 平凡な政治家
+            // General purpose
+            UndistinguishedSuit, // Mediocre politician
 
-            // 国家元首
-            AutocraticCharmer, // ワンマン政治家
-            BarkingBuffoon, // 口先だけの道化者
-            BenevolentGentleman, // 高潔な紳士
-            DieHardReformer, // 不屈の改革者
-            InsignificantLayman, // 無能な凡人
-            PigHeadedIsolationist, // 強硬な孤立主義者
-            PopularFigurehead, // 形のみの指導者
-            PowerHungryDemagogue, // 権力に餓えた扇動家
-            ResignedGeneralissimo, // 引退した大元帥
-            RuthlessPowermonger, // 権力の亡者
-            SternImperalist, // 厳格な帝国主義者
-            WearyStiffNeck, // 臆病な頑固者
+            // National leader
+            AutocraticCharmer, // One-man politician
+            BarkingBuffoon, // A clown with only a mouth
+            BenevolentGentleman, // Noble gentleman
+            DieHardReformer, // Indomitable reformer
+            InsignificantLayman, // Incompetent ordinary person
+            PigHeadedIsolationist, // Hard-lined isolationist
+            PopularFigurehead, // Form-only leader
+            PowerHungryDemagogue, // Power-hungry instigator
+            ResignedGeneralissimo, // Retired Marshal
+            RuthlessPowermonger, // Dead in power
+            SternImperalist, // Strict imperialist
+            WearyStiffNeck, // Cowardly stubborn
 
-            // 政府首班
-            AmbitiousUnionBoss, // 野心に燃える元労働組合代表
-            BackroomBackstabber, // 裏工作の達人
-            CorporateSuit, // 元ビジネスマン
-            FlamboyantToughGuy, // 派手好きなタフガイ
-            HappyAmateur, // 幸運な素人
-            NaiveOptimist, // ナイーブな楽天家
-            OldAdmiral, // 元海軍大将
-            OldAirMarshal, // 元空軍大将
-            OldGeneral, // 元陸軍大将
-            PoliticalProtege, // 権力者の腰ぎんちゃく
-            SilentWorkhorse, // 寡黙な勤勉家
-            SmilingOilman, // にこやかな石油王
+            // Government leaders
+            AmbitiousUnionBoss, // Ambitious former trade union representative
+            BackroomBackstabber, // Master of behind-the-scenes work
+            CorporateSuit, // Former businessman
+            FlamboyantToughGuy, // Flashy tough guy
+            HappyAmateur, // Lucky amateur
+            NaiveOptimist, // Naive optimist
+            OldAdmiral, // Former Navy General
+            OldAirMarshal, // Former Air Force General
+            OldGeneral, // Former Army General
+            PoliticalProtege, // The waist of a powerful person
+            SilentWorkhorse, // Silent diligent
+            SmilingOilman, // Smiley oil king
 
-            // 外務大臣
-            ApologeticClerk, // 小心な官吏
-            BiasedIntellectual, // 偏見を持った知識人
-            IdeologyCrusader, // イデオロギーの闘士
-            IronFistedBrute, // 冷酷非道
-            GeneralStaffer, // 参謀タイプ
-            GreatCompromiser, // 調停の達人
-            TheCloakNDaggerSchemer, // 謀略家
+            // Minister of Foreign Affairs
+            ApologeticClerk, // Mind official
+            BiasedIntellectual, // A knowledgeable person with prejudice
+            IdeologyCrusader, // Ideological warrior
+            IronFistedBrute, // Ruthless
+            GeneralStaffer, // Staff type
+            GreatCompromiser, // Master of mediation
+            TheCloakNDaggerSchemer, // Plotter
 
-            // 軍需大臣
-            AdministrativeGenius, // 天才的実務家
-            AirSuperiorityProponent, // 制空権重視
-            BattleFleetProponent, // 艦隊重視
-            ResourceIndustrialist, // 鉱山企業家タイプ
-            LaissezFaireCapitalist, // 自由放任主義者
-            TheoreticalScientist, // 理論科学者
-            MilitaryEnterpreneur, // 歴戦の勇士
-            SubmarineProponent, // 潜水艦重視
-            TankProponent, // 戦車重視
-            InfantryProponent, // 歩兵重視
-            CorruptKleptocrat, // 泥棒政治家
-            AirToGroundProponent, // 空対地戦闘重視
-            AirToSeaProponent, // 空対海戦闘重視
-            StrategicAirProponent, // 戦略爆撃重視
+            // Minister of Military Demand
+            AdministrativeGenius, // Genius practitioner
+            AirSuperiorityProponent, // Emphasis on air control rights
+            BattleFleetProponent, // Fleet emphasis
+            ResourceIndustrialist, // Mining entrepreneur type
+            LaissezFaireCapitalist, // Laissez-faire
+            TheoreticalScientist, // Theoretical scientist
+            MilitaryEnterpreneur, // Experienced hero
+            SubmarineProponent, // Focus on submarines
+            TankProponent, // Focus on tanks
+            InfantryProponent, // Focus on infantry
+            CorruptKleptocrat, // Thief politician
+            AirToGroundProponent, // Emphasis on air-to-ground combat
+            AirToSeaProponent, // Emphasis on air-to-sea combat
+            StrategicAirProponent, // Focus on strategic bombing
 
-            // 内務大臣
-            BackStabber, // 裏工作の名人
-            CompassionateGentleman, // 情け深い紳士
-            CrimeFighter, // 治安重視
-            CrookedKleptocrat, // ならず者政治家
-            EfficientSociopath, // 反社会的効率主義者
-            ManOfThePeople, // 庶民の味方
-            PrinceOfTerror, // 恐怖政治の推進者
-            SilentLawyer, // 物静かな法律家
+            // Minister of Interior
+            BackStabber, // Master of behind-the-scenes work
+            CompassionateGentleman, // Compassionate gentleman
+            CrimeFighter, // Focus on security
+            CrookedKleptocrat, // Rogue politician
+            EfficientSociopath, // Antisocial efficiencyist
+            ManOfThePeople, // Allies of the common people
+            PrinceOfTerror, // Promoter of fear politics
+            SilentLawyer, // Quiet lawyer
 
-            // 情報大臣
-            DismalEnigma, // 不気味な謎の人物
-            IndustrialSpecialist, // 産業分析の専門家
-            LogisticsSpecialist, // 兵站分析の専門家
-            NavalIntelligenceSpecialist, // 海軍情報の専門家
-            PoliticalSpecialist, // 政治分析の専門家
-            TechnicalSpecialist, // 技術分析の専門家
+            // Minister of Information
+            DismalEnigma, // Creepy mysterious person
+            IndustrialSpecialist, // Industrial analysis expert
+            LogisticsSpecialist, // Specialist in military analysis
+            NavalIntelligenceSpecialist, // Navy information expert
+            PoliticalSpecialist, // Political analysis expert
+            TechnicalSpecialist, // Technical analysis expert
 
-            // 統合参謀総長
-            SchoolOfDefence, // 防衛論者
-            SchoolOfFireSupport, // 火力支援論者
-            SchoolOfMassCombat, // 人海戦術論者
-            SchoolOfManeuvre, // 機動論者
-            SchoolOfPsychology, // 精神論者
+            // Chief of the Defense Staff
+            SchoolOfDefence, // Defenseist
+            SchoolOfFireSupport, // Thermal support theorist
+            SchoolOfMassCombat, // Human wave tacticalist
+            SchoolOfManeuvre, // Mobileist
+            SchoolOfPsychology, // Psychologist
 
-            // 陸軍総司令官
-            ArmouredSpearheadDoctrine, // 機甲突撃ドクトリン
-            DecisiveBattleDoctrine, // 決戦ドクトリン(陸軍)
-            ElasticDefenceDoctrine, // 弾力的防御ドクトリン
-            GunsAndButterDoctrine, // 軍備優先ドクトリン
-            StaticDefenceDoctrine, // 静的防御ドクトリン
+            // Army General Commander
+            ArmouredSpearheadDoctrine, // Armored assault doctrine
+            DecisiveBattleDoctrine, // Decisive battle doctrine (( Army )
+            ElasticDefenceDoctrine, // Elastic defense doctrine
+            GunsAndButterDoctrine, // Armed priority doctrine
+            StaticDefenceDoctrine, // Static defense doctrine
 
-            // 海軍総司令官
-            BaseControlDoctrine, // 基地支配ドクトリン
-            DecisiveNavalBattleDoctrine, // 決戦ドクトリン(海軍)
-            IndirectApproachDoctrine, // 間接接近ドクトリン
-            OpenSeasDoctrine, // 外海ドクトリン
-            PowerProjectionDoctrine, // 戦力投入ドクトリン
+            // Navy Commander
+            BaseControlDoctrine, // Base domination doctrine
+            DecisiveNavalBattleDoctrine, // Decisive battle doctrine (( Navy )
+            IndirectApproachDoctrine, // Indirect approach doctrine
+            OpenSeasDoctrine, // Sotokai Doctorin
+            PowerProjectionDoctrine, // Force input doctrine
 
-            // 空軍総司令官
-            AirSuperiorityDoctrine, // 制空権ドクトリン
-            ArmyAviationDoctrine, // 陸軍支援ドクトリン
-            CarpetBombingDoctrine, // 絨毯爆撃ドクトリン
-            NavalAviationDoctrine, // 海軍支援ドクトリン
-            VerticalEnvelopmentDoctrine // 立体集中攻撃ドクトリン
+            // Air Force Commander
+            AirSuperiorityDoctrine, // Air Control Doctorin
+            ArmyAviationDoctrine, // Army support doctrine
+            CarpetBombingDoctrine, // Carpet bombing doctrine
+            NavalAviationDoctrine, // Navy support doctrine
+            VerticalEnvelopmentDoctrine // Three-dimensional concentrated attack doctrine
         }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Ministers()
         {
-            // マスター閣僚リスト
+            // Master Minister List
             Items = new List<Minister>();
 
-            // 国タグと閣僚ファイル名の対応付け
+            // Correspondence between country tags and ministerial file names
             FileNameMap = new Dictionary<Country, string>();
 
-            // 使用済みIDリスト
+            // Already used ID list
             IdSet = new HashSet<int>();
 
-            // 閣僚地位と特性の対応付け
+            // Correspondence between ministerial status and characteristics
             PositionPersonalityTable = new List<int>[Enum.GetValues(typeof (MinisterPosition)).Length];
 
-            // 閣僚地位
+            // Ministerial status
             foreach (MinisterPosition position in Enum.GetValues(typeof (MinisterPosition)))
             {
                 PositionStringMap.Add(PositionStrings[(int) position].ToLower(), position);
             }
 
-            // 忠誠度
+            // Loyalty
             LoyaltyNames = new[]
             {
                 "",
@@ -770,7 +770,7 @@ namespace HoI2Editor.Models
                 LoyaltyStringMap.Add(LoyaltyStrings[(int) loyalty].ToLower(), loyalty);
             }
 
-            // イデオロギー
+            // ideology
             foreach (MinisterIdeology ideology in Enum.GetValues(typeof (MinisterIdeology)))
             {
                 IdeologyStringMap.Add(IdeologyStrings[(int) ideology].ToLower(), ideology);
@@ -779,48 +779,48 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 閣僚特性
+        #region Ministerial characteristics
 
         /// <summary>
-        ///     閣僚特性を初期化する
+        ///     Initialize ministerial characteristics
         /// </summary>
         public static void InitPersonality()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 閣僚特性を初期化する
+            // Initialize ministerial characteristics
             switch (Game.Type)
             {
                 case GameType.HeartsOfIron2:
-                    // 閣僚特性を初期化する
+                    // Initialize ministerial characteristics
                     InitPeronalityHoI2();
                     break;
 
                 case GameType.ArsenalOfDemocracy:
-                    // 閣僚特性定義ファイルを読み込む
+                    // Read the ministerial characteristic definition file
                     LoadPersonalityAoD();
                     break;
 
                 case GameType.DarkestHour:
-                    // 閣僚特性定義ファイルを読み込む
+                    // Read the ministerial characteristic definition file
                     LoadPersonalityDh();
                     break;
             }
         }
 
         /// <summary>
-        ///     閣僚特性を初期化する(HoI2)
+        ///     Initialize ministerial characteristics (HoI2)
         /// </summary>
         private static void InitPeronalityHoI2()
         {
             int positionCount = Enum.GetValues(typeof (MinisterPosition)).Length;
             int personalityCount = Enum.GetValues(typeof (MinisterPersonalityHoI2)).Length;
 
-            // 閣僚特性情報を初期化する
+            // Initialize ministerial characteristic information
             Personalities = new MinisterPersonalityInfo[personalityCount];
             PersonalityStringMap.Clear();
             for (int i = 0; i < personalityCount; i++)
@@ -834,10 +834,10 @@ namespace HoI2Editor.Models
                 PersonalityStringMap.Add(info.String.ToLower(), i);
             }
 
-            // 閣僚地位と閣僚特性の対応付けを初期化する
+            // Initialize the correspondence between ministerial status and ministerial characteristics
             for (int i = 0; i < positionCount; i++)
             {
-                // MinisterPosition.Noneに対しては何もしない
+                // MinisterPosition.None Do nothing to
                 if (PositionPersonalityTableHoI2[i] == null)
                 {
                     continue;
@@ -852,7 +852,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚特性を読み込む(AoD)
+        ///     Read ministerial characteristics (AoD)
         /// </summary>
         private static void LoadPersonalityAoD()
         {
@@ -862,12 +862,12 @@ namespace HoI2Editor.Models
                 PositionPersonalityTable[i] = new List<int>();
             }
 
-            // 閣僚特性ファイルを読み込む
+            // Read ministerial characteristics file
             List<MinisterPersonalityInfo> list =
                 MinisterModifierParser.Parse(Game.GetReadFileName(Game.MinisterPersonalityPathNameAoD));
             Personalities = list.ToArray();
 
-            // 関連テーブルを初期化する
+            // Initialize the related table
             for (int i = 0; i < Personalities.Length; i++)
             {
                 string s = Personalities[i].String.ToLower();
@@ -888,7 +888,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚特性を読み込む(DH)
+        ///     Read ministerial characteristics (DH)
         /// </summary>
         private static void LoadPersonalityDh()
         {
@@ -898,12 +898,12 @@ namespace HoI2Editor.Models
                 PositionPersonalityTable[i] = new List<int>();
             }
 
-            // 閣僚特性ファイルを読み込む
+            // Read ministerial characteristics file
             List<MinisterPersonalityInfo> list =
                 MinisterPersonalityParser.Parse(Game.GetReadFileName(Game.MinisterPersonalityPathNameDh));
             Personalities = list.ToArray();
 
-            // 関連テーブルを初期化する
+            // Initialize the related table
             for (int i = 0; i < Personalities.Length; i++)
             {
                 string s = Personalities[i].String.ToLower();
@@ -924,29 +924,29 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚特性文字列を単語の先頭だけ大文字に変換する
+        ///     Converts a cabinet characteristic string to uppercase only at the beginning of a word
         /// </summary>
-        /// <param name="s">閣僚特性文字列</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="s">Ministerial characteristic character string</param>
+        /// <returns>Converted string</returns>
         private static string GetCasePersonalityString(string s)
         {
-            // 特別な変換規則のある場合
+            // If there are special conversion rules
             if (PersonalityStringCaseMap.ContainsKey(s))
             {
                 return PersonalityStringCaseMap[s];
             }
 
-            // 単語の文字列だけを大文字に変換する
+            // Convert only word strings to uppercase
             TextInfo textInfo = CultureInfo.InvariantCulture.TextInfo;
             return textInfo.ToTitleCase(s);
         }
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     閣僚ファイルの再読み込みを要求する
+        ///     Request a reload of the ministerial file
         /// </summary>
         public static void RequestReload()
         {
@@ -954,11 +954,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚ファイル群を再読み込みする
+        ///     Reload ministerial files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -970,17 +970,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚ファイル群を読み込む
+        ///     Read ministerial files
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -991,44 +991,44 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚ファイル群を遅延読み込みする
+        ///     Delayed loading of ministerial files
         /// </summary>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="handler">Read complete event handler</param>
         public static void LoadAsync(RunWorkerCompletedEventHandler handler)
         {
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // Call the completion event handler if it has already been read
             if (_loaded)
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(null, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the read completion event handler
             if (handler != null)
             {
                 Worker.RunWorkerCompleted += handler;
                 Worker.RunWorkerCompleted += OnWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if loading is in progress
             if (Worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If it has already been read here, the completion event handler has already been called, so return without doing anything.
             if (_loaded)
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start lazy loading
             Worker.DoWork += OnWorkerDoWork;
             Worker.RunWorkerAsync();
         }
 
         /// <summary>
-        ///     読み込み完了まで待機する
+        ///     Wait until loading is complete
         /// </summary>
         public static void WaitLoading()
         {
@@ -1039,16 +1039,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Determine if lazy loading is in progress
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>If delayed reading is in progress true true return it</returns>
         public static bool IsLoading()
         {
             return Worker.IsBusy;
         }
 
         /// <summary>
-        ///     遅延読み込み処理
+        ///     Delayed read processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1058,18 +1058,18 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing when lazy loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing when lazy loading is completed
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     閣僚ファイル群を読み込む
+        ///     Read ministerial files
         /// </summary>
         private static void LoadFiles()
         {
@@ -1095,24 +1095,24 @@ namespace HoI2Editor.Models
                     break;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     閣僚ファイル群を読み込む(HoI2/AoD/DH-MOD未使用時)
+        ///     Read ministerial files (HoI2 / AoD / DH-MOD When not in use )
         /// </summary>
-        /// <returns>読み込みに失敗すればfalseを返す</returns>
+        /// <returns>If reading fails false false return it</returns>
         private static bool LoadHoI2()
         {
             List<string> fileList = new List<string>();
             string folderName;
             bool error = false;
 
-            // 保存フォルダ内の閣僚ファイルを読み込む
+            // Load ministerial files in the save folder
             if (Game.IsExportFolderActive)
             {
                 folderName = Game.GetExportFileName(Game.MinisterPathName);
@@ -1122,10 +1122,10 @@ namespace HoI2Editor.Models
                     {
                         try
                         {
-                            // 閣僚ファイルを読み込む
+                            // Read ministerial files
                             LoadFile(fileName);
 
-                            // 閣僚ファイル一覧に読み込んだファイル名を登録する
+                            // Register the read file name in the ministerial file list
                             string name = Path.GetFileName(fileName);
                             if (!string.IsNullOrEmpty(name))
                             {
@@ -1147,7 +1147,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // MODフォルダ内の閣僚ファイルを読み込む
+            // MOD Read ministerial files in a folder
             if (Game.IsModActive)
             {
                 folderName = Game.GetModFileName(Game.MinisterPathName);
@@ -1157,10 +1157,10 @@ namespace HoI2Editor.Models
                     {
                         try
                         {
-                            // 閣僚ファイルを読み込む
+                            // Read ministerial files
                             LoadFile(fileName);
 
-                            // 閣僚ファイル一覧に読み込んだファイル名を登録する
+                            // Register the read file name in the ministerial file list
                             string name = Path.GetFileName(fileName);
                             if (!string.IsNullOrEmpty(name))
                             {
@@ -1182,13 +1182,13 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // バニラフォルダ内の閣僚ファイルを読み込む
+            // Read ministerial files in the vanilla folder
             folderName = Path.Combine(Game.FolderName, Game.MinisterPathName);
             if (Directory.Exists(folderName))
             {
                 foreach (string fileName in Directory.GetFiles(folderName, "*.csv"))
                 {
-                    // MODフォルダ内で読み込んだファイルは無視する
+                    // MOD Ignore files read in folders
                     string name = Path.GetFileName(fileName);
                     if (string.IsNullOrEmpty(name) || fileList.Contains(name.ToLower()))
                     {
@@ -1197,7 +1197,7 @@ namespace HoI2Editor.Models
 
                     try
                     {
-                        // 閣僚ファイルを読み込む
+                        // Read ministerial files
                         LoadFile(fileName);
                     }
                     catch (Exception)
@@ -1218,19 +1218,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚ファイル群を読み込む(DH-MOD使用時)
+        ///     Read ministerial files (DH-MOD while using it )
         /// </summary>
-        /// <returns>読み込みに失敗すればfalseを返す</returns>
+        /// <returns>If reading fails false false return it</returns>
         private static bool LoadDh()
         {
-            // 閣僚リストファイルが存在しなければ従来通りの読み込み方法を使用する
+            // If the ministerial list file does not exist, use the conventional reading method.
             string listFileName = Game.GetReadFileName(Game.DhMinisterListPathName);
             if (!File.Exists(listFileName))
             {
                 return LoadHoI2();
             }
 
-            // 閣僚リストファイルを読み込む
+            // Read ministerial list file
             IEnumerable<string> fileList;
             try
             {
@@ -1249,7 +1249,7 @@ namespace HoI2Editor.Models
             {
                 try
                 {
-                    // 閣僚ファイルを読み込む
+                    // Read ministerial files
                     LoadFile(fileName);
                 }
                 catch (Exception)
@@ -1269,7 +1269,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚リストファイルを読み込む(DH)
+        ///     Read ministerial list file (DH)
         /// </summary>
         private static IEnumerable<string> LoadList(string fileName)
         {
@@ -1282,13 +1282,13 @@ namespace HoI2Editor.Models
                 {
                     string line = reader.ReadLine();
 
-                    // 空行
+                    // Blank line
                     if (string.IsNullOrEmpty(line))
                     {
                         continue;
                     }
 
-                    // コメント行
+                    // Comment line
                     if (line[0] == '#')
                     {
                         continue;
@@ -1301,35 +1301,35 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚ファイルを読み込む
+        ///     Read ministerial files
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[Minister] Load: {0}", Path.GetFileName(fileName));
 
             using (CsvLexer lexer = new CsvLexer(fileName))
             {
-                // 空ファイルを読み飛ばす
+                // Skip empty files
                 if (lexer.EndOfStream)
                 {
                     return;
                 }
 
-                // 国タグ読み込み
+                // Country tag reading
                 string[] tokens = lexer.GetTokens();
                 if (tokens == null || tokens.Length == 0 || string.IsNullOrEmpty(tokens[0]))
                 {
                     return;
                 }
-                // サポート外の国タグの場合は何もしない
+                // Do nothing for unsupported country tags
                 if (!Countries.StringMap.ContainsKey(tokens[0].ToUpper()))
                 {
                     return;
                 }
                 Country country = Countries.StringMap[tokens[0].ToUpper()];
 
-                // ヘッダ行のみのファイルを読み飛ばす
+                // Skip files with only header lines
                 if (lexer.EndOfStream)
                 {
                     return;
@@ -1339,7 +1339,7 @@ namespace HoI2Editor.Models
                 {
                     Minister minister = ParseLine(lexer, country);
 
-                    // 空行を読み飛ばす
+                    // Skip blank lines
                     if (minister == null)
                     {
                         continue;
@@ -1358,27 +1358,27 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚定義行を解釈する
+        ///     Interpret the ministerial definition line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <param name="country">国家タグ</param>
-        /// <returns>閣僚データ</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <param name="country">National tag</param>
+        /// <returns>Ministerial data</returns>
         private static Minister ParseLine(CsvLexer lexer, Country country)
         {
             string[] tokens = lexer.GetTokens();
 
-            // ID指定のない行は読み飛ばす
+            // ID Skip lines that are not specified
             if (string.IsNullOrEmpty(tokens?[0]))
             {
                 return null;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length != (Misc.EnableRetirementYearMinisters ? 11 : (Misc.UseNewMinisterFilesFormat ? 10 : 9)))
             {
                 Log.Warning("[Minister] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName,
                     lexer.LineNo);
-                // 末尾のxがない/余分な項目がある場合は解析を続ける
+                // At the end x x There is no / / Continue analysis if there are extra items
                 if (tokens.Length < (Misc.EnableRetirementYearMinisters ? 10 : (Misc.UseNewMinisterFilesFormat ? 9 : 8)))
                 {
                     return null;
@@ -1398,7 +1398,7 @@ namespace HoI2Editor.Models
             minister.Id = id;
             index++;
 
-            // 閣僚地位
+            // Ministerial status
             string positionName = tokens[index].ToLower();
             if (PositionStringMap.ContainsKey(positionName))
             {
@@ -1412,11 +1412,11 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 名前
+            // name
             minister.Name = tokens[index];
             index++;
 
-            // 開始年
+            // Start year
             int startYear;
             if (int.TryParse(tokens[index], out startYear))
             {
@@ -1430,7 +1430,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 終了年
+            // End year
             if (Misc.UseNewMinisterFilesFormat)
             {
                 int endYear;
@@ -1451,7 +1451,7 @@ namespace HoI2Editor.Models
                 minister.EndYear = 1970;
             }
 
-            // 引退年
+            // Retirement year
             if (Misc.EnableRetirementYearMinisters)
             {
                 int retirementYear;
@@ -1472,7 +1472,7 @@ namespace HoI2Editor.Models
                 minister.RetirementYear = 1999;
             }
 
-            // イデオロギー
+            // ideology
             string ideologyName = tokens[index].ToLower();
             if (IdeologyStringMap.ContainsKey(ideologyName))
             {
@@ -1486,7 +1486,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 閣僚特性
+            // Ministerial characteristics
             string personalityName = tokens[index].ToLower();
             if (PersonalityStringMap.ContainsKey(personalityName))
             {
@@ -1511,7 +1511,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 忠誠度
+            // Loyalty
             string loyaltyName = tokens[index].ToLower();
             if (LoyaltyStringMap.ContainsKey(loyaltyName))
             {
@@ -1525,7 +1525,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 画像ファイル名
+            // Image file name
             minister.PictureName = tokens[index];
 
             return minister;
@@ -1533,27 +1533,27 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     閣僚ファイル群を保存する
+        ///     Save ministerial files
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 編集済みでなければ何もしない
+            // Do nothing if not edited
             if (!IsDirty())
             {
                 return true;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
             }
 
-            // 閣僚リストファイルを保存する
+            // Save the ministerial list file
             if ((Game.Type == GameType.DarkestHour) && IsDirtyList())
             {
                 try
@@ -1576,7 +1576,7 @@ namespace HoI2Editor.Models
             {
                 try
                 {
-                    // 閣僚ファイルを保存する
+                    // Save ministerial files
                     SaveFile(country);
                 }
                 catch (Exception)
@@ -1591,24 +1591,24 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 保存に失敗していれば戻る
+            // Return if saving fails
             if (error)
             {
                 return false;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
             return true;
         }
 
         /// <summary>
-        ///     閣僚リストファイルを保存する (DH)
+        ///     Save the ministerial list file (DH)
         /// </summary>
         private static void SaveList()
         {
-            // データベースフォルダが存在しなければ作成する
+            // Create a database folder if it does not exist
             string folderName = Game.GetWriteFileName(Game.DatabasePathName);
             if (!Directory.Exists(folderName))
             {
@@ -1618,7 +1618,7 @@ namespace HoI2Editor.Models
             string fileName = Game.GetWriteFileName(Game.DhMinisterListPathName);
             Log.Info("[Minister] Save: {0}", Path.GetFileName(fileName));
 
-            // 登録された閣僚ファイル名を順に書き込む
+            // Write the registered ministerial file names in order
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
                 foreach (string name in FileNameMap.Select(pair => pair.Value))
@@ -1627,17 +1627,17 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyList();
         }
 
         /// <summary>
-        ///     閣僚ファイルを保存する
+        ///     Save ministerial files
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void SaveFile(Country country)
         {
-            // 閣僚フォルダが存在しなければ作成する
+            // Create a ministerial folder if it does not exist
             string folderName = Game.GetWriteFileName(Game.MinisterPathName);
             if (!Directory.Exists(folderName))
             {
@@ -1652,7 +1652,7 @@ namespace HoI2Editor.Models
             {
                 int lineNo = 3;
 
-                // ヘッダ行を書き込む
+                // Write header line
                 if (Misc.EnableRetirementYearMinisters)
                 {
                     writer.WriteLine(
@@ -1674,10 +1674,10 @@ namespace HoI2Editor.Models
                     writer.WriteLine(";Replacements;;;;;;;x");
                 }
 
-                // 閣僚定義行を順に書き込む
+                // Write the ministerial definition lines in order
                 foreach (Minister minister in Items.Where(minister => minister.Country == country))
                 {
-                    // 不正な値が設定されている場合は警告をログに出力する
+                    // If an invalid value is set, a warning will be output to the log.
                     if (minister.Position == MinisterPosition.None)
                     {
                         Log.Warning("[Minister] Invalid position: {0} {1} ({2} L{3})", minister.Id, minister.Name, name,
@@ -1694,7 +1694,7 @@ namespace HoI2Editor.Models
                             lineNo);
                     }
 
-                    // 閣僚定義行を書き込む
+                    // Write a ministerial definition line
                     if (Misc.EnableRetirementYearMinisters)
                     {
                         writer.WriteLine(
@@ -1738,7 +1738,7 @@ namespace HoI2Editor.Models
                             minister.PictureName);
                     }
 
-                    // 編集済みフラグを解除する
+                    // Clear the edited flag
                     minister.ResetDirtyAll();
 
                     lineNo++;
@@ -1750,12 +1750,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 閣僚リスト操作
+        #region Minister list operation
 
         /// <summary>
-        ///     閣僚リストに項目を追加する
+        ///     Add an item to the cabinet list
         /// </summary>
-        /// <param name="minister">挿入対象の項目</param>
+        /// <param name="minister">Items to be inserted</param>
         public static void AddItem(Minister minister)
         {
             Log.Info("[Minister] Add minister: ({0}: {1}) <{2}>", minister.Id, minister.Name,
@@ -1765,10 +1765,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚リストに項目を挿入する
+        ///     Insert an item into the cabinet list
         /// </summary>
-        /// <param name="minister">挿入対象の項目</param>
-        /// <param name="position">挿入位置の直前の項目</param>
+        /// <param name="minister">Items to be inserted</param>
+        /// <param name="position">Item immediately before the insertion position</param>
         public static void InsertItem(Minister minister, Minister position)
         {
             int index = Items.IndexOf(position) + 1;
@@ -1780,7 +1780,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚リストから項目を削除する
+        ///     Remove an item from the cabinet list
         /// </summary>
         /// <param name="minister"></param>
         public static void RemoveItem(Minister minister)
@@ -1790,15 +1790,15 @@ namespace HoI2Editor.Models
 
             Items.Remove(minister);
 
-            // 使用済みIDリストから削除する
+            // Already used ID Remove from list
             IdSet.Remove(minister.Id);
         }
 
         /// <summary>
-        ///     閣僚リストの項目を移動する
+        ///     Move items in the cabinet list
         /// </summary>
-        /// <param name="src">移動元の項目</param>
-        /// <param name="dest">移動先の項目</param>
+        /// <param name="src">Item of move source</param>
+        /// <param name="dest">Item to move to</param>
         public static void MoveItem(Minister src, Minister dest)
         {
             int srcIndex = Items.IndexOf(src);
@@ -1809,13 +1809,13 @@ namespace HoI2Editor.Models
 
             if (srcIndex > destIndex)
             {
-                // 上へ移動する場合
+                // When moving up
                 Items.Insert(destIndex, src);
                 Items.RemoveAt(srcIndex + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 Items.Insert(destIndex + 1, src);
                 Items.RemoveAt(srcIndex);
             }
@@ -1823,12 +1823,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 一括編集
+        #region Bulk editing
 
         /// <summary>
-        ///     一括編集
+        ///     Bulk editing
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         public static void BatchEdit(MinisterBatchEditArgs args)
         {
             LogBatchEdit(args);
@@ -1838,7 +1838,7 @@ namespace HoI2Editor.Models
             switch (args.ActionMode)
             {
                 case BatchActionMode.Modify:
-                    // 閣僚を一括編集する
+                    // Bulk edit ministers
                     foreach (Minister minister in ministers)
                     {
                         BatchEditMinister(minister, args);
@@ -1846,7 +1846,7 @@ namespace HoI2Editor.Models
                     break;
 
                 case BatchActionMode.Copy:
-                    // 閣僚をコピーする
+                    // Copy ministers
                     newCountry = args.Destination;
                     int id = args.Id;
                     foreach (Minister minister in ministers)
@@ -1861,10 +1861,10 @@ namespace HoI2Editor.Models
                         Items.Add(newMinister);
                     }
 
-                    // コピー先の国の編集済みフラグを設定する
+                    // Set the edited flag for the destination country
                     SetDirty(newCountry);
 
-                    // コピー先の国がファイル一覧に存在しなければ追加する
+                    // If the copy destination country does not exist in the file list, add it
                     if (!FileNameMap.ContainsKey(newCountry))
                     {
                         FileNameMap.Add(newCountry, Game.GetMinisterFileName(newCountry));
@@ -1873,21 +1873,21 @@ namespace HoI2Editor.Models
                     break;
 
                 case BatchActionMode.Move:
-                    // 閣僚を移動する
+                    // Move ministers
                     newCountry = args.Destination;
                     foreach (Minister minister in ministers)
                     {
-                        // 移動前の国の編集済みフラグを設定する
+                        // Set the edited flag for the country before the move
                         SetDirty(minister.Country);
 
                         minister.Country = newCountry;
                         minister.SetDirty(MinisterItemId.Country);
                     }
 
-                    // 移動先の国の編集済みフラグを設定する
+                    // Set the edited flag for the destination country
                     SetDirty(newCountry);
 
-                    // 移動先の国がファイル一覧に存在しなければ追加する
+                    // If the destination country does not exist in the file list, add it.
                     if (!FileNameMap.ContainsKey(newCountry))
                     {
                         FileNameMap.Add(newCountry, Game.GetMinisterFileName(newCountry));
@@ -1898,13 +1898,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集の個別処理
+        ///     Individual processing of batch editing
         /// </summary>
-        /// <param name="minister">対象閣僚</param>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="minister">Target ministers</param>
+        /// <param name="args">Batch editing parameters</param>
         private static void BatchEditMinister(Minister minister, MinisterBatchEditArgs args)
         {
-            // 開始年
+            // Start year
             if (args.Items[(int) MinisterBatchItemId.StartYear])
             {
                 if (minister.StartYear != args.StartYear)
@@ -1915,7 +1915,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 終了年
+            // End year
             if (args.Items[(int) MinisterBatchItemId.EndYear])
             {
                 if (minister.EndYear != args.EndYear)
@@ -1926,7 +1926,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 引退年
+            // Retirement year
             if (args.Items[(int) MinisterBatchItemId.RetirementYear])
             {
                 if (minister.RetirementYear != args.RetirementYear)
@@ -1937,7 +1937,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // イデオロギー
+            // ideology
             if (args.Items[(int) MinisterBatchItemId.Ideology])
             {
                 if (minister.Ideology != args.Ideology)
@@ -1948,7 +1948,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 忠誠度
+            // Loyalty
             if (args.Items[(int) MinisterBatchItemId.Loyalty])
             {
                 if (minister.Loyalty != args.Loyalty)
@@ -1961,10 +1961,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集対象の閣僚リストを取得する
+        ///     Get a list of ministers for bulk editing
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>一括編集対象の閣僚リスト</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>List of ministers subject to batch editing</returns>
         private static IEnumerable<Minister> GetBatchEditMinisters(MinisterBatchEditArgs args)
         {
             return args.CountryMode == BatchCountryMode.All
@@ -1974,19 +1974,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集処理のログ出力
+        ///     Batch edit processing log output
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         private static void LogBatchEdit(MinisterBatchEditArgs args)
         {
             Log.Verbose($"[Minister] Batch {GetBatchEditItemLog(args)} ({GetBatchEditModeLog(args)})");
         }
 
         /// <summary>
-        ///     一括編集項目のログ文字列を取得する
+        ///     Get the log string of batch edit items
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>ログ文字列</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>Log string</returns>
         private static string GetBatchEditItemLog(MinisterBatchEditArgs args)
         {
             StringBuilder sb = new StringBuilder();
@@ -2026,15 +2026,15 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集対象モードのログ文字列を取得する
+        ///     Get the log character string of the batch edit target mode
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>ログ文字列</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>Log string</returns>
         private static string GetBatchEditModeLog(MinisterBatchEditArgs args)
         {
             StringBuilder sb = new StringBuilder();
 
-            // 一括編集対象国
+            // Countries subject to batch editing
             if (args.CountryMode == BatchCountryMode.All)
             {
                 sb.Append("ALL");
@@ -2051,7 +2051,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 一括編集対象地位
+            // Batch edit target position
             if (!args.PositionMode[(int) MinisterPosition.HeadOfState] ||
                 !args.PositionMode[(int) MinisterPosition.HeadOfGovernment] ||
                 !args.PositionMode[(int) MinisterPosition.ForeignMinister] ||
@@ -2080,26 +2080,26 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ID操作
+        #region ID operation
 
         /// <summary>
-        ///     未使用の閣僚IDを取得する
+        ///     Unused ministers ID To get
         /// </summary>
-        /// <param name="country">対象の国タグ</param>
-        /// <returns>閣僚ID</returns>
+        /// <param name="country">Target country tag</param>
+        /// <returns>Minister ID</returns>
         public static int GetNewId(Country country)
         {
-            // 対象国の閣僚IDの最大値+1から検索を始める
+            // Ministers of the target country ID Maximum value of +1 Start searching from
             int id = GetMaxId(country);
-            // 未使用IDが見つかるまでIDを1ずつ増やす
+            // unused ID Until you find ID of 1 Increase by little
             return GetNewId(id);
         }
 
         /// <summary>
-        ///     未使用の閣僚IDを取得する
+        ///     Unused ministers ID To get
         /// </summary>
-        /// <param name="id">開始ID</param>
-        /// <returns>閣僚ID</returns>
+        /// <param name="id">start ID</param>
+        /// <returns>Minister ID</returns>
         public static int GetNewId(int id)
         {
             while (IdSet.Contains(id))
@@ -2110,10 +2110,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象国の閣僚IDの最大値を取得する
+        ///     Ministers of the target country ID Get the maximum value of
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>閣僚ID</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>Minister ID</returns>
         private static int GetMaxId(Country country)
         {
             if (country == Country.None)
@@ -2131,40 +2131,40 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag || _dirtyListFlag;
         }
 
         /// <summary>
-        ///     閣僚リストファイルが編集済みかどうかを取得する
+        ///     Get if the ministerial list file has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         private static bool IsDirtyList()
         {
             return _dirtyListFlag;
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Country country)
         {
             return DirtyFlags[(int) country];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         public static void SetDirty(Country country)
         {
             DirtyFlags[(int) country] = true;
@@ -2172,7 +2172,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚リストファイルの編集済みフラグを設定する
+        ///     Set the edited flag for the ministerial list file
         /// </summary>
         public static void SetDirtyList()
         {
@@ -2180,16 +2180,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを解除する
+        ///     Clear the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void ResetDirty(Country country)
         {
             DirtyFlags[(int) country] = false;
         }
 
         /// <summary>
-        ///     閣僚リストファイルの編集済みフラグを解除する
+        ///     Clear the edited flag of the ministerial list file
         /// </summary>
         private static void ResetDirtyList()
         {
@@ -2200,29 +2200,29 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     閣僚特性情報
+    ///     Ministerial characteristic information
     /// </summary>
     public class MinisterPersonalityInfo
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     閣僚地位と閣僚特性の対応付け
+        ///     Correspondence between ministerial status and ministerial characteristics
         /// </summary>
         public bool[] Position { get; } = new bool[Enum.GetValues(typeof (MinisterPosition)).Length];
 
         /// <summary>
-        ///     閣僚特性名
+        ///     Ministerial characteristic name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     閣僚特性名の文字列
+        ///     Character string of ministerial characteristic name
         /// </summary>
         public string NameText => Config.ExistsKey(Name) ? Config.GetText(Name) : Name;
 
         /// <summary>
-        ///     閣僚特性文字列
+        ///     Ministerial characteristic string
         /// </summary>
         public string String { get; set; }
 
@@ -2230,69 +2230,69 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     閣僚一括編集のパラメータ
+    ///     Parameters for ministerial batch editing
     /// </summary>
     public class MinisterBatchEditArgs
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     一括編集対象国モード
+        ///     Batch edit target country mode
         /// </summary>
         public BatchCountryMode CountryMode { get; set; }
 
         /// <summary>
-        ///     対象国リスト
+        ///     Target country list
         /// </summary>
         public List<Country> TargetCountries { get; } = new List<Country>();
 
         /// <summary>
-        ///     一括編集対象地位モード
+        ///     Batch edit target position mode
         /// </summary>
         public bool[] PositionMode { get; } = new bool[Enum.GetValues(typeof (MinisterPosition)).Length];
 
         /// <summary>
-        ///     一括編集動作モード
+        ///     Batch edit operation mode
         /// </summary>
         public BatchActionMode ActionMode { get; set; }
 
         /// <summary>
-        ///     コピー/移動先指定国
+        ///     copy / / Designated country of destination
         /// </summary>
         public Country Destination { get; set; }
 
         /// <summary>
-        ///     開始ID
+        ///     start ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     一括編集項目
+        ///     Bulk edit items
         /// </summary>
         public bool[] Items { get; } = new bool[Enum.GetValues(typeof (MinisterBatchItemId)).Length];
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
         /// <summary>
-        ///     引退年
+        ///     Retirement year
         /// </summary>
         public int RetirementYear { get; set; }
 
         /// <summary>
-        ///     イデオロギー
+        ///     ideology
         /// </summary>
         public MinisterIdeology Ideology { get; set; }
 
         /// <summary>
-        ///     忠誠度
+        ///     Loyalty
         /// </summary>
         public MinisterLoyalty Loyalty { get; set; }
 
@@ -2300,14 +2300,14 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     閣僚一括編集項目ID
+    ///     Ministerial batch edit items ID
     /// </summary>
     public enum MinisterBatchItemId
     {
-        StartYear, // 開始年
-        EndYear, // 終了年
-        RetirementYear, // 引退年
-        Ideology, // イデオロギー
-        Loyalty // 忠誠度
+        StartYear, // Start year
+        EndYear, // End year
+        RetirementYear, // Retirement year
+        Ideology, // ideology
+        Loyalty // Loyalty
     }
 }

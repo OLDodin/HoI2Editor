@@ -10,94 +10,94 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     ユニット名エディタのフォーム
+    ///     Unit name editor form
     /// </summary>
     public partial class UnitNameEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     接頭辞の履歴
+        ///     Prefix history
         /// </summary>
         private readonly History _prefixHistory = new History(HistorySize);
 
         /// <summary>
-        ///     接尾辞の履歴
+        ///     History of suffixes
         /// </summary>
         private readonly History _suffixHistory = new History(HistorySize);
 
         /// <summary>
-        ///     置換元の履歴
+        ///     Replacement source history
         /// </summary>
         private readonly History _toHistory = new History(HistorySize);
 
         /// <summary>
-        ///     置換先の履歴
+        ///     Replacement history
         /// </summary>
         private readonly History _withHistory = new History(HistorySize);
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     履歴の最大数
+        ///     Maximum number of histories
         /// </summary>
         private const int HistorySize = 10;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public UnitNameEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // ユニット名リストの表示を更新する
+            // Update the display of the unit name list
             UpdateNameList();
 
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
             typeListBox.Refresh();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
             typeListBox.Refresh();
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
             switch (id)
             {
                 case EditorItemId.UnitName:
                     Log.Verbose("[UnitName] Changed unit name");
-                    // ユニット種類リストボックスの表示項目を更新する
+                    // Update the display items in the unit type list box
                     UpdateTypeListBox();
                     break;
             }
@@ -105,72 +105,72 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // 国家リストボックス
+            // National list box
             countryListBox.ItemHeight = DeviceCaps.GetScaledHeight(countryListBox.ItemHeight);
-            // ユニット種類リストボックス
+            // Unit type list box
             typeListBox.ItemHeight = DeviceCaps.GetScaledHeight(typeListBox.ItemHeight);
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.UnitNameEditor.Location;
             Size = HoI2EditorController.Settings.UnitNameEditor.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // ユニット名データを初期化する
+            // Initialize unit name data
             UnitNames.Init();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 国家リストボックスを初期化する
+            // Initialize the national list box
             InitCountryListBox();
 
-            // ユニット種類リストボックスを初期化する
+            // Initialize the unit type list box
             InitTypeListBox();
 
-            // 履歴を初期化する
+            // Initialize history
             InitHistory();
 
-            // オプション設定を初期化する
+            // Initialize option settings
             InitOption();
 
-            // ユニット名定義ファイルを読み込む
+            // Read the unit name definition file
             UnitNames.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -188,7 +188,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -198,7 +198,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -211,7 +211,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -224,13 +224,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -249,7 +249,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -259,7 +259,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -270,10 +270,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家リストボックス
+        #region National list box
 
         /// <summary>
-        ///     国家リストボックスを初期化する
+        ///     Initialize the national list box
         /// </summary>
         private void InitCountryListBox()
         {
@@ -288,7 +288,7 @@ namespace HoI2Editor.Forms
                 countryListBox.Items.Add(s);
             }
 
-            // 選択中の国家を反映する
+            // Reflect the selected nation
             int index = HoI2EditorController.Settings.UnitNameEditor.Country;
             if ((index < 0) || (index >= countryListBox.Items.Count))
             {
@@ -300,26 +300,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの項目描画処理
+        ///     Item drawing process of national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 Country country = Countries.Tags[e.Index];
                 brush = UnitNames.IsDirty(country) ? new SolidBrush(Color.Red) : new SolidBrush(SystemColors.WindowText);
             }
@@ -331,33 +331,33 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // ユニット名リストの表示を更新する
+            // Update the display of the unit name list
             UpdateNameList();
 
-            // 編集済みフラグが変化するのでユニット種類リストボックスの表示を更新する
+            // Update the display of the unit type list box as the edited flag changes.
             typeListBox.Refresh();
 
-            // 選択中の国家を保存する
+            // Save the selected nation
             HoI2EditorController.Settings.UnitNameEditor.Country = countryListBox.SelectedIndex;
         }
 
         #endregion
 
-        #region ユニット種類リストボックス
+        #region Unit type list box
 
         /// <summary>
-        ///     ユニット種類リストボックスを初期化する
+        ///     Initialize the unit type list box
         /// </summary>
         private void InitTypeListBox()
         {
@@ -380,7 +380,7 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 選択中のユニット種類を反映する
+            // Reflects the selected unit type
             int index = HoI2EditorController.Settings.UnitNameEditor.UnitType;
             if ((index < 0) || (index >= typeListBox.Items.Count))
             {
@@ -392,7 +392,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット種類リストボックスの表示項目を更新する
+        ///     Update the display items in the unit type list box
         /// </summary>
         private void UpdateTypeListBox()
         {
@@ -409,26 +409,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット種類リストボックスの項目描画処理
+        ///     Item drawing process of unit type list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTypeListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 Country country = Countries.Tags[countryListBox.SelectedIndex];
                 UnitNameType type = UnitNames.Types[e.Index];
                 brush = UnitNames.IsDirty(country, type)
@@ -443,50 +443,50 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     ユニット種類リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the unit type list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTypeListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // ユニット名リストの表示を更新する
+            // Update the display of the unit name list
             UpdateNameList();
 
-            // 選択中のユニット種類を保存する
+            // Save the selected unit type
             HoI2EditorController.Settings.UnitNameEditor.UnitType = typeListBox.SelectedIndex;
         }
 
         #endregion
 
-        #region ユニット名リスト
+        #region Unit name list
 
         /// <summary>
-        ///     ユニット名リストを更新する
+        ///     Update the unit name list
         /// </summary>
         private void UpdateNameList()
         {
             nameTextBox.Clear();
 
-            // 選択中の国家がなければ戻る
+            // Return if there is no selected nation
             if (countryListBox.SelectedIndex < 0)
             {
                 return;
             }
             Country country = Countries.Tags[countryListBox.SelectedIndex];
 
-            // 選択中のユニット名種類がなければ戻る
+            // Return if there is no selected unit name type
             if (typeListBox.SelectedIndex < 0)
             {
                 return;
             }
             UnitNameType type = UnitNames.Types[typeListBox.SelectedIndex];
 
-            // ユニット名を順に追加する
+            // Add unit names in order
             StringBuilder sb = new StringBuilder();
             foreach (string name in UnitNames.GetNames(country, type))
             {
@@ -497,40 +497,40 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット名リスト変更時の処理
+        ///     Processing when changing the unit name list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNameTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ戻る
+            // Return if there is no selected nation
             if (countryListBox.SelectedIndex < 0)
             {
                 return;
             }
             Country country = Countries.Tags[countryListBox.SelectedIndex];
 
-            // 選択中のユニット名種類がなければ戻る
+            // Return if there is no selected unit name type
             if (typeListBox.SelectedIndex < 0)
             {
                 return;
             }
             UnitNameType type = UnitNames.Types[typeListBox.SelectedIndex];
 
-            // ユニット名リストを更新する
+            // Update the unit name list
             UnitNames.SetNames(nameTextBox.Lines.Where(line => !string.IsNullOrEmpty(line)).ToList(), country, type);
 
-            // 編集済みフラグが更新されるため国家リストボックスの表示を更新する
+            // Update the display of the national list box because the edited flag is updated
             countryListBox.Refresh();
             typeListBox.Refresh();
         }
 
         #endregion
 
-        #region 編集機能
+        #region Editing function
 
         /// <summary>
-        ///     元に戻すボタン押下時の処理
+        ///     Processing when the undo button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -540,7 +540,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     切り取りボタン押下時の処理
+        ///     Processing when the cut button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -550,7 +550,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     コピーボタン押下時の処理
+        ///     Processing when the copy button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -560,7 +560,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貼り付けボタン押下時の処理
+        ///     Processing when the paste button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -570,7 +570,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     置換ボタン押下時の処理
+        ///     Processing when the replace button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -585,80 +585,80 @@ namespace HoI2Editor.Forms
             {
                 if (allUnitTypeCheckBox.Checked)
                 {
-                    // 全てのユニット名を置換する
+                    // Replace all unit names
                     UnitNames.ReplaceAll(to, with, regexCheckBox.Checked);
                 }
                 else
                 {
-                    // ユニット名種類リストボックスの選択項目がなければ戻る
+                    // Return if there is no selection item in the unit name type list box
                     if (typeListBox.SelectedIndex < 0)
                     {
                         return;
                     }
-                    // 全ての国のユニット名を置換する
+                    // Replace unit names in all countries
                     UnitNames.ReplaceAllCountries(to, with,
                         UnitNames.Types[typeListBox.SelectedIndex], regexCheckBox.Checked);
                 }
             }
             else
             {
-                // 国家リストボックスの選択項目がなければ戻る
+                // Return if there is no selection in the national list box
                 if (countryListBox.SelectedIndex < 0)
                 {
                     return;
                 }
                 if (allUnitTypeCheckBox.Checked)
                 {
-                    // 全てのユニット名種類のユニット名を置換する
+                    // Replace unit names for all unit name types
                     UnitNames.ReplaceAllTypes(to, with,
                         Countries.Tags[countryListBox.SelectedIndex], regexCheckBox.Checked);
                 }
                 else
                 {
-                    // ユニット名種類リストボックスの選択項目がなければ戻る
+                    // Return if there is no selection item in the unit name type list box
                     if (typeListBox.SelectedIndex < 0)
                     {
                         return;
                     }
-                    // ユニット名を置換する
+                    // Replace unit name
                     UnitNames.Replace(to, with, Countries.Tags[countryListBox.SelectedIndex],
                         UnitNames.Types[typeListBox.SelectedIndex], regexCheckBox.Checked);
                 }
             }
 
-            // ユニット名リストの表示を更新する
+            // Update the display of the unit name list
             UpdateNameList();
 
-            // 編集済みフラグが更新されるため国家リストボックスの表示を更新する
+            // Update the display of the national list box because the edited flag is updated
             countryListBox.Refresh();
             typeListBox.Refresh();
 
-            // 履歴を更新する
+            // Update history
             _toHistory.Add(to);
             _withHistory.Add(with);
 
             HoI2EditorController.Settings.UnitNameEditor.ToHistory = _toHistory.Get().ToList();
             HoI2EditorController.Settings.UnitNameEditor.WithHistory = _withHistory.Get().ToList();
 
-            // 履歴コンボボックスを更新する
+            // Update history combo box
             UpdateReplaceHistory();
         }
 
         /// <summary>
-        ///     追加ボタン押下時の処理
+        ///     Processing when the add button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAddButtonClick(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ戻る
+            // Return if there is no selected nation
             if (countryListBox.SelectedIndex < 0)
             {
                 return;
             }
             Country country = Countries.Tags[countryListBox.SelectedIndex];
 
-            // 選択中のユニット名種類がなければ戻る
+            // Return if there is no selected unit name type
             if (typeListBox.SelectedIndex < 0)
             {
                 return;
@@ -673,29 +673,29 @@ namespace HoI2Editor.Forms
             Log.Info("[UnitName] Add: {0}-{1} {2} {3} [{4}] <{5}>", start, end, prefix, suffix,
                 Config.GetText(UnitNames.TypeNames[(int) type]), Countries.Strings[(int) country]);
 
-            // ユニット名を一括追加する
+            // Add unit names at once
             UnitNames.AddSequential(prefix, suffix, start, end, country, type);
 
-            // ユニット名リストの表示を更新する
+            // Update the display of the unit name list
             UpdateNameList();
 
-            // 編集済みフラグが更新されるため国家リストボックスの表示を更新する
+            // Update the display of the national list box because the edited flag is updated
             countryListBox.Refresh();
             typeListBox.Refresh();
 
-            // 履歴を更新する
+            // Update history
             _prefixHistory.Add(prefix);
             _suffixHistory.Add(suffix);
 
             HoI2EditorController.Settings.UnitNameEditor.PrefixHistory = _prefixHistory.Get().ToList();
             HoI2EditorController.Settings.UnitNameEditor.SuffixHistory = _suffixHistory.Get().ToList();
 
-            // 履歴コンボボックスを更新する
+            // Update history combo box
             UpdateAddHistory();
         }
 
         /// <summary>
-        ///     補間ボタン押下時の処理
+        ///     Processing when the interpolation button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -707,55 +707,55 @@ namespace HoI2Editor.Forms
             {
                 if (allUnitTypeCheckBox.Checked)
                 {
-                    // 全てのユニット名を補間する
+                    // Interpolate all unit names
                     UnitNames.InterpolateAll();
                 }
                 else
                 {
-                    // ユニット名種類リストボックスの選択項目がなければ戻る
+                    // Return if there is no selection item in the unit name type list box
                     if (typeListBox.SelectedIndex < 0)
                     {
                         return;
                     }
-                    // 全ての国のユニット名を補間する
+                    // Interpolate unit names in all countries
                     UnitNames.InterpolateAllCountries(UnitNames.Types[typeListBox.SelectedIndex]);
                 }
             }
             else
             {
-                // 国家リストボックスの選択項目がなければ戻る
+                // Return if there is no selection in the national list box
                 if (countryListBox.SelectedIndex < 0)
                 {
                     return;
                 }
                 if (allUnitTypeCheckBox.Checked)
                 {
-                    // 全てのユニット名種類のユニット名を補間する
+                    // Interpolate unit names for all unit name types
                     UnitNames.InterpolateAllTypes(Countries.Tags[countryListBox.SelectedIndex]);
                 }
                 else
                 {
-                    // ユニット名種類リストボックスの選択項目がなければ戻る
+                    // Return if there is no selection item in the unit name type list box
                     if (typeListBox.SelectedIndex < 0)
                     {
                         return;
                     }
-                    // ユニット名を補間する
+                    // Interpolate the unit name
                     UnitNames.Interpolate(Countries.Tags[countryListBox.SelectedIndex],
                         UnitNames.Types[typeListBox.SelectedIndex]);
                 }
             }
 
-            // ユニット名リストの表示を更新する
+            // Update the display of the unit name list
             UpdateNameList();
 
-            // 編集済みフラグが更新されるため表示を更新する
+            // Update the display as the edited flag is updated
             countryListBox.Refresh();
             typeListBox.Refresh();
         }
 
         /// <summary>
-        ///     履歴の初期化
+        ///     History initialization
         /// </summary>
         private void InitHistory()
         {
@@ -789,7 +789,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     置換履歴コンボボックスを更新する
+        ///     Update the replacement history combo box
         /// </summary>
         private void UpdateReplaceHistory()
         {
@@ -807,7 +807,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     追加履歴コンボボックスを更新する
+        ///     Update additional history combo box
         /// </summary>
         private void UpdateAddHistory()
         {
@@ -825,7 +825,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     オプション設定を初期化する
+        ///     Initialize option settings
         /// </summary>
         private void InitOption()
         {
@@ -835,7 +835,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     全ての国家に適用チェックボックスのチェック状態変更時の処理
+        ///     Applies to all nations Processing when the check status of the check box changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -845,7 +845,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     全てのユニット種に適用チェックボックスのチェック状態変更時の処理
+        ///     Applies to all unit types Processing when the check status of the check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -855,7 +855,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     正規表現チェックボックスのチェック状態変更時の処理
+        ///     Processing when the check status of the regular expression check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

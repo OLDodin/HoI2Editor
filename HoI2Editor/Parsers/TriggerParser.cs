@@ -6,32 +6,32 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     トリガーの構文解析クラス
+    ///     Trigger parsing class
     /// </summary>
     public static class TriggerParser
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     トリガー種類文字列とIDの対応付け
+        ///     Trigger type string and ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, TriggerType> TypeMap = new Dictionary<string, TriggerType>();
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     ログ出力時のカテゴリ名
+        ///     Category name at the time of log output
         /// </summary>
         private const string LogCategory = "Command";
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static TriggerParser()
         {
@@ -43,16 +43,16 @@ namespace HoI2Editor.Parsers
 
         #endregion
 
-        #region 構文解析
+        #region Parsing
 
         /// <summary>
-        ///     triggerセクションを構文解析する
+        ///     trigger Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>トリガーリスト</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Trigger list</returns>
         public static List<Trigger> Parse(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -72,7 +72,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     トリガーのコンテナを構文解析する
+        ///     Parsing the trigger container
         /// </summary>
         /// <param name="lexer"></param>
         /// <returns></returns>
@@ -84,25 +84,25 @@ namespace HoI2Editor.Parsers
             {
                 Token token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
                     if (lexer.LineNo != lastLineNo)
                     {
-                        // 現在行が最終解釈行と異なる場合、閉じ括弧が不足しているものと見なす
+                        // If the current line is different from the last interpreted line, it is considered that the closing parenthesis is missing.
                         lexer.ReserveToken(token);
                         break;
                     }
@@ -115,13 +115,13 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // 無効なキーワード
+                // Invalid keyword
                 if (!TypeMap.ContainsKey(keyword))
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
                     if (lexer.LineNo != lastLineNo)
                     {
-                        // 現在行が最終解釈行と異なる場合、閉じ括弧が不足しているものと見なす
+                        // If the current line is different from the last interpreted line, it is considered that the closing parenthesis is missing.
                         lexer.ReserveToken(token);
                         break;
                     }
@@ -130,7 +130,7 @@ namespace HoI2Editor.Parsers
 
                 Trigger trigger = new Trigger { Type = TypeMap[keyword] };
 
-                // =
+                // = =
                 token = lexer.GetToken();
                 if (token.Type != TokenType.Equal)
                 {
@@ -149,7 +149,7 @@ namespace HoI2Editor.Parsers
                     trigger.Value = triggers;
                     list.Add(trigger);
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
@@ -161,7 +161,7 @@ namespace HoI2Editor.Parsers
                     Log.InvalidToken(LogCategory, token, lexer);
                     if (lexer.LineNo != lastLineNo)
                     {
-                        // 現在行が最終解釈行と異なる場合、閉じ括弧が不足しているものと見なす
+                        // If the current line is different from the last interpreted line, it is considered that the closing parenthesis is missing.
                         lexer.ReserveToken(token);
                         break;
                     }
@@ -172,7 +172,7 @@ namespace HoI2Editor.Parsers
 
                 list.Add(trigger);
 
-                // 最終解釈行を覚えておく
+                // Remember the final interpretation line
                 lastLineNo = lexer.LineNo;
             }
 

@@ -13,72 +13,72 @@ using HoI2Editor.Writers;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     技術データ群
+    ///     Technical data group
     /// </summary>
     public static class Techs
     {
-        #region 公開プロパティ
+        #region Public property
 
         /// <summary>
-        ///     技術グループリスト
+        ///     Technical group list
         /// </summary>
         public static List<TechGroup> Groups { get; }
 
         /// <summary>
-        ///     技術IDリスト
+        ///     Technical ID list
         /// </summary>
         public static List<int> TechIds { get; }
 
         /// <summary>
-        ///     技術IDの対応付けテーブル
+        ///     Technical ID correspondence table
         /// </summary>
         public static Dictionary<int, TechItem> TechIdMap { get; }
 
         /// <summary>
-        ///     研究特性リスト
+        ///     Research characteristics list
         /// </summary>
         public static TechSpeciality[] Specialities { get; private set; }
 
         /// <summary>
-        ///     研究特性文字列とIDの対応付け
+        ///     Research characteristic character string and ID correspondence
         /// </summary>
         public static Dictionary<string, TechSpeciality> SpecialityStringMap { get; }
 
         /// <summary>
-        ///     研究特性画像リスト
+        ///     Research characteristic image list
         /// </summary>
         public static ImageList SpecialityImages { get; private set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     重複文字列リスト
+        ///     Duplicate character string list
         /// </summary>
         private static readonly Dictionary<string, int> DuplicatedList = new Dictionary<string, int>();
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Readed flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For delay reading
         /// </summary>
         private static readonly BackgroundWorker Worker = new BackgroundWorker();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     技術カテゴリ文字列
+        ///     Technical category string
         /// </summary>
         public static readonly string[] CategoryStrings =
         {
@@ -94,7 +94,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     技術カテゴリ名
+        ///     Technical category name
         /// </summary>
         private static readonly string[] CategoryNames =
         {
@@ -110,7 +110,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     研究特性文字列
+        ///     Research characteristic text column
         /// </summary>
         public static readonly string[] SpecialityStrings =
         {
@@ -227,7 +227,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     カテゴリ文字列とIDの対応付け
+        ///     Category string and ID correspondence
         /// </summary>
         public static readonly Dictionary<string, TechCategory> CategoryMap
             = new Dictionary<string, TechCategory>
@@ -245,10 +245,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部定数
+        #region Internal fixed number
 
         /// <summary>
-        ///     技術定義ファイル名
+        ///     Technical definition file name
         /// </summary>
         private static readonly string[] FileNames =
         {
@@ -264,7 +264,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     研究特性リスト(HoI2)
+        ///     Research characteristics list (HoI2)
         /// </summary>
         private static readonly TechSpeciality[] SpecialitiesHoI2 =
         {
@@ -306,7 +306,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     研究特性リスト(DH1.02)
+        ///     Research characteristics list (DH1.02)
         /// </summary>
         private static readonly TechSpeciality[] SpecialitiesDh102 =
         {
@@ -378,7 +378,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     研究特性リスト(DH1.03)
+        ///     Research characteristics list (DH1.03)
         /// </summary>
         private static readonly TechSpeciality[] SpecialitiesDh =
         {
@@ -495,7 +495,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     研究特性名
+        ///     Research characteristic name
         /// </summary>
         private static readonly string[] SpecialityNames =
         {
@@ -613,23 +613,23 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Techs()
         {
-            // 技術グループリスト
+            // Technical group list
             Groups = new List<TechGroup>();
 
-            // 技術IDリスト
+            // Technical ID list
             TechIds = new List<int>();
 
-            // 技術IDの対応付け
+            // Technical ID correspondence
             TechIdMap = new Dictionary<int, TechItem>();
 
-            // 研究特性文字列とIDの対応付け
+            // Research characteristic character string and ID correspondence
             SpecialityStringMap = new Dictionary<string, TechSpeciality>();
             foreach (TechSpeciality speciality in Enum.GetValues(typeof (TechSpeciality)))
             {
@@ -638,11 +638,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究特性を初期化する
+        ///     Initialize research characteristics
         /// </summary>
         public static void InitSpecialities()
         {
-            // 研究特性リストを設定する
+            // Set a research characteristic list
             switch (Game.Type)
             {
                 case GameType.HeartsOfIron2:
@@ -655,7 +655,7 @@ namespace HoI2Editor.Models
                     break;
             }
 
-            // 研究特性画像リストを作成する
+            // Create a research characteristic image list
             Bitmap bitmap = new Bitmap(Game.GetReadFileName(Game.TechIconPathName));
             SpecialityImages = new ImageList
             {
@@ -667,10 +667,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     技術ファイルの再読み込みを要求する
+        ///     Request a relay of technical files
         /// </summary>
         public static void RequestReload()
         {
@@ -678,11 +678,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     技術ファイル群を再読み込みする
+        ///     Reload the technical file group
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before reading
             if (!_loaded)
             {
                 return;
@@ -694,17 +694,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     技術定義ファイル群を読み込む
+        ///     Read the technical definition file group
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // If you have read it, go back
             if (_loaded)
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if you are in the middle
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -715,44 +715,44 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     技術定義ファイル群を遅延読み込みする
+        ///     Delayed the technical definition file group
         /// </summary>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="handler">Reading completion event handler</param>
         public static void LoadAsync(RunWorkerCompletedEventHandler handler)
         {
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // If you have already loaded, call the completed event handler
             if (_loaded)
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(null, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the reading event handler
             if (handler != null)
             {
                 Worker.RunWorkerCompleted += handler;
                 Worker.RunWorkerCompleted += OnWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if you are in the middle
             if (Worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If you have read here, you will have already called the completed event handler, so return without doing anything.
             if (_loaded)
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start late reading
             Worker.DoWork += OnWorkerDoWork;
             Worker.RunWorkerAsync();
         }
 
         /// <summary>
-        ///     読み込み完了まで待機する
+        ///     Wait until the loading is completed
         /// </summary>
         public static void WaitLoading()
         {
@@ -763,16 +763,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Judge whether or not to read delayed
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>Return True if you are ready to read</returns>
         public static bool IsLoading()
         {
             return Worker.IsBusy;
         }
 
         /// <summary>
-        ///     遅延読み込み処理
+        ///     Late reading processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -782,22 +782,22 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing at the time of delayed reading
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing at the time of delayed reading
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     技術定義ファイル群を読み込む
+        ///     Read the technical definition file group
         /// </summary>
         private static void LoadFiles()
         {
-            // コマンドの初期化
+            // Initialization of commands
             Commands.Init();
 
             Groups.Clear();
@@ -809,7 +809,7 @@ namespace HoI2Editor.Models
                 string pathName = Game.GetReadFileName(Game.TechPathName, fileName);
                 try
                 {
-                    // 技術定義ファイルを読み込む
+                    // Read the technical definition file
                     LoadFile(pathName);
                 }
                 catch (Exception)
@@ -825,32 +825,32 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 技術IDの対応付けを更新する
+            // Update technical ID correspondence
             UpdateTechIdMap();
 
-            // 重複文字列リストを更新する
+            // Update the duplicate character string list
             UpdateDuplicatedList();
 
-            // リンクの切れた一時キーをリストに登録する
+            // Register a temporary key with a broken link on the list
             AddUnlinkedTempKey();
 
-            // 読み込みに失敗していれば戻る
+            // Return if you fail to read
             if (error)
             {
                 return;
             }
 
-            // 編集済みフラグを解除する
+            // Unlock the edited flag
             _dirtyFlag = false;
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     技術定義ファイルを読み込む
+        ///     Read the technical definition file
         /// </summary>
-        /// <param name="fileName">技術定義ファイル名</param>
+        /// <param name="fileName">Technical definition file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[Tech] Load: {0}", Path.GetFileName(fileName));
@@ -866,15 +866,15 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     技術定義ファイル群を保存する
+        ///     Save the technical definition file group
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If you fail to save, return False</returns>
         public static bool Save()
         {
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if you are in the middle
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -885,7 +885,7 @@ namespace HoI2Editor.Models
                 string folderName = Game.GetWriteFileName(Game.TechPathName);
                 try
                 {
-                    // 技術定義フォルダがなければ作成する
+                    // Create if there is no technical definition folder
                     if (!Directory.Exists(folderName))
                     {
                         Directory.CreateDirectory(folderName);
@@ -905,7 +905,7 @@ namespace HoI2Editor.Models
                     string fileName = Path.Combine(folderName, FileNames[(int) grp.Category]);
                     try
                     {
-                        // 技術定義ファイルを保存する
+                        // Save the technical definition file
                         Log.Info("[Tech] Save: {0}", Path.GetFileName(fileName));
                         TechWriter.Write(grp, fileName);
                     }
@@ -922,19 +922,19 @@ namespace HoI2Editor.Models
                     }
                 }
 
-                // 保存に失敗していれば戻る
+                // Return if you fail to save
                 if (error)
                 {
                     return false;
                 }
 
-                // 編集済みフラグを解除する
+                // Unlock the edited flag
                 _dirtyFlag = false;
             }
 
             if (_loaded)
             {
-                // 文字列定義のみ保存の場合、技術名などの編集済みフラグがクリアされないためここで全クリアする
+                // When saving only character string definitions, clear all here because the edited flags such as the technical name are not cleared.
                 foreach (TechGroup grp in Groups)
                 {
                     grp.ResetDirtyAll();
@@ -945,7 +945,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     文字列キーを保存形式に変更する
+        ///     Change the character string key to a storage format
         /// </summary>
         public static void RenameKeys()
         {
@@ -954,7 +954,7 @@ namespace HoI2Editor.Models
                 string categoryName = CategoryNames[(int) grp.Category];
                 bool dirty = false;
 
-                // 技術
+                // technology
                 List<int> list = new List<int>();
                 foreach (TechItem item in grp.Items.OfType<TechItem>())
                 {
@@ -968,7 +968,7 @@ namespace HoI2Editor.Models
                     }
                 }
 
-                // ラベル
+                // label label
                 list = new List<int>();
                 foreach (TechLabel item in grp.Items.OfType<TechLabel>())
                 {
@@ -982,7 +982,7 @@ namespace HoI2Editor.Models
                     }
                 }
 
-                // 編集済みフラグを更新する
+                // Update the edited flag
                 if (dirty)
                 {
                     grp.SetDirty();
@@ -992,28 +992,28 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 技術項目とIDの対応付け
+        #region Technical items and ID correspondence
 
         /// <summary>
-        ///     技術IDを変更する
+        ///     Change the technical ID
         /// </summary>
-        /// <param name="item">技術項目</param>
-        /// <param name="id">技術ID</param>
+        /// <param name="item">Technical project</param>
+        /// <param name="id">Technical ID</param>
         public static void ModifyTechId(TechItem item, int id)
         {
-            // 値の変更前に技術項目とIDの対応付けを削除する
+            // Delete technical items and ID correspondence before changing values
             TechIds.Remove(id);
             TechIdMap.Remove(id);
 
-            // 値を更新する
+            // Update the value
             item.Id = id;
 
-            // 技術項目とIDの対応付けを更新する
+            // Update technical items and ID correspondence
             UpdateTechIdMap();
         }
 
         /// <summary>
-        ///     技術項目とIDの対応付けを更新する
+        ///     Update technical items and ID correspondence
         /// </summary>
         public static void UpdateTechIdMap()
         {
@@ -1030,10 +1030,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     未使用の技術IDを取得する
+        ///     Get unused technical ID
         /// </summary>
-        /// <param name="startId">検索を開始するID</param>
-        /// <returns>未使用の技術ID</returns>
+        /// <param name="startId">ID to start search</param>
+        /// <returns>Unused technical ID</returns>
         public static int GetNewId(int startId)
         {
             int id = startId;
@@ -1046,20 +1046,20 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 文字列操作
+        #region Text column operation
 
         /// <summary>
-        ///     文字列の定義名が重複しているかを取得する
+        ///     Get whether the definition name of the string is duplicated
         /// </summary>
-        /// <param name="name">対象の文字列定義名</param>
-        /// <returns>定義名が重複していればtrueを返す</returns>
+        /// <param name="name">Target character string definition name</param>
+        /// <returns>If the definition name is duplicated, return True</returns>
         public static bool IsDuplicatedName(string name)
         {
             return DuplicatedList.ContainsKey(name) && (DuplicatedList[name] > 1);
         }
 
         /// <summary>
-        ///     重複文字列リストを更新する
+        ///     Update the duplicate character string list
         /// </summary>
         private static void UpdateDuplicatedList()
         {
@@ -1071,9 +1071,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     重複文字列リストに項目を追加する
+        ///     Add an item to the duplicate character string list
         /// </summary>
-        /// <param name="item">技術項目</param>
+        /// <param name="item">Technical project</param>
         public static void AddDuplicatedListItem(ITechItem item)
         {
             TechItem techItem = item as TechItem;
@@ -1097,9 +1097,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     重複文字列リストの項目を削除する
+        ///     Delete the item of the duplicate character string list
         /// </summary>
-        /// <param name="item">技術項目</param>
+        /// <param name="item">Technical project</param>
         public static void RemoveDuplicatedListItem(ITechItem item)
         {
             TechItem techItem = item as TechItem;
@@ -1123,9 +1123,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     重複文字列リストのカウントをインクリメントする
+        ///     Increment of duplicate character string list
         /// </summary>
-        /// <param name="name">対象の文字列定義名</param>
+        /// <param name="name">Target character string definition name</param>
         public static void IncrementDuplicatedListCount(string name)
         {
             if (string.IsNullOrEmpty(name))
@@ -1144,9 +1144,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     重複文字列リストのカウントをデクリメントする
+        ///     Deliver the count of the duplicate character string list
         /// </summary>
-        /// <param name="name">対象の文字列定義名</param>
+        /// <param name="name">Target character string definition name</param>
         public static void DecrementDuplicatedListCount(string name)
         {
             if (!string.IsNullOrEmpty(name) && DuplicatedList.ContainsKey(name))
@@ -1164,7 +1164,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     リンクの切れた一時キーをリストに登録する
+        ///     Register a temporary key with a broken link on the list
         /// </summary>
         private static void AddUnlinkedTempKey()
         {
@@ -1205,10 +1205,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究特性名を取得する
+        ///     Get research characteristic name
         /// </summary>
-        /// <param name="speciality">研究特性</param>
-        /// <returns>研究特性名</returns>
+        /// <param name="speciality">Research characteristics</param>
+        /// <returns>Research characteristic name</returns>
         public static string GetSpecialityName(TechSpeciality speciality)
         {
             string name = SpecialityNames[(int) speciality];
@@ -1217,19 +1217,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get whether or not it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If you have edited, return True</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public static void SetDirty()
         {

@@ -8,14 +8,14 @@ using System.Windows.Forms;
 namespace HoI2Editor.Controls
 {
     /// <summary>
-    ///     拡張リストビュー
+    ///     Extended list view
     /// </summary>
     public partial class ExtendedListView : ListView
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     選択中の項目のインデックス
+        ///     Index of selected item
         /// </summary>
         public int SelectedIndex
         {
@@ -37,12 +37,12 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     選択中の項目
+        ///     Selected item
         /// </summary>
         public ListViewItem SelectedItem => SelectedItems.Count > 0 ? SelectedItems[0] : null;
 
         /// <summary>
-        ///     項目の入れ替えをサポートするかどうか
+        ///     Whether to support item swapping
         /// </summary>
         [Category("動作")]
         [DefaultValue(typeof (bool), "false")]
@@ -64,34 +64,34 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     行の入れ替えをサポートするかどうか
+        ///     Whether to support line swapping
         /// </summary>
         private bool _allowItemReorder;
 
         /// <summary>
-        ///     ドラッグアンドドロップ中の項目のインデックス
+        ///     Index of items being dragged and dropped
         /// </summary>
         private static readonly List<int> DragIndices = new List<int>();
 
         /// <summary>
-        ///     編集中の行インデックス
+        ///     Row index being edited
         /// </summary>
         private int _editingRowIndex;
 
         /// <summary>
-        ///     編集中の列インデックス
+        ///     Column index being edited
         /// </summary>
         private int _editingColumnIndex;
 
         #endregion
 
-        #region 公開イベント
+        #region Public event
 
         /// <summary>
-        ///     項目入れ替え時の処理
+        ///     Processing when replacing items
         /// </summary>
         [Category("動作")]
         [Description("項目の順番を再変更したときに発生します。")]
@@ -112,10 +112,10 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public ExtendedListView()
         {
@@ -124,16 +124,16 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region イベントハンドラ
+        #region Event handler
 
         /// <summary>
-        ///     マウスダブルクリック時の処理
+        ///     Processing when double-clicking the mouse
         /// </summary>
         protected override void OnMouseDoubleClick(MouseEventArgs e)
         {
             base.OnMouseDoubleClick(e);
 
-            // クリック位置が項目の上でなければ何もしない
+            // Do nothing unless the click position is above the item
             ListViewHitTestInfo ht = HitTest(e.X, e.Y);
             if (ht.SubItem == null)
             {
@@ -143,85 +143,85 @@ namespace HoI2Editor.Controls
             int rowIndex = ht.Item.Index;
             int columnIndex = ht.Item.SubItems.IndexOf(ht.SubItem);
 
-            // 編集項目の種類を問い合わせる
+            // Inquire about the type of edit item
             QueryListViewItemEditEventArgs qe = new QueryListViewItemEditEventArgs(rowIndex, columnIndex);
             QueryItemEdit?.Invoke(this, qe);
 
-            // 編集用のコントロールを表示する
+            // Show controls for editing
             ShowEditControl(qe);
         }
 
         /// <summary>
-        ///     ドラッグ開始時の処理
+        ///     Processing at the start of dragging
         /// </summary>
         protected override void OnItemDrag(ItemDragEventArgs e)
         {
             base.OnItemDrag(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (SelectedItems.Count == 0)
             {
                 return;
             }
 
-            // 項目のインデックスを保存する
+            // Save item index
             DragIndices.AddRange(SelectedIndices.Cast<int>());
 
-            // ドラッグアンドドロップを開始する
+            // Start drag and drop
             DoDragDrop(this, DragDropEffects.Move);
         }
 
         /// <summary>
-        ///     ドラッグした項目が領域内に移動した時の処理
+        ///     Processing when the dragged item moves into the area
         /// </summary>
         protected override void OnDragEnter(DragEventArgs e)
         {
             base.OnDragEnter(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // ExtendedListViewの項目でなければドロップを許可しない
+            // ExtendedListView Do not allow drop unless it is an item of
             if (!e.Data.GetDataPresent(typeof (ExtendedListView)))
             {
                 e.Effect = DragDropEffects.None;
                 return;
             }
 
-            // ドロップを許可する
+            // Allow drop
             e.Effect = e.AllowedEffect;
         }
 
         /// <summary>
-        ///     ドラッグした項目が領域内で移動した時の処理
+        ///     Processing when the dragged item moves within the area
         /// </summary>
         protected override void OnDragOver(DragEventArgs e)
         {
             base.OnDragOver(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // ExtendedListViewの項目でなければドロップを許可しない
+            // ExtendedListView Do not allow drop unless it is an item of
             if (!e.Data.GetDataPresent(typeof (ExtendedListView)))
             {
                 e.Effect = DragDropEffects.None;
                 return;
             }
 
-            // 挿入マークを表示する
+            // Display insert mark
             Point p = PointToClient(new Point(e.X, e.Y));
             int index = InsertionMark.NearestIndex(p);
             if (index < 0)
@@ -234,50 +234,50 @@ namespace HoI2Editor.Controls
             InsertionMark.AppearsAfterItem = p.Y > bounds.Top + bounds.Height / 2;
             InsertionMark.Index = index;
 
-            // 挿入位置の項目を表示することで自動スクロールする
+            // Automatically scrolls by displaying the item at the insertion position
             Items[index].EnsureVisible();
         }
 
         /// <summary>
-        ///     ドラッグした項目が領域外へ移動した時の処理
+        ///     Processing when the dragged item moves out of the area
         /// </summary>
         /// <param name="e"></param>
         protected override void OnDragLeave(EventArgs e)
         {
             base.OnDragLeave(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // 挿入マークを非表示にする
+            // Hide insert mark
             InsertionMark.Index = -1;
         }
 
         /// <summary>
-        ///     項目をドロップしたときの処理
+        ///     What to do when you drop an item
         /// </summary>
         /// <param name="e"></param>
         protected override void OnDragDrop(DragEventArgs e)
         {
             base.OnDragDrop(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // 自分自身の項目でなければドロップを許可しない
+            // Do not allow drops unless it is your own item
             ExtendedListView listView = e.Data.GetData(typeof (ExtendedListView)) as ExtendedListView;
             if (listView != this)
             {
                 return;
             }
 
-            // 挿入位置を計算する
+            // Calculate the insertion position
             int index = InsertionMark.Index;
             if (index < 0)
             {
@@ -288,17 +288,17 @@ namespace HoI2Editor.Controls
                 index++;
             }
 
-            // イベントハンドラを呼び出す
+            // Call the event handler
             ItemReorderedEventArgs re = new ItemReorderedEventArgs(DragIndices, index);
             ItemReordered?.Invoke(this, re);
             if (re.Cancel)
             {
-                // ドラッグ状態を解除する
+                // Release the drag state
                 DragIndices.Clear();
                 return;
             }
 
-            // リストビューの項目を移動する
+            // Move items in the list view
             ListViewItem firstItem = null;
             foreach (int dragIndex in DragIndices)
             {
@@ -319,7 +319,7 @@ namespace HoI2Editor.Controls
                 }
             }
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             if (firstItem != null)
             {
                 firstItem.Selected = true;
@@ -327,12 +327,12 @@ namespace HoI2Editor.Controls
                 EnsureVisible(firstItem.Index);
             }
 
-            // ドラッグ状態を解除する
+            // Release the drag state
             DragIndices.Clear();
         }
 
         /// <summary>
-        ///     描画更新時の処理
+        ///     Processing when updating drawing
         /// </summary>
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -341,15 +341,15 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 内部メソッド
+        #region Internal method
 
         /// <summary>
-        ///     項目編集用コントロールを表示する
+        ///     Show control for editing items
         /// </summary>
-        /// <param name="e">項目編集前イベントのパラメータ</param>
+        /// <param name="e">Parameter of event before item editing</param>
         private void ShowEditControl(QueryListViewItemEditEventArgs e)
         {
-            // 項目編集なしの場合は何もしない
+            // Do nothing if no item is edited
             if (e.Type == ItemEditType.None)
             {
                 return;
@@ -361,11 +361,11 @@ namespace HoI2Editor.Controls
             ListViewItem item = Items[e.Row];
             ListViewItem.ListViewSubItem subItem = item.SubItems[e.Column];
 
-            // 項目編集用コントロールを表示する
+            // Show control for editing items
             switch (e.Type)
             {
                 case ItemEditType.Bool:
-                    // 編集用コントロールを表示せず真偽値を反転させる
+                    // Invert boolean values without displaying edit controls
                     InvertFlag(e.Flag);
                     break;
 
@@ -382,15 +382,15 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     項目の真偽値を反転させる
+        ///     Invert the truth value of an item
         /// </summary>
-        /// <param name="flag">初期真偽値</param>
+        /// <param name="flag">Initial truth value</param>
         private void InvertFlag(bool flag)
         {
             ListViewItemEditEventArgs ie = new ListViewItemEditEventArgs(_editingRowIndex, _editingColumnIndex, !flag);
             BeforeItemEdit?.Invoke(this, ie);
 
-            // キャンセルされれば項目を更新しない
+            // Do not update items if canceled
             if (ie.Cancel)
             {
                 return;
@@ -400,11 +400,11 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     項目編集用テキストボックスを表示する
+        ///     Display a text box for editing items
         /// </summary>
-        /// <param name="text">初期文字列</param>
-        /// <param name="location">テキストボックスの位置</param>
-        /// <param name="size">テキストボックスのサイズ</param>
+        /// <param name="text">Initial character string</param>
+        /// <param name="location">Text box position</param>
+        /// <param name="size">Text box size</param>
         private void ShowEditTextBox(string text, Point location, Size size)
         {
             InlineTextBox textBox = new InlineTextBox(text, location, size, this);
@@ -413,13 +413,13 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     項目編集用コンボボックスを表示する
+        ///     Display a combo box for editing items
         /// </summary>
-        /// <param name="items">項目リスト</param>
-        /// <param name="index">初期インデックス</param>
-        /// <param name="location">コンボボックスの位置</param>
-        /// <param name="size">コンボボックスのサイズ</param>
-        /// <param name="dropDownWidth">ドロップダウンリストの幅</param>
+        /// <param name="items">Item list</param>
+        /// <param name="index">Initial index</param>
+        /// <param name="location">Combo box position</param>
+        /// <param name="size">Combo box size</param>
+        /// <param name="dropDownWidth">Drop-down list width</param>
         private void ShowEditComboBox(IEnumerable<string> items, int index, Point location, Size size, int dropDownWidth)
         {
             InlineComboBox comboBox = new InlineComboBox(items, index, location, size, dropDownWidth, this);
@@ -428,7 +428,7 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     文字列編集時の処理
+        ///     Processing when editing a character string
         /// </summary>
         private void OnTextFinishEdit(object sender, CancelEventArgs e)
         {
@@ -439,13 +439,13 @@ namespace HoI2Editor.Controls
             }
             string text = textBox.Text;
 
-            // イベントハンドラを削除する
+            // Delete the event handler
             textBox.FinishEdit -= OnTextFinishEdit;
 
-            // 編集用テキストボックスを削除する
+            // Delete the text box for editing
             Controls.Remove(textBox);
 
-            // キャンセルされれば項目を更新しない
+            // Do not update items if canceled
             if (e.Cancel)
             {
                 return;
@@ -458,20 +458,20 @@ namespace HoI2Editor.Controls
                 textBox.Text);
             BeforeItemEdit?.Invoke(this, ie);
 
-            // キャンセルされれば項目を更新しない
+            // Do not update items if canceled
             if (ie.Cancel)
             {
                 return;
             }
 
-            // 項目の文字列を更新する
+            // Update the item string
             subItem.Text = text;
 
             AfterItemEdit?.Invoke(this, ie);
         }
 
         /// <summary>
-        ///     リスト編集時の処理
+        ///     Processing when editing a list
         /// </summary>
         private void OnListFinishEdit(object sender, CancelEventArgs e)
         {
@@ -483,13 +483,13 @@ namespace HoI2Editor.Controls
             string s = comboBox.Text;
             int index = comboBox.SelectedIndex;
 
-            // イベントハンドラを削除する
+            // Delete the event handler
             comboBox.FinishEdit -= OnListFinishEdit;
 
-            // 編集用コンボボックスを削除する
+            // Delete the editing combo box
             Controls.Remove(comboBox);
 
-            // キャンセルされれば項目を更新しない
+            // Do not update items if canceled
             if (e.Cancel)
             {
                 return;
@@ -501,13 +501,13 @@ namespace HoI2Editor.Controls
             ListViewItemEditEventArgs ie = new ListViewItemEditEventArgs(_editingRowIndex, _editingColumnIndex, s, index);
             BeforeItemEdit?.Invoke(this, ie);
 
-            // キャンセルされれば項目を更新しない
+            // Do not update items if canceled
             if (ie.Cancel)
             {
                 return;
             }
 
-            // 項目の文字列を更新する
+            // Update the item string
             subItem.Text = comboBox.Items[index].ToString();
 
             AfterItemEdit?.Invoke(this, ie);

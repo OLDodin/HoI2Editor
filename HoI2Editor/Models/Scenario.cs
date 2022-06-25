@@ -6,194 +6,194 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
 
-    #region シナリオデータ
+    #region Scenario data
 
     /// <summary>
-    ///     シナリオデータ
+    ///     Scenario data
     /// </summary>
     public class Scenario
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     保存ゲームかどうか
+        ///     Whether it is a save game
         /// </summary>
         public bool IsSaveGame { get; set; }
 
         /// <summary>
-        ///     シナリオ名
+        ///     Scenario name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     パネル画像名
+        ///     Panel image name
         /// </summary>
         public string PanelName { get; set; }
 
         /// <summary>
-        ///     シナリオヘッダ
+        ///     Scenario header
         /// </summary>
         public ScenarioHeader Header { get; set; }
 
         /// <summary>
-        ///     シナリオグローバルデータ
+        ///     Scenario global data
         /// </summary>
         public ScenarioGlobalData GlobalData { get; set; }
 
         /// <summary>
-        ///     発生済みイベント
+        ///     Events that have occurred
         /// </summary>
         public List<int> HistoryEvents { get; } = new List<int>();
 
         /// <summary>
-        ///     休止イベント
+        ///     Pause event
         /// </summary>
         public List<int> SleepEvents { get; } = new List<int>();
 
         /// <summary>
-        ///     イベント発生日時
+        ///     Event occurrence date and time
         /// </summary>
         public Dictionary<int, GameDate> SaveDates { get; set; }
 
         /// <summary>
-        ///     マップ設定
+        ///     Map settings
         /// </summary>
         public MapSettings Map { get; set; }
 
         /// <summary>
-        ///     イベントファイル
+        ///     Event file
         /// </summary>
         public List<string> EventFiles { get; } = new List<string>();
 
         /// <summary>
-        ///     インクルードファイル
+        ///     Include file
         /// </summary>
         public List<string> IncludeFiles { get; } = new List<string>();
 
         /// <summary>
-        ///     インクルードフォルダ
+        ///     Include folder
         /// </summary>
         public string IncludeFolder { get; set; }
 
         /// <summary>
-        ///     プロヴィンス設定
+        ///     Province settings
         /// </summary>
         public List<ProvinceSettings> Provinces { get; } = new List<ProvinceSettings>();
 
         /// <summary>
-        ///     国別incにプロヴィンス設定を定義するかどうか
+        ///     By country inc Whether to define province settings for
         /// </summary>
         public bool IsCountryProvinceSettings { get; set; }
 
         /// <summary>
-        ///     bases.incにプロヴィンス設定を定義するかどうか
+        ///     bases.inc Whether to define provision settings for
         /// </summary>
         public bool IsBaseProvinceSettings { get; set; }
 
         /// <summary>
-        ///     bases_DOD.incにプロヴィンス設定を定義するかどうか
+        ///     bases_DOD.inc Whether to define province settings for
         /// </summary>
         public bool IsBaseDodProvinceSettings { get; set; }
 
         /// <summary>
-        ///     depots.incにプロヴィンス設定を定義するかどうか
+        ///     depots.inc Whether to define province settings for
         /// </summary>
         public bool IsDepotsProvinceSettings { get; set; }
 
         /// <summary>
-        ///     vp.incにプロヴィンス設定を定義するかどうか
+        ///     vp.inc Whether to define provision settings for
         /// </summary>
         public bool IsVpProvinceSettings { get; set; }
 
         /// <summary>
-        ///     国家情報
+        ///     National information
         /// </summary>
         public List<CountrySettings> Countries { get; } = new List<CountrySettings>();
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     選択可能国の編集済みフラグ
+        ///     Edited flags for selectable countries
         /// </summary>
         private readonly HashSet<Country> _dirtySelectableCountries = new HashSet<Country>();
 
         /// <summary>
-        ///     プロヴィンス設定の編集済みフラグ
+        ///     Edited flags in province settings
         /// </summary>
         private bool _dirtyProvinces;
 
         /// <summary>
-        ///     vp.incの編集済みフラグ
+        ///     vp.inc Edited flag
         /// </summary>
         private bool _dirtyVpInc;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
-            Name, // シナリオ名
-            PanelName, // パネル画像名
-            IncludeFolder, // インクルードフォルダ
-            FreeSelection, // 国家の自由選択
-            BattleScenario, // ショートシナリオ
-            AiAggressive, // AIの攻撃性
-            Difficulty, // 難易度
-            GameSpeed, // ゲームスピード
-            AllowDiplomacy, // 外交を許可
-            AllowProduction, // 生産を許可
-            AllowTechnology, // 技術開発を許可
-            StartYear, // 開始年
-            StartMonth, // 開始月
-            StartDay, // 開始日
-            EndYear, // 終了年
-            EndMonth, // 終了月
-            EndDay // 終了日
+            Name, // Scenario name
+            PanelName, // Panel image name
+            IncludeFolder, // Include folder
+            FreeSelection, // Free choice of the nation
+            BattleScenario, // Short scenario
+            AiAggressive, // AI Aggression
+            Difficulty, // difficulty
+            GameSpeed, // Game speed
+            AllowDiplomacy, // Allow diplomacy
+            AllowProduction, // Allow production
+            AllowTechnology, // Allow technology development
+            StartYear, // Start year
+            StartMonth, // Start month
+            StartDay, // start date
+            EndYear, // End year
+            EndMonth, // End month
+            EndDay // End date
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -201,7 +201,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -209,19 +209,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の選択可能国が編集済みかどうかを取得する
+        ///     Get if the target selectable country has been edited
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtySelectableCountry(Country country)
         {
             return _dirtySelectableCountries.Contains(country);
         }
 
         /// <summary>
-        ///     選択可能国の編集済みフラグを設定する
+        ///     Set edited flags for selectable countries
         /// </summary>
-        /// <param name="country">対象国</param>
+        /// <param name="country">Target country</param>
         public void SetDirtySelectableCountry(Country country)
         {
             _dirtySelectableCountries.Add(country);
@@ -229,16 +229,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスデータが編集済みかどうかを取得する
+        ///     Get if the provision data has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyProvinces()
         {
             return _dirtyProvinces;
         }
 
         /// <summary>
-        ///     プロヴィンスデータの編集済みフラグを設定する
+        ///     Set the edited flag for province data
         /// </summary>
         public void SetDirtyProvinces()
         {
@@ -246,16 +246,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     vp.incが編集済みかどうかを取得する
+        ///     vp.inc Gets whether is edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyVpInc()
         {
             return _dirtyVpInc;
         }
 
         /// <summary>
-        ///     vp.incの編集済みフラグを設定する
+        ///     vp.inc Set the edited flag of
         /// </summary>
         public void SetDirtyVpInc()
         {
@@ -263,7 +263,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -330,101 +330,101 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region シナリオヘッダ
+    #region Scenario header
 
     /// <summary>
-    ///     シナリオヘッダ
+    ///     Scenario header
     /// </summary>
     public class ScenarioHeader
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     シナリオヘッダ名
+        ///     Scenario header name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     開始日時
+        ///     Start date and time
         /// </summary>
         public GameDate StartDate { get; set; }
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
         /// <summary>
-        ///     国家の自由選択
+        ///     Free choice of the nation
         /// </summary>
         public bool IsFreeSelection { get; set; } = true;
 
         /// <summary>
-        ///     ショートシナリオ
+        ///     Short scenario
         /// </summary>
         public bool IsBattleScenario { get; set; }
 
         /// <summary>
-        ///     選択可能国家
+        ///     Selectable nations
         /// </summary>
         public List<Country> SelectableCountries { get; } = new List<Country>();
 
         /// <summary>
-        ///     主要国設定
+        ///     Major country setting
         /// </summary>
         public List<MajorCountrySettings> MajorCountries { get; } = new List<MajorCountrySettings>();
 
         /// <summary>
-        ///     AIの攻撃性
+        ///     AI Aggression
         /// </summary>
         public int AiAggressive { get; set; } = AiAggressiveDefault;
 
         /// <summary>
-        ///     難易度
+        ///     difficulty
         /// </summary>
         public int Difficulty { get; set; } = DifficultyDefault;
 
         /// <summary>
-        ///     ゲームスピード
+        ///     Game speed
         /// </summary>
         public int GameSpeed { get; set; } = GameSpeedDefault;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     AIの攻撃性の初期値
+        ///     AI Initial value of aggression
         /// </summary>
         public const int AiAggressiveDefault = 2;
 
         /// <summary>
-        ///     難易度の初期値
+        ///     Initial value of difficulty
         /// </summary>
         public const int DifficultyDefault = 2;
 
         /// <summary>
-        ///     ゲームスピードの初期値
+        ///     Initial value of game speed
         /// </summary>
         public const int GameSpeedDefault = 3;
 
         /// <summary>
-        ///     AIの攻撃性の選択肢数
+        ///     AI Number of aggression options
         /// </summary>
         public const int AiAggressiveCount = 5;
 
         /// <summary>
-        ///     難易度の選択肢数
+        ///     Number of difficulty options
         /// </summary>
         public const int DifficultyCount = 5;
 
         /// <summary>
-        ///     ゲームスピードの選択肢数
+        ///     Number of game speed options
         /// </summary>
         public const int GameSpeedCount = 8;
 
@@ -432,106 +432,106 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     主要国設定
+    ///     Major country setting
     /// </summary>
     public class MajorCountrySettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     国タグ
+        ///     Country tag
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     国名定義
+        ///     Country name definition
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     国旗の拡張子
+        ///     Flag extension
         /// </summary>
         public string FlagExt { get; set; }
 
         /// <summary>
-        ///     説明文
+        ///     Explanatory text
         /// </summary>
         public string Desc { get; set; }
 
         /// <summary>
-        ///     国家戦略
+        ///     National strategy
         /// </summary>
         public string CountryTactics { get; set; }
 
         /// <summary>
-        ///     プロパガンダ画像名
+        ///     Propaganda image name
         /// </summary>
         public string PictureName { get; set; }
 
         /// <summary>
-        ///     音楽ファイル名
+        ///     Music file name
         /// </summary>
         public string Songs { get; set; }
 
         /// <summary>
-        ///     右端に配置
+        ///     Placed at the right end
         /// </summary>
         public bool Bottom { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
-            NameKey, // 国名定義
-            NameString, // 国名文字列
-            FlagExt, // 国旗の接尾辞
-            DescKey, // 説明文定義
-            DescString, // 説明文文字列
-            CountryTactics, // 国家戦略
-            PictureName, // プロパガンダ画像名
-            Songs, // 音楽ファイル名
-            Bottom // 右端に配置
+            NameKey, // Country name definition
+            NameString, // Country name string
+            FlagExt, // Flag suffix
+            DescKey, // Description definition
+            DescString, // Descriptive text string
+            CountryTactics, // National strategy
+            PictureName, // Propaganda image name
+            Songs, // Music file name
+            Bottom // Placed at the right end
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -546,115 +546,115 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region シナリオグローバルデータ
+    #region Scenario global data
 
     /// <summary>
-    ///     シナリオグローバルデータ
+    ///     Scenario global data
     /// </summary>
     public class ScenarioGlobalData
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     ルール設定
+        ///     Rule setting
         /// </summary>
         public ScenarioRules Rules { get; set; }
 
         /// <summary>
-        ///     開始日時
+        ///     Start date and time
         /// </summary>
         public GameDate StartDate { get; set; }
 
         /// <summary>
-        ///     終了日時
+        ///     End date and time
         /// </summary>
         public GameDate EndDate { get; set; }
 
         /// <summary>
-        ///     枢軸国
+        ///     Axis country
         /// </summary>
         public Alliance Axis { get; set; }
 
         /// <summary>
-        ///     連合国
+        ///     Allied
         /// </summary>
         public Alliance Allies { get; set; }
 
         /// <summary>
-        ///     共産国
+        ///     Communist country
         /// </summary>
         public Alliance Comintern { get; set; }
 
         /// <summary>
-        ///     同盟リスト
+        ///     Alliance list
         /// </summary>
         public List<Alliance> Alliances { get; } = new List<Alliance>();
 
         /// <summary>
-        ///     戦争リスト
+        ///     War list
         /// </summary>
         public List<War> Wars { get; } = new List<War>();
 
         /// <summary>
-        ///     不可侵条約リスト
+        ///     Non-invasion treaty list
         /// </summary>
         public List<Treaty> NonAggressions { get; } = new List<Treaty>();
 
         /// <summary>
-        ///     講和条約リスト
+        ///     Peace Treaty List
         /// </summary>
         public List<Treaty> Peaces { get; } = new List<Treaty>();
 
         /// <summary>
-        ///     貿易リスト
+        ///     Trade list
         /// </summary>
         public List<Treaty> Trades { get; } = new List<Treaty>();
 
         /// <summary>
-        ///     グローバルフラグリスト
+        ///     Global flag list
         /// </summary>
         public Dictionary<string, string> Flags { get; set; } = new Dictionary<string, string>();
 
         /// <summary>
-        ///     処理待ちイベントリスト
+        ///     Waiting event list
         /// </summary>
         public List<QueuedEvent> QueuedEvents { get; } = new List<QueuedEvent>();
 
         /// <summary>
-        ///     休止指揮官
+        ///     Pause commander
         /// </summary>
         public List<int> DormantLeaders { get; } = new List<int>();
 
         /// <summary>
-        ///     休止閣僚
+        ///     Pause minister
         /// </summary>
         public List<int> DormantMinisters { get; } = new List<int>();
 
         /// <summary>
-        ///     休止研究機関
+        ///     Rest research institution
         /// </summary>
         public List<int> DormantTeams { get; } = new List<int>();
 
         /// <summary>
-        ///     全指揮官を休止
+        ///     Pause all commanders
         /// </summary>
         public bool DormantLeadersAll { get; set; }
 
         /// <summary>
-        ///     天候設定
+        ///     Weather settings
         /// </summary>
         public Weather Weather { get; set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public ScenarioGlobalData()
         {
-            // null動作が保証できれば削除
+            // null null Delete if operation can be guaranteed
             Rules = new ScenarioRules();
             Axis = new Alliance();
             Allies = new Alliance();
@@ -665,24 +665,24 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     処理待ちイベント
+    ///     Waiting event
     /// </summary>
     public class QueuedEvent
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     イベント発生国
+        ///     Country of origin of the event
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     イベントID
+        ///     event ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     イベント発生待ち時間
+        ///     Event occurrence wait time
         /// </summary>
         public int Hour { get; set; }
 
@@ -690,33 +690,33 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     ルール設定
+    ///     Rule setting
     /// </summary>
     public class ScenarioRules
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     外交を許可
+        ///     Allow diplomacy
         /// </summary>
         public bool AllowDiplomacy { get; set; }
 
         /// <summary>
-        ///     生産を許可
+        ///     Allow production
         /// </summary>
         public bool AllowProduction { get; set; }
 
         /// <summary>
-        ///     技術開発を許可
+        ///     Allow technology development
         /// </summary>
         public bool AllowTechnology { get; set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public ScenarioRules()
         {
@@ -730,22 +730,22 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region 天候
+    #region weather
 
     /// <summary>
-    ///     天候設定
+    ///     Weather settings
     /// </summary>
     public class Weather
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     固定設定
+        ///     Fixed setting
         /// </summary>
         public bool Static { get; set; }
 
         /// <summary>
-        ///     天候パターン
+        ///     Weather pattern
         /// </summary>
         public List<WeatherPattern> Patterns { get; } = new List<WeatherPattern>();
 
@@ -753,34 +753,34 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     天候パターン
+    ///     Weather pattern
     /// </summary>
     public class WeatherPattern
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     プロヴィンスリスト
+        ///     Provincial list
         /// </summary>
         public List<int> Provinces { get; } = new List<int>();
 
         /// <summary>
-        ///     中央プロヴィンス
+        ///     Central Providence
         /// </summary>
         public int Centre { get; set; }
 
         /// <summary>
-        ///     速度
+        ///     speed
         /// </summary>
         public int Speed { get; set; }
 
         /// <summary>
-        ///     方向
+        ///     direction
         /// </summary>
         public string Heading { get; set; }
 
@@ -788,53 +788,53 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     天候の種類
+    ///     Type of weather
     /// </summary>
     public enum WeatherType
     {
         None,
-        Clear, // 快晴
-        Frozen, // 氷点下
-        Raining, // 降雨
-        Snowing, // 降雪
-        Storm, // 暴風雨
-        Blizzard, // 吹雪
-        Muddy // 泥濘地
+        Clear, // Sunny
+        Frozen, // Below freezing
+        Raining, // rainfall
+        Snowing, // snowfall
+        Storm, // storm
+        Blizzard, // Snowstorm
+        Muddy // Muddy land
     }
 
     #endregion
 
-    #region マップ
+    #region map
 
     /// <summary>
-    ///     マップ設定
+    ///     Map settings
     /// </summary>
     public class MapSettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     全プロヴィンスが有効かどうか
+        ///     Whether all provisions are valid
         /// </summary>
         public bool All { get; set; } = true;
 
         /// <summary>
-        ///     有効プロヴィンス
+        ///     Effective provision
         /// </summary>
         public List<int> Yes { get; } = new List<int>();
 
         /// <summary>
-        ///     無効プロヴィンス
+        ///     Invalid Providence
         /// </summary>
         public List<int> No { get; } = new List<int>();
 
         /// <summary>
-        ///     マップの範囲(左上)
+        ///     Map range(( upper left )
         /// </summary>
         public MapPoint Top { get; set; }
 
         /// <summary>
-        ///     マップの範囲(右下)
+        ///     Map range (( Bottom right )
         /// </summary>
         public MapPoint Bottom { get; set; }
 
@@ -842,19 +842,19 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     マップの座標
+    ///     Map coordinates
     /// </summary>
     public class MapPoint
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     X座標
+        ///     X Coordinate
         /// </summary>
         public int X { get; set; }
 
         /// <summary>
-        ///     Y座標
+        ///     Y Coordinate
         /// </summary>
         public int Y { get; set; }
 
@@ -863,290 +863,290 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region プロヴィンス
+    #region Providence
 
     /// <summary>
-    ///     プロヴィンス設定
+    ///     Province settings
     /// </summary>
     public class ProvinceSettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     プロヴィンスID
+        ///     Providence ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     プロヴィンス名
+        ///     Providence name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     工場のサイズ
+        ///     Factory size
         /// </summary>
         public BuildingSize Ic { get; set; }
 
         /// <summary>
-        ///     インフラのサイズ
+        ///     Infrastructure size
         /// </summary>
         public BuildingSize Infrastructure { get; set; }
 
         /// <summary>
-        ///     陸上要塞のサイズ
+        ///     Land fortress size
         /// </summary>
         public BuildingSize LandFort { get; set; }
 
         /// <summary>
-        ///     沿岸要塞のサイズ
+        ///     Coastal fortress size
         /// </summary>
         public BuildingSize CoastalFort { get; set; }
 
         /// <summary>
-        ///     対空砲のサイズ
+        ///     Anti-aircraft gun size
         /// </summary>
         public BuildingSize AntiAir { get; set; }
 
         /// <summary>
-        ///     空軍基地のサイズ
+        ///     Air force base size
         /// </summary>
         public BuildingSize AirBase { get; set; }
 
         /// <summary>
-        ///     海軍基地のサイズ
+        ///     Naval base size
         /// </summary>
         public BuildingSize NavalBase { get; set; }
 
         /// <summary>
-        ///     レーダー基地のサイズ
+        ///     Radar base size
         /// </summary>
         public BuildingSize RadarStation { get; set; }
 
         /// <summary>
-        ///     原子炉のサイズ
+        ///     Reactor size
         /// </summary>
         public BuildingSize NuclearReactor { get; set; }
 
         /// <summary>
-        ///     ロケット試験場のサイズ
+        ///     Rocket test site size
         /// </summary>
         public BuildingSize RocketTest { get; set; }
 
         /// <summary>
-        ///     合成石油工場のサイズ
+        ///     Synthetic oil factory size
         /// </summary>
         public BuildingSize SyntheticOil { get; set; }
 
         /// <summary>
-        ///     合成素材工場のサイズ
+        ///     Synthetic material factory size
         /// </summary>
         public BuildingSize SyntheticRares { get; set; }
 
         /// <summary>
-        ///     原子力発電所のサイズ
+        ///     Nuclear power plant size
         /// </summary>
         public BuildingSize NuclearPower { get; set; }
 
         /// <summary>
-        ///     物資の備蓄量
+        ///     Stockpile of supplies
         /// </summary>
         public double SupplyPool { get; set; }
 
         /// <summary>
-        ///     石油の備蓄量
+        ///     Oil reserves
         /// </summary>
         public double OilPool { get; set; }
 
         /// <summary>
-        ///     エネルギーの備蓄量
+        ///     Energy stockpile
         /// </summary>
         public double EnergyPool { get; set; }
 
         /// <summary>
-        ///     金属の備蓄量
+        ///     Metal stockpile
         /// </summary>
         public double MetalPool { get; set; }
 
         /// <summary>
-        ///     希少資源の備蓄量
+        ///     Stock of rare resources
         /// </summary>
         public double RareMaterialsPool { get; set; }
 
         /// <summary>
-        ///     エネルギー産出量
+        ///     Energy output
         /// </summary>
         public double Energy { get; set; }
 
         /// <summary>
-        ///     最大エネルギー産出量
+        ///     Maximum energy output
         /// </summary>
         public double MaxEnergy { get; set; }
 
         /// <summary>
-        ///     金属産出量
+        ///     Metal output
         /// </summary>
         public double Metal { get; set; }
 
         /// <summary>
-        ///     最大金属産出量
+        ///     Maximum metal output
         /// </summary>
         public double MaxMetal { get; set; }
 
         /// <summary>
-        ///     希少資源産出量
+        ///     Rare resource output
         /// </summary>
         public double RareMaterials { get; set; }
 
         /// <summary>
-        ///     最大希少資源産出量
+        ///     Maximum scarce resource output
         /// </summary>
         public double MaxRareMaterials { get; set; }
 
         /// <summary>
-        ///     石油産出量
+        ///     Oil output
         /// </summary>
         public double Oil { get; set; }
 
         /// <summary>
-        ///     最大石油産出量
+        ///     Maximum oil output
         /// </summary>
         public double MaxOil { get; set; }
 
         /// <summary>
-        ///     人的資源
+        ///     Human resources
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     最大人的資源
+        ///     Maximum human resources
         /// </summary>
         public double MaxManpower { get; set; }
 
         /// <summary>
-        ///     勝利ポイント
+        ///     Victory points
         /// </summary>
         public int Vp { get; set; }
 
         /// <summary>
-        ///     反乱率
+        ///     Rebellion rate
         /// </summary>
         public double RevoltRisk { get; set; }
 
         /// <summary>
-        ///     天候
+        ///     weather
         /// </summary>
         public WeatherType Weather { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
-            NameKey, // プロヴィンス名キー
-            NameString, // プロヴィンス名文字列
-            Ic, // IC
-            MaxIc, // 最大IC
-            RelativeIc, // 相対IC
-            Infrastructure, // インフラ
-            MaxInfrastructure, // 最大インフラ
-            RelativeInfrastructure, // 相対インフラ
-            LandFort, // 陸上要塞
-            MaxLandFort, // 最大陸上要塞
-            RelativeLandFort, // 相対陸上要塞
-            CoastalFort, // 沿岸要塞
-            MaxCoastalFort, // 最大沿岸要塞
-            RelativeCoastalFort, // 相対沿岸要塞
-            AntiAir, // 対空砲
-            MaxAntiAir, // 最大対空砲
-            RelativeAntiAir, // 相対対空砲
-            AirBase, // 空軍基地
-            MaxAirBase, // 最大空軍基地
-            RelativeAirBase, // 相対空軍基地
-            NavalBase, // 海軍基地
-            MaxNavalBase, // 最大海軍基地
-            RelativeNavalBase, // 相対海軍基地
-            RadarStation, // レーダー基地
-            MaxRadarStation, // 最大レーダー基地
-            RelativeRadarStation, // 相対レーダー基地
-            NuclearReactor, // 原子炉
-            MaxNuclearReactor, // 最大原子炉
-            RelativeNuclearReactor, // 相対原子炉
-            RocketTest, // ロケット試験場
-            MaxRocketTest, // 最大ロケット試験場
-            RelativeRocketTest, // 相対ロケット試験場
-            SyntheticOil, // 合成石油工場
-            MaxSyntheticOil, // 最大合成石油工場
-            RelativeSyntheticOil, // 相対合成石油工場
-            SyntheticRares, // 合成素材工場
-            MaxSyntheticRares, // 最大合成素材工場
-            RelativeSyntheticRares, // 相対合成素材工場
-            NuclearPower, // 原子力発電所
-            MaxNuclearPower, // 最大原子力発電所
-            RelativeNuclearPower, // 相対原子力発電所
-            SupplyPool, // 物資備蓄量
-            OilPool, // 石油備蓄量
-            EnergyPool, // エネルギー備蓄量
-            MetalPool, // 金属備蓄量
-            RareMaterialsPool, // 希少資源備蓄量
-            Energy, // エネルギー産出量
-            MaxEnergy, // 最大エネルギー産出量
-            Metal, // 金属産出量
-            MaxMetal, // 最大金属産出量
-            RareMaterials, // 希少資源産出量
-            MaxRareMaterials, // 最大希少資源産出量
-            Oil, // 石油産出量
-            MaxOil, // 最大石油産出量
-            Manpower, // 人的資源
-            MaxManpower, // 最大人的資源
-            Vp, // 勝利ポイント
-            RevoltRisk // 反乱率
+            NameKey, // Province name key
+            NameString, // Providence name string
+            Ic, // I C
+            MaxIc, // maximum I C
+            RelativeIc, // relative I C
+            Infrastructure, // infrastructure
+            MaxInfrastructure, // Maximum infrastructure
+            RelativeInfrastructure, // Relative infrastructure
+            LandFort, // Land fortress
+            MaxLandFort, // Largest land fortress
+            RelativeLandFort, // Relative land fortress
+            CoastalFort, // Coastal fortress
+            MaxCoastalFort, // Largest coastal fortress
+            RelativeCoastalFort, // Relative coastal fortress
+            AntiAir, // Anti-aircraft gun
+            MaxAntiAir, // Maximum anti-aircraft gun
+            RelativeAntiAir, // Relative anti-aircraft gun
+            AirBase, // Air Force Base
+            MaxAirBase, // Largest air force base
+            RelativeAirBase, // Relative air force base
+            NavalBase, // Navy base
+            MaxNavalBase, // Largest naval base
+            RelativeNavalBase, // Relative naval base
+            RadarStation, // Radar base
+            MaxRadarStation, // Largest radar base
+            RelativeRadarStation, // Relative radar base
+            NuclearReactor, // Reactor
+            MaxNuclearReactor, // Largest reactor
+            RelativeNuclearReactor, // Relative reactor
+            RocketTest, // Rocket test site
+            MaxRocketTest, // Largest rocket test site
+            RelativeRocketTest, // Relative rocket test site
+            SyntheticOil, // Synthetic oil factory
+            MaxSyntheticOil, // Largest synthetic oil factory
+            RelativeSyntheticOil, // Relative synthetic oil factory
+            SyntheticRares, // Synthetic material factory
+            MaxSyntheticRares, // Largest synthetic material factory
+            RelativeSyntheticRares, // Relative synthetic material factory
+            NuclearPower, // Nuclear power plant
+            MaxNuclearPower, // Largest nuclear power plant
+            RelativeNuclearPower, // Relative nuclear power plant
+            SupplyPool, // Stock of supplies
+            OilPool, // Oil reserves
+            EnergyPool, // Energy reserve
+            MetalPool, // Metal reserve
+            RareMaterialsPool, // Rare resource stockpile
+            Energy, // Energy output
+            MaxEnergy, // Maximum energy output
+            Metal, // Metal output
+            MaxMetal, // Maximum metal output
+            RareMaterials, // Rare resource output
+            MaxRareMaterials, // Maximum scarce resource output
+            Oil, // Oil output
+            MaxOil, // Maximum oil output
+            Manpower, // Human resources
+            MaxManpower, // Maximum human resources
+            Vp, // Victory points
+            RevoltRisk // Rebellion rate
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     プロヴィンス設定が編集済みかどうかを取得する
+        ///     Get if the provision settings have been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -1154,7 +1154,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -1162,7 +1162,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -1178,27 +1178,27 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region 建物
+    #region building
 
     /// <summary>
-    ///     建物のサイズ
+    ///     Building size
     /// </summary>
     public class BuildingSize
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     相対サイズ
+        ///     Relative size
         /// </summary>
         public double Size { get; set; }
 
         /// <summary>
-        ///     最大サイズ
+        ///     Maximum size
         /// </summary>
         public double MaxSize { get; set; }
 
         /// <summary>
-        ///     現在のサイズ
+        ///     Current size
         /// </summary>
         public double CurrentSize { get; set; }
 
@@ -1206,94 +1206,94 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     生産中建物情報
+    ///     Building information in production
     /// </summary>
     public class BuildingDevelopment
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     名前
+        ///     name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     建物の種類
+        ///     Building type
         /// </summary>
         public BuildingType Type { get; set; }
 
         /// <summary>
-        ///     位置
+        ///     position
         /// </summary>
         public int Location { get; set; }
 
         /// <summary>
-        ///     必要IC
+        ///     requirement I C
         /// </summary>
         public double Cost { get; set; }
 
         /// <summary>
-        ///     必要人的資源
+        ///     Necessary human resources
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     完了予定日
+        ///     Completion date
         /// </summary>
         public GameDate Date { get; set; }
 
         /// <summary>
-        ///     進捗率増分
+        ///     Progress rate increment
         /// </summary>
         public double Progress { get; set; }
 
         /// <summary>
-        ///     総進捗率
+        ///     Total progress rate
         /// </summary>
         public double TotalProgress { get; set; }
 
         /// <summary>
-        ///     連続生産ボーナス
+        ///     Continuous production bonus
         /// </summary>
         public double GearingBonus { get; set; }
 
         /// <summary>
-        ///     連続生産数
+        ///     Continuous production
         /// </summary>
         public int Size { get; set; }
 
         /// <summary>
-        ///     生産完了数
+        ///     Number of completed production
         /// </summary>
         public int Done { get; set; }
 
         /// <summary>
-        ///     完了日数
+        ///     Days to complete
         /// </summary>
         public int Days { get; set; }
 
         /// <summary>
-        ///     最初の1単位の完了日数
+        ///     the first 1 Number of days to complete the unit
         /// </summary>
         public int DaysForFirst { get; set; }
 
         /// <summary>
-        ///     停止中
+        ///     Stopping
         /// </summary>
         public bool Halted { get; set; }
 
         /// <summary>
-        ///     完了時にキューを削除するかどうか
+        ///     Whether to delete the queue on completion
         /// </summary>
         public bool CloseWhenFinished { get; set; }
 
         /// <summary>
-        ///     詳細不明
+        ///     details unknown
         /// </summary>
         public bool WaitingForClosure { get; set; }
 
@@ -1301,129 +1301,129 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     建物の種類
+    ///     Building type
     /// </summary>
     public enum BuildingType
     {
         None,
-        Ic, // 工場
-        Infrastructure, // インフラ
-        CoastalFort, // 沿岸要塞
-        LandFort, // 陸上要塞
-        AntiAir, // 対空砲
-        AirBase, // 航空基地
-        NavalBase, // 海軍基地
-        RadarStation, // レーダー基地
-        NuclearReactor, // 原子炉
-        RocketTest, // ロケット試験場
-        SyntheticOil, // 合成石油工場
-        SyntheticRares, // 合成素材工場
-        NuclearPower // 原子力発電所
+        Ic, // plant
+        Infrastructure, // infrastructure
+        CoastalFort, // Coastal fortress
+        LandFort, // Land fortress
+        AntiAir, // Anti-aircraft gun
+        AirBase, // Air base
+        NavalBase, // Navy base
+        RadarStation, // Radar base
+        NuclearReactor, // Reactor
+        RocketTest, // Rocket test site
+        SyntheticOil, // Synthetic oil factory
+        SyntheticRares, // Synthetic material factory
+        NuclearPower // Nuclear power plant
     }
 
     #endregion
 
-    #region 外交
+    #region Diplomatic
 
     /// <summary>
-    ///     同盟設定
+    ///     Alliance setting
     /// </summary>
     public class Alliance
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     参加国
+        ///     Participating countries
         /// </summary>
         public List<Country> Participant { get; } = new List<Country>();
 
         /// <summary>
-        ///     同盟名
+        ///     Alliance name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     防衛同盟かどうか
+        ///     Whether it is a defense alliance
         /// </summary>
         public bool Defensive { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     参加国の編集済みフラグ
+        ///     Edited flags of participating countries
         /// </summary>
         private readonly HashSet<Country> _dirtyCountries = new HashSet<Country>();
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
             Type, // type
-            Id, // id
-            Name // 同盟名
+            Id, // id id
+            Name // Alliance name
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     対象国が編集済みかどうかを取得する
+        ///     Get if the target country has been edited
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyCountry(Country country)
         {
             return _dirtyCountries.Contains(country);
         }
 
         /// <summary>
-        ///     参加国の編集済みフラグを設定する
+        ///     Set edited flags for participating countries
         /// </summary>
-        /// <param name="country">対象国</param>
+        /// <param name="country">Target country</param>
         public void SetDirtyCountry(Country country)
         {
             _dirtyCountries.Add(country);
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -1439,118 +1439,118 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     戦争設定
+    ///     War setting
     /// </summary>
     public class War
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     開始日時
+        ///     Start date and time
         /// </summary>
         public GameDate StartDate { get; set; }
 
         /// <summary>
-        ///     終了日時
+        ///     End date and time
         /// </summary>
         public GameDate EndDate { get; set; }
 
         /// <summary>
-        ///     攻撃側参加国
+        ///     Attacking Participating Countries
         /// </summary>
         public Alliance Attackers { get; set; }
 
         /// <summary>
-        ///     防御側参加国
+        ///     Defender Participating Countries
         /// </summary>
         public Alliance Defenders { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     参加国の編集済みフラグ
+        ///     Edited flags of participating countries
         /// </summary>
         private readonly HashSet<Country> _dirtyCountries = new HashSet<Country>();
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
             Type, // type
-            Id, // id
-            StartYear, // 開始年
-            StartMonth, // 開始月
-            StartDay, // 開始日
-            EndYear, // 終了年
-            EndMonth, // 終了月
-            EndDay, // 終了日
-            AttackerType, // 攻撃側type
-            AttackerId, // 攻撃側id
-            DefenderType, // 防御側type
-            DefenderId // 防御側id
+            Id, // id id
+            StartYear, // Start year
+            StartMonth, // Start month
+            StartDay, // start date
+            EndYear, // End year
+            EndMonth, // End month
+            EndDay, // End date
+            AttackerType, // Attacker type
+            AttackerId, // Attacker id
+            DefenderType, // Defender type
+            DefenderId // Defender id
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     対象国が編集済みかどうかを取得する
+        ///     Get if the target country has been edited
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyCountry(Country country)
         {
             return _dirtyCountries.Contains(country);
         }
 
         /// <summary>
-        ///     参加国の編集済みフラグを設定する
+        ///     Set edited flags for participating countries
         /// </summary>
-        /// <param name="country">対象国</param>
+        /// <param name="country">Target country</param>
         public void SetDirtyCountry(Country country)
         {
             _dirtyCountries.Add(country);
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -1566,132 +1566,132 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     外交協定設定
+    ///     Diplomatic agreement setting
     /// </summary>
     public class Treaty
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     外交協定の種類
+        ///     Types of diplomatic agreements
         /// </summary>
         public TreatyType Type { get; set; }
 
         /// <summary>
-        ///     対象国1
+        ///     Target country 1
         /// </summary>
         public Country Country1 { get; set; }
 
         /// <summary>
-        ///     対象国2
+        ///     Target country 2
         /// </summary>
         public Country Country2 { get; set; }
 
         /// <summary>
-        ///     開始日時
+        ///     Start date and time
         /// </summary>
         public GameDate StartDate { get; set; }
 
         /// <summary>
-        ///     終了日時
+        ///     End date and time
         /// </summary>
         public GameDate EndDate { get; set; }
 
         /// <summary>
-        ///     資金
+        ///     Funding
         /// </summary>
         public double Money { get; set; }
 
         /// <summary>
-        ///     物資
+        ///     Supplies
         /// </summary>
         public double Supplies { get; set; }
 
         /// <summary>
-        ///     エネルギー
+        ///     energy
         /// </summary>
         public double Energy { get; set; }
 
         /// <summary>
-        ///     金属
+        ///     metal
         /// </summary>
         public double Metal { get; set; }
 
         /// <summary>
-        ///     希少資源
+        ///     Rare resources
         /// </summary>
         public double RareMaterials { get; set; }
 
         /// <summary>
-        ///     石油
+        ///     oil
         /// </summary>
         public double Oil { get; set; }
 
         /// <summary>
-        ///     取り消し可能かどうか
+        ///     Whether it can be canceled
         /// </summary>
         public bool Cancel { get; set; } = true;
 
         /// <summary>
-        ///     海外貿易かどうか
+        ///     Whether it is foreign trade
         /// </summary>
         public bool IsOverSea { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
             Type, // type
-            Id, // id
-            Country1, // 対象国1
-            Country2, // 対象国2
-            StartYear, // 開始年
-            StartMonth, // 開始月
-            StartDay, // 開始日
-            EndYear, // 終了年
-            EndMonth, // 終了月
-            EndDay, // 終了日
-            Money, // 資金
-            Supplies, // 物資
-            Energy, // エネルギー
-            Metal, // 金属
-            RareMaterials, // 希少資源
-            Oil, // 石油
-            Cancel // 取り消し可能かどうか
+            Id, // id id
+            Country1, // Target country 1
+            Country2, // Target country 2
+            StartYear, // Start year
+            StartMonth, // Start month
+            StartDay, // start date
+            EndYear, // End year
+            EndMonth, // End month
+            EndDay, // End date
+            Money, // Funding
+            Supplies, // Supplies
+            Energy, // energy
+            Metal, // metal
+            RareMaterials, // Rare resources
+            Oil, // oil
+            Cancel // Whether it can be canceled
         }
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     貿易内容の文字列を取得する
+        ///     Get the trade content string
         /// </summary>
-        /// <returns>貿易内容の文字列</returns>
+        /// <returns>Trade content string</returns>
         public string GetTradeString()
         {
             StringBuilder sb = new StringBuilder();
@@ -1726,38 +1726,38 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     外交協定設定が編集済みかどうかを取得する
+        ///     Get if the diplomatic agreement settings have been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -1765,7 +1765,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -1780,83 +1780,83 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     国家関係設定
+    ///     National relations setting
     /// </summary>
     public class Relation
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     相手国
+        ///     Partner country
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     関係値
+        ///     Relationship value
         /// </summary>
         public double Value { get; set; }
 
         /// <summary>
-        ///     通行許可
+        ///     Passage permission
         /// </summary>
         public bool Access { get; set; }
 
         /// <summary>
-        ///     独立保障期限
+        ///     Independence guarantee deadline
         /// </summary>
         public GameDate Guaranteed { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
-            Value, // 関係値
-            Access, // 通行許可
-            Guaranteed, // 独立保証
-            GuaranteedYear, // 独立保障期限年
-            GuaranteedMonth, // 独立保障期限月
-            GuaranteedDay // 独立保障期限日
+            Value, // Relationship value
+            Access, // Passage permission
+            Guaranteed, // Independent warranty
+            GuaranteedYear, // Independence guarantee expiration year
+            GuaranteedMonth, // Independence guarantee deadline month
+            GuaranteedDay // Independence guarantee deadline
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -1870,583 +1870,583 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     外交協定の種類
+    ///     Types of diplomatic agreements
     /// </summary>
     public enum TreatyType
     {
-        NonAggression, // 不可侵条約
-        Peace, // 休戦協定
-        Trade // 貿易
+        NonAggression, // Non-invasion treaty
+        Peace, // Armistice agreement
+        Trade // Trade
     }
 
     #endregion
 
-    #region 国家
+    #region Nation
 
     /// <summary>
-    ///     国家設定
+    ///     National setting
     /// </summary>
     public class CountrySettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     ファイル名
+        ///     file name
         /// </summary>
         public string FileName { get; set; }
 
         /// <summary>
-        ///     国タグ
+        ///     Country tag
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     国名
+        ///     Country name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     国旗の接尾辞
+        ///     Flag suffix
         /// </summary>
         public string FlagExt { get; set; }
 
         /// <summary>
-        ///     兄弟国
+        ///     Brotherhood
         /// </summary>
         public Country RegularId { get; set; }
 
         /// <summary>
-        ///     独立可能政体
+        ///     Independent regime
         /// </summary>
         public GovernmentType IntrinsicGovType { get; set; }
 
         /// <summary>
-        ///     宗主国
+        ///     Suzerainty
         /// </summary>
         public Country Master { get; set; }
 
         /// <summary>
-        ///     統帥権取得国
+        ///     Country of acquisition of commandership
         /// </summary>
         public Country Control { get; set; }
 
         /// <summary>
-        ///     好戦性
+        ///     Warlikeness
         /// </summary>
         public int Belligerence { get; set; }
 
         /// <summary>
-        ///     追加輸送能力
+        ///     Additional transport capacity
         /// </summary>
         public double ExtraTc { get; set; }
 
         /// <summary>
-        ///     国民不満度
+        ///     National dissatisfaction
         /// </summary>
         public double Dissent { get; set; }
 
         /// <summary>
-        ///     首都
+        ///     capital
         /// </summary>
         public int Capital { get; set; }
 
         /// <summary>
-        ///     TC補正
+        ///     TC correction
         /// </summary>
         public double TcModifier { get; set; }
 
         /// <summary>
-        ///     占領地TC補正
+        ///     Occupied territory TCcorrection
         /// </summary>
         public double TcOccupiedModifier { get; set; }
 
         /// <summary>
-        ///     消耗補正
+        ///     Consumption compensation
         /// </summary>
         public double AttritionModifier { get; set; }
 
         /// <summary>
-        ///     漸次撤退補正
+        ///     Gradual withdrawal correction
         /// </summary>
         public double TricklebackModifier { get; set; }
 
         /// <summary>
-        ///     最大強襲上陸補正
+        ///     Maximum assault landing correction
         /// </summary>
         public int MaxAmphibModifier { get; set; }
 
         /// <summary>
-        ///     補給補正
+        ///     Replenishment correction
         /// </summary>
         public double SupplyDistModifier { get; set; }
 
         /// <summary>
-        ///     修理補正
+        ///     Repair correction
         /// </summary>
         public double RepairModifier { get; set; }
 
         /// <summary>
-        ///     研究補正
+        ///     Research correction
         /// </summary>
         public double ResearchModifier { get; set; }
 
         /// <summary>
-        ///     平時IC補正
+        ///     Peacetime I C correction
         /// </summary>
         public double PeacetimeIcModifier { get; set; }
 
         /// <summary>
-        ///     戦時IC補正
+        ///     War time I C correction
         /// </summary>
         public double WartimeIcModifier { get; set; }
 
         /// <summary>
-        ///     工業力補正
+        ///     Industrial power correction
         /// </summary>
         public double IndustrialModifier { get; set; }
 
         /// <summary>
-        ///     対地防御補正
+        ///     Ground defense correction
         /// </summary>
         public double GroundDefEff { get; set; }
 
         /// <summary>
-        ///     AIファイル名
+        ///     AI file name
         /// </summary>
         public string AiFileName { get; set; }
 
         /// <summary>
-        ///     AI設定
+        ///     AI setting
         /// </summary>
         public AiSettings AiSettings { get; set; }
 
         /// <summary>
-        ///     人的資源
+        ///     Human resources
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     人的資源補正値
+        ///     Human resource correction value
         /// </summary>
         public double RelativeManpower { get; set; }
 
         /// <summary>
-        ///     エネルギー
+        ///     energy
         /// </summary>
         public double Energy { get; set; }
 
         /// <summary>
-        ///     金属
+        ///     metal
         /// </summary>
         public double Metal { get; set; }
 
         /// <summary>
-        ///     希少資源
+        ///     Rare resources
         /// </summary>
         public double RareMaterials { get; set; }
 
         /// <summary>
-        ///     石油
+        ///     oil
         /// </summary>
         public double Oil { get; set; }
 
         /// <summary>
-        ///     物資
+        ///     Supplies
         /// </summary>
         public double Supplies { get; set; }
 
         /// <summary>
-        ///     資金
+        ///     Funding
         /// </summary>
         public double Money { get; set; }
 
         /// <summary>
-        ///     輸送船団
+        ///     Transport fleet
         /// </summary>
         public int Transports { get; set; }
 
         /// <summary>
-        ///     護衛艦
+        ///     Escort ship
         /// </summary>
         public int Escorts { get; set; }
 
         /// <summary>
-        ///     核兵器
+        ///     nuclear weapons
         /// </summary>
         public int Nuke { get; set; }
 
         /// <summary>
-        ///     マップ外資源
+        ///     Off-map resources
         /// </summary>
         public ResourceSettings Offmap { get; set; }
 
         /// <summary>
-        ///     消費財IC比率
+        ///     Consumer goods I C ratio
         /// </summary>
         public double ConsumerSlider { get; set; }
 
         /// <summary>
-        ///     物資IC比率
+        ///     Supplies I C ratio
         /// </summary>
         public double SupplySlider { get; set; }
 
         /// <summary>
-        ///     生産IC比率
+        ///     production I C ratio
         /// </summary>
         public double ProductionSlider { get; set; }
 
         /// <summary>
-        ///     補充IC比率
+        ///     Replenishment I C ratio
         /// </summary>
         public double ReinforcementSlider { get; set; }
 
         /// <summary>
-        ///     外交関係
+        ///     Diplomatic relations
         /// </summary>
         public List<Relation> Relations { get; } = new List<Relation>();
 
         /// <summary>
-        ///     諜報情報
+        ///     Intelligence information
         /// </summary>
         public List<SpySettings> Intelligence { get; } = new List<SpySettings>();
 
         /// <summary>
-        ///     中核プロヴィンス
+        ///     Core Providence
         /// </summary>
         public List<int> NationalProvinces { get; } = new List<int>();
 
         /// <summary>
-        ///     保有プロヴィンス
+        ///     Owned Providence
         /// </summary>
         public List<int> OwnedProvinces { get; } = new List<int>();
 
         /// <summary>
-        ///     支配プロヴィンス
+        ///     Domination province
         /// </summary>
         public List<int> ControlledProvinces { get; } = new List<int>();
 
         /// <summary>
-        ///     領有権主張プロヴィンス
+        ///     Province claim
         /// </summary>
         public List<int> ClaimedProvinces { get; } = new List<int>();
 
         /// <summary>
-        ///     保有技術
+        ///     Owned technology
         /// </summary>
         public List<int> TechApps { get; } = new List<int>();
 
         /// <summary>
-        ///     青写真
+        ///     Blueprint
         /// </summary>
         public List<int> BluePrints { get; } = new List<int>();
 
         /// <summary>
-        ///     発明イベント
+        ///     Invention event
         /// </summary>
         public List<int> Inventions { get; } = new List<int>();
 
         /// <summary>
-        ///     無効技術
+        ///     Invalid technology
         /// </summary>
         public List<int> Deactivate { get; } = new List<int>();
 
         /// <summary>
-        ///     政策スライダー
+        ///     Policy slider
         /// </summary>
         public CountryPolicy Policy { get; set; }
 
         /// <summary>
-        ///     核兵器完成日時
+        ///     Date and time of completion of nuclear weapons
         /// </summary>
         public GameDate NukeDate { get; set; }
 
         /// <summary>
-        ///     国家元首
+        ///     Head of State
         /// </summary>
         public TypeId HeadOfState { get; set; }
 
         /// <summary>
-        ///     政府首班
+        ///     Government leaders
         /// </summary>
         public TypeId HeadOfGovernment { get; set; }
 
         /// <summary>
-        ///     外務大臣
+        ///     Minister of Foreign Affairs
         /// </summary>
         public TypeId ForeignMinister { get; set; }
 
         /// <summary>
-        ///     軍需大臣
+        ///     Minister of Munitions
         /// </summary>
         public TypeId ArmamentMinister { get; set; }
 
         /// <summary>
-        ///     内務大臣
+        ///     Minister of Interior
         /// </summary>
         public TypeId MinisterOfSecurity { get; set; }
 
         /// <summary>
-        ///     情報大臣
+        ///     Minister of Information
         /// </summary>
         public TypeId MinisterOfIntelligence { get; set; }
 
         /// <summary>
-        ///     統合参謀総長
+        ///     Chief of the Defense Staff
         /// </summary>
         public TypeId ChiefOfStaff { get; set; }
 
         /// <summary>
-        ///     陸軍総司令官
+        ///     Commander General of the Army
         /// </summary>
         public TypeId ChiefOfArmy { get; set; }
 
         /// <summary>
-        ///     海軍総司令官
+        ///     Navy Commander
         /// </summary>
         public TypeId ChiefOfNavy { get; set; }
 
         /// <summary>
-        ///     空軍総司令官
+        ///     Air Force Commander
         /// </summary>
         public TypeId ChiefOfAir { get; set; }
 
         /// <summary>
-        ///     国民の意識
+        ///     Public awareness
         /// </summary>
         public string NationalIdentity { get; set; }
 
         /// <summary>
-        ///     社会政策
+        ///     Social policy
         /// </summary>
         public string SocialPolicy { get; set; }
 
         /// <summary>
-        ///     国家の文化
+        ///     National culture
         /// </summary>
         public string NationalCulture { get; set; }
 
         /// <summary>
-        ///     休止指揮官
+        ///     Pause commander
         /// </summary>
         public List<int> DormantLeaders { get; } = new List<int>();
 
         /// <summary>
-        ///     休止閣僚
+        ///     Pause minister
         /// </summary>
         public List<int> DormantMinisters { get; } = new List<int>();
 
         /// <summary>
-        ///     休止研究機関
+        ///     Rest research institution
         /// </summary>
         public List<int> DormantTeams { get; } = new List<int>();
 
         /// <summary>
-        ///     抽出指揮官
+        ///     Extraction commander
         /// </summary>
         public List<int> StealLeaders { get; } = new List<int>();
 
         /// <summary>
-        ///     生産可能師団
+        ///     Producible division
         /// </summary>
         public Dictionary<UnitType, bool> AllowedDivisions { get; } = new Dictionary<UnitType, bool>();
 
         /// <summary>
-        ///     生産可能旅団
+        ///     Producible brigade
         /// </summary>
         public Dictionary<UnitType, bool> AllowedBrigades { get; } = new Dictionary<UnitType, bool>();
 
         /// <summary>
-        ///     輸送船団
+        ///     Transport fleet
         /// </summary>
         public List<Convoy> Convoys { get; } = new List<Convoy>();
 
         /// <summary>
-        ///     陸軍ユニット
+        ///     Army unit
         /// </summary>
         public List<Unit> LandUnits { get; } = new List<Unit>();
 
         /// <summary>
-        ///     海軍ユニット
+        ///     Navy unit
         /// </summary>
         public List<Unit> NavalUnits { get; } = new List<Unit>();
 
         /// <summary>
-        ///     空軍ユニット
+        ///     Air Force Unit
         /// </summary>
         public List<Unit> AirUnits { get; } = new List<Unit>();
 
         /// <summary>
-        ///     生産中師団
+        ///     During production division
         /// </summary>
         public List<DivisionDevelopment> DivisionDevelopments { get; } = new List<DivisionDevelopment>();
 
         /// <summary>
-        ///     生産中輸送船団
+        ///     Convoy in production
         /// </summary>
         public List<ConvoyDevelopment> ConvoyDevelopments { get; } = new List<ConvoyDevelopment>();
 
         /// <summary>
-        ///     生産中建物
+        ///     Building in production
         /// </summary>
         public List<BuildingDevelopment> BuildingDevelopments { get; } = new List<BuildingDevelopment>();
 
         /// <summary>
-        ///     陸軍師団
+        ///     Army Division
         /// </summary>
         public List<Division> LandDivisions { get; } = new List<Division>();
 
         /// <summary>
-        ///     海軍師団
+        ///     Navy Division
         /// </summary>
         public List<Division> NavalDivisions { get; } = new List<Division>();
 
         /// <summary>
-        ///     空軍師団
+        ///     Luftwaffe Division
         /// </summary>
         public List<Division> AirDivisions { get; } = new List<Division>();
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         /// <summary>
-        ///     保有技術の編集済みフラグ
+        ///     Edited flag of owned technology
         /// </summary>
         private readonly HashSet<int> _dirtyOwnedTechs = new HashSet<int>();
 
         /// <summary>
-        ///     青写真の編集済みフラグ
+        ///     Edited flag for blueprint
         /// </summary>
         private readonly HashSet<int> _dirtyBlueprints = new HashSet<int>();
 
         /// <summary>
-        ///     発明イベントの編集済みフラグ
+        ///     Edited flag for invention event
         /// </summary>
         private readonly HashSet<int> _dirtyInventions = new HashSet<int>();
 
         /// <summary>
-        ///     中核プロヴィンスの編集済みフラグ
+        ///     Edited flags for core provinces
         /// </summary>
         private readonly HashSet<int> _dirtyCoreProvinces = new HashSet<int>();
 
         /// <summary>
-        ///     保有プロヴィンスの編集済みフラグ
+        ///     Edited flag of possessed Providence
         /// </summary>
         private readonly HashSet<int> _dirtyOwnedProvinces = new HashSet<int>();
 
         /// <summary>
-        ///     支配プロヴィンスの編集済みフラグ
+        ///     Edited flag of dominance province
         /// </summary>
         private readonly HashSet<int> _dirtyControlledProvinces = new HashSet<int>();
 
         /// <summary>
-        ///     領有権主張プロヴィンスの編集済みフラグ
+        ///     Edited flag of territorial claim province
         /// </summary>
         private readonly HashSet<int> _dirtyClaimedProvinces = new HashSet<int>();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
-            NameKey, // 国名定義
-            NameString, // 国名文字列
-            FlagExt, // 国旗の接尾辞
-            RegularId, // 兄弟国
-            IntrinsicGovType, // 独立可能政体
-            Master, // 宗主国
-            Control, // 統帥権取得国
-            Belligerence, // 好戦性
-            ExtraTc, // 追加輸送能力
-            Dissent, // 国民不満度
-            Capital, // 首都
-            PeacetimeIcModifier, // 平時IC補正
-            WartimeIcModifier, // 戦時IC補正
-            IndustrialModifier, // 工業力補正
-            GroundDefEff, // 対地防御補正
-            AiFileName, // AIファイル名
-            Manpower, // 人的資源
-            RelativeManpower, // 人的資源補正値
-            Energy, // エネルギー
-            Metal, // 金属
-            RareMaterials, // 希少資源
-            Oil, // 石油
-            Supplies, // 物資
-            Money, // 資金
-            Transports, // 輸送船団
-            Escorts, // 護衛艦
-            OffmapIc, // マップ外工業力
-            OffmapManpower, // マップ外人的資源
-            OffmapEnergy, // マップ外エネルギー
-            OffmapMetal, // マップ外金属
-            OffmapRareMaterials, // マップ外希少資源
-            OffmapOil, // マップ外石油
-            OffmapSupplies, // マップ外物資
-            OffmapMoney, // マップ外資金
-            OffmapTransports, // マップ外輸送船団
-            OffmapEscorts, // マップ外護衛艦
-            ConsumerSlider, // 消費財IC比率
-            SupplySlider, // 物資IC比率
-            ProductionSlider, // 生産IC比率
-            ReinforcementSlider, // 補充IC比率
-            SliderYear, // スライダー移動可能年
-            SliderMonth, // スライダー移動可能月
-            SliderDay, // スライダー移動可能日
-            Democratic, // 民主的 - 独裁的
-            PoliticalLeft, // 政治的左派 - 政治的右派
-            Freedom, // 開放社会 - 閉鎖社会
-            FreeMarket, // 自由経済 - 中央計画経済
-            ProfessionalArmy, // 常備軍 - 徴兵軍
-            DefenseLobby, // タカ派 - ハト派
-            Interventionism, // 介入主義 - 孤立主義
-            Nuke, // 核兵器
-            NukeYear, // 核兵器生産年
-            NukeMonth, // 核兵器生産月
-            NukeDay, // 核兵器生産日
-            HeadOfStateType, // 国家元首のtype
-            HeadOfGovernmentType, // 政府首班のtype
-            ForeignMinisterType, // 外務大臣のtype
-            ArmamentMinisterType, // 軍需大臣のtype
-            MinisterOfSecurityType, // 内務大臣のtype
-            MinisterOfIntelligenceType, // 情報大臣のtype
-            ChiefOfStaffType, // 統合参謀総長のtype
-            ChiefOfArmyType, // 陸軍総司令官のtype
-            ChiefOfNavyType, // 海軍総司令官のtype
-            ChiefOfAirType, // 空軍総司令官のtype
-            HeadOfStateId, // 国家元首のid
-            HeadOfGovernmentId, // 政府首班のid
-            ForeignMinisterId, // 外務大臣のid
-            ArmamentMinisterId, // 軍需大臣のid
-            MinisterOfSecurityId, // 内務大臣のid
-            MinisterOfIntelligenceId, // 情報大臣のid
-            ChiefOfStaffId, // 統合参謀総長のid
-            ChiefOfArmyId, // 陸軍総司令官のid
-            ChiefOfNavyId, // 海軍総司令官のid
-            ChiefOfAirId // 空軍総司令官のid
+            NameKey, // Country name definition
+            NameString, // Country name string
+            FlagExt, // Flag suffix
+            RegularId, // Brotherhood
+            IntrinsicGovType, // Independent regime
+            Master, // Suzerainty
+            Control, // Country of acquisition of commandership
+            Belligerence, // Warlikeness
+            ExtraTc, // Additional transport capacity
+            Dissent, // National dissatisfaction
+            Capital, // capital
+            PeacetimeIcModifier, // Normal time I C correction
+            WartimeIcModifier, // War time I C correction
+            IndustrialModifier, // Industrial power correction
+            GroundDefEff, // Ground defense correction
+            AiFileName, // AI file name
+            Manpower, // Human resources
+            RelativeManpower, // Human resource correction value
+            Energy, // energy
+            Metal, // metal
+            RareMaterials, // Rare resources
+            Oil, // oil
+            Supplies, // Supplies
+            Money, // Funding
+            Transports, // Transport fleet
+            Escorts, // Escort ship
+            OffmapIc, // Off-map industrial strength
+            OffmapManpower, // Foreign resources on the map
+            OffmapEnergy, // Off-map energy
+            OffmapMetal, // Off-map metal
+            OffmapRareMaterials, // Rare resources off the map
+            OffmapOil, // Off-map oil
+            OffmapSupplies, // Map foreign goods
+            OffmapMoney, // Off-map funds
+            OffmapTransports, // Off-map convoy
+            OffmapEscorts, // Off-map escort ship
+            ConsumerSlider, // Consumer goods I C ratio
+            SupplySlider, // Supplies I C ratio
+            ProductionSlider, // production I C ratio
+            ReinforcementSlider, // Replenishment I C ratio
+            SliderYear, // Slider movable year
+            SliderMonth, // Slider movable month
+            SliderDay, // Slider movable date
+            Democratic, // Democratic ――――Dictatorship
+            PoliticalLeft, // Political left ―――― Political right
+            Freedom, // Open society ―――― Closed society
+            FreeMarket, // Free economy ―――― Central planned economy
+            ProfessionalArmy, // Standing army ―――― Recruitment army
+            DefenseLobby, // Taka faction ―――― Pigeon faction
+            Interventionism, // Interventionism ―――― Isolation
+            Nuke, // nuclear weapons
+            NukeYear, // Year of nuclear weapon production
+            NukeMonth, // Nuclear weapon production month
+            NukeDay, // Nuclear weapon production date
+            HeadOfStateType, // Of the head of state type
+            HeadOfGovernmentType, // Of the government leaders type
+            ForeignMinisterType, // Foreign Minister type
+            ArmamentMinisterType, // Of the Minister of Military Demand type
+            MinisterOfSecurityType, // Of the Minister of Interior type
+            MinisterOfIntelligenceType, // Information Minister type
+            ChiefOfStaffType, // Of the Integrated Chief of Staff type
+            ChiefOfArmyType, // Commander General of the Army type
+            ChiefOfNavyType, // Of the Navy Commander type
+            ChiefOfAirType, // Air Force General Commander type
+            HeadOfStateId, // Of the head of state id id
+            HeadOfGovernmentId, // Of the government leaders id id
+            ForeignMinisterId, // Foreign Minister id id
+            ArmamentMinisterId, // Of the Minister of Military Demand id id
+            MinisterOfSecurityId, // Of the Minister of Interior id id
+            MinisterOfIntelligenceId, // Information Minister id id
+            ChiefOfStaffId, // Of the Integrated Chief of Staff id id
+            ChiefOfArmyId, // Of the Army General Commanderid id
+            ChiefOfNavyId, // Of the Navy Commander id
+            ChiefOfAirId // Air Force General Commander id
         }
 
         #endregion
 
-        #region typeとidの組操作
+        #region type When id Group operation
 
         /// <summary>
-        ///     新規idを取得する
+        ///     New id id To get
         /// </summary>
-        /// <returns>新規id</returns>
+        /// <returns>New id</returns>
         public TypeId GetNewUnitTypeId()
         {
             return Scenarios.GetNewTypeId(
@@ -2455,31 +2455,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     国家設定が編集済みかどうかを取得する
+        ///     Get if the national settings have been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -2487,7 +2487,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -2495,19 +2495,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の保有技術が編集済みかどうかを取得する
+        ///     Get if the target technology has been edited
         /// </summary>
-        /// <param name="id">技術ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">Technology ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyOwnedTech(int id)
         {
             return _dirtyOwnedTechs.Contains(id);
         }
 
         /// <summary>
-        ///     保有技術の編集済みフラグを設定する
+        ///     Set the edited flag of the possessed technology
         /// </summary>
-        /// <param name="id">技術ID</param>
+        /// <param name="id">Technology ID</param>
         public void SetDirtyOwnedTech(int id)
         {
             _dirtyOwnedTechs.Add(id);
@@ -2515,19 +2515,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の青写真が編集済みかどうかを取得する
+        ///     Get if the target blueprint has been edited
         /// </summary>
-        /// <param name="id">技術ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">Technology ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyBlueprint(int id)
         {
             return _dirtyBlueprints.Contains(id);
         }
 
         /// <summary>
-        ///     青写真の編集済みフラグを設定する
+        ///     Set the edited flag for blueprints
         /// </summary>
-        /// <param name="id">技術ID</param>
+        /// <param name="id">Technology ID</param>
         public void SetDirtyBlueprint(int id)
         {
             _dirtyBlueprints.Add(id);
@@ -2535,19 +2535,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の発明イベントが編集済みかどうかを取得する
+        ///     Get if the subject invention event has been edited
         /// </summary>
-        /// <param name="id">イベントID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">event ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyInvention(int id)
         {
             return _dirtyInventions.Contains(id);
         }
 
         /// <summary>
-        ///     発明イベントの編集済みフラグを設定する
+        ///     Set the edited flag for an invention event
         /// </summary>
-        /// <param name="id">イベントID</param>
+        /// <param name="id">event ID</param>
         public void SetDirtyInvention(int id)
         {
             _dirtyInventions.Add(id);
@@ -2555,19 +2555,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の中核プロヴィンスが編集済みかどうかを取得する
+        ///     Get if the target core province has been edited
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyCoreProvinces(int id)
         {
             return _dirtyCoreProvinces.Contains(id);
         }
 
         /// <summary>
-        ///     中核プロヴィンスの編集済みフラグを設定する
+        ///     Set edited flags for core provinces
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         public void SetDirtyCoreProvinces(int id)
         {
             _dirtyCoreProvinces.Add(id);
@@ -2575,19 +2575,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の保有プロヴィンスが編集済みかどうかを取得する
+        ///     Get if the target's possessed province has been edited
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyOwnedProvinces(int id)
         {
             return _dirtyOwnedProvinces.Contains(id);
         }
 
         /// <summary>
-        ///     保有プロヴィンスの編集済みフラグを設定する
+        ///     Set the edited flag for your province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         public void SetDirtyOwnedProvinces(int id)
         {
             _dirtyOwnedProvinces.Add(id);
@@ -2595,19 +2595,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の支配プロヴィンスが編集済みかどうかを取得する
+        ///     Gets whether the target's dominance province has been edited
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyControlledProvinces(int id)
         {
             return _dirtyControlledProvinces.Contains(id);
         }
 
         /// <summary>
-        ///     支配プロヴィンスの編集済みフラグを設定する
+        ///     Set the edited flag for the dominant province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         public void SetDirtyControlledProvinces(int id)
         {
             _dirtyControlledProvinces.Add(id);
@@ -2615,19 +2615,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象の領有権主張プロヴィンスが編集済みかどうかを取得する
+        ///     Gets whether the subject's claim of sovereignty province has been edited
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirtyClaimedProvinces(int id)
         {
             return _dirtyClaimedProvinces.Contains(id);
         }
 
         /// <summary>
-        ///     領有権主張プロヴィンスの編集済みフラグを設定する
+        ///     Set Edited Flags for Province Claims
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         public void SetDirtyClaimedProvinces(int id)
         {
             _dirtyClaimedProvinces.Add(id);
@@ -2635,7 +2635,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -2705,14 +2705,14 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     AI設定
+    ///     AI setting
     /// </summary>
     public class AiSettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     ローカルフラグリスト
+        ///     Local flag list
         /// </summary>
         public Dictionary<string, string> Flags { get; set; }
 
@@ -2720,59 +2720,59 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     資源設定
+    ///     Resource setting
     /// </summary>
     public class ResourceSettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     工業力
+        ///     Industrial power
         /// </summary>
         public double Ic { get; set; }
 
         /// <summary>
-        ///     人的資源
+        ///     Human resources
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     エネルギー
+        ///     energy
         /// </summary>
         public double Energy { get; set; }
 
         /// <summary>
-        ///     金属
+        ///     metal
         /// </summary>
         public double Metal { get; set; }
 
         /// <summary>
-        ///     希少資源
+        ///     Rare resources
         /// </summary>
         public double RareMaterials { get; set; }
 
         /// <summary>
-        ///     石油
+        ///     oil
         /// </summary>
         public double Oil { get; set; }
 
         /// <summary>
-        ///     物資
+        ///     Supplies
         /// </summary>
         public double Supplies { get; set; }
 
         /// <summary>
-        ///     資金
+        ///     Funding
         /// </summary>
         public double Money { get; set; }
 
         /// <summary>
-        ///     輸送船団
+        ///     Transport fleet
         /// </summary>
         public int Transports { get; set; }
 
         /// <summary>
-        ///     護衛艦
+        ///     Escort ship
         /// </summary>
         public int Escorts { get; set; }
 
@@ -2780,68 +2780,68 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     諜報設定
+    ///     Intelligence settings
     /// </summary>
     public class SpySettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     相手国
+        ///     Partner country
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     スパイの数
+        ///     Number of spies
         /// </summary>
         public int Spies { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
-            Spies // スパイの数
+            Spies // Number of spies
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -2855,49 +2855,49 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     政策スライダー
+    ///     Policy slider
     /// </summary>
     public class CountryPolicy
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     スライダー移動可能日時
+        ///     Slider movable date and time
         /// </summary>
         public GameDate Date { get; set; }
 
         /// <summary>
-        ///     民主的 - 独裁的
+        ///     Democratic ―――― Dictatorship
         /// </summary>
         public int Democratic { get; set; } = 5;
 
         /// <summary>
-        ///     政治的左派 - 政治的右派
+        ///     Political left ―――― Political right
         /// </summary>
         public int PoliticalLeft { get; set; } = 5;
 
         /// <summary>
-        ///     開放社会 - 閉鎖社会
+        ///     Open society ―――― Closed society
         /// </summary>
         public int Freedom { get; set; } = 5;
 
         /// <summary>
-        ///     自由経済 - 中央計画経済
+        ///     Free economy ―――― Central planned economy
         /// </summary>
         public int FreeMarket { get; set; } = 5;
 
         /// <summary>
-        ///     常備軍 - 徴兵軍 (DH Fullでは動員 - 復員)
+        ///     Standing army ―――― Recruitment army (DH Full Then mobilize ―――― Reinstatement )
         /// </summary>
         public int ProfessionalArmy { get; set; } = 5;
 
         /// <summary>
-        ///     タカ派 - ハト派
+        ///     Taka faction ―――― Dove
         /// </summary>
         public int DefenseLobby { get; set; } = 5;
 
         /// <summary>
-        ///     介入主義 - 孤立主義
+        ///     Interventionism―――― Isolationism
         /// </summary>
         public int Interventionism { get; set; } = 5;
 
@@ -2905,184 +2905,184 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     政体
+    ///     Polity
     /// </summary>
     public enum GovernmentType
     {
         None,
-        Nazi, // 国家社会主義
-        Fascist, // ファシズム
-        PaternalAutocrat, // 専制独裁
-        SocialConservative, // 社会保守派
-        MarketLiberal, // 自由経済派
-        SocialLiberal, // 社会自由派
-        SocialDemocrat, // 社会民主派
-        LeftWingRadical, // 急進的左翼
-        Leninist, // レーニン主義
-        Stalinist // スターリン主義
+        Nazi, // State socialism
+        Fascist, // fascism
+        PaternalAutocrat, // Tyranny
+        SocialConservative, // Social conservatives
+        MarketLiberal, // Free economics
+        SocialLiberal, // Social liberty
+        SocialDemocrat, // Social democracy
+        LeftWingRadical, // Radical left wing
+        Leninist, // Leninism
+        Stalinist // Stalinism
     }
 
     #endregion
 
-    #region ユニット
+    #region unit
 
     /// <summary>
-    ///     ユニット
+    ///     unit
     /// </summary>
     public class Unit
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     ユニット名
+        ///     Unit name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     兵科
+        ///     Army
         /// </summary>
         public Branch Branch { get; set; }
 
         /// <summary>
-        ///     統帥国
+        ///     Commander's country
         /// </summary>
         public Country Control { get; set; }
 
         /// <summary>
-        ///     指揮官
+        ///     Commander
         /// </summary>
         public int Leader { get; set; }
 
         /// <summary>
-        ///     現在位置
+        ///     present location
         /// </summary>
         public int Location { get; set; }
 
         /// <summary>
-        ///     直前の位置
+        ///     Immediately before position
         /// </summary>
         public int PrevProv { get; set; }
 
         /// <summary>
-        ///     基準位置
+        ///     Reference position
         /// </summary>
         public int Home { get; set; }
 
         /// <summary>
-        ///     所属基地
+        ///     Affiliation base
         /// </summary>
         public int Base { get; set; }
 
         /// <summary>
-        ///     塹壕レベル
+        ///     塹 壕 level
         /// </summary>
         public double DigIn { get; set; }
 
         /// <summary>
-        ///     士気
+        ///     morale
         /// </summary>
         public double Morale { get; set; }
 
         /// <summary>
-        ///     任務
+        ///     mission
         /// </summary>
         public Mission Mission { get; set; }
 
         /// <summary>
-        ///     指定日時
+        ///     Specified date and time
         /// </summary>
         public GameDate Date { get; set; }
 
         /// <summary>
-        ///     development (詳細不明)
+        ///     development ( details unknown )
         /// </summary>
         public bool Development { get; set; } = true;
 
         /// <summary>
-        ///     移動完了日時
+        ///     Move completion date and time
         /// </summary>
         public GameDate MoveTime { get; set; }
 
         /// <summary>
-        ///     移動経路
+        ///     Travel route
         /// </summary>
         public List<int> Movement { get; } = new List<int>();
 
         /// <summary>
-        ///     攻撃日時
+        ///     Attack date and time
         /// </summary>
         public GameDate AttackDate { get; set; }
 
         /// <summary>
-        ///     上陸中
+        ///     During landing
         /// </summary>
         public bool Invasion { get; set; }
 
         /// <summary>
-        ///     上陸先
+        ///     Landing destination
         /// </summary>
         public int Target { get; set; }
 
         /// <summary>
-        ///     死守命令
+        ///     Death guard order
         /// </summary>
         public bool StandGround { get; set; }
 
         /// <summary>
-        ///     焦土作戦
+        ///     Burnt soil operation
         /// </summary>
         public bool ScorchGround { get; set; }
 
         /// <summary>
-        ///     優先
+        ///     priority
         /// </summary>
         public bool Prioritized { get; set; }
 
         /// <summary>
-        ///     改良可能
+        ///     Can be improved
         /// </summary>
         public bool CanUpgrade { get; set; }
 
         /// <summary>
-        ///     補充可能
+        ///     Can be replenished
         /// </summary>
         public bool CanReinforcement { get; set; }
 
         /// <summary>
-        ///     構成師団
+        ///     Composition division
         /// </summary>
         public List<Division> Divisions { get; } = new List<Division>();
 
         /// <summary>
-        ///     搭載ユニット
+        ///     On-board unit
         /// </summary>
         public List<Unit> LandUnits { get; } = new List<Unit>();
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
@@ -3121,19 +3121,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Unit()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元のユニット</param>
+        /// <param name="original">The unit from which it was duplicated</param>
         public Unit(Unit original)
         {
             Id = Scenarios.GetNewTypeId(original.Id.Type, original.Id.Id);
@@ -3184,10 +3184,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region typeとidの組操作
+        #region type When id Group operation
 
         /// <summary>
-        ///     typeとidの組を削除する
+        ///     type When id Delete the pair of
         /// </summary>
         public void RemoveTypeId()
         {
@@ -3204,31 +3204,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     プロヴィンス設定が編集済みかどうかを取得する
+        ///     Get if the provision settings have been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -3236,7 +3236,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -3244,7 +3244,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -3268,7 +3268,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -3296,370 +3296,370 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region 師団
+    #region Division
 
     /// <summary>
-    ///     師団
+    ///     Division
     /// </summary>
     public class Division
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     師団名
+        ///     Division name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     兵科
+        ///     Army
         /// </summary>
         public Branch Branch { get; set; }
 
         /// <summary>
-        ///     ユニット種類
+        ///     Unit type
         /// </summary>
         public UnitType Type { get; set; }
 
         /// <summary>
-        ///     モデル番号
+        ///     Model number
         /// </summary>
         public int Model { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     核兵器搭載
+        ///     Equipped with nuclear weapons
         /// </summary>
         public bool Nuke { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra1 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra2 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra3 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra4 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra5 { get; set; }
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel1 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel2 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel3 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel4 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel5 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     最大戦力
+        ///     Maximum strength
         /// </summary>
         public double MaxStrength { get; set; }
 
         /// <summary>
-        ///     戦力
+        ///     Strength
         /// </summary>
         public double Strength { get; set; }
 
         /// <summary>
-        ///     最大組織率
+        ///     Maximum organization rate
         /// </summary>
         public double MaxOrganisation { get; set; }
 
         /// <summary>
-        ///     組織率
+        ///     Organization rate
         /// </summary>
         public double Organisation { get; set; }
 
         /// <summary>
-        ///     士気
+        ///     morale
         /// </summary>
         public double Morale { get; set; }
 
         /// <summary>
-        ///     経験値
+        ///     Experience point
         /// </summary>
         public double Experience { get; set; }
 
         /// <summary>
-        ///     改良進捗率
+        ///     Improvement progress rate
         /// </summary>
         public double UpgradeProgress { get; set; }
 
         /// <summary>
-        ///     再配置先プロヴィンス
+        ///     Relocation destination Providence
         /// </summary>
         public int RedeployTarget { get; set; }
 
         /// <summary>
-        ///     再配置先ユニット名
+        ///     Relocation destination unit name
         /// </summary>
         public string RedeployUnitName { get; set; }
 
         /// <summary>
-        ///     再配置先ユニットID
+        ///     Relocation destination unit ID
         /// </summary>
         public TypeId RedeployUnitId { get; set; }
 
         /// <summary>
-        ///     攻勢開始日時
+        ///     Offensive start date and time
         /// </summary>
         public GameDate Offensive { get; set; }
 
         /// <summary>
-        ///     物資
+        ///     Supplies
         /// </summary>
         public double Supplies { get; set; }
 
         /// <summary>
-        ///     燃料
+        ///     fuel
         /// </summary>
         public double Fuel { get; set; }
 
         /// <summary>
-        ///     最大物資
+        ///     Largest supplies
         /// </summary>
         public double MaxSupplies { get; set; }
 
         /// <summary>
-        ///     最大燃料
+        ///     Maximum fuel
         /// </summary>
         public double MaxFuel { get; set; }
 
         /// <summary>
-        ///     物資消費量
+        ///     Material consumption
         /// </summary>
         public double SupplyConsumption { get; set; }
 
         /// <summary>
-        ///     燃料消費量
+        ///     Fuel consumption
         /// </summary>
         public double FuelConsumption { get; set; }
 
         /// <summary>
-        ///     最大速度
+        ///     Maximum speed
         /// </summary>
         public double MaxSpeed { get; set; }
 
         /// <summary>
-        ///     砲兵速度キャップ
+        ///     Artillery speed cap
         /// </summary>
         public double SpeedCapArt { get; set; }
 
         /// <summary>
-        ///     工兵速度キャップ
+        ///     Engineer speed cap
         /// </summary>
         public double SpeedCapEng { get; set; }
 
         /// <summary>
-        ///     対空速度キャップ
+        ///     Anti-aircraft speed cap
         /// </summary>
         public double SpeedCapAa { get; set; }
 
         /// <summary>
-        ///     対戦車速度キャップ
+        ///     Anti-tank speed cap
         /// </summary>
         public double SpeedCapAt { get; set; }
 
         /// <summary>
-        ///     輸送負荷
+        ///     Transport load
         /// </summary>
         public double TransportWeight { get; set; }
 
         /// <summary>
-        ///     輸送能力
+        ///     Transport capacity
         /// </summary>
         public double TransportCapability { get; set; }
 
         /// <summary>
-        ///     防御力
+        ///     Defense power
         /// </summary>
         public double Defensiveness { get; set; }
 
         /// <summary>
-        ///     耐久力
+        ///     Endurance
         /// </summary>
         public double Toughness { get; set; }
 
         /// <summary>
-        ///     脆弱性
+        ///     Vulnerability
         /// </summary>
         public double Softness { get; set; }
 
         /// <summary>
-        ///     制圧力
+        ///     Control
         /// </summary>
         public double Suppression { get; set; }
 
         /// <summary>
-        ///     対艦/対潜防御力
+        ///     Anti-ship / / Anti-submarine defense
         /// </summary>
         public double SeaDefense { get; set; }
 
         /// <summary>
-        ///     対地防御力
+        ///     Ground defense
         /// </summary>
         public double SurfaceDefence { get; set; }
 
         /// <summary>
-        ///     対空防御力
+        ///     Anti-aircraft defense
         /// </summary>
         public double AirDefence { get; set; }
 
         /// <summary>
-        ///     対人攻撃力
+        ///     Interpersonal attack power
         /// </summary>
         public double SoftAttack { get; set; }
 
         /// <summary>
-        ///     対甲攻撃力
+        ///     Anti-instep attack power
         /// </summary>
         public double HardAttack { get; set; }
 
         /// <summary>
-        ///     対艦攻撃力(海軍)
+        ///     Anti-ship attack power (( Navy )
         /// </summary>
         public double SeaAttack { get; set; }
 
         /// <summary>
-        ///     対潜攻撃力
+        ///     Anti-submarine attack power
         /// </summary>
         public double SubAttack { get; set; }
 
         /// <summary>
-        ///     通商破壊力
+        ///     Commerce raiding power
         /// </summary>
         public double ConvoyAttack { get; set; }
 
         /// <summary>
-        ///     湾岸攻撃力
+        ///     Gulf attack power
         /// </summary>
         public double ShoreBombardment { get; set; }
 
         /// <summary>
-        ///     対空攻撃力
+        ///     Anti-aircraft attack power
         /// </summary>
         public double AirAttack { get; set; }
 
         /// <summary>
-        ///     戦略爆撃攻撃力
+        ///     Strategic bombing attack power
         /// </summary>
         public double StrategicAttack { get; set; }
 
         /// <summary>
-        ///     対艦攻撃力
+        ///     Anti-ship attack power
         /// </summary>
         public double NavalAttack { get; set; }
 
         /// <summary>
-        ///     砲撃能力
+        ///     Shooting ability
         /// </summary>
         public double ArtilleryBombardment { get; set; }
 
         /// <summary>
-        ///     対艦索敵能力
+        ///     Anti-ship search ability
         /// </summary>
         public double SurfaceDetection { get; set; }
 
         /// <summary>
-        ///     対空索敵能力
+        ///     Anti-aircraft search ability
         /// </summary>
         public double AirDetection { get; set; }
 
         /// <summary>
-        ///     対潜索敵能力
+        ///     Anti-submarine enemy ability
         /// </summary>
         public double SubDetection { get; set; }
 
         /// <summary>
-        ///     可視性
+        ///     Visibility
         /// </summary>
         public double Visibility { get; set; }
 
         /// <summary>
-        ///     航続距離
+        ///     Cruising distance
         /// </summary>
         public double Range { get; set; }
 
         /// <summary>
-        ///     射程距離
+        ///     Range distance
         /// </summary>
         public double Distance { get; set; }
 
         /// <summary>
-        ///     移動距離
+        ///     Moving distance
         /// </summary>
         public double Travelled { get; set; }
 
         /// <summary>
-        ///     移動不可
+        ///     Cannot move
         /// </summary>
         public bool Locked { get; set; }
 
         /// <summary>
-        ///     休止状態
+        ///     Hibernate
         /// </summary>
         public bool Dormant { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     未定義のモデル番号
+        ///     Undefined model number
         /// </summary>
         public const int UndefinedModelNo = -1;
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
@@ -3733,19 +3733,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Division()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元の師団</param>
+        /// <param name="original">Original division</param>
         public Division(Division original)
         {
             Id = Scenarios.GetNewTypeId(original.Id.Type, original.Id.Id);
@@ -3824,10 +3824,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region typeとidの組操作
+        #region type When id Group operation
 
         /// <summary>
-        ///     typeとidの組を削除する
+        ///     type When id Delete the pair of
         /// </summary>
         public void RemoveTypeId()
         {
@@ -3837,31 +3837,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     プロヴィンス設定が編集済みかどうかを取得する
+        ///     Get if the provision settings have been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -3869,7 +3869,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -3877,7 +3877,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -3889,7 +3889,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -3904,187 +3904,187 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     生産中師団
+    ///     During production division
     /// </summary>
     public class DivisionDevelopment
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     師団名
+        ///     Division name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     必要IC
+        ///     requirement I C
         /// </summary>
         public double Cost { get; set; }
 
         /// <summary>
-        ///     必要人的資源
+        ///     Necessary human resources
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     unitcost (詳細不明)
+        ///     unitcost ( details unknown )
         /// </summary>
         public bool UnitCost { get; set; } = true;
 
         /// <summary>
-        ///     new_model (詳細不明)
+        ///     new_model ( details unknown )
         /// </summary>
         public bool NewModel { get; set; } = true;
 
         /// <summary>
-        ///     完了予定日
+        ///     Completion date
         /// </summary>
         public GameDate Date { get; set; }
 
         /// <summary>
-        ///     進捗率増分
+        ///     Progress rate increment
         /// </summary>
         public double Progress { get; set; }
 
         /// <summary>
-        ///     総進捗率
+        ///     Total progress rate
         /// </summary>
         public double TotalProgress { get; set; }
 
         /// <summary>
-        ///     連続生産ボーナス
+        ///     Continuous production bonus
         /// </summary>
         public double GearingBonus { get; set; }
 
         /// <summary>
-        ///     総生産数
+        ///     Total production number
         /// </summary>
         public int Size { get; set; }
 
         /// <summary>
-        ///     生産完了数
+        ///     Number of completed production
         /// </summary>
         public int Done { get; set; }
 
         /// <summary>
-        ///     完了日数
+        ///     Days to complete
         /// </summary>
         public int Days { get; set; }
 
         /// <summary>
-        ///     1単位の完了日数
+        ///     1 Number of days to complete the unit
         /// </summary>
         public int DaysForFirst { get; set; }
 
         /// <summary>
-        ///     停止中
+        ///     Stopping
         /// </summary>
         public bool Halted { get; set; }
 
         /// <summary>
-        ///     完了時にキューを削除するかどうか
+        ///     Whether to delete the queue on completion
         /// </summary>
         public bool CloseWhenFinished { get; set; }
 
         /// <summary>
-        ///     waitingforclosure (詳細不明)
+        ///     waitingforclosure (waitforclosure ( details unknown )
         /// </summary>
         public bool WaitingForClosure { get; set; }
 
         /// <summary>
-        ///     生産ライン準備時間
+        ///     Production line preparation time
         /// </summary>
         public double RetoolingTime { get; set; }
 
         /// <summary>
-        ///     ユニット種類
+        ///     Unit type
         /// </summary>
         public UnitType Type { get; set; }
 
         /// <summary>
-        ///     モデル番号
+        ///     Model number
         /// </summary>
         public int Model { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra1 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra2 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra3 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra4 { get; set; }
 
         /// <summary>
-        ///     付属旅団のユニット種類
+        ///     Unit type of attached brigade
         /// </summary>
         public UnitType Extra5 { get; set; }
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel1 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel2 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel3 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel4 { get; set; } = UndefinedModelNo;
 
         /// <summary>
-        ///     付属旅団のモデル番号
+        ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel5 { get; set; } = UndefinedModelNo;
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     未定義のモデル番号
+        ///     Undefined model number
         /// </summary>
         public const int UndefinedModelNo = -1;
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
@@ -4124,31 +4124,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     プロヴィンス設定が編集済みかどうかを取得する
+        ///     Get if the provision settings have been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -4156,7 +4156,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -4164,7 +4164,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -4176,7 +4176,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -4192,95 +4192,95 @@ namespace HoI2Editor.Models
 
     #endregion
 
-    #region 任務
+    #region mission
 
     /// <summary>
-    ///     任務
+    ///     mission
     /// </summary>
     public class Mission
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     任務の種類
+        ///     Type of mission
         /// </summary>
         public MissionType Type { get; set; }
 
         /// <summary>
-        ///     対象プロヴィンス
+        ///     Target Providence
         /// </summary>
         public int Target { get; set; }
 
         /// <summary>
-        ///     対象範囲 (AoDのみ)
+        ///     Coverage (AoD only )
         /// </summary>
         public int MissionScope { get; set; }
 
         /// <summary>
-        ///     戦力/組織率下限
+        ///     Strength / / Lower limit of organization rate
         /// </summary>
         public double Percentage { get; set; }
 
         /// <summary>
-        ///     夜間遂行
+        ///     Perform at night
         /// </summary>
         public bool Night { get; set; }
 
         /// <summary>
-        ///     昼間遂行
+        ///     Daytime execution
         /// </summary>
         public bool Day { get; set; }
 
         /// <summary>
-        ///     対象範囲 (DHのみ)
+        ///     Coverage (DH only )
         /// </summary>
         public int TargetZone { get; set; }
 
         /// <summary>
-        ///     船団攻撃 (DHのみ)
+        ///     Convoy attack (DH only )
         /// </summary>
         public bool AttackConvoy { get; set; }
 
         /// <summary>
-        ///     組織率下限 (DHのみ)
+        ///     Lower limit of organization rate (DH only )
         /// </summary>
         public double OrgLimit { get; set; }
 
         /// <summary>
-        ///     開始日時
+        ///     Start date and time
         /// </summary>
         public GameDate StartDate { get; set; }
 
         /// <summary>
-        ///     終了日時
+        ///     End date and time
         /// </summary>
         public GameDate EndDate { get; set; }
 
         /// <summary>
-        ///     任務
+        ///     mission
         /// </summary>
         public int Task { get; set; }
 
         /// <summary>
-        ///     位置
+        ///     position
         /// </summary>
         public int Location { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ItemId)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     項目ID
+        ///     item ID
         /// </summary>
         public enum ItemId
         {
@@ -4307,19 +4307,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Mission()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元の任務</param>
+        /// <param name="original">Duplication source mission</param>
         public Mission(Mission original)
         {
             Type = original.Type;
@@ -4345,29 +4345,29 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ItemId id)
         {
             _dirtyFlags[(int) id] = true;
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -4378,7 +4378,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -4392,111 +4392,111 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     任務の種類
+    ///     Type of mission
     /// </summary>
     public enum MissionType
     {
         None,
-        Attack, // 攻撃
-        Rebase, // 基地移動
-        StratRedeploy, // 戦略的再配備
-        SupportAttack, // 支援攻撃
-        SupportDefense, // 防戦支援
-        Reserves, // 待機
-        AntiPartisanDuty, // パルチザン掃討
-        ArtilleryBombardment, // 砲撃任務
-        PlannedDefense, // 防衛計画
-        AirSuperiority, // 制空権
-        GroundAttack, // 地上攻撃
-        RunwayCratering, // 空港空爆
-        InstallationStrike, // 軍事施設攻撃
-        Interdiction, // 地上支援
-        NavalStrike, // 艦船攻撃
-        PortStrike, // 港湾攻撃
-        LogisticalStrike, // 兵站攻撃
-        StrategicBombardment, // 戦略爆撃
-        AirSupply, // 空輸補給
-        AirborneAssault, // 空挺強襲
-        AirScramble, // 航空緊急出撃
-        ConvoyRaiding, // 船団襲撃
-        Asw, // 対潜作戦
-        NavalInterdiction, // 海上阻止
-        ShoreBombardment, // 沿岸砲撃
-        AmphibiousAssault, // 強襲上陸
-        SeaTransport, // 海上輸送
-        NavalCombatPatrol, // 海上戦闘哨戒
-        SneakMove, // 隠密移動
-        NavalScramble, // 海上緊急出撃
-        ConvoyAirRaiding, // 船団爆撃
-        NavalPortStrike, // 空母による港湾攻撃
-        NavalAirbaseStrike, // 空母による航空基地攻撃
-        Nuke, // 核攻撃
-        Retreat // 退却
+        Attack, // attack
+        Rebase, // Base move
+        StratRedeploy, // Strategic redeployment
+        SupportAttack, // Support attack
+        SupportDefense, // Defense support
+        Reserves, // stand-by
+        AntiPartisanDuty, // Partisan eradication
+        ArtilleryBombardment, // Bombardment mission
+        PlannedDefense, // Defense plan
+        AirSuperiority, // Air superiority
+        GroundAttack, // Ground attack
+        RunwayCratering, // Airport airstrikes
+        InstallationStrike, // Attack on military facilities
+        Interdiction, // Ground support
+        NavalStrike, // Ship attack
+        PortStrike, // Port attack
+        LogisticalStrike, // Soldier attack
+        StrategicBombardment, // Strategic bombing
+        AirSupply, // Air supply
+        AirborneAssault, // Airborne assault
+        AirScramble, // Air emergency sortie
+        ConvoyRaiding, // Fleet raid
+        Asw, // Anti-submarine strategy
+        NavalInterdiction, // Maritime block
+        ShoreBombardment, // Coastal bombardment
+        AmphibiousAssault, // Assault landing
+        SeaTransport, // Marine transport
+        NavalCombatPatrol, // Maritime combat patrol
+        SneakMove, // Covert movement
+        NavalScramble, // Maritime emergency sortie
+        ConvoyAirRaiding, // Convoy bombing
+        NavalPortStrike, // Port attack by aircraft carrier
+        NavalAirbaseStrike, // Airbase attack by aircraft carrier
+        Nuke, // Nuclear attack
+        Retreat // retreat
     }
 
     #endregion
 
-    #region 輸送船団
+    #region Transport fleet
 
     /// <summary>
-    ///     輸送船団
+    ///     Transport fleet
     /// </summary>
     public class Convoy
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     貿易ID
+        ///     Trade ID
         /// </summary>
         public TypeId TradeId { get; set; }
 
         /// <summary>
-        ///     貿易用の輸送船団かどうか
+        ///     Whether it is a convoy for trade
         /// </summary>
         public bool IsTrade { get; set; }
 
         /// <summary>
-        ///     輸送船の数
+        ///     Number of transport ships
         /// </summary>
         public int Transports { get; set; }
 
         /// <summary>
-        ///     護衛艦の数
+        ///     Number of escort vessels
         /// </summary>
         public int Escorts { get; set; }
 
         /// <summary>
-        ///     エネルギーの輸送有無
+        ///     Whether or not energy is transported
         /// </summary>
         public bool Energy { get; set; }
 
         /// <summary>
-        ///     金属の輸送有無
+        ///     Whether metal is transported
         /// </summary>
         public bool Metal { get; set; }
 
         /// <summary>
-        ///     希少資源の輸送有無
+        ///     Whether or not rare resources are transported
         /// </summary>
         public bool RareMaterials { get; set; }
 
         /// <summary>
-        ///     石油の輸送有無
+        ///     With or without oil transportation
         /// </summary>
         public bool Oil { get; set; }
 
         /// <summary>
-        ///     物資の輸送有無
+        ///     Whether or not goods are transported
         /// </summary>
         public bool Supplies { get; set; }
 
         /// <summary>
-        ///     航路
+        ///     sea route
         /// </summary>
         public List<int> Path { get; set; } = new List<int>();
 
@@ -4504,99 +4504,99 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     生産中輸送船団
+    ///     Convoy in production
     /// </summary>
     public class ConvoyDevelopment
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     typeとidの組
+        ///     type When id id Pair of
         /// </summary>
         public TypeId Id { get; set; }
 
         /// <summary>
-        ///     名前
+        ///     name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     輸送船団の種類
+        ///     Types of transport fleet
         /// </summary>
         public ConvoyType Type { get; set; }
 
         /// <summary>
-        ///     位置
+        ///     position
         /// </summary>
         public int Location { get; set; }
 
         /// <summary>
-        ///     必要IC
+        ///     requirement I C
         /// </summary>
         public double Cost { get; set; }
 
         /// <summary>
-        ///     必要人的資源
+        ///     Necessary human resources
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     完了予定日
+        ///     Completion date
         /// </summary>
         public GameDate Date { get; set; }
 
         /// <summary>
-        ///     進捗率増分
+        ///     Progress rate increment
         /// </summary>
         public double Progress { get; set; }
 
         /// <summary>
-        ///     総進捗率
+        ///     Total progress rate
         /// </summary>
         public double TotalProgress { get; set; }
 
         /// <summary>
-        ///     連続生産ボーナス
+        ///     Continuous production bonus
         /// </summary>
         public double GearingBonus { get; set; }
 
         /// <summary>
-        ///     連続生産数
+        ///     Continuous production
         /// </summary>
         public int Size { get; set; }
 
         /// <summary>
-        ///     生産完了数
+        ///     Number of completed production
         /// </summary>
         public int Done { get; set; }
 
         /// <summary>
-        ///     完了日数
+        ///     Days to complete
         /// </summary>
         public int Days { get; set; }
 
         /// <summary>
-        ///     最初の1単位の完了日数
+        ///     the first 1 Number of days to complete the unit
         /// </summary>
         public int DaysForFirst { get; set; }
 
         /// <summary>
-        ///     停止中
+        ///     Stopping
         /// </summary>
         public bool Halted { get; set; }
 
         /// <summary>
-        ///     完了時にキューを削除するかどうか
+        ///     Whether to delete the queue on completion
         /// </summary>
         public bool CloseWhenFinished { get; set; }
 
         /// <summary>
-        ///     詳細不明
+        ///     details unknown
         /// </summary>
         public bool WaitingForClosure { get; set; }
 
         /// <summary>
-        ///     生産ライン準備時間
+        ///     Production line preparation time
         /// </summary>
         public double RetoolingTime { get; set; }
 
@@ -4604,28 +4604,28 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     輸送船団の種類
+    ///     Types of transport fleet
     /// </summary>
     public enum ConvoyType
     {
         None,
-        Transports, // 輸送船
-        Escorts // 護衛艦
+        Transports, // Transport ship
+        Escorts // Escort ship
     }
 
     #endregion
 
-    #region 汎用
+    #region General purpose
 
     /// <summary>
-    ///     typeとidの組
+    ///     type When id id Pair of
     /// </summary>
     public class TypeId
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     id
+        ///     id id
         /// </summary>
         public int Id;
 

@@ -12,38 +12,38 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     ランダム指揮官名を保持するクラス
+    ///     Class holding a random commander name
     /// </summary>
     public static class RandomLeaders
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     ランダム指揮官名リスト
+        ///     Random commander name list
         /// </summary>
         private static readonly List<string>[] Items = new List<string>[Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     国家ごとの編集済みフラグ
+        ///     Edited flags by nation
         /// </summary>
         private static readonly bool[] DirtyFlags = new bool[Enum.GetValues(typeof (Country)).Length];
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイルの再読み込みを要求する
+        ///     Request a reload of the random commander name definition file
         /// </summary>
         public static void RequestReload()
         {
@@ -51,11 +51,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイル群を再読み込みする
+        ///     Reload the random commander name definition files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -67,30 +67,30 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイルを読み込む
+        ///     Read the random commander name definition file
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // ランダム指揮官名リストをクリアする
+            // Clear the random commander name list
             foreach (Country country in Countries.Tags)
             {
                 Items[(int) country] = null;
             }
 
-            // ランダム指揮官名定義ファイルが存在しなければ戻る
+            // Return if the random commander name definition file does not exist
             string fileName = Game.GetReadFileName(Game.RandomLeadersPathName);
             if (!File.Exists(fileName))
             {
                 return;
             }
 
-            // ランダム指揮官名定義ファイルを読み込む
+            // Read the random commander name definition file
             LoadFile(fileName);
             try
             {
@@ -104,17 +104,17 @@ namespace HoI2Editor.Models
                 return;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイルを読み込む
+        ///     Read the random commander name definition file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[RandomLeader] Load: {0}", Path.GetFileName(fileName));
@@ -129,33 +129,33 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ランダム指揮官名定義行を解釈する
+        ///     Interpret the random commander name definition line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>閣僚データ</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Ministerial data</returns>
         private static void ParseLine(CsvLexer lexer)
         {
             string[] tokens = lexer.GetTokens();
 
-            // 空行を読み飛ばす
+            // Skip blank lines
             if (tokens == null)
             {
                 return;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length != 2)
             {
                 Log.Warning("[RandomLeader] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName,
                     lexer.LineNo);
-                // 余分な項目がある場合は解析を続ける
+                // Continue analysis if there are extra items
                 if (tokens.Length < 2)
                 {
                     return;
                 }
             }
 
-            // 国タグ
+            // Country tag
             string countryName = tokens[0].ToUpper();
             if (!Countries.StringMap.ContainsKey(countryName))
             {
@@ -164,28 +164,28 @@ namespace HoI2Editor.Models
             }
             Country country = Countries.StringMap[countryName];
 
-            // ランダム指揮官名
+            // Random commander name
             string name = tokens[1];
             if (string.IsNullOrEmpty(name))
             {
                 return;
             }
 
-            // ランダム指揮官名を追加する
+            // Add a random commander name
             AddName(name, country);
         }
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイルを保存する
+        ///     Save the random commander name definition file
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 編集済みでなければ何もしない
+            // Do nothing if not edited
             if (!IsDirty())
             {
                 return true;
@@ -195,13 +195,13 @@ namespace HoI2Editor.Models
             string fileName = Game.GetWriteFileName(Game.RandomLeadersPathName);
             try
             {
-                // dbフォルダがなければ作成する
+                // db db. If there is no folder, create it
                 if (!Directory.Exists(folderName))
                 {
                     Directory.CreateDirectory(folderName);
                 }
 
-                // ランダム指揮官名定義ファイルを保存する
+                // Save the random commander name definition file
                 SaveFile(fileName);
             }
             catch (Exception)
@@ -212,16 +212,16 @@ namespace HoI2Editor.Models
                 return false;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
             return true;
         }
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイルを保存する
+        ///     Save the random commander name definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void SaveFile(string fileName)
         {
             Log.Info("[RandomLeader] Save: {0}", Path.GetFileName(fileName));
@@ -240,43 +240,43 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ランダム指揮官名操作
+        #region Random commander name operation
 
         /// <summary>
-        ///     ランダム指揮官名リストを取得する
+        ///     Get a list of random commander names
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>ランダム指揮官名リスト</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>Random commander name list</returns>
         public static IEnumerable<string> GetNames(Country country)
         {
             return Items[(int) country] ?? new List<string>();
         }
 
         /// <summary>
-        ///     ランダム指揮官名を追加する
+        ///     Add a random commander name
         /// </summary>
-        /// <param name="name">ランダム指揮官名</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="name">Random commander name</param>
+        /// <param name="country">Country tag</param>
         private static void AddName(string name, Country country)
         {
-            // 未登録の場合はリストを作成する
+            // Create a list if not registered
             if (Items[(int) country] == null)
             {
                 Items[(int) country] = new List<string>();
             }
 
-            // ランダム指揮官名を追加する
+            // Add a random commander name
             Items[(int) country].Add(name);
         }
 
         /// <summary>
-        ///     ランダム指揮官名リストを設定する
+        ///     Set up a random commander name list
         /// </summary>
-        /// <param name="names">ランダム指揮官名リスト</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="names">Random commander name list</param>
+        /// <param name="country">Country tag</param>
         public static void SetNames(List<string> names, Country country)
         {
-            // ランダム指揮官名リストに変更がなければ戻る
+            // Return if there is no change in the random commander name list
             if (Items[(int) country] != null && names.SequenceEqual(Items[(int) country]))
             {
                 return;
@@ -284,23 +284,23 @@ namespace HoI2Editor.Models
 
             Log.Info("[RandomLeader] Set: <{0}>", Countries.Strings[(int) country]);
 
-            // ランダム指揮官名リストを設定する
+            // Set up a random commander name list
             Items[(int) country] = names;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetDirty(country);
         }
 
         /// <summary>
-        ///     ランダム指揮官名を置換する
+        ///     Replace random commander name
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void Replace(string s, string t, Country country, bool regex)
         {
-            // 未登録ならば何もしない
+            // Do nothing if not registered
             if (Items[(int) country] == null)
             {
                 return;
@@ -312,11 +312,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全てのランダム指揮官名を置換する
+        ///     Replace all random commander names
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAll(string s, string t, bool regex)
         {
             foreach (Country country in Countries.Tags)
@@ -327,31 +327,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Country country)
         {
             return DirtyFlags[(int) country];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void SetDirty(Country country)
         {
             DirtyFlags[(int) country] = true;
@@ -359,7 +359,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         private static void ResetDirtyAll()
         {

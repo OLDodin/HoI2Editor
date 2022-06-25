@@ -5,29 +5,29 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     コマンドの構文解析クラス
+    ///     Command parsing class
     /// </summary>
     public static class CommandParser
     {
-        #region 内部定数
+        #region Internal fixed number
 
         /// <summary>
-        ///     ログ出力時のカテゴリ名
+        ///     Category name at the time of log output
         /// </summary>
         private const string LogCategory = "Command";
 
         #endregion
 
-        #region 構文解析
+        #region Parsing
 
         /// <summary>
-        ///     commandセクションを構文解析する
+        ///     command command Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>コマンド</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>command</returns>
         public static Command Parse(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -49,25 +49,25 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
                     if (lexer.LineNo != lastLineNo)
                     {
-                        // 現在行が最終解釈行と異なる場合、閉じ括弧が不足しているものと見なす
+                        // If the current line is different from the last interpreted line, it is considered that the closing parenthesis is missing.
                         lexer.ReserveToken(token);
                         break;
                     }
@@ -84,7 +84,7 @@ namespace HoI2Editor.Parsers
                 // type
                 if (keyword.Equals("type"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -92,7 +92,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -100,7 +100,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なコマンド種類文字列
+                    // Invalid command type string
                     string s = token.Value as string;
                     if (string.IsNullOrEmpty(s))
                     {
@@ -113,18 +113,18 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // コマンド種類
+                    // Command type
                     command.Type = Commands.StringMap[s];
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
 
-                // which
+                // which which
                 if (keyword.Equals("which"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -132,7 +132,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number && token.Type != TokenType.Identifier &&
                         token.Type != TokenType.String)
@@ -141,18 +141,18 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // パラメータ - which
+                    // Parameters --which which
                     command.Which = token.Value;
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
 
-                // value
+                // value value
                 if (keyword.Equals("value"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -160,7 +160,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number && token.Type != TokenType.Identifier &&
                         token.Type != TokenType.String)
@@ -169,10 +169,10 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // パラメータ - value
+                    // Parameters --value
                     command.Value = token.Value;
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
@@ -180,7 +180,7 @@ namespace HoI2Editor.Parsers
                 // when
                 if (keyword.Equals("when"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -188,7 +188,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number && token.Type != TokenType.Identifier &&
                         token.Type != TokenType.String)
@@ -197,10 +197,10 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // パラメータ - when
+                    // Parameters --when
                     command.When = token.Value;
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
@@ -208,7 +208,7 @@ namespace HoI2Editor.Parsers
                 // where
                 if (keyword.Equals("where"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -216,7 +216,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number && token.Type != TokenType.Identifier &&
                         token.Type != TokenType.String)
@@ -225,10 +225,10 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // パラメータ - where
+                    // Parameters --where
                     command.Where = token.Value;
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
@@ -242,19 +242,19 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // トリガー
+                    // trigger
                     command.Triggers.AddRange(triggers);
 
-                    // 最終解釈行を覚えておく
+                    // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 if (lexer.LineNo != lastLineNo)
                 {
-                    // 現在行が最終解釈行と異なる場合、閉じ括弧が不足しているものと見なす
+                    // If the current line is different from the last interpreted line, it is considered that the closing parenthesis is missing.
                     lexer.ReserveToken(token);
                     break;
                 }

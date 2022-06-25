@@ -3,19 +3,19 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     研究機関データ
+    ///     Research institution data
     /// </summary>
     public class Team
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     国タグ
+        ///     Country tag
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     研究機関ID
+        ///     research Institute ID
         /// </summary>
         public int Id
         {
@@ -29,78 +29,78 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     名前
+        ///     name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     画像ファイル名
+        ///     Image file name
         /// </summary>
         public string PictureName { get; set; }
 
         /// <summary>
-        ///     スキル
+        ///     skill
         /// </summary>
         public int Skill { get; set; }
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
         /// <summary>
-        ///     研究特性
+        ///     Research characteristics
         /// </summary>
         public TechSpeciality[] Specialities { get; } = new TechSpeciality[SpecialityLength];
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (TeamItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     研究機関ID
+        ///     research Institute ID
         /// </summary>
         private int _id;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     研究特性定義の数
+        ///     Number of study characteristic definitions
         /// </summary>
         public const int SpecialityLength = 32;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Team()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元の研究機関データ</param>
+        /// <param name="original">Data from the research institute from which it was duplicated</param>
         public Team(Team original)
         {
             Country = original.Country;
@@ -118,31 +118,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     研究機関データが編集済みかどうかを取得する
+        ///     Get whether the research institute data has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(TeamItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(TeamItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -150,7 +150,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -162,7 +162,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -177,48 +177,48 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     研究機関項目ID
+    ///     Research institute items ID
     /// </summary>
     public enum TeamItemId
     {
-        Country, // 国家
+        Country, // Nation
         Id, // ID
-        Name, // 名前
-        Skill, // スキル
-        StartYear, // 開始年
-        EndYear, // 終了年
-        PictureName, // 画像ファイル名
-        Speciality1, // 研究特性1
-        Speciality2, // 研究特性2
-        Speciality3, // 研究特性3
-        Speciality4, // 研究特性4
-        Speciality5, // 研究特性5
-        Speciality6, // 研究特性6
-        Speciality7, // 研究特性7
-        Speciality8, // 研究特性8
-        Speciality9, // 研究特性9
-        Speciality10, // 研究特性10
-        Speciality11, // 研究特性11
-        Speciality12, // 研究特性12
-        Speciality13, // 研究特性13
-        Speciality14, // 研究特性14
-        Speciality15, // 研究特性15
-        Speciality16, // 研究特性16
-        Speciality17, // 研究特性17
-        Speciality18, // 研究特性18
-        Speciality19, // 研究特性19
-        Speciality20, // 研究特性20
-        Speciality21, // 研究特性21
-        Speciality22, // 研究特性22
-        Speciality23, // 研究特性23
-        Speciality24, // 研究特性24
-        Speciality25, // 研究特性25
-        Speciality26, // 研究特性26
-        Speciality27, // 研究特性27
-        Speciality28, // 研究特性28
-        Speciality29, // 研究特性29
-        Speciality30, // 研究特性30
-        Speciality31, // 研究特性31
-        Speciality32 // 研究特性32
+        Name, // name
+        Skill, // skill
+        StartYear, // Start year
+        EndYear, // End year
+        PictureName, // Image file name
+        Speciality1, // Research characteristics 1
+        Speciality2, // Research characteristics 2
+        Speciality3, // Research characteristics 3
+        Speciality4, // Research characteristics Four
+        Speciality5, // Research characteristics Five
+        Speciality6, // Research characteristics 6
+        Speciality7, // Research characteristics 7
+        Speciality8, // Research characteristics 8
+        Speciality9, // Research characteristics 9
+        Speciality10, // Research characteristics Ten
+        Speciality11, // Research characteristics 11 11
+        Speciality12, // Research characteristics 12
+        Speciality13, // Research characteristics 13
+        Speciality14, // Research characteristics 14
+        Speciality15, // Research characteristics 15
+        Speciality16, // Research characteristics 16 16
+        Speciality17, // Research characteristics 17 17
+        Speciality18, // Research characteristics 18 18
+        Speciality19, // Research characteristics 19 19
+        Speciality20, // Research characteristics 20
+        Speciality21, // Research characteristics twenty one
+        Speciality22, // Research characteristics twenty two
+        Speciality23, // Research characteristics twenty three
+        Speciality24, // Research characteristics twenty four
+        Speciality25, // Research characteristics twenty five
+        Speciality26, // Research characteristics 26
+        Speciality27, // Research characteristics 27
+        Speciality28, // Research characteristics 28 28
+        Speciality29, // Research characteristics 29
+        Speciality30, // Research characteristics 30
+        Speciality31, // Research characteristics 31
+        Speciality32 // Research characteristics 32
     }
 }

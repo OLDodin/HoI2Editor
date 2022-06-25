@@ -11,51 +11,51 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     ユニットモデルエディタフォーム
+    ///     Unit model editor form
     /// </summary>
     public partial class UnitEditorForm : Form
     {
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     ユニットモデルリストビューの列の数
+        ///     Number of columns in the unit model list view
         /// </summary>
         public const int ModelListColumnCount = 10;
 
         /// <summary>
-        ///     改良リストビューの列の数
+        ///     Number of columns in improved list view
         /// </summary>
         public const int UpgradeListColumnCount = 3;
 
         /// <summary>
-        ///     装備リストビューの列の数
+        ///     Number of columns in equipment list view
         /// </summary>
         public const int EquipmentListColumnCount = 2;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public UnitEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         /// <summary>
-        ///     編集項目を初期化する
+        ///     Initialize edit items
         /// </summary>
         private void InitEditableItems()
         {
             Graphics g = Graphics.FromHwnd(Handle);
             int margin = DeviceCaps.GetScaledWidth(2) + 1;
 
-            // 国家リストビュー
+            // National list view
             countryListView.BeginUpdate();
             countryListView.Items.Clear();
             foreach (Country country in Countries.Tags)
@@ -64,7 +64,7 @@ namespace HoI2Editor.Forms
             }
             countryListView.EndUpdate();
 
-            // 兵科コンボボックス
+            // Military combo box
             branchComboBox.BeginUpdate();
             branchComboBox.Items.Clear();
             foreach (string s in Branches.GetNames())
@@ -73,7 +73,7 @@ namespace HoI2Editor.Forms
             }
             branchComboBox.EndUpdate();
 
-            // 付属可能旅団リストビュー
+            // Attachable brigade list view
             allowedBrigadesListView.BeginUpdate();
             allowedBrigadesListView.Items.Clear();
             int width = 60;
@@ -81,7 +81,7 @@ namespace HoI2Editor.Forms
             {
                 string s = Units.Items[(int) type].ToString();
                 allowedBrigadesListView.Items.Add(s);
-                // +16はチェックボックスの分
+                // +16 Is a check box minute
                 width = Math.Max(width,
                     (int) g.MeasureString(s, allowedBrigadesListView.Font).Width + DeviceCaps.GetScaledWidth(16));
             }
@@ -90,7 +90,7 @@ namespace HoI2Editor.Forms
 
             if (Game.Type == GameType.DarkestHour && Game.Version >= 103)
             {
-                // 実ユニット種類コンボボックス
+                // Real unit type combo box
                 realUnitTypeComboBox.BeginUpdate();
                 realUnitTypeComboBox.Items.Clear();
                 width = realUnitTypeComboBox.Width;
@@ -105,7 +105,7 @@ namespace HoI2Editor.Forms
                 realUnitTypeComboBox.DropDownWidth = width;
                 realUnitTypeComboBox.EndUpdate();
 
-                // スプライト種類コンボボックス
+                // Sprite type combo box
                 spriteTypeComboBox.BeginUpdate();
                 spriteTypeComboBox.Items.Clear();
                 width = spriteTypeComboBox.Width;
@@ -120,7 +120,7 @@ namespace HoI2Editor.Forms
                 spriteTypeComboBox.DropDownWidth = width;
                 spriteTypeComboBox.EndUpdate();
 
-                // 代替ユニット種類コンボボックス
+                // Alternative unit type combo box
                 transmuteComboBox.BeginUpdate();
                 transmuteComboBox.Items.Clear();
                 width = transmuteComboBox.Width;
@@ -135,7 +135,7 @@ namespace HoI2Editor.Forms
                 transmuteComboBox.DropDownWidth = width;
                 transmuteComboBox.EndUpdate();
 
-                // 資源コンボボックス
+                // Resource combo box
                 resourceComboBox.BeginUpdate();
                 resourceComboBox.Items.Clear();
                 width = resourceComboBox.Width;
@@ -151,14 +151,14 @@ namespace HoI2Editor.Forms
                 resourceComboBox.EndUpdate();
             }
 
-            // チェックボックスの文字列
+            // Checkbox string
             cagCheckBox.Text = Config.GetText("NAME_CAG");
             escortCheckBox.Text = Config.GetText("NAME_ESCORT");
             engineerCheckBox.Text = Config.GetText("NAME_ENGINEER");
         }
 
         /// <summary>
-        ///     ゲームの種類により編集項目を制限する
+        ///     Restrict editing items depending on the type of game
         /// </summary>
         private void RestrictEditableItems()
         {
@@ -233,7 +233,7 @@ namespace HoI2Editor.Forms
                 upgradeTimeTextBox.ResetText();
             }
 
-            // DH1.03以降
+            // DH1.03 from
             if (Game.Type == GameType.DarkestHour && Game.Version >= 103)
             {
                 productableCheckBox.Enabled = true;
@@ -311,7 +311,7 @@ namespace HoI2Editor.Forms
                 quantityTextBox.ResetText();
             }
 
-            // AoD1.07以降またはDH
+            // AoD1.07 After or DH
             if (((Game.Type == GameType.ArsenalOfDemocracy) && (Game.Version >= 107)) ||
                 (Game.Type == GameType.DarkestHour))
             {
@@ -324,7 +324,7 @@ namespace HoI2Editor.Forms
                 maxAllowedBrigadesNumericUpDown.Enabled = false;
             }
 
-            // AoDまたはDH1.03以降
+            // AoD or DH1.03 from
             if (Game.Type == GameType.ArsenalOfDemocracy || (Game.Type == GameType.DarkestHour && Game.Version >= 103))
             {
                 branchComboBox.Enabled = true;
@@ -339,35 +339,35 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 付属可能旅団の値が変化してしまうので一旦選択を解除する
+            // Since the value of the brigade that can be attached will change, cancel the selection once
             classListBox.SelectedIndex = -1;
 
-            // ユニットモデルの編集項目の文字列を初期化する
+            // Initialize the character string of the edit item of the unit model
             InitModelItemText();
 
-            // 編集項目を初期化する
+            // Initialize edit items
             InitEditableItems();
 
-            // ゲームの種類により編集項目を制限する
+            // Restrict editing items depending on the type of game
             RestrictEditableItems();
 
-            // ユニットリストを更新する
+            // Update the unit list
             UpdateUnitList();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             classListBox.Refresh();
             modelListView.Refresh();
             UpdateClassEditableItems();
@@ -375,32 +375,32 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
             switch (id)
             {
                 case EditorItemId.MaxAllowedBrigades:
                     Log.Verbose("[Unit] Notified max allowed brigades");
-                    // 最大付属旅団数の表示を更新する
+                    // Update the display of the maximum number of attached brigades
                     UpdateMaxAllowedBrigades();
                     break;
 
                 case EditorItemId.CommonModelName:
                     Log.Verbose("[Unit] Notified common model name");
-                    // ユニットモデルリストのモデル名を更新する
+                    // Update the model name in the unit model list
                     UpdateModelListName();
-                    // ユニットモデル名の表示を更新する
+                    // Update the display of the unit model name
                     UpdateModelNameTextBox();
                     break;
 
                 case EditorItemId.CountryModelName:
                     Log.Verbose("[Unit] Notified country model name");
-                    // ユニットモデルリストのモデル名を更新する
+                    // Update the model name in the unit model list
                     UpdateModelListName();
-                    // ユニットモデル名の表示を更新する
+                    // Update the display of the unit model name
                     UpdateModelNameTextBox();
                     break;
             }
@@ -408,14 +408,14 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // ユニットモデルリストビュー
+            // Unit model list view
             noColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.ModelListColumnWidth[0];
             nameColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.ModelListColumnWidth[1];
             buildCostColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.ModelListColumnWidth[2];
@@ -427,70 +427,70 @@ namespace HoI2Editor.Forms
             moraleColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.ModelListColumnWidth[8];
             maxSpeedColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.ModelListColumnWidth[9];
 
-            // ユニットクラスリストボックス
+            // Unit class list box
             classListBox.ItemHeight = DeviceCaps.GetScaledHeight(classListBox.ItemHeight);
 
-            // 国家リストビュー
+            // National list view
             countryDummyColumnHeader.Width = DeviceCaps.GetScaledWidth(countryDummyColumnHeader.Width);
 
-            // 改良リストビュー
+            // Improved list view
             upgradeTypeColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.UpgradeListColumnWidth[0];
             upgradeCostColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.UpgradeListColumnWidth[1];
             upgradeTimeColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.UpgradeListColumnWidth[2];
 
-            // 装備リストビュー
+            // Equipment list view
             resourceColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.EquipmentListColumnWidth[0];
             quantityColumnHeader.Width = HoI2EditorController.Settings.UnitEditor.EquipmentListColumnWidth[1];
 
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.UnitEditor.Location;
             Size = HoI2EditorController.Settings.UnitEditor.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // ゲーム設定ファイルを読み込む
+            // Load the game settings file
             Misc.Load();
 
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // ユニットデータを初期化する
+            // Initialize unit data
             Units.Init();
 
-            // Miscファイルを読み込む
+            // Misc Read the file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // ユニットデータを読み込む
+            // Read unit data
             Units.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -508,7 +508,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -518,7 +518,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -531,7 +531,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -544,13 +544,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -569,7 +569,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -579,7 +579,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -590,14 +590,14 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region ユニットクラスリスト
+        #region Unit class list
 
         /// <summary>
-        ///     ユニットクラスリストを更新する
+        ///     Update the unit class list
         /// </summary>
         private void UpdateUnitList()
         {
-            // リストボックスに項目を登録する
+            // Register an item in the list box
             classListBox.BeginUpdate();
             classListBox.Items.Clear();
             foreach (UnitType type in Units.UnitTypes)
@@ -607,7 +607,7 @@ namespace HoI2Editor.Forms
             }
             classListBox.EndUpdate();
 
-            // 先頭の項目を選択する
+            // Select the first item
             if (classListBox.Items.Count > 0)
             {
                 classListBox.SelectedIndex = 0;
@@ -615,13 +615,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットクラスリストの項目描画処理
+        ///     Item drawing process of unit class list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClassListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
@@ -629,7 +629,7 @@ namespace HoI2Editor.Forms
 
             UnitClass unit = Units.Items[(int) Units.UnitTypes[e.Index]];
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
             if (((e.State & DrawItemState.Selected) == 0) && (unit.Models.Count > 0))
             {
@@ -638,11 +638,11 @@ namespace HoI2Editor.Forms
                     new Rectangle(e.Bounds.X, e.Bounds.Y, e.Bounds.Width, e.Bounds.Height));
             }
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 brush = unit.IsDirty() ? new SolidBrush(Color.Red) : new SolidBrush(classListBox.ForeColor);
             }
             else
@@ -653,65 +653,65 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     ユニットクラスリストの選択項目変更時の処理
+        ///     Processing when changing the selection item of the unit class list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClassListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // ユニットモデルリストを更新する
+            // Update the unit model list
             UpdateModelList();
 
-            // ユニットクラスの編集項目を更新する
+            // Update unit class edits
             UpdateClassEditableItems();
 
-            // ユニットモデル編集中の場合
+            // When editing a unit model
             if (editTabControl.SelectedIndex == (int) UnitEditorTab.Model)
             {
                 if (modelListView.Items.Count > 0)
                 {
-                    // 先頭の項目を選択する
+                    // Select the first item
                     modelListView.Items[0].Focused = true;
                     modelListView.Items[0].Selected = true;
                 }
                 else
                 {
-                    // ユニットクラスタブを選択する
+                    // Select the Unit Class tab
                     editTabControl.SelectedIndex = (int) UnitEditorTab.Class;
 
-                    // ユニットモデルの編集項目を無効化する
+                    // Disable edit items in the unit model
                     DisableModelEditableItems();
                 }
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableModelEditableItems();
             }
         }
 
         #endregion
 
-        #region ユニットモデルリスト
+        #region Unit model list
 
         /// <summary>
-        ///     ユニットモデルリストの表示を更新する
+        ///     Update the display of the unit model list
         /// </summary>
         private void UpdateModelList()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // リストビューに項目を登録する
+            // Register an item in the list view
             modelListView.BeginUpdate();
             modelListView.Items.Clear();
             for (int i = 0; i < unit.Models.Count; i++)
@@ -723,18 +723,18 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルリストのモデル名を更新する
+        ///     Update the model name in the unit model list
         /// </summary>
         private void UpdateModelListName()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // リストビューの項目を更新する
+            // Update items in list view
             Country country = GetSelectedCountry();
             modelListView.BeginUpdate();
             for (int i = 0; i < unit.Models.Count; i++)
@@ -750,30 +750,30 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルリストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the unit model list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnModelListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットモデルがない場合
+            // If there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableModelEditableItems();
                 return;
             }
 
-            // ユニットモデルの編集項目を有効化する
+            // Enable edit items for the unit model
             EnableModelEditableItems();
 
-            // ユニットモデルの編集項目の値を更新する
+            // Update the value of the edit item of the unit model
             UpdateModelEditableItems();
 
-            // ユニットモデルタブを選択する
+            // Select the Unit Model tab
             editTabControl.SelectedIndex = (int) UnitEditorTab.Model;
 
-            // 項目移動ボタンの状態更新
+            // Item move button status update
             int index = modelListView.SelectedIndices[0];
             topButton.Enabled = index != 0;
             upButton.Enabled = index != 0;
@@ -782,7 +782,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルリストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the unit model list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -796,7 +796,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルリストビューの項目編集前の処理
+        ///     Processing before editing items in the unit model list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -804,47 +804,47 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 1: // 名前
+                case 1: // name
                     e.Type = ItemEditType.Text;
                     e.Text = modelNameTextBox.Text;
                     break;
 
-                case 2: // IC
+                case 2: // I C
                     e.Type = ItemEditType.Text;
                     e.Text = costTextBox.Text;
                     break;
 
-                case 3: // 時間
+                case 3: // time
                     e.Type = ItemEditType.Text;
                     e.Text = buildTimeTextBox.Text;
                     break;
 
-                case 4: // 労働力
+                case 4: // Labor force
                     e.Type = ItemEditType.Text;
                     e.Text = manPowerTextBox.Text;
                     break;
 
-                case 5: // 物資
+                case 5: // Supplies
                     e.Type = ItemEditType.Text;
                     e.Text = supplyConsumptionTextBox.Text;
                     break;
 
-                case 6: // 燃料
+                case 6: // fuel
                     e.Type = ItemEditType.Text;
                     e.Text = fuelConsumptionTextBox.Text;
                     break;
 
-                case 7: // 組織率
+                case 7: // Organization rate
                     e.Type = ItemEditType.Text;
                     e.Text = defaultOrganisationTextBox.Text;
                     break;
 
-                case 8: // 士気
+                case 8: // morale
                     e.Type = ItemEditType.Text;
                     e.Text = moraleTextBox.Text;
                     break;
 
-                case 9: // 速度
+                case 9: // speed
                     e.Type = ItemEditType.Text;
                     e.Text = maxSpeedTextBox.Text;
                     break;
@@ -852,7 +852,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルリストビューの項目編集後の処理
+        ///     Processing after editing items in the unit model list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -860,66 +860,66 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 1: // 名前
+                case 1: // name
                     modelNameTextBox.Text = e.Text;
                     break;
 
-                case 2: // IC
+                case 2: // I C
                     costTextBox.Text = e.Text;
                     OnCostTextBoxValidated(costTextBox, new EventArgs());
                     break;
 
-                case 3: // 時間
+                case 3: // time
                     buildTimeTextBox.Text = e.Text;
                     OnBuildTimeTextBoxValidated(buildTimeTextBox, new EventArgs());
                     break;
 
-                case 4: // 労働力
+                case 4: // Labor force
                     manPowerTextBox.Text = e.Text;
                     OnManPowerTextBoxValidated(manPowerTextBox, new EventArgs());
                     break;
 
-                case 5: // 物資
+                case 5: // Supplies
                     supplyConsumptionTextBox.Text = e.Text;
                     OnSupplyConsumptionTextBoxValidated(supplyConsumptionTextBox, new EventArgs());
                     break;
 
-                case 6: // 燃料
+                case 6: // fuel
                     fuelConsumptionTextBox.Text = e.Text;
                     OnFuelConsumptionTextBoxValidated(fuelConsumptionTextBox, new EventArgs());
                     break;
 
-                case 7: // 組織率
+                case 7: // Organization rate
                     defaultOrganisationTextBox.Text = e.Text;
                     OnDefaultOrganizationTextBoxValidated(defaultOrganisationTextBox, new EventArgs());
                     break;
 
-                case 8: // 士気
+                case 8: // morale
                     moraleTextBox.Text = e.Text;
                     OnMoraleTextBoxValidated(moraleTextBox, new EventArgs());
                     break;
 
-                case 9: // 速度
+                case 9: // speed
                     maxSpeedTextBox.Text = e.Text;
                     OnMaxSpeedTextBoxValidated(maxSpeedTextBox, new EventArgs());
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     ユニットモデルリストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the unit model list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnModelListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 自前で項目を入れ替えるのでキャンセル扱いにする
+            // I will replace the items on my own, so I will treat it as canceled
             e.Cancel = true;
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
@@ -933,19 +933,19 @@ namespace HoI2Editor.Forms
                 destIndex--;
             }
 
-            // ユニットモデルを移動する
+            // Move the unit model
             MoveModel(unit, srcIndex, destIndex);
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     ユニットモデルリストビューの項目を作成する
+        ///     Create an item in the unit model list view
         /// </summary>
-        /// <param name="unit">ユニットクラス</param>
-        /// <param name="index">ユニットモデルのインデックス</param>
-        /// <returns>ユニットモデルリストビューの項目</returns>
+        /// <param name="unit">Unit class</param>
+        /// <param name="index">Unit model index</param>
+        /// <returns>Items in the unit model list view</returns>
         private ListViewItem CreateModelListItem(UnitClass unit, int index)
         {
             UnitModel model = unit.Models[index];
@@ -970,258 +970,258 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     新規ボタン押下時の処理
+        ///     Processing when a new button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNewButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // ユニットモデルを挿入する
+            // Insert the unit model
             UnitModel model = new UnitModel();
             int index = modelListView.SelectedIndices.Count > 0 ? modelListView.SelectedIndices[0] + 1 : 0;
             InsertModel(unit, model, index, "");
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     複製ボタン押下時の処理
+        ///     Processing when the duplicate button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCloneButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // ユニットモデルを挿入する
+            // Insert the unit model
             UnitModel model = new UnitModel(unit.Models[index]);
             InsertModel(unit, model, index + 1, unit.GetModelName(index));
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     削除ボタン押下時の処理
+        ///     Processing when the delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // ユニットモデルを削除する
+            // Delete the unit model
             RemoveModel(unit, index);
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     先頭へボタン押下時の処理
+        ///     Processing when the button is pressed to the beginning
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTopButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // リストの先頭ならば何もしない
+            // Do nothing at the top of the list
             if (index == 0)
             {
                 return;
             }
 
-            // ユニットモデルを移動する
+            // Move the unit model
             MoveModel(unit, index, 0);
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     上へボタン押下時の処理
+        ///     Processing when pressing the up button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // リストの先頭ならば何もしない
+            // Do nothing at the top of the list
             if (index == 0)
             {
                 return;
             }
 
-            // ユニットモデルを移動する
+            // Move the unit model
             MoveModel(unit, index, index - 1);
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     下へボタン押下時の処理
+        ///     Processing when the down button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDownButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // リストの末尾ならば何もしない
+            // Do nothing at the end of the list
             if (index == unit.Models.Count - 1)
             {
                 return;
             }
 
-            // ユニットモデルを移動する
+            // Move the unit model
             MoveModel(unit, index, index + 1);
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     末尾へボタン押下時の処理
+        ///     Processing when the button is pressed to the end
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBottonButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // リストの末尾ならば何もしない
+            // Do nothing at the end of the list
             if (index == unit.Models.Count - 1)
             {
                 return;
             }
 
-            // ユニットモデルを移動する
+            // Move the unit model
             MoveModel(unit, index, unit.Models.Count - 1);
 
-            // ユニットモデルリストの更新を通知する
+            // Notify the update of the unit model list
             HoI2EditorController.OnItemChanged(EditorItemId.ModelList, this);
         }
 
         /// <summary>
-        ///     ユニットモデルを挿入する
+        ///     Insert the unit model
         /// </summary>
-        /// <param name="unit">ユニットクラス</param>
-        /// <param name="model">挿入対象のユニットモデル</param>
-        /// <param name="index">挿入する位置</param>
-        /// <param name="name">ユニットモデル名</param>
+        /// <param name="unit">Unit class</param>
+        /// <param name="model">Unit model to be inserted</param>
+        /// <param name="index">Position to insert</param>
+        /// <param name="name">Unit model name</param>
         private void InsertModel(UnitClass unit, UnitModel model, int index, string name)
         {
-            // ユニットクラスにユニットモデルを挿入する
+            // Insert a unit model into a unit class
             unit.InsertModel(model, index, name);
 
-            // ユニットモデルリストの表示を更新する
+            // Update the display of the unit model list
             UpdateModelList();
 
-            // 挿入した項目を選択する
+            // Select the inserted item
             modelListView.Items[index].Focused = true;
             modelListView.Items[index].Selected = true;
 
-            // 挿入した項目が表示されるようにする
+            // Make the inserted item visible
             modelListView.EnsureVisible(index);
         }
 
         /// <summary>
-        ///     ユニットモデルを削除する
+        ///     Delete the unit model
         /// </summary>
-        /// <param name="unit">ユニットクラス</param>
-        /// <param name="index">削除する位置</param>
+        /// <param name="unit">Unit class</param>
+        /// <param name="index">Position to delete</param>
         private void RemoveModel(UnitClass unit, int index)
         {
-            // ユニットクラスからユニットモデルを削除する
+            // Remove the unit model from the unit class
             unit.RemoveModel(index);
 
-            // ユニットモデルリストの表示を更新する
+            // Update the display of the unit model list
             UpdateModelList();
 
-            // 削除した項目の次の項目を選択する
+            // Select the next item after the deleted item
             if (index < modelListView.Items.Count - 1)
             {
                 modelListView.Items[index].Focused = true;
@@ -1235,33 +1235,33 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルを移動する
+        ///     Move the unit model
         /// </summary>
-        /// <param name="unit">ユニットクラス</param>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="unit">Unit class</param>
+        /// <param name="src">Source position</param>
+        /// <param name="dest">Destination position</param>
         private void MoveModel(UnitClass unit, int src, int dest)
         {
-            // ユニットクラスのユニットモデルを移動する
+            // Move the unit model of the unit class
             unit.MoveModel(src, dest);
 
-            // ユニットモデルリストの表示を更新する
+            // Update the display of the unit model list
             UpdateModelList();
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             modelListView.Items[dest].Focused = true;
             modelListView.Items[dest].Selected = true;
 
-            // 移動先の項目を表示する
+            // Display the item to move to
             modelListView.EnsureVisible(dest);
         }
 
         #endregion
 
-        #region 国家リストビュー
+        #region National list view
 
         /// <summary>
-        ///     選択中の国タグを取得する
+        ///     Get the selected country tag
         /// </summary>
         /// <returns></returns>
         private Country GetSelectedCountry()
@@ -1272,30 +1272,30 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the national list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // ユニットモデルリストのモデル名を更新する
+            // Update the model name in the unit model list
             UpdateModelListName();
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // ユニットモデル画像名を更新する
+            // Update the unit model image name
             Image prev = modelImagePictureBox.Image;
             string fileName = GetModelImageFileName(unit, index, GetSelectedCountry());
             if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName))
@@ -1310,20 +1310,20 @@ namespace HoI2Editor.Forms
             }
             prev?.Dispose();
 
-            // ユニットモデル名を更新する
+            // Update the unit model name
             UpdateModelNameTextBox();
         }
 
         #endregion
 
-        #region ユニットクラスタブ
+        #region Unit class tab
 
         /// <summary>
-        ///     ユニットクラスタブの編集項目を更新する
+        ///     Update the edit items on the unit class tab
         /// </summary>
         private void UpdateClassEditableItems()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
@@ -1335,10 +1335,10 @@ namespace HoI2Editor.Forms
             classDescTextBox.Text = unit.GetDesc();
             classShortDescTextBox.Text = unit.GetShortDesc();
 
-            // 兵科
+            // Army
             branchComboBox.SelectedIndex = (int) unit.Branch - 1;
 
-            // 付属旅団
+            // Attached brigade
             if (unit.Organization == UnitOrganization.Division)
             {
                 if (unit.CanModifyMaxAllowedBrigades())
@@ -1365,7 +1365,7 @@ namespace HoI2Editor.Forms
                     .Where(brigade => (brigade.Branch == unit.Branch) && (brigade.Models.Count > 0)))
                 {
                     string s = brigade.ToString();
-                    // +16はチェックボックスの分
+                    // +16 Is a check box minute
                     width = Math.Max(width,
                         (int) g.MeasureString(s, allowedBrigadesListView.Font).Width + DeviceCaps.GetScaledWidth(16));
                     ListViewItem item = new ListViewItem
@@ -1393,7 +1393,7 @@ namespace HoI2Editor.Forms
                 allowedBrigadesListView.EndUpdate();
             }
 
-            // DH1.03以降のユニット設定
+            // DH1.03 Subsequent unit settings
             if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103))
             {
                 listPrioLabel.Enabled = true;
@@ -1401,7 +1401,7 @@ namespace HoI2Editor.Forms
                 listPrioNumericUpDown.Value = unit.ListPrio;
                 listPrioNumericUpDown.Text = IntHelper.ToString(unit.ListPrio);
 
-                // 師団
+                // Division
                 if (unit.Organization == UnitOrganization.Division)
                 {
                     eyrLabel.Enabled = true;
@@ -1463,7 +1463,7 @@ namespace HoI2Editor.Forms
                     militaryValueTextBox.ResetText();
                 }
 
-                // 陸軍旅団
+                // Army Brigade
                 if ((unit.Branch == Branch.Army) && (unit.Organization == UnitOrganization.Brigade))
                 {
                     engineerCheckBox.Enabled = true;
@@ -1473,7 +1473,7 @@ namespace HoI2Editor.Forms
                     engineerCheckBox.Enabled = false;
                 }
 
-                // 海軍旅団
+                // Navy brigade
                 if ((unit.Branch == Branch.Navy) && (unit.Organization == UnitOrganization.Brigade))
                 {
                     cagCheckBox.Enabled = true;
@@ -1483,7 +1483,7 @@ namespace HoI2Editor.Forms
                     cagCheckBox.Enabled = false;
                 }
 
-                // 空軍旅団
+                // Air Force Brigade
                 if ((unit.Branch == Branch.Airforce) && (unit.Organization == UnitOrganization.Brigade))
                 {
                     escortCheckBox.Enabled = true;
@@ -1530,7 +1530,7 @@ namespace HoI2Editor.Forms
                 militaryValueTextBox.ResetText();
             }
 
-            // 最大生産速度
+            // Maximum production speed
             if ((Game.Type == GameType.ArsenalOfDemocracy) && (unit.Organization == UnitOrganization.Division))
             {
                 maxSpeedStepLabel.Enabled = true;
@@ -1545,7 +1545,7 @@ namespace HoI2Editor.Forms
                 maxSpeedStepComboBox.ResetText();
             }
 
-            // 着脱可能
+            // Detachable
             if (Game.Type == GameType.ArsenalOfDemocracy)
             {
                 detachableCheckBox.Enabled = unit.Organization == UnitOrganization.Brigade;
@@ -1567,7 +1567,7 @@ namespace HoI2Editor.Forms
             defaultTypeCheckBox.Checked = unit.DefaultType;
             productableCheckBox.Checked = unit.Productable;
 
-            // 改良
+            // Improvement
             if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103) &&
                 (unit.Organization == UnitOrganization.Division))
             {
@@ -1581,7 +1581,7 @@ namespace HoI2Editor.Forms
             else
             {
                 upgradeGroupBox.Enabled = false;
-                // 編集項目の値をクリアする
+                // Clear the value of the edit item
                 upgradeListView.BeginUpdate();
                 upgradeListView.Items.Clear();
                 upgradeListView.EndUpdate();
@@ -1592,7 +1592,7 @@ namespace HoI2Editor.Forms
                 upgradeTimeTextBox.ResetText();
             }
 
-            // 編集項目の色を設定する
+            // Set the color of the edit item
             classNameTextBox.ForeColor = unit.IsDirty(UnitClassItemId.Name) ? Color.Red : SystemColors.WindowText;
             classShortNameTextBox.ForeColor = unit.IsDirty(UnitClassItemId.ShortName)
                 ? Color.Red
@@ -1631,18 +1631,18 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     最大付属旅団数を更新する
+        ///     Update the maximum number of attached brigades
         /// </summary>
         private void UpdateMaxAllowedBrigades()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットクラスが旅団ならば何もしない
+            // If the selected unit class is a brigade, do nothing
             if (unit.Organization == UnitOrganization.Brigade)
             {
                 return;
@@ -1656,29 +1656,29 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     兵科コンボボックスの項目描画処理
+        ///     Item drawing process of the military combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBranchComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.Index == (int) unit.Branch - 1) && unit.IsDirty(UnitClassItemId.Branch))
             {
@@ -1692,34 +1692,34 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     実ユニット種類コンボボックスの項目描画処理
+        ///     Item drawing process of real unit type combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRealUnitTypeComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.Index == (int) unit.RealType) && unit.IsDirty(UnitClassItemId.RealType))
             {
@@ -1733,34 +1733,34 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     スプライト種類コンボボックスの項目描画処理
+        ///     Sprite type Combo box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpriteTypeComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.Index == (int) unit.Sprite) && unit.IsDirty(UnitClassItemId.Sprite))
             {
@@ -1774,34 +1774,34 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     代替ユニットコンボボックスの項目描画処理
+        ///     Item drawing process of alternative unit combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTransmuteComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             UnitType type = Units.DivisionTypes[e.Index];
             Brush brush;
             if ((type == unit.Transmute) && unit.IsDirty(UnitClassItemId.Transmute))
@@ -1816,34 +1816,34 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     最大生産速度コンボボックスの項目描画処理
+        ///     Item drawing process of maximum production speed combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMaxSpeedStepComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.Index == unit.MaxSpeedStep) && unit.IsDirty(UnitClassItemId.MaxSpeedStep))
             {
@@ -1857,25 +1857,25 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     ユニットクラス名テキストボックスフォーカス移動後の処理
+        ///     Unit class name Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClassNameTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (Config.ExistsKey(unit.Name))
             {
                 if (classNameTextBox.Text.Equals(Config.GetText(unit.Name)))
@@ -1893,10 +1893,10 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] unit name: {0} -> {1}", Config.GetText(unit.Name), classNameTextBox.Text);
 
-            // 値を更新する
+            // Update value
             Config.SetText(unit.Name, classNameTextBox.Text, Game.UnitTextFileName);
 
-            // ユニットクラスリストボックスの表示を更新する
+            // Update the display of the unit class list box
             classListBox.Refresh();
 
             if (unit.Organization == UnitOrganization.Division)
@@ -1906,33 +1906,33 @@ namespace HoI2Editor.Forms
 
                 if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103))
                 {
-                    // 実ユニットコンボボックスの項目を更新する
+                    // Update the item of the real unit combo box
                     int index = Array.IndexOf(Units.RealTypeTable, unit.Type);
                     if (index >= 0)
                     {
                         realUnitTypeComboBox.Items[index] = classNameTextBox.Text;
-                        // ドロップダウン幅を更新する
+                        // Update dropdown width
                         realUnitTypeComboBox.DropDownWidth =
                             Math.Max(realUnitTypeComboBox.DropDownWidth,
                                 (int) g.MeasureString(classNameTextBox.Text, realUnitTypeComboBox.Font).Width +
                                 SystemInformation.VerticalScrollBarWidth + margin);
                     }
 
-                    // スプライトコンボボックスの項目を更新する
+                    // Update items in the sprite combo box
                     index = Array.IndexOf(Units.SpriteTypeTable, unit.Type);
                     if (index >= 0)
                     {
                         spriteTypeComboBox.Items[index] = classNameTextBox.Text;
-                        // ドロップダウン幅を更新する
+                        // Update dropdown width
                         spriteTypeComboBox.DropDownWidth =
                             Math.Max(spriteTypeComboBox.DropDownWidth,
                                 (int) g.MeasureString(classNameTextBox.Text, spriteTypeComboBox.Font).Width +
                                 SystemInformation.VerticalScrollBarWidth + margin);
                     }
 
-                    // 代替ユニットコンボボックスの項目を更新する
+                    // Update the entry in the alternate unit combo box
                     transmuteComboBox.Items[classListBox.SelectedIndex] = classNameTextBox.Text;
-                    // ドロップダウン幅を更新する
+                    // Update dropdown width
                     transmuteComboBox.DropDownWidth =
                         Math.Max(transmuteComboBox.DropDownWidth,
                             (int) g.MeasureString(classNameTextBox.Text, transmuteComboBox.Font).Width +
@@ -1940,31 +1940,31 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Name);
 
-            // 文字色を変更する
+            // Change the font color
             classNameTextBox.ForeColor = Color.Red;
 
-            // ユニットクラス名の更新を通知する
+            // Notify the update of the unit class name
             HoI2EditorController.OnItemChanged(EditorItemId.UnitName, this);
         }
 
         /// <summary>
-        ///     ユニットクラス短縮名テキストボックスフォーカス移動後の処理
+        ///     Unit class Short name Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClassShortNameTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (classShortNameTextBox.Text.Equals(unit.GetShortName()))
             {
                 return;
@@ -1972,31 +1972,31 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] unit short name: {0} -> {1} ({2})", unit.GetShortName(), classShortNameTextBox.Text, unit);
 
-            // 値を更新する
+            // Update value
             Config.SetText(unit.ShortName, classShortNameTextBox.Text, Game.UnitTextFileName);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.ShortName);
 
-            // 文字色を変更する
+            // Change the font color
             classShortNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     ユニットクラス説明テキストボックスフォーカス移動後の処理
+        ///     Unit class Description Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClassDescTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (classDescTextBox.Text.Equals(Config.GetText(unit.Desc)))
             {
                 return;
@@ -2004,31 +2004,31 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] unit desc: {0} -> {1} ({2})", unit.GetDesc(), classDescTextBox.Text, unit);
 
-            // 値を更新する
+            // Update value
             Config.SetText(unit.Desc, classDescTextBox.Text, Game.UnitTextFileName);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Desc);
 
-            // 文字色を変更する
+            // Change the font color
             classDescTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     ユニットクラス短縮説明テキストボックスフォーカス移動後の処理
+        ///     Unit class abbreviated description Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClassShortDescTextBox(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (classShortDescTextBox.Text.Equals(Config.GetText(unit.ShortDesc)))
             {
                 return;
@@ -2036,31 +2036,31 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] unit short desc: {0} -> {1} ({2})", unit.GetShortDesc(), classShortDescTextBox.Text, unit);
 
-            // 値を更新する
+            // Update value
             Config.SetText(unit.ShortDesc, classShortDescTextBox.Text, Game.UnitTextFileName);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.ShortDesc);
 
-            // 文字色を変更する
+            // Change the font color
             classShortDescTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     兵科コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the military combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBranchComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             Branch branch = (Branch) (branchComboBox.SelectedIndex + 1);
             if (branch == unit.Branch)
             {
@@ -2069,10 +2069,10 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] branch: {0} -> {1} ({2})", Branches.GetName(unit.Branch), Branches.GetName(branch), unit);
 
-            // 値を更新する
+            // Update value
             unit.Branch = branch;
 
-            // DH1.03以降で師団の兵科を変更する場合、実ユニット種類も連動する
+            // DH1.03 If you change the division's military department after that, the actual unit type will also be linked.
             if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103) &&
                 (unit.Organization == UnitOrganization.Division))
             {
@@ -2102,33 +2102,33 @@ namespace HoI2Editor.Forms
 
                 unit.RealType = type;
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 unit.SetDirty(UnitClassItemId.RealType);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Branch);
 
-            // ユニットクラスタブ/ユニットモデルタブの表示を更新する
+            // Unit class tab / / Update the display of the unit model tab
             UpdateClassEditableItems();
             UpdateModelEditableItems();
         }
 
         /// <summary>
-        ///     統計グループ変更時の処理
+        ///     Processing when changing statistical groups
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEyrNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int eyr = (int) eyrNumericUpDown.Value;
             if (eyr == unit.Eyr)
             {
@@ -2137,31 +2137,31 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] eyr: {0} -> {1} ({2})", unit.Eyr, eyr, unit);
 
-            // 値を更新する
+            // Update value
             unit.Eyr = eyr;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Eyr);
 
-            // 文字色を変更する
+            // Change the font color
             eyrNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     画像優先度変更時の処理
+        ///     Processing when changing image priority
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnGraphicsPriorityNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int prio = (int) gfxPrioNumericUpDown.Value;
             if (prio == unit.GfxPrio)
             {
@@ -2170,31 +2170,31 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] gfx prio: {0} -> {1} ({2})", unit.GfxPrio, prio, unit);
 
-            // 値を更新する
+            // Update value
             unit.GfxPrio = prio;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.GfxPrio);
 
-            // 文字色を変更する
+            // Change the font color
             gfxPrioNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     リスト優先度変更時の処理
+        ///     Processing when changing list priority
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnListPrioNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int prio = (int) listPrioNumericUpDown.Value;
             if (prio == unit.ListPrio)
             {
@@ -2203,31 +2203,31 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] list prio: {0} -> {1} ({2})", unit.ListPrio, prio, unit);
 
-            // 値を更新する
+            // Update value
             unit.ListPrio = prio;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.ListPrio);
 
-            // 文字色を変更する
+            // Change the font color
             listPrioNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     UI優先度変更時の処理
+        ///     UI UI Processing when changing priority
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUiPrioNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int prio = (int) uiPrioNumericUpDown.Value;
             if (prio == unit.UiPrio)
             {
@@ -2236,37 +2236,37 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] ui prio: {0} -> {1} ({2})", unit.UiPrio, prio, unit);
 
-            // 値を更新する
+            // Update value
             unit.UiPrio = prio;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.UiPrio);
 
-            // 文字色を変更する
+            // Change the font color
             uiPrioNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     実ユニット種類コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the actual unit type combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRealUnitTypeComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 非選択になった時には何もしない
+            // Do nothing when deselected
             if (realUnitTypeComboBox.SelectedIndex == -1)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             RealUnitType type = (RealUnitType) realUnitTypeComboBox.SelectedIndex;
             if (type == unit.RealType)
             {
@@ -2277,31 +2277,31 @@ namespace HoI2Editor.Forms
                 Units.Items[(int) Units.RealTypeTable[(int) unit.RealType]],
                 Units.Items[(int) Units.RealTypeTable[(int) type]], unit);
 
-            // 値を更新する
+            // Update value
             unit.RealType = type;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.RealType);
 
-            // 実ユニット種類コンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the actual unit type combo box
             realUnitTypeComboBox.Refresh();
         }
 
         /// <summary>
-        ///     標準の生産タイプチェックボックスの状態変更時の処理
+        ///     Processing when changing the state of the standard production type check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDefaultTypeCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (defaultTypeCheckBox.Checked == unit.DefaultType)
             {
                 return;
@@ -2310,37 +2310,37 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] default production type: {0} -> {1} ({2})", BoolHelper.ToString(unit.DefaultType),
                 BoolHelper.ToString(defaultTypeCheckBox.Checked), unit);
 
-            // 値を更新する
+            // Update value
             unit.DefaultType = defaultTypeCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.DefaultType);
 
-            // 文字色を変更する
+            // Change the font color
             defaultTypeCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     スプライト種類コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the sprite type combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpriteTypeComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 非選択になった時には何もしない
+            // Do nothing when deselected
             if (spriteTypeComboBox.SelectedIndex == -1)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             SpriteType type = (SpriteType) spriteTypeComboBox.SelectedIndex;
             if (type == unit.Sprite)
             {
@@ -2351,37 +2351,37 @@ namespace HoI2Editor.Forms
                 Units.Items[(int) Units.SpriteTypeTable[(int) unit.Sprite]],
                 Units.Items[(int) Units.SpriteTypeTable[(int) type]], unit);
 
-            // 値を更新する
+            // Update value
             unit.Sprite = type;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Sprite);
 
-            // スプライト種類コンボボックスの項目色を変更するために描画更新する
+            // Sprite type Update drawing to change the item color of the combo box
             spriteTypeComboBox.Refresh();
         }
 
         /// <summary>
-        ///     代替ユニットコンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the alternative unit combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTransmuteComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 非選択になった時には何もしない
+            // Do nothing when deselected
             if (transmuteComboBox.SelectedIndex == -1)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             UnitType type = Units.DivisionTypes[transmuteComboBox.SelectedIndex];
             if (type == unit.Transmute)
             {
@@ -2391,31 +2391,31 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] transmute type: {0} -> {1} ({2})", Units.Items[(int) unit.Transmute],
                 Units.Items[(int) type], unit);
 
-            // 値を更新する
+            // Update value
             unit.Transmute = type;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Transmute);
 
-            // 代替ユニットコンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the alternative unit combo box
             transmuteComboBox.Refresh();
         }
 
         /// <summary>
-        ///     軍事力テキストボックスフォーカス移動後の処理
+        ///     Military power text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMilitaryValueTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(militaryValueTextBox.Text, out val))
             {
@@ -2423,7 +2423,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, unit.Value))
             {
                 return;
@@ -2432,37 +2432,37 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] military value: {0} -> {1} ({2})", DoubleHelper.ToString(unit.Value),
                 DoubleHelper.ToString(val), unit);
 
-            // 値を更新する
+            // Update value
             unit.Value = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Vaule);
 
-            // 文字色を変更する
+            // Change the font color
             militaryValueTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     最大生産速度コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the maximum production speed combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMaxSpeedStepComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 非選択になった時には何もしない
+            // Do nothing when deselected
             if (maxSpeedStepComboBox.SelectedIndex == -1)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int val = maxSpeedStepComboBox.SelectedIndex;
             if (val == unit.MaxSpeedStep)
             {
@@ -2471,30 +2471,30 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] max speed step: {0} -> {1} ({2})", unit.MaxSpeedStep, val, unit);
 
-            // 値を更新する
+            // Update value
             unit.MaxSpeedStep = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.MaxSpeedStep);
 
-            // 最大生産速度コンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the maximum production speed combo box
             maxSpeedStepComboBox.Refresh();
         }
 
         /// <summary>
-        ///     生産可能チェックボックスの状態変更時の処理
+        ///     Processing when the status of the productable check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProductableCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (productableCheckBox.Checked == unit.Productable)
             {
                 return;
@@ -2503,31 +2503,31 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] productable: {0} -> {1} ({2})", BoolHelper.ToString(unit.Productable),
                 BoolHelper.ToString(productableCheckBox.Checked), unit);
 
-            // 値を更新する
+            // Update value
             unit.Productable = productableCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Productable);
 
-            // 文字色を変更する
+            // Change the font color
             productableCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     着脱可能チェックボックスの状態変更時の処理
+        ///     Processing when changing the status of removable check boxes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDetachableCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (detachableCheckBox.Checked == unit.Detachable)
             {
                 return;
@@ -2536,31 +2536,31 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] detachable: {0} -> {1} ({2})", BoolHelper.ToString(unit.Detachable),
                 BoolHelper.ToString(detachableCheckBox.Checked), unit);
 
-            // 値を更新する
+            // Update value
             unit.Detachable = detachableCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Detachable);
 
-            // 文字色を変更する
+            // Change the font color
             detachableCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     空母航空隊チェックボックスの状態変更時の処理
+        ///     Processing when the status of the carrier air wing check box changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCagCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (cagCheckBox.Checked == unit.Cag)
             {
                 return;
@@ -2569,31 +2569,31 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] cag: {0} -> {1} ({2})", BoolHelper.ToString(unit.Cag),
                 BoolHelper.ToString(cagCheckBox.Checked), unit);
 
-            // 値を更新する
+            // Update value
             unit.Cag = cagCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Cag);
 
-            // 文字色を変更する
+            // Change the font color
             cagCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     護衛戦闘機チェックボックスの状態変更時の処理
+        ///     Processing when changing the state of the escort fighter check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEscortCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (escortCheckBox.Checked == unit.Escort)
             {
                 return;
@@ -2602,31 +2602,31 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] escort: {0} -> {1} ({2})", BoolHelper.ToString(unit.Escort),
                 BoolHelper.ToString(escortCheckBox.Checked), unit);
 
-            // 値を更新する
+            // Update value
             unit.Escort = escortCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Escort);
 
-            // 文字色を変更する
+            // Change the font color
             escortCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     工兵チェックボックスの状態変更時の処理
+        ///     Processing when changing the state of the engineer check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEngineerCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (engineerCheckBox.Checked == unit.Engineer)
             {
                 return;
@@ -2635,38 +2635,38 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] engineer: {0} -> {1} ({2})", BoolHelper.ToString(unit.Engineer),
                 BoolHelper.ToString(engineerCheckBox.Checked), unit);
 
-            // 値を更新する
+            // Update value
             unit.Engineer = engineerCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirty(UnitClassItemId.Engineer);
 
-            // 文字色を変更する
+            // Change the font color
             engineerCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     最大付属旅団数変更時の処理
+        ///     Processing when changing the maximum number of attached brigades
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMaxAllowedBrigadesNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // HoI2またはAoD1.07より前の場合は何もしない
+            // HoI2 or AoD1.07 Do nothing before
             if ((Game.Type == GameType.HeartsOfIron2) ||
                 ((Game.Type == GameType.ArsenalOfDemocracy) && (Game.Version < 107)))
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (maxAllowedBrigadesNumericUpDown.Value == unit.GetMaxAllowedBrigades())
             {
                 return;
@@ -2675,13 +2675,13 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] Max allowed brigades: {0} -> {1} ({2})", unit.GetMaxAllowedBrigades(),
                 maxAllowedBrigadesNumericUpDown.Value, unit);
 
-            // 値を更新する
+            // Update value
             unit.SetMaxAllowedBrigades((int) maxAllowedBrigadesNumericUpDown.Value);
 
-            // 文字色を変更する
+            // Change the font color
             maxAllowedBrigadesNumericUpDown.ForeColor = Color.Red;
 
-            // 最大付属旅団数の更新を通知する
+            // Notify the update of the maximum number of attached brigades
             if (Game.Type == GameType.ArsenalOfDemocracy)
             {
                 HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
@@ -2689,13 +2689,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     付属旅団リストビューのチェック状態変更時の処理
+        ///     Processing when checking the check status of the attached brigade list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllowedBrigadesListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
@@ -2709,7 +2709,7 @@ namespace HoI2Editor.Forms
 
             if (e.Item.Checked)
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 if (unit.AllowedBrigades.Contains(brigade.Type))
                 {
                     return;
@@ -2717,12 +2717,12 @@ namespace HoI2Editor.Forms
 
                 Log.Info("[Unit] Added allowed brigades: {0} ({1})", brigade, unit);
 
-                // 値を更新する
+                // Update value
                 unit.AllowedBrigades.Add(brigade.Type);
             }
             else
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 if (!unit.AllowedBrigades.Contains(brigade.Type))
                 {
                     return;
@@ -2730,28 +2730,28 @@ namespace HoI2Editor.Forms
 
                 Log.Info("[Unit] Removed allowed brigades: {0} ({1})", brigade, unit);
 
-                // 値を更新する
+                // Update value
                 unit.AllowedBrigades.Remove(brigade.Type);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirtyAllowedBrigades(brigade.Type);
 
-            // 文字色を変更する
+            // Change the font color
             e.Item.ForeColor = Color.Red;
         }
 
         #endregion
 
-        #region ユニットクラスタブ - 改良
+        #region Unit class tab ―――― Improvement
 
         /// <summary>
-        ///     改良リストビューの項目を更新する
+        ///     Update items in the improved list view
         /// </summary>
         /// <param name="unit"></param>
         private void UpdateUpgradeList(UnitClass unit)
         {
-            // 項目を順に登録する
+            // Register items in order
             upgradeListView.BeginUpdate();
             upgradeListView.Items.Clear();
             foreach (UnitUpgrade upgrade in unit.Upgrades)
@@ -2760,19 +2760,19 @@ namespace HoI2Editor.Forms
             }
             upgradeListView.EndUpdate();
 
-            // 改良情報が登録されていなければ編集項目を無効化する
+            // Disable edit items if improvement information is not registered
             if (unit.Upgrades.Count == 0)
             {
                 DisableUpgradeItems();
                 return;
             }
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableUpgradeItems();
         }
 
         /// <summary>
-        ///     改良情報の編集項目を有効化する
+        ///     Enable edit items for improvement information
         /// </summary>
         private void EnableUpgradeItems()
         {
@@ -2780,7 +2780,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     改良情報の編集項目を無効化する
+        ///     Disable edit items for improvement information
         /// </summary>
         private void DisableUpgradeItems()
         {
@@ -2788,11 +2788,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     改良ユニット種類コンボボックスの項目を更新する
+        ///     Update the item of the improved unit type combo box
         /// </summary>
         private void UpdateUpgradeTypeComboBox()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
@@ -2804,7 +2804,7 @@ namespace HoI2Editor.Forms
             upgradeTypeComboBox.BeginUpdate();
             upgradeTypeComboBox.Items.Clear();
             int width = upgradeTypeComboBox.Width;
-            // 現在の改良先クラスと兵科がマッチしない場合、ワンショットで候補に登録する
+            // If the current improvement class does not match the military department, register as a candidate in one shot
             UnitClass current = null;
             if (upgradeListView.SelectedIndices.Count > 0)
             {
@@ -2843,29 +2843,29 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     改良ユニット種類コンボボックスの項目描画処理
+        ///     Item drawing process of improved unit type combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeTypeComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             UnitClass u = upgradeTypeComboBox.Items[e.Index] as UnitClass;
             if (u != null)
             {
@@ -2890,25 +2890,25 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     改良リストビューの選択項目変更時の処理
+        ///     Process when changing the selected item in the improved list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択項目がなければ編集を禁止する
+            // Prohibit editing if there is no selection
             if (upgradeListView.SelectedIndices.Count == 0)
             {
                 DisableUpgradeItems();
@@ -2916,12 +2916,12 @@ namespace HoI2Editor.Forms
             }
             UnitUpgrade upgrade = unit.Upgrades[upgradeListView.SelectedIndices[0]];
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateUpgradeTypeComboBox();
             upgradeCostTextBox.Text = DoubleHelper.ToString(upgrade.UpgradeCostFactor);
             upgradeTimeTextBox.Text = DoubleHelper.ToString(upgrade.UpgradeTimeFactor);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             upgradeCostTextBox.ForeColor = upgrade.IsDirty(UnitUpgradeItemId.UpgradeCostFactor)
                 ? Color.Red
                 : SystemColors.WindowText;
@@ -2929,12 +2929,12 @@ namespace HoI2Editor.Forms
                 ? Color.Red
                 : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableUpgradeItems();
         }
 
         /// <summary>
-        ///     改良リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the improved list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2948,7 +2948,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     改良リストビューの項目編集前の処理
+        ///     Processing before editing items in the improved list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2956,19 +2956,19 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // ユニット種類
+                case 0: // Unit type
                     e.Type = ItemEditType.List;
                     e.Items = (from UnitClass unit in upgradeTypeComboBox.Items select unit.ToString()).ToArray();
                     e.Index = upgradeTypeComboBox.SelectedIndex;
                     e.DropDownWidth = upgradeTypeComboBox.DropDownWidth;
                     break;
 
-                case 1: // IC
+                case 1: // I C
                     e.Type = ItemEditType.Text;
                     e.Text = upgradeCostTextBox.Text;
                     break;
 
-                case 2: // 時間
+                case 2: // time
                     e.Type = ItemEditType.Text;
                     e.Text = upgradeTimeTextBox.Text;
                     break;
@@ -2976,7 +2976,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     改良リストビューの項目編集後の処理
+        ///     Processing after editing items in the improved list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2984,33 +2984,33 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // ユニット種類
+                case 0: // Unit type
                     upgradeTypeComboBox.SelectedIndex = e.Index;
                     break;
 
-                case 1: // IC
+                case 1: // I C
                     upgradeCostTextBox.Text = e.Text;
                     OnUpgradeCostTextBoxValidated(upgradeCostTextBox, new EventArgs());
                     break;
 
-                case 2: // 時間
+                case 2: // time
                     upgradeTimeTextBox.Text = e.Text;
                     OnUpgradeTimeTextBoxValidated(upgradeTimeTextBox, new EventArgs());
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     改良リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the improved list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
@@ -3020,7 +3020,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 改良情報を移動する
+            // Move improvement information
             UnitUpgrade upgrade = unit.Upgrades[srcIndex];
             unit.Upgrades.Insert(destIndex, upgrade);
             if (srcIndex < destIndex)
@@ -3035,26 +3035,26 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] Moved upgrade info: {0} -> {1} {2} [{3}]", srcIndex, destIndex,
                 Units.Items[(int) upgrade.Type], unit);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             upgrade.SetDirty();
             unit.SetDirtyFile();
         }
 
         /// <summary>
-        ///     改良ユニット種類コンボボックスの選択項目変更時の処理
+        ///     Process when changing the selection item of the improved unit type combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeTypeComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (upgradeListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3062,7 +3062,7 @@ namespace HoI2Editor.Forms
             int index = upgradeListView.SelectedIndices[0];
             UnitUpgrade upgrade = unit.Upgrades[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             UnitClass selected = upgradeTypeComboBox.SelectedItem as UnitClass;
             if (selected == null)
             {
@@ -3077,43 +3077,43 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] upgrade type: {0} -> {1} ({2})", old, selected, unit);
 
-            // 値を更新する
+            // Update value
             upgrade.Type = selected.Type;
 
-            // 改良リストビューの項目を更新する
+            // Update items in the improved list view
             upgradeListView.Items[index].Text = selected.ToString();
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             upgrade.SetDirty(UnitUpgradeItemId.Type);
             unit.SetDirtyFile();
 
             if ((old.Branch != unit.Branch) || (old.Models.Count == 0))
             {
-                // 改良先クラスと兵科がマッチしていなかった場合は、項目を更新する
+                // If the improved class and the military department do not match, update the item
                 UpdateUpgradeTypeComboBox();
             }
             else
             {
-                // 改良ユニット種類コンボボックスの項目色を変更するために描画更新する
+                // Improved drawing update to change the item color of the unit type combo box
                 upgradeTypeComboBox.Refresh();
             }
         }
 
         /// <summary>
-        ///     改良コストテキストボックスフォーカス移動後の処理
+        ///     Improved cost Textbox Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeCostTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (upgradeListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3121,7 +3121,7 @@ namespace HoI2Editor.Forms
             int index = upgradeListView.SelectedIndices[0];
             UnitUpgrade upgrade = unit.Upgrades[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(upgradeCostTextBox.Text, out val))
             {
@@ -3129,7 +3129,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, upgrade.UpgradeCostFactor))
             {
                 return;
@@ -3138,35 +3138,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] upgrade cost: {0} -> {1} ({2})", DoubleHelper.ToString(upgrade.UpgradeCostFactor),
                 DoubleHelper.ToString(val), unit);
 
-            // 値を更新する
+            // Update value
             upgrade.UpgradeCostFactor = val;
 
-            // 改良リストビューの項目を更新する
+            // Update items in the improved list view
             upgradeListView.Items[index].SubItems[1].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             upgrade.SetDirty(UnitUpgradeItemId.UpgradeCostFactor);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             upgradeCostTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     改良時間テキストボックスフォーカス移動後の処理
+        ///     Improvement time Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeTimeTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (upgradeListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3174,7 +3174,7 @@ namespace HoI2Editor.Forms
             int index = upgradeListView.SelectedIndices[0];
             UnitUpgrade upgrade = unit.Upgrades[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(upgradeTimeTextBox.Text, out val))
             {
@@ -3182,7 +3182,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, upgrade.UpgradeTimeFactor))
             {
                 return;
@@ -3191,28 +3191,28 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] upgrade time: {0} -> {1} ({2})", DoubleHelper.ToString(upgrade.UpgradeTimeFactor),
                 DoubleHelper.ToString(val), unit);
 
-            // 値を更新する
+            // Update value
             upgrade.UpgradeTimeFactor = val;
 
-            // 改良リストビューの項目を更新する
+            // Update items in the improved list view
             upgradeListView.Items[index].SubItems[2].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             upgrade.SetDirty(UnitUpgradeItemId.UpgradeTimeFactor);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             upgradeTimeTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     改良情報の追加ボタン押下時の処理
+        ///     Processing when the add button for improvement information is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeAddButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
@@ -3234,32 +3234,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] Added upgrade info: {0} {1} {2} ({3})", Units.Items[(int) upgrade.Type],
                 DoubleHelper.ToString(upgrade.UpgradeCostFactor), DoubleHelper.ToString(upgrade.UpgradeTimeFactor), unit);
 
-            // 改良情報を追加する
+            // Add improvement information
             unit.Upgrades.Add(upgrade);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             upgrade.SetDirtyAll();
             unit.SetDirtyFile();
 
-            // 改良リストビューに項目を追加する
+            // Add an item to the improved list view
             AddUpgradeListItem(upgrade);
         }
 
         /// <summary>
-        ///     改良情報の削除ボタン押下時の処理
+        ///     Processing when the delete button of improvement information is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (upgradeListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3268,21 +3268,21 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] Removed upgrade info: {0} ({1})", Units.Items[(int) unit.Upgrades[index].Type], unit);
 
-            // 改良情報を削除する
+            // Delete improvement information
             unit.Upgrades.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             unit.SetDirtyFile();
 
-            // 改良リストビューから項目を削除する
+            // Remove an item from the improved list view
             RemoveUpgradeListItem(index);
         }
 
         /// <summary>
-        ///     改良リストの項目を作成する
+        ///     Create an item in the improvement list
         /// </summary>
-        /// <param name="upgrade">改良設定</param>
-        /// <returns>改良リストの項目</returns>
+        /// <param name="upgrade">Improved settings</param>
+        /// <returns>Items on the improvement list</returns>
         private static ListViewItem CreateUpgradeListItem(UnitUpgrade upgrade)
         {
             ListViewItem item = new ListViewItem { Text = Units.Items[(int) upgrade.Type].ToString() };
@@ -3293,69 +3293,69 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     改良リストの項目を追加する
+        ///     Add an item in the improvement list
         /// </summary>
-        /// <param name="upgrade">追加対象の改良設定</param>
+        /// <param name="upgrade">Improved settings for addition</param>
         private void AddUpgradeListItem(UnitUpgrade upgrade)
         {
-            // 改良リストビューの項目を追加する
+            // Add an item in the improved list view
             upgradeListView.Items.Add(CreateUpgradeListItem(upgrade));
 
-            // 追加した項目を選択する
+            // Select the added item
             int index = upgradeListView.Items.Count - 1;
             upgradeListView.Items[index].Focused = true;
             upgradeListView.Items[index].Selected = true;
             upgradeListView.EnsureVisible(index);
 
-            // 改良の編集項目を有効化する
+            // Enable edit items for improvement
             EnableUpgradeItems();
         }
 
         /// <summary>
-        ///     改良リストから項目を削除する
+        ///     Remove an item from the improvement list
         /// </summary>
-        /// <param name="index">削除する項目の位置</param>
+        /// <param name="index">Position of the item to be deleted</param>
         private void RemoveUpgradeListItem(int index)
         {
-            // 改良リストビューの項目を削除する
+            // Delete items in the improved list view
             upgradeListView.Items.RemoveAt(index);
 
             if (index < upgradeListView.Items.Count)
             {
-                // 追加した項目の次を選択する
+                // Select next to the added item
                 upgradeListView.Items[index].Focused = true;
                 upgradeListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // 末尾の項目を選択する
+                // Select the last item
                 upgradeListView.Items[upgradeListView.Items.Count - 1].Focused = true;
                 upgradeListView.Items[upgradeListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 改良の編集項目を無効化する
+                // Disable improvement edit items
                 DisableUpgradeItems();
             }
         }
 
         #endregion
 
-        #region ユニットモデルタブ
+        #region Unit model tab
 
         /// <summary>
-        ///     ユニットモデルタブの編集項目の値を更新する
+        ///     Update the value of the edit item on the unit model tab
         /// </summary>
         private void UpdateModelEditableItems()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3363,7 +3363,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // モデル画像
+            // Model image
             Image prev = modelImagePictureBox.Image;
             string fileName = GetModelImageFileName(unit, index, GetSelectedCountry());
             if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName))
@@ -3377,7 +3377,7 @@ namespace HoI2Editor.Forms
                 modelImagePictureBox.Image = null;
             }
             prev?.Dispose();
-            // モデルアイコン
+            // Model icon
             prev = modelIconPictureBox.Image;
             fileName = GetModelIconFileName(unit, index);
             if (!string.IsNullOrEmpty(fileName) && File.Exists(fileName))
@@ -3391,145 +3391,145 @@ namespace HoI2Editor.Forms
                 modelIconPictureBox.Image = null;
             }
             prev?.Dispose();
-            // モデル名
+            // Model name
             UpdateModelNameTextBox();
 
-            // 組織率
+            // Organization rate
             defaultOrganisationTextBox.Text = DoubleHelper.ToString(model.DefaultOrganization);
             defaultOrganisationTextBox.ForeColor = model.IsDirty(UnitModelItemId.DefaultOrganization)
                 ? Color.Red
                 : SystemColors.WindowText;
-            // 士気
+            // morale
             moraleTextBox.Text = DoubleHelper.ToString(model.Morale);
             moraleTextBox.ForeColor = model.IsDirty(UnitModelItemId.Morale) ? Color.Red : SystemColors.WindowText;
-            // 消費物資
+            // Consumables
             supplyConsumptionTextBox.Text = DoubleHelper.ToString(model.SupplyConsumption);
             supplyConsumptionTextBox.ForeColor = model.IsDirty(UnitModelItemId.SupplyConsumption)
                 ? Color.Red
                 : SystemColors.WindowText;
-            // 消費燃料
+            // Fuel consumption
             fuelConsumptionTextBox.Text = DoubleHelper.ToString(model.FuelConsumption);
             fuelConsumptionTextBox.ForeColor = model.IsDirty(UnitModelItemId.FuelConsumption)
                 ? Color.Red
                 : SystemColors.WindowText;
-            // 必要IC
+            // requirement I C
             costTextBox.Text = DoubleHelper.ToString(model.Cost);
             costTextBox.ForeColor = model.IsDirty(UnitModelItemId.Cost) ? Color.Red : SystemColors.WindowText;
-            // 必要時間
+            // Necessary Time
             buildTimeTextBox.Text = DoubleHelper.ToString(model.BuildTime);
             buildTimeTextBox.ForeColor = model.IsDirty(UnitModelItemId.BuildTime) ? Color.Red : SystemColors.WindowText;
-            // 労働力
+            // Labor force
             manPowerTextBox.Text = DoubleHelper.ToString(model.ManPower);
             manPowerTextBox.ForeColor = model.IsDirty(UnitModelItemId.ManPower) ? Color.Red : SystemColors.WindowText;
-            // 最大速度
+            // Maximum speed
             maxSpeedTextBox.Text = DoubleHelper.ToString(model.MaxSpeed);
             maxSpeedTextBox.ForeColor = model.IsDirty(UnitModelItemId.MaxSpeed) ? Color.Red : SystemColors.WindowText;
-            // 対空防御力
+            // Anti-aircraft defense
             airDefenceTextBox.Text = DoubleHelper.ToString(model.AirDefence);
             airDefenceTextBox.ForeColor = model.IsDirty(UnitModelItemId.AirDefense)
                 ? Color.Red
                 : SystemColors.WindowText;
-            // 対空攻撃力
+            // Anti-aircraft attack power
             airAttackTextBox.Text = DoubleHelper.ToString(model.AirAttack);
             airAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.AirAttack) ? Color.Red : SystemColors.WindowText;
 
-            // 陸軍
+            // Army
             if (unit.Branch == Branch.Army)
             {
-                // 航続距離
+                // Cruising distance
                 rangeLabel.Enabled = false;
                 rangeTextBox.Enabled = false;
                 rangeTextBox.ResetText();
-                // 輸送負荷
+                // Transport load
                 transportWeightLabel.Enabled = true;
                 transportWeightTextBox.Enabled = true;
                 transportWeightTextBox.Text = DoubleHelper.ToString(model.TransportWeight);
                 transportWeightTextBox.ForeColor = model.IsDirty(UnitModelItemId.TransportWeight)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 輸送能力
+                // Transport capacity
                 transportCapabilityLabel.Enabled = false;
                 transportCapabilityTextBox.Enabled = false;
                 transportCapabilityTextBox.ResetText();
-                // 制圧力
+                // Control
                 suppressionLabel.Enabled = true;
                 suppressionTextBox.Enabled = true;
                 suppressionTextBox.Text = DoubleHelper.ToString(model.Suppression);
                 suppressionTextBox.ForeColor = model.IsDirty(UnitModelItemId.Suppression)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 防御力
+                // Defense power
                 defensivenessLabel.Enabled = true;
                 defensivenessTextBox.Enabled = true;
                 defensivenessTextBox.Text = DoubleHelper.ToString(model.Defensiveness);
                 defensivenessTextBox.ForeColor = model.IsDirty(UnitModelItemId.Defensiveness)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 耐久力
+                // Endurance
                 toughnessLabel.Enabled = true;
                 toughnessTextBox.Enabled = true;
                 toughnessTextBox.Text = DoubleHelper.ToString(model.Toughness);
                 toughnessTextBox.ForeColor = model.IsDirty(UnitModelItemId.Toughness)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 脆弱性
+                // Vulnerability
                 softnessLabel.Enabled = true;
                 softnessTextBox.Enabled = true;
                 softnessTextBox.Text = DoubleHelper.ToString(model.Softness);
                 softnessTextBox.ForeColor = model.IsDirty(UnitModelItemId.Softness)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 対地索敵力
+                // Ground search enemy power
                 surfaceDetectionCapabilityLabel.Enabled = false;
                 surfaceDetectionCapabilityTextBox.Enabled = false;
                 surfaceDetectionCapabilityTextBox.ResetText();
-                // 対空索敵力
+                // Anti-aircraft enemy power
                 airDetectionCapabilityLabel.Enabled = false;
                 airDetectionCapabilityTextBox.Enabled = false;
                 airDetectionCapabilityTextBox.ResetText();
             }
             else
             {
-                // 航続距離
+                // Cruising distance
                 rangeLabel.Enabled = true;
                 rangeTextBox.Enabled = true;
                 rangeTextBox.Text = DoubleHelper.ToString(model.Range);
                 rangeTextBox.ForeColor = model.IsDirty(UnitModelItemId.Range) ? Color.Red : SystemColors.WindowText;
-                // 輸送負荷
+                // Transport load
                 transportWeightLabel.Enabled = false;
                 transportWeightTextBox.Enabled = false;
                 transportWeightTextBox.ResetText();
-                // 輸送能力
+                // Transport capacity
                 transportCapabilityLabel.Enabled = true;
                 transportCapabilityTextBox.Enabled = true;
                 transportCapabilityTextBox.Text = DoubleHelper.ToString(model.TransportCapability);
                 transportCapabilityTextBox.ForeColor = model.IsDirty(UnitModelItemId.TransportCapability)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 制圧力
+                // Control
                 suppressionLabel.Enabled = false;
                 suppressionTextBox.Enabled = false;
                 suppressionTextBox.ResetText();
-                // 防御力
+                // Defense power
                 defensivenessLabel.Enabled = false;
                 defensivenessTextBox.Enabled = false;
                 defensivenessTextBox.ResetText();
-                // 耐久力
+                // Endurance
                 toughnessLabel.Enabled = false;
                 toughnessTextBox.Enabled = false;
                 toughnessTextBox.ResetText();
-                // 脆弱性
+                // Vulnerability
                 softnessLabel.Enabled = false;
                 softnessTextBox.Enabled = false;
                 softnessTextBox.ResetText();
-                // 対地索敵力
+                // Ground search enemy power
                 surfaceDetectionCapabilityLabel.Enabled = true;
                 surfaceDetectionCapabilityTextBox.Enabled = true;
                 surfaceDetectionCapabilityTextBox.Text = DoubleHelper.ToString(model.SurfaceDetectionCapability);
                 surfaceDetectionCapabilityTextBox.ForeColor = model.IsDirty(UnitModelItemId.SurfaceDetectionCapability)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 対空索敵力
+                // Anti-aircraft enemy power
                 airDetectionCapabilityLabel.Enabled = true;
                 airDetectionCapabilityTextBox.Enabled = true;
                 airDetectionCapabilityTextBox.Text = DoubleHelper.ToString(model.AirDetectionCapability);
@@ -3538,31 +3538,31 @@ namespace HoI2Editor.Forms
                     : SystemColors.WindowText;
             }
 
-            // 陸軍師団
+            // Army division
             if ((unit.Branch == Branch.Army) && (unit.Organization == UnitOrganization.Division))
             {
-                // 速度キャップ(砲兵)
+                // Speed cap (( artillery )
                 speedCapArtLabel.Enabled = true;
                 speedCapArtTextBox.Enabled = true;
                 speedCapArtTextBox.Text = DoubleHelper.ToString(model.SpeedCapArt);
                 speedCapArtTextBox.ForeColor = model.IsDirty(UnitModelItemId.SpeedCapArt)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 速度キャップ(工兵)
+                // Speed cap (( Engineer )
                 speedCapEngLabel.Enabled = true;
                 speedCapEngTextBox.Enabled = true;
                 speedCapEngTextBox.Text = DoubleHelper.ToString(model.SpeedCapEng);
                 speedCapEngTextBox.ForeColor = model.IsDirty(UnitModelItemId.SpeedCapEng)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 速度キャップ(対戦車)
+                // Speed cap (( Anti-tank )
                 speedCapAtLabel.Enabled = true;
                 speedCapAtTextBox.Enabled = true;
                 speedCapAtTextBox.Text = DoubleHelper.ToString(model.SpeedCapAt);
                 speedCapAtTextBox.ForeColor = model.IsDirty(UnitModelItemId.SpeedCapAt)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 速度キャップ(対空)
+                // Speed cap (( Anti-aircraft )
                 speedCapAaLabel.Enabled = true;
                 speedCapAaTextBox.Enabled = true;
                 speedCapAaTextBox.Text = DoubleHelper.ToString(model.SpeedCapAa);
@@ -3572,85 +3572,85 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 速度キャップ(砲兵)
+                // Speed cap (( artillery )
                 speedCapArtLabel.Enabled = false;
                 speedCapArtTextBox.Enabled = false;
                 speedCapArtTextBox.ResetText();
-                // 速度キャップ(工兵)
+                // Speed cap (( Engineer )
                 speedCapEngLabel.Enabled = false;
                 speedCapEngTextBox.Enabled = false;
                 speedCapEngTextBox.ResetText();
-                // 速度キャップ(対戦車)
+                // Speed cap (( Anti-tank )
                 speedCapAtTextBox.Enabled = false;
                 speedCapAaLabel.Enabled = false;
                 speedCapAtTextBox.ResetText();
-                // 速度キャップ(対空)
+                // Speed cap (( Anti-aircraft )
                 speedCapAtLabel.Enabled = false;
                 speedCapAaTextBox.Enabled = false;
                 speedCapAaTextBox.ResetText();
             }
 
-            // 海軍
+            // Navy
             if (unit.Branch == Branch.Navy)
             {
-                // 対艦防御力
+                // Anti-ship defense
                 seaDefenceLabel.Enabled = true;
                 seaDefenceTextBox.Enabled = true;
                 seaDefenceTextBox.Text = DoubleHelper.ToString(model.SeaDefense);
                 seaDefenceTextBox.ForeColor = model.IsDirty(UnitModelItemId.SeaDefense)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 対人攻撃力
+                // Interpersonal attack power
                 softAttackLabel.Enabled = false;
                 softAttackTextBox.Enabled = false;
                 softAttackTextBox.ResetText();
-                // 対甲攻撃力
+                // Anti-instep attack power
                 hardAttackLabel.Enabled = false;
                 hardAttackTextBox.Enabled = false;
                 hardAttackTextBox.ResetText();
-                // 艦対艦攻撃力
+                // Ship-to-ship attack power
                 seaAttackLabel.Enabled = true;
                 seaAttackTextBox.Enabled = true;
                 seaAttackTextBox.Text = DoubleHelper.ToString(model.SeaAttack);
                 seaAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.SeaAttack)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 対潜攻撃力
+                // Anti-submarine attack power
                 subAttackLabel.Enabled = true;
                 subAttackTextBox.Enabled = true;
                 subAttackTextBox.Text = DoubleHelper.ToString(model.SubAttack);
                 subAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.SubAttack)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 船団攻撃力
+                // Fleet attack power
                 convoyAttackLabel.Enabled = true;
                 convoyAttackTextBox.Enabled = true;
                 convoyAttackTextBox.Text = DoubleHelper.ToString(model.ConvoyAttack);
                 convoyAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.ConvoyAttack)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 沿岸砲撃能力
+                // Coastal artillery ability
                 shoreBombardmentLabel.Enabled = true;
                 shoreBombardmentTextBox.Enabled = true;
                 shoreBombardmentTextBox.Text = DoubleHelper.ToString(model.ShoreBombardment);
                 shoreBombardmentTextBox.ForeColor = model.IsDirty(UnitModelItemId.ShoreBombardment)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 射程
+                // Range
                 distanceLabel.Enabled = true;
                 distanceTextBox.Enabled = true;
                 distanceTextBox.Text = DoubleHelper.ToString(model.Distance);
                 distanceTextBox.ForeColor = model.IsDirty(UnitModelItemId.Distance)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 視認性
+                // Visibility
                 visibilityLabel.Enabled = true;
                 visibilityTextBox.Enabled = true;
                 visibilityTextBox.Text = DoubleHelper.ToString(model.Visibility);
                 visibilityTextBox.ForeColor = model.IsDirty(UnitModelItemId.Visibility)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 対艦索敵力
+                // Anti-ship search enemy power
                 subDetectionCapabilityLabel.Enabled = true;
                 subDetectionCapabilityTextBox.Enabled = true;
                 subDetectionCapabilityTextBox.Text = DoubleHelper.ToString(model.SubDetectionCapability);
@@ -3660,72 +3660,72 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 対艦防御力
+                // Anti-ship defense
                 seaDefenceLabel.Enabled = false;
                 seaDefenceTextBox.Enabled = false;
                 seaDefenceTextBox.ResetText();
-                // 対人攻撃力
+                // Interpersonal attack power
                 softAttackLabel.Enabled = true;
                 softAttackTextBox.Enabled = true;
                 softAttackTextBox.Text = DoubleHelper.ToString(model.SoftAttack);
                 softAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.SoftAttack)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 対甲攻撃力
+                // Anti-instep attack power
                 hardAttackLabel.Enabled = true;
                 hardAttackTextBox.Enabled = true;
                 hardAttackTextBox.Text = DoubleHelper.ToString(model.HardAttack);
                 hardAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.HardAttack)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 艦対艦攻撃力
+                // Ship-to-ship attack power
                 seaAttackLabel.Enabled = false;
                 seaAttackTextBox.Enabled = false;
                 seaAttackTextBox.ResetText();
-                // 対潜攻撃力
+                // Anti-submarine attack power
                 subAttackLabel.Enabled = false;
                 subAttackTextBox.Enabled = false;
                 subAttackTextBox.ResetText();
-                // 船団攻撃力
+                // Fleet attack power
                 convoyAttackLabel.Enabled = false;
                 convoyAttackTextBox.Enabled = false;
                 convoyAttackTextBox.ResetText();
-                // 沿岸砲撃能力
+                // Coastal artillery ability
                 shoreBombardmentLabel.Enabled = false;
                 shoreBombardmentTextBox.Enabled = false;
                 shoreBombardmentTextBox.ResetText();
-                // 射程
+                // Range
                 distanceLabel.Enabled = false;
                 distanceTextBox.Enabled = false;
                 distanceTextBox.ResetText();
-                // 視認性
+                // Visibility
                 visibilityLabel.Enabled = false;
                 visibilityTextBox.Enabled = false;
                 visibilityTextBox.ResetText();
-                // 対艦索敵力
+                // Anti-ship search enemy power
                 subDetectionCapabilityLabel.Enabled = false;
                 subDetectionCapabilityTextBox.Enabled = false;
                 subDetectionCapabilityTextBox.ResetText();
             }
 
-            // 空軍
+            // Air Force
             if (unit.Branch == Branch.Airforce)
             {
-                // 対地防御力
+                // Ground defense
                 surfaceDefenceLabel.Enabled = true;
                 surfaceDefenceTextBox.Enabled = true;
                 surfaceDefenceTextBox.Text = DoubleHelper.ToString(model.SurfaceDefence);
                 surfaceDefenceTextBox.ForeColor = model.IsDirty(UnitModelItemId.SurfaceDefense)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 空対艦攻撃力
+                // Air-to-ship attack power
                 navalAttackLabel.Enabled = true;
                 navalAttackTextBox.Enabled = true;
                 navalAttackTextBox.Text = DoubleHelper.ToString(model.NavalAttack);
                 navalAttackTextBox.ForeColor = model.IsDirty(UnitModelItemId.NavalAttack)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 戦略爆撃攻撃力
+                // Strategic bombing attack power
                 strategicAttackLabel.Enabled = true;
                 strategicAttackTextBox.Enabled = true;
                 strategicAttackTextBox.Text = DoubleHelper.ToString(model.StrategicAttack);
@@ -3735,31 +3735,31 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 対地防御力
+                // Ground defense
                 surfaceDefenceLabel.Enabled = false;
                 surfaceDefenceTextBox.Enabled = false;
                 surfaceDefenceTextBox.ResetText();
-                // 空対艦攻撃力
+                // Air-to-ship attack power
                 navalAttackLabel.Enabled = false;
                 navalAttackTextBox.Enabled = false;
                 navalAttackTextBox.ResetText();
-                // 戦略爆撃攻撃力
+                // Strategic bombing attack power
                 strategicAttackLabel.Enabled = false;
                 strategicAttackTextBox.Enabled = false;
                 strategicAttackTextBox.ResetText();
             }
 
-            // AoD/陸軍
+            // AoD / Army
             if ((Game.Type == GameType.ArsenalOfDemocracy) && (unit.Branch == Branch.Army))
             {
-                // 最大物資
+                // Largest supplies
                 maxSupplyStockLabel.Enabled = true;
                 maxSupplyStockTextBox.Enabled = true;
                 maxSupplyStockTextBox.Text = DoubleHelper.ToString(model.MaxSupplyStock);
                 maxSupplyStockTextBox.ForeColor = model.IsDirty(UnitModelItemId.MaxSupplyStock)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 最大燃料
+                // Maximum fuel
                 maxOilStockLabel.Enabled = true;
                 maxOilStockTextBox.Enabled = true;
                 maxOilStockTextBox.Text = DoubleHelper.ToString(model.MaxOilStock);
@@ -3769,22 +3769,22 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 最大物資
+                // Largest supplies
                 maxSupplyStockLabel.Enabled = false;
                 maxSupplyStockTextBox.Enabled = false;
                 maxSupplyStockTextBox.ResetText();
-                // 最大燃料
+                // Maximum fuel
                 maxOilStockLabel.Enabled = false;
                 maxOilStockTextBox.Enabled = false;
                 maxOilStockTextBox.ResetText();
             }
 
-            // AoD/陸軍旅団
+            // AoD / Army Brigade
             if ((Game.Type == GameType.ArsenalOfDemocracy) &&
                 (unit.Branch == Branch.Army) &&
                 (unit.Organization == UnitOrganization.Brigade))
             {
-                // 砲撃能力
+                // Shooting ability
                 artilleryBombardmentLabel.Enabled = true;
                 artilleryBombardmentTextBox.Enabled = true;
                 artilleryBombardmentTextBox.Text = DoubleHelper.ToString(model.ArtilleryBombardment);
@@ -3794,23 +3794,23 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 砲撃能力
+                // Shooting ability
                 artilleryBombardmentLabel.Enabled = false;
                 artilleryBombardmentTextBox.Enabled = false;
                 artilleryBombardmentTextBox.ResetText();
             }
 
-            // DH/師団
+            // DH / Division
             if ((Game.Type == GameType.DarkestHour) && (unit.Organization == UnitOrganization.Division))
             {
-                // 補充コスト
+                // Replenishment cost
                 reinforceCostLabel.Enabled = true;
                 reinforceCostTextBox.Enabled = true;
                 reinforceCostTextBox.Text = DoubleHelper.ToString(model.ReinforceCostFactor);
                 reinforceCostTextBox.ForeColor = model.IsDirty(UnitModelItemId.ReinforceCostFactor)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 補充時間
+                // Replenishment time
                 reinforceTimeLabel.Enabled = true;
                 reinforceTimeTextBox.Enabled = true;
                 reinforceTimeTextBox.Text = DoubleHelper.ToString(model.ReinforceTimeFactor);
@@ -3820,22 +3820,22 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 補充コスト
+                // Replenishment cost
                 reinforceCostLabel.Enabled = false;
                 reinforceCostTextBox.Enabled = false;
                 reinforceCostTextBox.ResetText();
-                // 補充時間
+                // Replenishment time
                 reinforceTimeLabel.Enabled = false;
                 reinforceTimeTextBox.Enabled = false;
                 reinforceTimeTextBox.ResetText();
             }
 
-            // DH/陸軍師団
+            // DH / Army Division
             if ((Game.Type == GameType.DarkestHour) &&
                 (unit.Branch == Branch.Army) &&
                 (unit.Organization == UnitOrganization.Division))
             {
-                // 燃料切れ補正
+                // Fuel shortage correction
                 noFuelCombatModLabel.Enabled = true;
                 noFuelCombatModTextBox.Enabled = true;
                 noFuelCombatModTextBox.Text = DoubleHelper.ToString(model.NoFuelCombatMod);
@@ -3845,31 +3845,31 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 燃料切れ補正
+                // Fuel shortage correction
                 noFuelCombatModLabel.Enabled = false;
                 noFuelCombatModTextBox.Enabled = false;
                 noFuelCombatModTextBox.ResetText();
             }
 
-            // DH以外/海軍師団
+            // DH apart from / / Navy Division
             if ((Game.Type != GameType.DarkestHour) &&
                 (unit.Branch == Branch.Navy) &&
                 (unit.Organization == UnitOrganization.Division))
             {
-                // 改良コスト
+                // Improvement cost
                 upgradeCostFactorLabel.Enabled = false;
                 upgradeCostFactorTextBox.Enabled = false;
                 upgradeCostFactorTextBox.ResetText();
-                // 改良時間
+                // Improvement time
                 upgradeTimeFactorLabel.Enabled = false;
                 upgradeTimeFactorTextBox.Enabled = false;
                 upgradeTimeFactorTextBox.ResetText();
-                // 2段階改良
+                // 2 Stage improvement
                 upgradeTimeBoostCheckBox.Enabled = false;
                 upgradeTimeBoostCheckBox.Checked = false;
                 autoUpgradeCheckBox.Enabled = false;
                 autoUpgradeCheckBox.Checked = false;
-                // 自動改良先
+                // Automatic improvement destination
                 autoUpgradeClassComboBox.BeginUpdate();
                 autoUpgradeClassComboBox.Items.Clear();
                 autoUpgradeClassComboBox.EndUpdate();
@@ -3879,27 +3879,27 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 改良コスト
+                // Improvement cost
                 upgradeCostFactorLabel.Enabled = true;
                 upgradeCostFactorTextBox.Enabled = true;
                 upgradeCostFactorTextBox.Text = DoubleHelper.ToString(model.UpgradeCostFactor);
                 upgradeCostFactorTextBox.ForeColor = model.IsDirty(UnitModelItemId.UpgradeCostFactor)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 改良時間
+                // Improvement time
                 upgradeTimeFactorLabel.Enabled = true;
                 upgradeTimeFactorTextBox.Enabled = true;
                 upgradeTimeFactorTextBox.Text = DoubleHelper.ToString(model.UpgradeTimeFactor);
                 upgradeTimeFactorTextBox.ForeColor = model.IsDirty(UnitModelItemId.UpgradeTimeFactor)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 2段階改良
+                // 2 Stage improvement
                 upgradeTimeBoostCheckBox.Enabled = Game.Type == GameType.DarkestHour;
                 upgradeTimeBoostCheckBox.Checked = model.UpgradeTimeBoost;
                 upgradeTimeBoostCheckBox.ForeColor = model.IsDirty(UnitModelItemId.UpgradeTimeBoost)
                     ? Color.Red
                     : SystemColors.WindowText;
-                // 自動改良先
+                // Automatic improvement destination
                 autoUpgradeCheckBox.Enabled = Game.Type == GameType.DarkestHour;
                 autoUpgradeCheckBox.Checked = model.AutoUpgrade;
                 autoUpgradeCheckBox.ForeColor = model.IsDirty(UnitModelItemId.AutoUpgrade)
@@ -3909,20 +3909,20 @@ namespace HoI2Editor.Forms
                 UpdateAutoUpgradeModelList();
             }
 
-            // DH1.03以降
+            // DH1.03 from
             if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103))
             {
-                // 装備リストを更新する
+                // Update equipment list
                 UpdateEquipmentList(model);
             }
 
-            // DH1.03以降/陸軍旅団
+            // DH1.03 from / / Army Brigade
             if ((Game.Type == GameType.DarkestHour) &&
                 (Game.Version >= 103) &&
                 (unit.Branch == Branch.Army) &&
                 (unit.Organization == UnitOrganization.Brigade))
             {
-                // 速度キャップ
+                // Speed cap
                 speedCapAllLabel.Enabled = true;
                 speedCapAllTextBox.Enabled = true;
                 speedCapAllTextBox.Text = DoubleHelper.ToString(model.SpeedCap);
@@ -3932,7 +3932,7 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 速度キャップ
+                // Speed cap
                 speedCapAllLabel.Enabled = false;
                 speedCapAllTextBox.Enabled = false;
                 speedCapAllTextBox.ResetText();
@@ -3940,7 +3940,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルタブの編集項目を有効化する
+        ///     Enable edit items on the Unit Model tab
         /// </summary>
         private void EnableModelEditableItems()
         {
@@ -3953,7 +3953,7 @@ namespace HoI2Editor.Forms
             cloneButton.Enabled = true;
             removeButton.Enabled = true;
 
-            // DH1.03以降
+            // DH1.03 from
             if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103))
             {
                 equipmentGroupBox.Enabled = true;
@@ -3965,7 +3965,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルタブの編集項目を無効化する
+        ///     Disable edit items on the unit model tab
         /// </summary>
         private void DisableModelEditableItems()
         {
@@ -4046,7 +4046,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルの編集項目の文字列を初期化する
+        ///     Initialize the character string of the edit item of the unit model
         /// </summary>
         private void InitModelItemText()
         {
@@ -4069,25 +4069,25 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデル名の表示を更新する
+        ///     Update the display of the unit model name
         /// </summary>
         private void UpdateModelNameTextBox()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = modelListView.SelectedIndices[0];
 
-            // ユニットモデル名を更新する
+            // Update the unit model name
             UnitModel model = unit.Models[index];
             Country country = GetSelectedCountry();
             if (country == Country.None)
@@ -4112,20 +4112,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデル名変更時の処理
+        ///     Processing when changing the unit model name
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnModelNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4133,7 +4133,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             Country country = GetSelectedCountry();
             string name = unit.GetCountryModelName(index, country);
             if (string.IsNullOrEmpty(name))
@@ -4147,47 +4147,47 @@ namespace HoI2Editor.Forms
 
             if ((country != Country.None) && string.IsNullOrEmpty(modelNameTextBox.Text))
             {
-                // 国別のモデル名を削除する
+                // Delete the model name by country
                 unit.RemoveModelName(index, country);
-                // 共通のモデル名を設定する
+                // Set a common model name
                 modelNameTextBox.Text = unit.GetModelName(index);
-                // 文字色を変更する
+                // Change the font color
                 modelNameTextBox.ForeColor = model.IsDirty(UnitModelItemId.Name) ? Color.Salmon : Color.Gray;
             }
             else
             {
-                // 値を更新する
+                // Update value
                 unit.SetModelName(index, country, modelNameTextBox.Text);
-                // 文字色を変更する
+                // Change the font color
                 modelNameTextBox.ForeColor = Color.Red;
             }
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[1].Text = modelNameTextBox.Text;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirtyName(country);
             unit.SetDirty();
 
-            // ユニットモデル名の更新を通知する
+            // Notify the update of the unit model name
             HoI2EditorController.OnItemChanged(
                 country == Country.None ? EditorItemId.CommonModelName : EditorItemId.CountryModelName, this);
         }
 
         /// <summary>
-        ///     ユニットモデル画像のファイル名を取得する
+        ///     Get the file name of the unit model image
         /// </summary>
-        /// <param name="unit">ユニットクラス</param>
-        /// <param name="index">ユニットモデルのインデックス</param>
-        /// <param name="country">国タグ</param>
-        /// <returns>ユニットモデル画像のファイル名</returns>
+        /// <param name="unit">Unit class</param>
+        /// <param name="index">Unit model index</param>
+        /// <param name="country">Country tag</param>
+        /// <returns>File name of unit model image</returns>
         private static string GetModelImageFileName(UnitClass unit, int index, Country country)
         {
             string name;
             string fileName;
             if (country != Country.None)
             {
-                // 国タグ指定/モデル番号指定
+                // Country tag designation / / Model number specification
                 name = string.Format(
                     unit.Organization == UnitOrganization.Division
                         ? "ill_div_{0}_{1}_{2}.bmp"
@@ -4201,7 +4201,7 @@ namespace HoI2Editor.Forms
                     return fileName;
                 }
 
-                // 国タグ指定/モデル番号は0指定
+                // Country tag designation / / The model number is 0 specify
                 name = string.Format(
                     unit.Organization == UnitOrganization.Division
                         ? "ill_div_{0}_{1}_0.bmp"
@@ -4215,7 +4215,7 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // モデル番号指定
+            // Model number specification
             name = string.Format(
                 unit.Organization == UnitOrganization.Division
                     ? "ill_div_{0}_{1}.bmp"
@@ -4228,7 +4228,7 @@ namespace HoI2Editor.Forms
                 return fileName;
             }
 
-            // モデル番号は0指定
+            // The model number is 0 specify
             name = string.Format(
                 unit.Organization == UnitOrganization.Division
                     ? "ill_div_{0}_0.bmp"
@@ -4239,14 +4239,14 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルアイコンのファイル名を取得する
+        ///     Get the file name of the unit model icon
         /// </summary>
-        /// <param name="unit">ユニットクラス</param>
-        /// <param name="index">ユニットモデルのインデックス</param>
-        /// <returns>ユニットモデルアイコンのファイル名</returns>
+        /// <param name="unit">Unit class</param>
+        /// <param name="index">Unit model index</param>
+        /// <returns>File name of the unit model icon</returns>
         private static string GetModelIconFileName(UnitClass unit, int index)
         {
-            // 旅団にはアイコンが存在しないので空文字列を返す
+            // The brigade does not have an icon, so it returns an empty string
             if (unit.Organization == UnitOrganization.Brigade)
             {
                 return string.Empty;
@@ -4259,23 +4259,23 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region ユニットモデルタブ - 基本ステータス
+        #region Unit model tab ―――― Basic status
 
         /// <summary>
-        ///     組織率テキストボックスフォーカス移動後の処理
+        ///     Organization rate text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDefaultOrganizationTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4283,7 +4283,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(defaultOrganisationTextBox.Text, out val))
             {
@@ -4291,7 +4291,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.DefaultOrganization))
             {
                 return;
@@ -4300,35 +4300,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] default organization: {0} -> {1} ({2})", DoubleHelper.ToString(model.DefaultOrganization),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.DefaultOrganization = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[7].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.DefaultOrganization);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             defaultOrganisationTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     士気テキストボックスフォーカス移動後の処理
+        ///     Morale text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMoraleTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4336,7 +4336,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(moraleTextBox.Text, out val))
             {
@@ -4344,7 +4344,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Morale))
             {
                 return;
@@ -4353,35 +4353,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] morale: {0} -> {1} ({2})", DoubleHelper.ToString(model.Morale), DoubleHelper.ToString(val),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Morale = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[8].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Morale);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             moraleTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     航続距離テキストボックスフォーカス移動後の処理
+        ///     Cruising distance text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRangeTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4389,7 +4389,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(rangeTextBox.Text, out val))
             {
@@ -4397,7 +4397,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Range))
             {
                 return;
@@ -4406,32 +4406,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] range: {0} -> {1} ({2})", DoubleHelper.ToString(model.Range), DoubleHelper.ToString(val),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Range = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Range);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             rangeTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     輸送負荷テキストボックスフォーカス移動後の処理
+        ///     Transport load text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTransportWeightTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4439,7 +4439,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(transportWeightTextBox.Text, out val))
             {
@@ -4447,7 +4447,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.TransportWeight))
             {
                 return;
@@ -4456,32 +4456,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] transport weight: {0} -> {1} ({2})", DoubleHelper.ToString(model.TransportWeight),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.TransportWeight = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.TransportWeight);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             transportWeightTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     輸送能力テキストボックスフォーカス移動後の処理
+        ///     Transport capacity text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTransportCapabilityTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4489,7 +4489,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(transportCapabilityTextBox.Text, out val))
             {
@@ -4497,7 +4497,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.TransportCapability))
             {
                 return;
@@ -4506,32 +4506,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] transport capacity: {0} -> {1} ({2})", DoubleHelper.ToString(model.TransportCapability),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.TransportCapability = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.DefaultOrganization);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             transportCapabilityTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     制圧力テキストボックスフォーカス移動後の処理
+        ///     Control text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSuppressionTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4539,7 +4539,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(suppressionTextBox.Text, out val))
             {
@@ -4547,7 +4547,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Suppression))
             {
                 return;
@@ -4556,32 +4556,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] suppression: {0} -> {1} ({2})", DoubleHelper.ToString(model.Suppression),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Suppression = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Suppression);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             suppressionTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     消費物資テキストボックスフォーカス移動後の処理
+        ///     Consumables Text Box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSupplyConsumptionTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4589,7 +4589,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(supplyConsumptionTextBox.Text, out val))
             {
@@ -4597,7 +4597,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SupplyConsumption))
             {
                 return;
@@ -4606,35 +4606,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] supply consumption: {0} -> {1} ({2})", DoubleHelper.ToString(model.SupplyConsumption),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SupplyConsumption = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[5].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SupplyConsumption);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             supplyConsumptionTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     消費燃料テキストボックスフォーカス移動後の処理
+        ///     Fuel consumption text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFuelConsumptionTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4642,7 +4642,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(fuelConsumptionTextBox.Text, out val))
             {
@@ -4650,7 +4650,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.FuelConsumption))
             {
                 return;
@@ -4659,35 +4659,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] fuel consumption: {0} -> {1} ({2})", DoubleHelper.ToString(model.FuelConsumption),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.FuelConsumption = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[6].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.FuelConsumption);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             fuelConsumptionTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     最大物資テキストボックスフォーカス移動後の処理
+        ///     Maximum supplies Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMaxSupplyStockTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4695,7 +4695,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(maxSupplyStockTextBox.Text, out val))
             {
@@ -4703,7 +4703,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.MaxSupplyStock))
             {
                 return;
@@ -4712,32 +4712,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] max supply stock: {0} -> {1} ({2})", DoubleHelper.ToString(model.MaxSupplyStock),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.MaxSupplyStock = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.MaxSupplyStock);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             maxSupplyStockTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     最大燃料テキストボックスフォーカス移動後の処理
+        ///     Maximum fuel text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMaxOilStockTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4745,7 +4745,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(maxOilStockTextBox.Text, out val))
             {
@@ -4753,7 +4753,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.MaxOilStock))
             {
                 return;
@@ -4762,34 +4762,34 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] max oil stock: {0} -> {1} ({2})", DoubleHelper.ToString(model.MaxOilStock),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.MaxOilStock = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.MaxOilStock);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             maxOilStockTextBox.ForeColor = Color.Red;
         }
 
         #endregion
 
-        #region ユニットモデルタブ - 生産ステータス
+        #region Unit model tab ―――― Production status
 
         /// <summary>
-        ///     自動改良先リストを更新する
+        ///     Update the automatic improvement destination list
         /// </summary>
         private void UpdateAutoUpgradeClassList()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4804,7 +4804,7 @@ namespace HoI2Editor.Forms
             if (model.AutoUpgrade)
             {
                 int width = autoUpgradeClassComboBox.Width;
-                // 現在の自動改良先クラスと兵科がマッチしない場合、ワンショットで候補に登録する
+                // If the current automatic improvement destination class does not match the military department, register as a candidate with one shot
                 UnitClass current = Units.Items[(int) model.UpgradeClass];
                 if (current.Branch != unit.Branch)
                 {
@@ -4838,18 +4838,18 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     自動改良先モデルの表示を更新する
+        ///     Update the display of the model to be automatically improved
         /// </summary>
         private void UpdateAutoUpgradeModelList()
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4898,20 +4898,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     必要ICテキストボックスフォーカス移動後の処理
+        ///     requirement I C Processing after moving the text box focus
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCostTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4919,7 +4919,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(costTextBox.Text, out val))
             {
@@ -4927,7 +4927,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Cost))
             {
                 return;
@@ -4936,35 +4936,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] cost: {0} -> {1} ({2})", DoubleHelper.ToString(model.Cost), DoubleHelper.ToString(val),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Cost = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[2].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Cost);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             costTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     必要時間テキストボックスフォーカス移動後の処理
+        ///     Required time Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBuildTimeTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4972,7 +4972,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(buildTimeTextBox.Text, out val))
             {
@@ -4980,7 +4980,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.BuildTime))
             {
                 return;
@@ -4989,35 +4989,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] build time: {0} -> {1} ({2})", DoubleHelper.ToString(model.BuildTime),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.BuildTime = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[3].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.BuildTime);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             buildTimeTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     労働力テキストボックスフォーカス移動後の処理
+        ///     Labor Text Box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnManPowerTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5025,7 +5025,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(manPowerTextBox.Text, out val))
             {
@@ -5033,7 +5033,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.ManPower))
             {
                 return;
@@ -5042,35 +5042,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] manpower: {0} -> {1} ({2})", DoubleHelper.ToString(model.ManPower),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.ManPower = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[4].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.ManPower);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             manPowerTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     改良コストテキストボックスフォーカス移動後の処理
+        ///     Improved cost Textbox Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeCostFactorTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5078,7 +5078,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(upgradeCostFactorTextBox.Text, out val))
             {
@@ -5086,7 +5086,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.UpgradeCostFactor))
             {
                 return;
@@ -5095,32 +5095,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] upgrade cost factor: {0} -> {1} ({2})", DoubleHelper.ToString(model.UpgradeCostFactor),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.UpgradeCostFactor = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.UpgradeCostFactor);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             upgradeCostFactorTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     改良時間テキストボックスフォーカス移動後の処理
+        ///     Improvement time Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeTimeFactorTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5128,7 +5128,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(upgradeTimeFactorTextBox.Text, out val))
             {
@@ -5136,7 +5136,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.UpgradeTimeFactor))
             {
                 return;
@@ -5145,32 +5145,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] upgrade time factor: {0} -> {1} ({2})", DoubleHelper.ToString(model.UpgradeTimeFactor),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.UpgradeTimeFactor = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.UpgradeTimeFactor);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             upgradeTimeFactorTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     補充コストテキストボックスフォーカス移動後の処理
+        ///     Replenishment cost Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReinforceCostTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5178,7 +5178,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(reinforceCostTextBox.Text, out val))
             {
@@ -5186,7 +5186,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.ReinforceCostFactor))
             {
                 return;
@@ -5195,32 +5195,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] reinforce cost: {0} -> {1} ({2})", DoubleHelper.ToString(model.ReinforceCostFactor),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.ReinforceCostFactor = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.ReinforceCostFactor);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             reinforceCostTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     補充時間テキストボックスフォーカス移動後の処理
+        ///     Replenishment time Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReinforceTimeTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5228,7 +5228,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(reinforceTimeTextBox.Text, out val))
             {
@@ -5236,7 +5236,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.ReinforceTimeFactor))
             {
                 return;
@@ -5245,39 +5245,39 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] reinforce time: {0} -> {1} ({2})", DoubleHelper.ToString(model.ReinforceTimeFactor),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.ReinforceTimeFactor = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.ReinforceTimeFactor);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             reinforceTimeTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     2段階改良チェックボックスのチェック状態変更時の処理
+        ///     2 Processing when the check status of the stage improvement check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpgradeTimeBoostCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // DH以外で選択中のユニットクラスが海軍師団ならば何もしない
+            // DH If the unit class selected other than is the Navy Division, do nothing
             if ((Game.Type != GameType.DarkestHour) && (unit.Branch == Branch.Navy) &&
                 (unit.Organization == UnitOrganization.Division))
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5285,7 +5285,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (upgradeTimeBoostCheckBox.Checked == model.UpgradeTimeBoost)
             {
                 return;
@@ -5294,39 +5294,39 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] upgrade time boost: {0} -> {1} ({2})", BoolHelper.ToString(model.UpgradeTimeBoost),
                 BoolHelper.ToString(upgradeTimeBoostCheckBox.Checked), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.UpgradeTimeBoost = upgradeTimeBoostCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.UpgradeTimeBoost);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             upgradeTimeBoostCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     自動改良チェックボックスのチェック状態変更時の処理
+        ///     Processing when the check status of the automatic improvement check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAutoUpgradeCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // DH以外で選択中のユニットクラスが海軍師団ならば何もしない
+            // DH If the unit class selected other than is the Navy Division, do nothing
             if ((Game.Type != GameType.DarkestHour) && (unit.Branch == Branch.Navy) &&
                 (unit.Organization == UnitOrganization.Division))
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5334,7 +5334,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (autoUpgradeCheckBox.Checked == model.AutoUpgrade)
             {
                 return;
@@ -5343,42 +5343,42 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] auto upgrade: {0} -> {1} ({2})", BoolHelper.ToString(model.AutoUpgrade),
                 BoolHelper.ToString(autoUpgradeCheckBox.Checked), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.AutoUpgrade = autoUpgradeCheckBox.Checked;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.AutoUpgrade);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             autoUpgradeCheckBox.ForeColor = Color.Red;
 
-            // 自動改良先リストを更新する
+            // Update the automatic improvement destination list
             UpdateAutoUpgradeClassList();
             UpdateAutoUpgradeModelList();
         }
 
         /// <summary>
-        ///     自動改良先クラスコンボボックスの項目描画処理
+        ///     Item drawing process of automatic improvement destination class combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAutoUpgradeClassComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5386,10 +5386,10 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             UnitClass u = autoUpgradeClassComboBox.Items[e.Index] as UnitClass;
             if (u != null)
             {
@@ -5407,31 +5407,31 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     自動改良先モデルコンボボックスの項目描画処理
+        ///     Item drawing process of the automatic improvement destination model combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAutoUpgradeModelComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5439,10 +5439,10 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.Index == model.UpgradeModel) && model.IsDirty(UnitModelItemId.UpgradeModel))
             {
@@ -5456,31 +5456,31 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     自動改良先クラスコンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the automatic improvement destination class combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAutoUpgradeClassComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中の項目がなければ何もしない
+            // Do nothing if there is no selected item
             if (autoUpgradeClassComboBox.SelectedIndex < 0)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5488,7 +5488,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             UnitClass upgrade = autoUpgradeClassComboBox.SelectedItem as UnitClass;
             if (upgrade == null)
             {
@@ -5502,50 +5502,50 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] auto upgrade class: {0} -> {1} ({2})", Units.Items[(int) model.UpgradeClass],
                 Units.Items[(int) upgrade.Type], unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             UnitClass old = Units.Items[(int) model.UpgradeClass];
             model.UpgradeClass = upgrade.Type;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.UpgradeClass);
             unit.SetDirtyFile();
 
             if (old.Branch != unit.Branch)
             {
-                // 自動改良先クラスと兵科がマッチしていなかった場合は、項目を更新する
+                // If the auto-improvement destination class and the military department do not match, update the item
                 UpdateAutoUpgradeClassList();
             }
             else
             {
-                // 自動改良先クラスコンボボックスの項目色を変更するために描画更新する
+                // Update drawing to change the item color of the automatic improvement destination class combo box
                 autoUpgradeClassComboBox.Refresh();
             }
 
-            // 自動改良先モデルコンボボックスの表示を更新する
+            // Update the display of the automatic improvement destination model combo box
             UpdateAutoUpgradeModelList();
         }
 
         /// <summary>
-        ///     自動改良先モデルコンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the automatic improvement destination model combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAutoUpgradeModelComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中の項目がなければ何もしない
+            // Do nothing if there is no selected item
             if (autoUpgradeModelComboBox.SelectedIndex < 0)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5553,7 +5553,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (autoUpgradeModelComboBox.SelectedIndex == model.UpgradeModel)
             {
                 return;
@@ -5564,41 +5564,41 @@ namespace HoI2Editor.Forms
                 Units.Items[(int) model.UpgradeClass].GetModelName(autoUpgradeModelComboBox.SelectedIndex),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.UpgradeModel = autoUpgradeModelComboBox.SelectedIndex;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.UpgradeModel);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             autoUpgradeModelComboBox.ForeColor = Color.Red;
 
-            // 自動改良先モデルコンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the automatic improvement destination model combo box
             autoUpgradeModelComboBox.Refresh();
         }
 
         /// <summary>
-        ///     自動改良先モデルコンボボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the automatic improvement destination model combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAutoUpgradeModelComboBoxValidated(object sender, EventArgs e)
         {
-            // 選択中の項目があれば何もしない
+            // Do nothing if there is a selected item
             if (autoUpgradeModelComboBox.SelectedIndex >= 0)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5608,7 +5608,7 @@ namespace HoI2Editor.Forms
 
             UnitClass upgrade = Units.Items[(int) model.UpgradeClass];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             int val;
             if (!IntHelper.TryParse(autoUpgradeModelComboBox.Text, out val))
             {
@@ -5624,10 +5624,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ更新しない
+            // Do not update if the value does not change
             if (val == model.UpgradeModel)
             {
-                // 選択項目が存在する範囲ならば数字を選択項目へ戻す
+                // If there is a selection item, return the number to the selection item
                 if ((val >= 0) && (val < upgrade.Models.Count))
                 {
                     autoUpgradeModelComboBox.SelectedIndex = model.UpgradeModel;
@@ -5639,10 +5639,10 @@ namespace HoI2Editor.Forms
                 Units.Items[(int) model.UpgradeClass].GetModelName(model.UpgradeModel),
                 Units.Items[(int) model.UpgradeClass].GetModelName(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.UpgradeModel = val;
 
-            // 選択項目が存在する範囲ならば数字を選択項目へ戻す
+            // If there is a selection item, return the number to the selection item
             {
                 if ((val >= 0) && (val < upgrade.Models.Count))
                 {
@@ -5650,36 +5650,36 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.UpgradeModel);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             autoUpgradeModelComboBox.ForeColor = Color.Red;
 
-            // 自動改良先モデルコンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the automatic improvement destination model combo box
             autoUpgradeModelComboBox.Refresh();
         }
 
         #endregion
 
-        #region ユニットモデルタブ - 速度ステータス
+        #region Unit model tab ―――― Speed status
 
         /// <summary>
-        ///     最大速度テキストボックスフォーカス移動後の処理
+        ///     Maximum speed text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMaxSpeedTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5687,7 +5687,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(maxSpeedTextBox.Text, out val))
             {
@@ -5695,7 +5695,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.MaxSpeed))
             {
                 return;
@@ -5704,35 +5704,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] max speed: {0} -> {1} ({2})", DoubleHelper.ToString(model.MaxSpeed),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.MaxSpeed = val;
 
-            // ユニットモデルリストの項目を更新する
+            // Update the items in the unit model list
             modelListView.Items[index].SubItems[9].Text = DoubleHelper.ToString(val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.MaxSpeed);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             maxSpeedTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     速度キャップテキストボックスフォーカス移動後の処理
+        ///     Speed cap Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpeedCapTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5740,7 +5740,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(speedCapAllTextBox.Text, out val))
             {
@@ -5748,7 +5748,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SpeedCap))
             {
                 return;
@@ -5757,32 +5757,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] speed cap: {0} -> {1} ({2})", DoubleHelper.ToString(model.SpeedCap),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SpeedCap = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SpeedCap);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             speedCapAllTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     砲兵旅団速度キャップテキストボックスフォーカス移動後の処理
+        ///     Artillery Brigade Speed Cap Text Box Processing After Focus Move
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpeedCapArtTextBox(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5790,7 +5790,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(speedCapArtTextBox.Text, out val))
             {
@@ -5798,7 +5798,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SpeedCapArt))
             {
                 return;
@@ -5807,32 +5807,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] speed cap art: {0} -> {1} ({2})", DoubleHelper.ToString(model.SpeedCapArt),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SpeedCapArt = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SpeedCapArt);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             speedCapArtTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     工兵旅団速度キャップテキストボックスフォーカス移動後の処理
+        ///     Engineer Brigade Speed Cap Text Box Processing After Focus Move
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpeedCapEngTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5840,7 +5840,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(speedCapEngTextBox.Text, out val))
             {
@@ -5848,7 +5848,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SpeedCapEng))
             {
                 return;
@@ -5857,32 +5857,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] speed cap eng: {0} -> {1} ({2})", DoubleHelper.ToString(model.SpeedCapEng),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SpeedCapEng = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SpeedCapEng);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             speedCapEngTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対戦車旅団速度キャップテキストボックスフォーカス移動後の処理
+        ///     Anti-tank brigade speed cap text box processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpeedCapAtTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5890,7 +5890,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(speedCapAtTextBox.Text, out val))
             {
@@ -5898,7 +5898,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SpeedCapAt))
             {
                 return;
@@ -5907,32 +5907,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] speed cap at: {0} -> {1} ({2})", DoubleHelper.ToString(model.SpeedCapAt),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SpeedCapAt = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SpeedCapAt);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             speedCapAtTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対空旅団速度キャップテキストボックスフォーカス移動後の処理
+        ///     Anti-aircraft brigade speed cap text box processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSpeedCapAaTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5940,7 +5940,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(speedCapAaTextBox.Text, out val))
             {
@@ -5948,7 +5948,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SpeedCapAa))
             {
                 return;
@@ -5957,36 +5957,36 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] speed cap aa: {0} -> {1} ({2})", DoubleHelper.ToString(model.SpeedCapAa),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SpeedCapAa = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SpeedCapAa);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             speedCapAaTextBox.ForeColor = Color.Red;
         }
 
         #endregion
 
-        #region ユニットモデルタブ - 戦闘ステータス
+        #region Unit model tab ―――― Combat status
 
         /// <summary>
-        ///     防御力テキストボックスフォーカス移動後の処理
+        ///     Defense text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDefensivenessTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5994,7 +5994,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(defensivenessTextBox.Text, out val))
             {
@@ -6002,7 +6002,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Defensiveness))
             {
                 return;
@@ -6011,32 +6011,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] defensiveness: {0} -> {1} ({2})", DoubleHelper.ToString(model.Defensiveness),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Defensiveness = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Defensiveness);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             defensivenessTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対艦防御力テキストボックスフォーカス移動後の処理
+        ///     Anti-ship defense text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSeaDefenceTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6044,7 +6044,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(seaDefenceTextBox.Text, out val))
             {
@@ -6052,7 +6052,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SeaDefense))
             {
                 return;
@@ -6061,32 +6061,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] sea defence: {0} -> {1} ({2})", DoubleHelper.ToString(model.SeaDefense),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SeaDefense = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SeaDefense);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             seaDefenceTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対空防御力テキストボックスフォーカス移動後の処理
+        ///     Anti-aircraft defense text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAirDefenceTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6094,7 +6094,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(airDefenceTextBox.Text, out val))
             {
@@ -6102,7 +6102,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.AirDefence))
             {
                 return;
@@ -6111,32 +6111,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] air defence: {0} -> {1} ({2})", DoubleHelper.ToString(model.AirDefence),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.AirDefence = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.AirDefense);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             airDefenceTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対地防御力テキストボックスフォーカス移動後の処理
+        ///     Ground defense text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSurfaceDefenceTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6144,7 +6144,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(surfaceDefenceTextBox.Text, out val))
             {
@@ -6152,7 +6152,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SurfaceDefence))
             {
                 return;
@@ -6161,32 +6161,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] surface defence: {0} -> {1} ({2})", DoubleHelper.ToString(model.SurfaceDefence),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SurfaceDefence = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SurfaceDefense);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             surfaceDefenceTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     耐久力テキストボックスフォーカス移動後の処理
+        ///     Durability Text Box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnToughnessTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6194,7 +6194,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(toughnessTextBox.Text, out val))
             {
@@ -6202,7 +6202,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Toughness))
             {
                 return;
@@ -6211,32 +6211,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] toughness: {0} -> {1} ({2})", DoubleHelper.ToString(model.Toughness),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Toughness = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Toughness);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             toughnessTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     脆弱性テキストボックスフォーカス移動後の処理
+        ///     Vulnerability Textbox Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSoftnessTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6244,7 +6244,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(softnessTextBox.Text, out val))
             {
@@ -6252,7 +6252,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Softness))
             {
                 return;
@@ -6261,32 +6261,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] softness: {0} -> {1} ({2})", DoubleHelper.ToString(model.Softness),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Softness = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Softness);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             softnessTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対人攻撃力テキストボックスフォーカス移動後の処理
+        ///     Interpersonal attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSoftAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6294,7 +6294,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(softAttackTextBox.Text, out val))
             {
@@ -6302,7 +6302,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SoftAttack))
             {
                 return;
@@ -6311,32 +6311,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] soft attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.SoftAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SoftAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SoftAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             softAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対甲攻撃力テキストボックスフォーカス移動後の処理
+        ///     Anti-instep attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnHardAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6344,7 +6344,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(hardAttackTextBox.Text, out val))
             {
@@ -6352,7 +6352,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.HardAttack))
             {
                 return;
@@ -6361,32 +6361,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] hard attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.HardAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.HardAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.HardAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             hardAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対艦攻撃力テキストボックスフォーカス移動後の処理
+        ///     Anti-ship attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSeaAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6394,7 +6394,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(seaAttackTextBox.Text, out val))
             {
@@ -6402,7 +6402,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SeaAttack))
             {
                 return;
@@ -6411,32 +6411,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] sea attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.SeaAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SeaAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SeaAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             seaAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対潜攻撃力テキストボックスフォーカス移動後の処理
+        ///     Anti-submarine attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSubAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6444,7 +6444,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(subAttackTextBox.Text, out val))
             {
@@ -6452,7 +6452,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SubAttack))
             {
                 return;
@@ -6461,32 +6461,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] sub attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.SubAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SubAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SubAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             subAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     船団攻撃力テキストボックスフォーカス移動後の処理
+        ///     Fleet attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnConvoyAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6494,7 +6494,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(convoyAttackTextBox.Text, out val))
             {
@@ -6502,7 +6502,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.ConvoyAttack))
             {
                 return;
@@ -6511,32 +6511,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] convoy attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.ConvoyAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.ConvoyAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.ConvoyAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             convoyAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     沿岸砲撃能力テキストボックスフォーカス移動後の処理
+        ///     Coastal artillery ability Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnShoreBombardmentTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6544,7 +6544,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (
                 !DoubleHelper.TryParse(shoreBombardmentTextBox.Text, out val))
@@ -6553,7 +6553,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.ShoreBombardment))
             {
                 return;
@@ -6562,32 +6562,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] shore bombardment: {0} -> {1} ({2})", DoubleHelper.ToString(model.ShoreBombardment),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.ShoreBombardment = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.ShoreBombardment);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             shoreBombardmentTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対空攻撃力テキストボックスフォーカス移動後の処理
+        ///     Anti-aircraft attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAirAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6595,7 +6595,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(airAttackTextBox.Text, out val))
             {
@@ -6603,7 +6603,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.AirAttack))
             {
                 return;
@@ -6612,32 +6612,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] air attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.AirAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.AirAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.AirAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             airAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     空対艦攻撃力テキストボックスフォーカス移動後の処理
+        ///     Air-to-ship attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNavalAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6645,7 +6645,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(navalAttackTextBox.Text, out val))
             {
@@ -6653,7 +6653,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.NavalAttack))
             {
                 return;
@@ -6662,32 +6662,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] naval attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.NavalAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.NavalAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.NavalAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             navalAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     戦略爆撃攻撃力テキストボックスフォーカス移動後の処理
+        ///     Strategic bombing attack power Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnStrategicAttackTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6695,7 +6695,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(strategicAttackTextBox.Text, out val))
             {
@@ -6703,7 +6703,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.StrategicAttack))
             {
                 return;
@@ -6712,32 +6712,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] strategic attack: {0} -> {1} ({2})", DoubleHelper.ToString(model.StrategicAttack),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.StrategicAttack = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.StrategicAttack);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             strategicAttackTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     砲撃能力テキストボックスフォーカス移動後の処理
+        ///     Shooting ability Text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnArtilleryBombardmentTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6745,7 +6745,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(artilleryBombardmentTextBox.Text, out val))
             {
@@ -6753,7 +6753,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.ArtilleryBombardment))
             {
                 return;
@@ -6762,32 +6762,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] artillery bombardment: {0} -> {1} ({2})", DoubleHelper.ToString(model.ArtilleryBombardment),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.ArtilleryBombardment = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.ArtilleryBombardment);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             artilleryBombardmentTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     射程テキストボックスフォーカス移動後の処理
+        ///     Range text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDistanceTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6795,7 +6795,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(distanceTextBox.Text, out val))
             {
@@ -6803,7 +6803,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Distance))
             {
                 return;
@@ -6812,32 +6812,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] distance: {0} -> {1} ({2})", DoubleHelper.ToString(model.Distance),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Distance = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Distance);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             distanceTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     視認性テキストボックスフォーカス移動後の処理
+        ///     Visibility Text Box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnVisibilityTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6845,7 +6845,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(visibilityTextBox.Text, out val))
             {
@@ -6853,7 +6853,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.Visibility))
             {
                 return;
@@ -6862,32 +6862,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] visibility: {0} -> {1} ({2})", DoubleHelper.ToString(model.Visibility),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.Visibility = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.Visibility);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             visibilityTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対地索敵力テキストボックスフォーカス移動後の処理
+        ///     Ground search Enemy text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSurfaceDetectionCapabilityTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6895,7 +6895,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(surfaceDetectionCapabilityTextBox.Text, out val))
             {
@@ -6903,7 +6903,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SurfaceDetectionCapability))
             {
                 return;
@@ -6913,32 +6913,32 @@ namespace HoI2Editor.Forms
                 DoubleHelper.ToString(model.SurfaceDetectionCapability), DoubleHelper.ToString(val),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SurfaceDetectionCapability = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SurfaceDetectionCapability);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             surfaceDetectionCapabilityTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対潜索敵力テキストボックスフォーカス移動後の処理
+        ///     Anti-submarine enemy power text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSubDetectionCapabilityTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6946,7 +6946,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(subDetectionCapabilityTextBox.Text, out val))
             {
@@ -6954,7 +6954,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.SubDetectionCapability))
             {
                 return;
@@ -6964,32 +6964,32 @@ namespace HoI2Editor.Forms
                 DoubleHelper.ToString(model.SubDetectionCapability), DoubleHelper.ToString(val),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.SubDetectionCapability = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.SubDetectionCapability);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             subDetectionCapabilityTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対空索敵力テキストボックスフォーカス移動後の処理
+        ///     Anti-aircraft enemy power text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAirDetectionCapabilityTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -6997,7 +6997,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(airDetectionCapabilityTextBox.Text, out val))
             {
@@ -7005,7 +7005,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.AirDetectionCapability))
             {
                 return;
@@ -7015,32 +7015,32 @@ namespace HoI2Editor.Forms
                 DoubleHelper.ToString(model.AirDetectionCapability), DoubleHelper.ToString(val),
                 unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.AirDetectionCapability = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.AirDetectionCapability);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             airDetectionCapabilityTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     燃料切れ補正テキストボックスフォーカス移動後の処理
+        ///     Fuel shortage correction text box Processing after focus movement
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNoFuelCombatModTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7048,7 +7048,7 @@ namespace HoI2Editor.Forms
             int index = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(noFuelCombatModTextBox.Text, out val))
             {
@@ -7056,7 +7056,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, model.NoFuelCombatMod))
             {
                 return;
@@ -7065,28 +7065,28 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] no fuel combat mod: {0} -> {1} ({2})", DoubleHelper.ToString(model.NoFuelCombatMod),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             model.NoFuelCombatMod = val;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty(UnitModelItemId.NoFuelCombatMod);
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             noFuelCombatModTextBox.ForeColor = Color.Red;
         }
 
         #endregion
 
-        #region ユニットモデルタブ - 装備
+        #region Unit model tab ―――― Equipment
 
         /// <summary>
-        ///     装備リストビューの項目を更新する
+        ///     Update items in the equipment list view
         /// </summary>
         /// <param name="model"></param>
         private void UpdateEquipmentList(UnitModel model)
         {
-            // 項目を順に登録する
+            // Register items in order
             equipmentListView.BeginUpdate();
             equipmentListView.Items.Clear();
             foreach (UnitEquipment equipment in model.Equipments)
@@ -7095,23 +7095,23 @@ namespace HoI2Editor.Forms
             }
             equipmentListView.EndUpdate();
 
-            // 項目がなければ編集項目を無効化する
+            // Disable edit items if there are no items
             if (model.Equipments.Count == 0)
             {
                 DisableEquipmentItems();
                 return;
             }
 
-            // 先頭の項目を選択する
+            // Select the first item
             equipmentListView.Items[0].Focused = true;
             equipmentListView.Items[0].Selected = true;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEquipmentItems();
         }
 
         /// <summary>
-        ///     装備の編集項目を有効化する
+        ///     Enable edit items for equipment
         /// </summary>
         private void EnableEquipmentItems()
         {
@@ -7124,7 +7124,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     装備の編集項目を無効化する
+        ///     Disable equipment edit items
         /// </summary>
         private void DisableEquipmentItems()
         {
@@ -7141,26 +7141,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     資源コンボボックスの項目描画処理
+        ///     Item drawing process of resource combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnResourceComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7168,7 +7168,7 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7176,10 +7176,10 @@ namespace HoI2Editor.Forms
             int index = equipmentListView.SelectedIndices[0];
             UnitEquipment equipment = model.Equipments[index];
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.Index == (int) equipment.Resource) && equipment.IsDirty(UnitEquipmentItemId.Resource))
             {
@@ -7193,25 +7193,25 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     装備リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the equipment list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEquipmentListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7219,7 +7219,7 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7227,21 +7227,21 @@ namespace HoI2Editor.Forms
             int index = equipmentListView.SelectedIndices[0];
             UnitEquipment equipment = model.Equipments[index];
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             resourceComboBox.SelectedIndex = (int) equipment.Resource;
             quantityTextBox.Text = DoubleHelper.ToString(equipment.Quantity);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             quantityTextBox.ForeColor = equipment.IsDirty(UnitEquipmentItemId.Quantity)
                 ? Color.Red
                 : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEquipmentItems();
         }
 
         /// <summary>
-        ///     装備リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the equipment list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -7255,7 +7255,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     装備リストビューの項目編集前の処理
+        ///     Processing before editing items in the equipment list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -7263,14 +7263,14 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 資源
+                case 0: // resource
                     e.Type = ItemEditType.List;
                     e.Items = resourceComboBox.Items.Cast<string>();
                     e.Index = resourceComboBox.SelectedIndex;
                     e.DropDownWidth = resourceComboBox.DropDownWidth;
                     break;
 
-                case 1: // 量
+                case 1: // amount
                     e.Type = ItemEditType.Text;
                     e.Text = quantityTextBox.Text;
                     break;
@@ -7278,7 +7278,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     装備リストビューの項目編集後の処理
+        ///     Processing after editing items in the equipment list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -7286,35 +7286,35 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 資源
+                case 0: // resource
                     resourceComboBox.SelectedIndex = e.Index;
                     break;
 
-                case 1: // 量
+                case 1: // amount
                     quantityTextBox.Text = e.Text;
                     OnQuantityTextBoxValidated(quantityTextBox, new EventArgs());
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     装備リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the equipment list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEquipmentListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7325,7 +7325,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 装備情報を移動する
+            // Move equipment information
             UnitEquipment equipment = model.Equipments[srcIndex];
             model.Equipments.Insert(destIndex, equipment);
             if (srcIndex < destIndex)
@@ -7340,27 +7340,27 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] Moved equipment: {0} -> {1} {2} [{3}]", srcIndex, destIndex,
                 Config.GetText(Units.EquipmentNames[(int) equipment.Resource]), unit.GetModelName(index));
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             equipment.SetDirty();
             model.SetDirty();
             unit.SetDirtyFile();
         }
 
         /// <summary>
-        ///     資源コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the resource combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnResourceComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7368,7 +7368,7 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7376,7 +7376,7 @@ namespace HoI2Editor.Forms
             int index = equipmentListView.SelectedIndices[0];
             UnitEquipment equipment = model.Equipments[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             EquipmentType type = (EquipmentType) resourceComboBox.SelectedIndex;
             if (type == equipment.Resource)
             {
@@ -7387,36 +7387,36 @@ namespace HoI2Editor.Forms
                 Config.GetText(Units.EquipmentNames[(int) equipment.Resource]),
                 Config.GetText(Units.EquipmentNames[(int) type]), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             equipment.Resource = type;
 
-            // 装備リストビューの項目を更新する
+            // Update items in the equipment list view
             equipmentListView.Items[index].Text = Config.GetText(Units.EquipmentNames[(int) type]);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             equipment.SetDirty(UnitEquipmentItemId.Resource);
             model.SetDirty();
             unit.SetDirtyFile();
 
-            // 資源コンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the resource combo box
             resourceComboBox.Refresh();
         }
 
         /// <summary>
-        ///     量テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the amount text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnQuantityTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7424,7 +7424,7 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7432,7 +7432,7 @@ namespace HoI2Editor.Forms
             int index = equipmentListView.SelectedIndices[0];
             UnitEquipment equipment = model.Equipments[index];
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(quantityTextBox.Text, out val))
             {
@@ -7440,7 +7440,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, equipment.Quantity))
             {
                 return;
@@ -7449,36 +7449,36 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] equipment quantity: {0} -> {1} ({2})", DoubleHelper.ToString(equipment.Quantity),
                 DoubleHelper.ToString(val), unit.GetModelName(index));
 
-            // 値を更新する
+            // Update value
             equipment.Quantity = val;
 
-            // 装備リストビューの項目を更新する
+            // Update items in the equipment list view
             equipmentListView.Items[index].SubItems[1].Text = quantityTextBox.Text;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             equipment.SetDirty(UnitEquipmentItemId.Quantity);
             model.SetDirty();
             unit.SetDirtyFile();
 
-            // 文字色を変更する
+            // Change the font color
             quantityTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     装備の追加ボタン押下時の処理
+        ///     Processing when the add button of equipment is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEquipmentAddButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7488,34 +7488,34 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Unit] Added new equipment: ({0})", unit.GetModelName(i));
 
-            // 装備リストに項目を追加する
+            // Add an item to the equipment list
             UnitEquipment equipment = new UnitEquipment();
             model.Equipments.Add(equipment);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             equipment.SetDirtyAll();
             model.SetDirty();
             unit.SetDirtyFile();
 
-            // 装備リストビューに項目を追加する
+            // Add an item to the equipment list view
             AddEquipmentListItem(equipment);
         }
 
         /// <summary>
-        ///     装備の削除ボタン押下時の処理
+        ///     Processing when the equipment delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEquipmentRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7523,7 +7523,7 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7533,32 +7533,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Unit] Removed equipment: {0} ({1})",
                 Config.GetText(Units.EquipmentNames[(int) model.Equipments[index].Resource]), unit.GetModelName(i));
 
-            // 装備リストから項目を削除する
+            // Remove an item from the equipment list
             model.Equipments.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty();
             unit.SetDirtyFile();
 
-            // 装備リストビューから項目を削除する
+            // Remove an item from the equipment list view
             RemoveEquipmentListItem(index);
         }
 
         /// <summary>
-        ///     装備の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the equipment
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEquipmentUpButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7566,45 +7566,45 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = equipmentListView.SelectedIndices[0];
 
-            // リストの先頭ならば何もしない
+            // Do nothing at the top of the list
             if (index == 0)
             {
                 return;
             }
 
-            // 装備リストの項目を移動する
+            // Move items in the equipment list
             model.MoveEquipment(index, index - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty();
             unit.SetDirtyFile();
 
-            // 装備リストビューの項目を移動する
+            // Move items in the equipment list view
             MoveEquipmentListItem(index, index - 1);
         }
 
         /// <summary>
-        ///     装備の下へボタン押下時の処理
+        ///     Processing when the button is pressed under the equipment
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEquipmentDownButtonClick(object sender, EventArgs e)
         {
-            // 選択中のユニットクラスがなければ何もしない
+            // Do nothing if there is no unit class selected
             UnitClass unit = classListBox.SelectedItem as UnitClass;
             if (unit == null)
             {
                 return;
             }
 
-            // 選択中のユニットモデルがなければ何もしない
+            // Do nothing if there is no unit model selected
             if (modelListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -7612,35 +7612,35 @@ namespace HoI2Editor.Forms
             int i = modelListView.SelectedIndices[0];
             UnitModel model = unit.Models[i];
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (equipmentListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = equipmentListView.SelectedIndices[0];
 
-            // リストの末尾ならば何もしない
+            // Do nothing at the end of the list
             if (index == equipmentListView.Items.Count - 1)
             {
                 return;
             }
 
-            // 装備リストの項目を移動する
+            // Move items in the equipment list
             model.MoveEquipment(index, index + 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             model.SetDirty();
             unit.SetDirtyFile();
 
-            // 装備リストビューの項目を移動する
+            // Move items in the equipment list view
             MoveEquipmentListItem(index, index + 1);
         }
 
         /// <summary>
-        ///     装備リストの項目を作成する
+        ///     Create an item in the equipment list
         /// </summary>
-        /// <param name="equipment">装備</param>
-        /// <returns>装備リストの項目</returns>
+        /// <param name="equipment">Equipment</param>
+        /// <returns>Equipment list items</returns>
         private static ListViewItem CreateEquipmentListItem(UnitEquipment equipment)
         {
             ListViewItem item = new ListViewItem
@@ -7653,58 +7653,58 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     装備リストビューの項目を追加する
+        ///     Add an item in the equipment list view
         /// </summary>
-        /// <param name="equipment">追加対象の装備</param>
+        /// <param name="equipment">Equipment to be added</param>
         private void AddEquipmentListItem(UnitEquipment equipment)
         {
-            // 装備リストビューに項目を追加する
+            // Add an item to the equipment list view
             ListViewItem item = CreateEquipmentListItem(equipment);
             equipmentListView.Items.Add(item);
 
-            // 追加した項目を選択する
+            // Select the added item
             int index = equipmentListView.Items.Count - 1;
             equipmentListView.Items[index].Focused = true;
             equipmentListView.Items[index].Selected = true;
             equipmentListView.EnsureVisible(index);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEquipmentItems();
         }
 
         /// <summary>
-        ///     装備リストビューから項目を削除する
+        ///     Remove an item from the equipment list view
         /// </summary>
-        /// <param name="index">削除する項目の位置</param>
+        /// <param name="index">Position of the item to be deleted</param>
         private void RemoveEquipmentListItem(int index)
         {
-            // 装備リストビューから項目を削除する
+            // Remove an item from the equipment list view
             equipmentListView.Items.RemoveAt(index);
 
             if (index < equipmentListView.Items.Count)
             {
-                // 削除した項目の次を選択する
+                // Select next to the deleted item
                 equipmentListView.Items[index].Focused = true;
                 equipmentListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // 末尾の項目を選択する
+                // Select the last item
                 equipmentListView.Items[equipmentListView.Items.Count - 1].Focused = true;
                 equipmentListView.Items[equipmentListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableEquipmentItems();
             }
         }
 
         /// <summary>
-        ///     装備リストの項目を移動する
+        ///     Move items in the equipment list
         /// </summary>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="src">Source position</param>
+        /// <param name="dest">Destination position</param>
         private void MoveEquipmentListItem(int src, int dest)
         {
             ListViewItem item = equipmentListView.Items[src].Clone() as ListViewItem;
@@ -7715,18 +7715,18 @@ namespace HoI2Editor.Forms
 
             if (src > dest)
             {
-                // 上へ移動する場合
+                // When moving up
                 equipmentListView.Items.Insert(dest, item);
                 equipmentListView.Items.RemoveAt(src + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 equipmentListView.Items.Insert(dest + 1, item);
                 equipmentListView.Items.RemoveAt(src);
             }
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             equipmentListView.Items[dest].Focused = true;
             equipmentListView.Items[dest].Selected = true;
             equipmentListView.EnsureVisible(dest);
@@ -7736,11 +7736,11 @@ namespace HoI2Editor.Forms
     }
 
     /// <summary>
-    ///     ユニットエディタのタブ番号
+    ///     Unit editor tab number
     /// </summary>
     public enum UnitEditorTab
     {
-        Class, // ユニットクラス
-        Model // ユニットモデル
+        Class, // Unit class
+        Model // Unit model
     }
 }

@@ -12,98 +12,98 @@ using HoI2Editor.Writers;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     ユニットデータ群
+    ///     Unit data group
     /// </summary>
     public static class Units
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     ユニット一覧
+        ///     Unit list
         /// </summary>
         public static List<UnitClass> Items { get; }
 
         /// <summary>
-        ///     ユニット種類文字列とIDの対応付け
+        ///     Unit type string and ID Correspondence of
         /// </summary>
         public static Dictionary<string, UnitType> StringMap { get; }
 
         /// <summary>
-        ///     実ユニット種類文字列とIDの対応付け
+        ///     With the actual unit type character string ID Correspondence of
         /// </summary>
         public static Dictionary<string, RealUnitType> RealStringMap { get; }
 
         /// <summary>
-        ///     スプライト種類文字列とIDの対応付け
+        ///     Sprite type with character string ID Correspondence of
         /// </summary>
         public static Dictionary<string, SpriteType> SpriteStringMap { get; }
 
         /// <summary>
-        ///     装備文字列とIDの対応付け
+        ///     With equipment string ID Correspondence of
         /// </summary>
         public static Dictionary<string, EquipmentType> EquipmentStringMap { get; }
 
         /// <summary>
-        ///     利用可能なユニット種類
+        ///     Available unit types
         /// </summary>
         public static List<UnitType> UnitTypes { get; private set; }
 
         /// <summary>
-        ///     利用可能な師団ユニット種類
+        ///     Available division unit types
         /// </summary>
         public static UnitType[] DivisionTypes { get; private set; }
 
         /// <summary>
-        ///     利用可能な旅団ユニット種類
+        ///     Available brigade unit types
         /// </summary>
         public static UnitType[] BrigadeTypes { get; private set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For lazy loading
         /// </summary>
         private static readonly BackgroundWorker Worker = new BackgroundWorker();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     師団ユニットクラス定義ファイルの編集済みフラグ
+        ///     Edited flag in division unit class definition file
         /// </summary>
         private static bool _divisionTypesDirty;
 
         /// <summary>
-        ///     旅団ユニットクラス定義ファイルの編集済みフラグ
+        ///     Edited flag in brigade unit class definition file
         /// </summary>
         private static bool _brigadeTypesDirty;
 
         /// <summary>
-        ///     国家ごとのモデル名編集済みフラグ
+        ///     Model name edited flag for each country
         /// </summary>
         private static readonly bool[] CountryNameDirtyFlags = new bool[Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     ユニット名種類ごとのモデル名編集済みフラグ
+        ///     Unit name Model name for each type Edited flag
         /// </summary>
         private static readonly bool[,] TypeNameDirtyFlags =
             new bool[Enum.GetValues(typeof (Country)).Length, Enum.GetValues(typeof (UnitType)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     ユニット種類文字列テーブル
+        ///     Unit type string table
         /// </summary>
         public static readonly string[] Strings =
         {
@@ -415,7 +415,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     実ユニット文字列
+        ///     Real unit string
         /// </summary>
         public static readonly string[] RealStrings =
         {
@@ -453,7 +453,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     スプライト種類文字列
+        ///     Sprite type string
         /// </summary>
         public static readonly string[] SpriteStrings =
         {
@@ -601,7 +601,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     装備文字列
+        ///     Equipment string
         /// </summary>
         public static readonly string[] EquipmentStrings =
         {
@@ -645,7 +645,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     実ユニット種類とユニット種類の対応
+        ///     Correspondence between actual unit type and unit type
         /// </summary>
         public static readonly UnitType[] RealTypeTable =
         {
@@ -683,7 +683,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     スプライト種類とユニット種類の対応
+        ///     Correspondence between sprite type and unit type
         /// </summary>
         public static readonly UnitType[] SpriteTypeTable =
         {
@@ -831,7 +831,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     装備名
+        ///     Equipment name
         /// </summary>
         public static readonly string[] EquipmentNames =
         {
@@ -875,7 +875,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     ユニット番号の初期設定値
+        ///     Initial setting value of unit number
         /// </summary>
         public static readonly int[] UnitNumbers =
         {
@@ -1187,7 +1187,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     実ユニット種類に対応する兵科
+        ///     Army corresponding to the actual unit type
         /// </summary>
         public static readonly Branch[] RealBranchTable =
         {
@@ -1226,10 +1226,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     利用可能な師団ユニット種類 (HoI2)
+        ///     Available division unit types (HoI2)
         /// </summary>
         private static readonly UnitType[] DivisionTypesHoI2 =
         {
@@ -1267,7 +1267,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な師団ユニット種類 (AoD)
+        ///     Available division unit types (AoD)
         /// </summary>
         private static readonly UnitType[] DivisionTypesAoD =
         {
@@ -1305,7 +1305,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な師団ユニット種類 (DH1.03以降)
+        ///     Available division unit types (DH1.03 from )
         /// </summary>
         private static readonly UnitType[] DivisionTypesDh =
         {
@@ -1452,7 +1452,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な旅団ユニット種類 (HoI2)
+        ///     Available brigade unit types (HoI2)
         /// </summary>
         private static readonly UnitType[] BrigadeTypesHoI2 =
         {
@@ -1486,7 +1486,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能なユニット種類 (AoD)
+        ///     Available unit types (AoD)
         /// </summary>
         private static readonly UnitType[] BrigadeTypesAoD =
         {
@@ -1544,7 +1544,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能なユニット種類 (DH1.03以降)
+        ///     Available unit types (DH1.03 from )
         /// </summary>
         private static readonly UnitType[] BrigadeTypesDh =
         {
@@ -1691,7 +1691,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     ユニット定義ファイル名の初期設定値
+        ///     Initial setting value of unit definition file name
         /// </summary>
         private static readonly string[] DefaultFileNames =
         {
@@ -2004,38 +2004,38 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Units()
         {
-            // ユニット一覧
+            // Unit list
             Items = new List<UnitClass>();
 
-            // ユニット種類文字列とIDの対応付けを初期化
+            // Unit type string and ID Initialize the mapping of
             StringMap = new Dictionary<string, UnitType>();
             foreach (UnitType type in Enum.GetValues(typeof (UnitType)))
             {
                 StringMap.Add(Strings[(int) type], type);
             }
 
-            // 実ユニット種類文字列とIDの対応付けを初期化
+            // With the actual unit type string ID Initialize the mapping of
             RealStringMap = new Dictionary<string, RealUnitType>();
             foreach (RealUnitType type in Enum.GetValues(typeof (RealUnitType)))
             {
                 RealStringMap.Add(RealStrings[(int) type], type);
             }
 
-            // スプライト種類文字列とIDの対応付けを初期化
+            // Sprite type with character string ID Initialize the mapping of
             SpriteStringMap = new Dictionary<string, SpriteType>();
             foreach (SpriteType type in Enum.GetValues(typeof (SpriteType)))
             {
                 SpriteStringMap.Add(SpriteStrings[(int) type], type);
             }
 
-            // 装備文字列とIDの対応付けを初期化
+            // With equipment string ID Initialize the mapping of
             EquipmentStringMap = new Dictionary<string, EquipmentType>();
             foreach (EquipmentType type in Enum.GetValues(typeof (EquipmentType)))
             {
@@ -2044,7 +2044,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニットデータを初期化する
+        ///     Initialize unit data
         /// </summary>
         public static void Init()
         {
@@ -2052,7 +2052,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     利用可能なユニット種類を初期化する
+        ///     Initialize available unit types
         /// </summary>
         private static void InitTypes()
         {
@@ -2079,19 +2079,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     ファイルを読み込み済みかを取得する
+        ///     Get if the file has been read
         /// </summary>
-        /// <returns>ファイルを読み込みならばtrueを返す</returns>
+        /// <returns>If you read the file true true return it</returns>
         public static bool IsLoaded()
         {
             return _loaded;
         }
 
         /// <summary>
-        ///     ファイルの再読み込みを要求する
+        ///     Request a file reload
         /// </summary>
         public static void RequestReload()
         {
@@ -2099,11 +2099,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット定義ファイル群を再読み込みする
+        ///     Reload the unit definition files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -2115,17 +2115,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット定義ファイル群を読み込む
+        ///     Read the unit definition files
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -2136,44 +2136,44 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット定義ファイル群を遅延読み込みする
+        ///     Lazy loading of unit definition files
         /// </summary>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="handler">Read complete event handler</param>
         public static void LoadAsync(RunWorkerCompletedEventHandler handler)
         {
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // Call the completion event handler if it has already been read
             if (_loaded)
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(null, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the read completion event handler
             if (handler != null)
             {
                 Worker.RunWorkerCompleted += handler;
                 Worker.RunWorkerCompleted += OnWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if loading is in progress
             if (Worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If it has already been read here, the completion event handler has already been called, so return without doing anything.
             if (_loaded)
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start lazy loading
             Worker.DoWork += OnWorkerDoWork;
             Worker.RunWorkerAsync();
         }
 
         /// <summary>
-        ///     読み込み完了まで待機する
+        ///     Wait until loading is complete
         /// </summary>
         public static void WaitLoading()
         {
@@ -2184,16 +2184,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Determine if lazy loading is in progress
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>If delayed reading is in progress true true return it</returns>
         public static bool IsLoading()
         {
             return Worker.IsBusy;
         }
 
         /// <summary>
-        ///     遅延読み込み処理
+        ///     Delayed read processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2203,30 +2203,30 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing when lazy loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing when lazy loading is completed
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     ユニット定義ファイル群を読み込む
+        ///     Read the unit definition files
         /// </summary>
         private static void LoadFiles()
         {
             Items.Clear();
 
-            // ユニットクラスデータの初期値を設定する
+            // Set the initial value of unit class data
             foreach (UnitType type in Enum.GetValues(typeof (UnitType)))
             {
                 Items.Add(new UnitClass(type));
             }
 
-            // ユニットクラス定義ファイルを読み込む(DH1.03以降)
+            // Read the unit class definition file (DH1.03 from )
             if (Game.Type == GameType.DarkestHour && Game.Version >= 103)
             {
                 string fileName = "";
@@ -2247,7 +2247,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // ユニット定義ファイルを順に読み込む
+            // Read the unit definition files in order
             bool error = false;
             foreach (UnitType type in UnitTypes)
             {
@@ -2274,35 +2274,35 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 読み込みに失敗していれば戻る
+            // Return if reading fails
             if (error)
             {
                 return;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
-            // モデル名の編集済みフラグをクリアする
+            // Clear the edited flag for the model name
             ResetDirtyAllModelName();
 
-            // 最大付属旅団数の編集済みフラグを反映する
+            // Reflect the edited flag of the maximum number of attached brigades
             if ((Game.Type == GameType.ArsenalOfDemocracy) && (Game.Version >= 107))
             {
                 UpdateDirtyMaxAllowedBrigades();
             }
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     ユニット定義ファイルを読み込む
+        ///     Read the unit definition file
         /// </summary>
-        /// <param name="type">ユニットの種類</param>
+        /// <param name="type">Unit type</param>
         private static void LoadFile(UnitType type)
         {
-            // ユニット定義ファイルを解析する
+            // Parse the unit definition file
             UnitClass unit = Items[(int) type];
             string fileName =
                 Game.GetReadFileName(
@@ -2319,12 +2319,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義ファイルを読み込む
+        ///     Read the division unit class definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void LoadDivisionTypes(string fileName)
         {
-            // ファイルが存在しなければ戻る
+            // Back if the file does not exist
             if (!File.Exists(fileName))
             {
                 return;
@@ -2332,20 +2332,20 @@ namespace HoI2Editor.Models
 
             Log.Verbose("[Unit] Load: {0}", Path.GetFileName(fileName));
 
-            // ファイルを解析する
+            // Parse the file
             UnitParser.ParseDivisionTypes(fileName, Items);
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyDivisionTypes();
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義ファイルを読み込む
+        ///     Read the brigade unit class definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void LoadBrigadeTypes(string fileName)
         {
-            // ファイルが存在しなければ戻る
+            // Back if the file does not exist
             if (!File.Exists(fileName))
             {
                 return;
@@ -2353,24 +2353,24 @@ namespace HoI2Editor.Models
 
             Log.Verbose("[Unit] Load: {0}", Path.GetFileName(fileName));
 
-            // ファイルを解析する
+            // Parse the file
             UnitParser.ParseBrigadeTypes(fileName, Items);
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyBrigadeTypes();
         }
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     ユニット定義ファイル群を保存する
+        ///     Save the unit definition files
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -2380,7 +2380,7 @@ namespace HoI2Editor.Models
             {
                 if (IsDirtyDivisionTypes())
                 {
-                    // 師団定義ファイルを保存する
+                    // Save the division definition file
                     string fileName = Game.GetWriteFileName(Game.DhDivisionTypePathName);
                     try
                     {
@@ -2396,7 +2396,7 @@ namespace HoI2Editor.Models
                 }
                 if (IsDirtyBrigadeTypes())
                 {
-                    // 旅団定義ファイルを保存する
+                    // Save the brigade definition file
                     string fileName = Game.GetWriteFileName(Game.DhBrigadeTypePathName);
                     try
                     {
@@ -2412,7 +2412,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // ユニット定義ファイルへ順に保存する
+            // Save in order to the unit definition file
             bool error = false;
             foreach (UnitClass unit in Items.Where(unit => unit.IsDirtyFile()))
             {
@@ -2423,7 +2423,7 @@ namespace HoI2Editor.Models
 
                 try
                 {
-                    // 師団/旅団定義フォルダがなければ作成する
+                    // Division / / Create a brigade definition folder if it does not exist
                     if (!Directory.Exists(folderName))
                     {
                         Directory.CreateDirectory(folderName);
@@ -2431,7 +2431,7 @@ namespace HoI2Editor.Models
 
                     Log.Info("[Unit] Save: {0}", Path.GetFileName(fileName));
 
-                    // ユニット定義ファイルを保存する
+                    // Save the unit definition file
                     UnitWriter.Write(unit, fileName);
                 }
                 catch (Exception)
@@ -2447,24 +2447,24 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 保存に失敗していれば戻る
+            // Return if saving fails
             if (error)
             {
                 return false;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
             if (_loaded)
             {
-                // 文字列定義のみ保存の場合、ユニットクラス名などの編集済みフラグがクリアされないためここで全クリアする
+                // When saving only the character string definition, the edited flag such as the unit class name is not cleared, so clear all here.
                 foreach (UnitClass unit in Items)
                 {
                     unit.ResetDirtyAll();
                 }
 
-                // モデル名の編集済みフラグをクリアする
+                // Clear the edited flag for the model name
                 ResetDirtyAllModelName();
             }
 
@@ -2472,18 +2472,18 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義ファイルを保存する
+        ///     Save the division unit class definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void SaveDivisionTypes(string fileName)
         {
-            // 変更がなければ何もしない
+            // Do nothing if there is no change
             if (!IsDirtyDivisionTypes())
             {
                 return;
             }
 
-            // ユニット定義フォルダがなければ作成する
+            // If there is no unit definition folder, create it
             string folderName = Path.GetDirectoryName(fileName);
             if (!string.IsNullOrEmpty(folderName) && !Directory.Exists(folderName))
             {
@@ -2492,26 +2492,26 @@ namespace HoI2Editor.Models
 
             Log.Info("[Unit] Save: {0}", Path.GetFileName(fileName));
 
-            // 師団ユニットクラス定義ファイルを保存する
+            // Save the division unit class definition file
             UnitWriter.WriteDivisionTypes(Items, fileName);
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyDivisionTypes();
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義ファイルを保存する
+        ///     Save the brigade unit class definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void SaveBrigadeTypes(string fileName)
         {
-            // 変更がなければ何もしない
+            // Do nothing if there is no change
             if (!IsDirtyBrigadeTypes())
             {
                 return;
             }
 
-            // ユニット定義フォルダがなければ作成する
+            // If there is no unit definition folder, create it
             string folderName = Path.GetDirectoryName(fileName);
             if (!string.IsNullOrEmpty(folderName) && !Directory.Exists(folderName))
             {
@@ -2520,28 +2520,28 @@ namespace HoI2Editor.Models
 
             Log.Info("[Unit] Save: {0}", Path.GetFileName(fileName));
 
-            // 旅団ユニットクラス定義ファイルを保存する
+            // Save the brigade unit class definition file
             UnitWriter.WriteBrigadeTypes(Items, fileName);
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyBrigadeTypes();
         }
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public static void SetDirty()
         {
@@ -2549,25 +2549,25 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義が編集済みかどうかを取得する
+        ///     Get if the division unit class definition has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         private static bool IsDirtyDivisionTypes()
         {
             return _divisionTypesDirty;
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義が編集済みかどうかを取得する
+        ///     Get if the brigade unit class definition has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         private static bool IsDirtyBrigadeTypes()
         {
             return _brigadeTypesDirty;
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義の編集済みフラグを設定する
+        ///     Set the edited flag for the division unit class definition
         /// </summary>
         public static void SetDirtyDivisionTypes()
         {
@@ -2576,7 +2576,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義の編集済みフラグを設定する
+        ///     Set the edited flag for the brigade unit class definition
         /// </summary>
         public static void SetDirtyBrigadeTypes()
         {
@@ -2585,7 +2585,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義の編集済みフラグを解除する
+        ///     Clear the edited flag in the division unit class definition
         /// </summary>
         private static void ResetDirtyDivisionTypes()
         {
@@ -2593,7 +2593,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義の編集済みフラグを解除する
+        ///     Clear the edited flag in the brigade unit class definition
         /// </summary>
         private static void ResetDirtyBrigadeTypes()
         {
@@ -2601,31 +2601,31 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     モデル名が編集済みかどうかを取得する
+        ///     Get if the model name has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirtyModelName(Country country)
         {
             return CountryNameDirtyFlags[(int) country];
         }
 
         /// <summary>
-        ///     モデル名が編集済みかどうかを取得する
+        ///     Get if the model name has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirtyModelName(Country country, UnitType type)
         {
             return TypeNameDirtyFlags[(int) country, (int) type];
         }
 
         /// <summary>
-        ///     モデル名の編集済みフラグを設定する
+        ///     Set the edited flag for the model name
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
         public static void SetDirtyModelName(Country country, UnitType type)
         {
             TypeNameDirtyFlags[(int) country, (int) type] = true;
@@ -2633,7 +2633,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     モデル名の編集済みフラグを全て解除する
+        ///     Clear all edited flags for the model name
         /// </summary>
         private static void ResetDirtyAllModelName()
         {
@@ -2648,56 +2648,56 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     最大付属旅団数の編集済みフラグを更新する
+        ///     Update the edited flag for the maximum number of attached brigades
         /// </summary>
         private static void UpdateDirtyMaxAllowedBrigades()
         {
-            // 輸送艦最大付属装備数
+            // Maximum number of equipment attached to the transport ship
             if (Misc.IsDirty(MiscItemId.TpMaxAttach))
             {
                 Items[(int) UnitType.Transport].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 潜水艦最大付属装備数
+            // Maximum number of submersible equipment
             if (Misc.IsDirty(MiscItemId.SsMaxAttach))
             {
                 Items[(int) UnitType.Submarine].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 原子力潜水艦最大付属装備数
+            // Maximum number of equipment attached to nuclear submarines
             if (Misc.IsDirty(MiscItemId.SsnMaxAttach))
             {
                 Items[(int) UnitType.NuclearSubmarine].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 駆逐艦最大付属装備数
+            // Maximum number of equipment attached to the destroyer
             if (Misc.IsDirty(MiscItemId.DdMaxAttach))
             {
                 Items[(int) UnitType.Destroyer].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 軽巡洋艦最大付属装備数
+            // Maximum number of equipment attached to light cruisers
             if (Misc.IsDirty(MiscItemId.ClMaxAttach))
             {
                 Items[(int) UnitType.LightCruiser].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 重巡洋艦最大付属装備数
+            // Maximum number of heavy cruisers attached
             if (Misc.IsDirty(MiscItemId.CaMaxAttach))
             {
                 Items[(int) UnitType.HeavyCruiser].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 巡洋戦艦最大付属装備数
+            // Maximum number of equipment attached to cruise battleships
             if (Misc.IsDirty(MiscItemId.BcMaxAttach))
             {
                 Items[(int) UnitType.BattleCruiser].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 戦艦最大付属装備数
+            // Maximum number of attached equipment for battleships
             if (Misc.IsDirty(MiscItemId.BbMaxAttach))
             {
                 Items[(int) UnitType.BattleShip].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 軽空母最大付属装備数
+            // Maximum number of equipment attached to the light carrier
             if (Misc.IsDirty(MiscItemId.CvlMaxAttach))
             {
                 Items[(int) UnitType.EscortCarrier].SetDirty(UnitClassItemId.MaxAllowedBrigades);
             }
-            // 空母最大付属装備数
+            // Maximum number of equipment attached to the aircraft carrier
             if (Misc.IsDirty(MiscItemId.CvMaxAttach))
             {
                 Items[(int) UnitType.Carrier].SetDirty(UnitClassItemId.MaxAllowedBrigades);

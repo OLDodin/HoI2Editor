@@ -9,171 +9,171 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     研究速度ビューアのフォーム
+    ///     Study Speed Viewer Form
     /// </summary>
     public partial class ResearchViewerForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     絞り込み後の研究機関リスト
+        ///     List of research institutes after narrowing down
         /// </summary>
         private readonly List<Team> _teamList = new List<Team>();
 
         /// <summary>
-        ///     絞り込み後の技術リスト
+        ///     Technical list after narrowing down
         /// </summary>
         private readonly List<TechItem> _techList = new List<TechItem>();
 
         /// <summary>
-        ///     研究特性オーバーレイアイコン
+        ///     Research characteristic overlay icon
         /// </summary>
         private Bitmap _techOverlayIcon;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     技術リストビューの列の数
+        ///     Number of columns in the tech list view
         /// </summary>
         public const int TechListColumnCount = 4;
 
         /// <summary>
-        ///     研究機関リストビューの列の数
+        ///     Number of columns in the research institution list view
         /// </summary>
         public const int TeamListColumnCount = 8;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public ResearchViewerForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 研究機関リストを絞り込む
+            // Narrow down the list of research institutes
             NarrowTeamList();
 
-            // カテゴリリストボックスを初期化する
+            // Initialize the category list box
             InitCategoryList();
 
-            // 技術リストの表示を更新する
+            // Update the display of the technology list
             UpdateTechList();
 
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
             switch (id)
             {
                 case EditorItemId.TeamList:
                     Log.Verbose("[Research] Changed team list");
-                    // 研究機関リストを絞り込む
+                    // Narrow down the list of research institutes
                     NarrowTeamList();
-                    // 研究機関リストを更新する
+                    // Update the research institution list
                     UpdateTeamList();
                     break;
 
                 case EditorItemId.TeamCountry:
                     Log.Verbose("[Research] Changed team country");
-                    // 研究機関リストを絞り込む
+                    // Narrow down the list of research institutes
                     NarrowTeamList();
-                    // 研究機関リストを更新する
+                    // Update the research institution list
                     UpdateTeamList();
                     break;
 
                 case EditorItemId.TeamName:
                     Log.Verbose("[Research] Changed team name");
-                    // 研究機関リストを更新する
+                    // Update the research institution list
                     UpdateTeamList();
                     break;
 
                 case EditorItemId.TeamId:
                     Log.Verbose("[Research] Changed team id");
-                    // 研究機関リストを更新する
+                    // Update the research institution list
                     UpdateTeamList();
                     break;
 
                 case EditorItemId.TeamSkill:
                     Log.Verbose("[Research] Changed team skill");
-                    // 研究機関リストを更新する
+                    // Update the research institution list
                     UpdateTeamList();
                     break;
 
                 case EditorItemId.TeamSpeciality:
                     Log.Verbose("[Research] Changed team speciality");
-                    // 研究機関リストを更新する
+                    // Update the research institution list
                     UpdateTeamList();
                     break;
 
                 case EditorItemId.TechItemList:
                     Log.Verbose("[Research] Changed tech item list");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechItemName:
                     Log.Verbose("[Research] Changed tech item name");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechItemId:
                     Log.Verbose("[Research] Changed tech item id");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechItemYear:
                     Log.Verbose("[Research] Changed tech item year");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechComponentList:
                     Log.Verbose("[Research] Changed tech component list");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechComponentSpeciality:
                     Log.Verbose("[Research] Changed tech component speciality");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechComponentDifficulty:
                     Log.Verbose("[Research] Changed tech component difficulty");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
 
                 case EditorItemId.TechComponentDoubleTime:
                     Log.Verbose("[Research] Changed tech component double time");
-                    // 技術リストを更新する
+                    // Update the tech list
                     UpdateTechList();
                     break;
             }
@@ -181,24 +181,24 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // 技術リストビュー
+            // Technique list view
             techNameColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TechListColumnWidth[0];
             techIdColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TechListColumnWidth[1];
             techYearColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TechListColumnWidth[2];
             techComponentsColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TechListColumnWidth[3];
 
-            // 国家リストボックス
+            // National list box
             countryListBox.ColumnWidth = DeviceCaps.GetScaledWidth(countryListBox.ColumnWidth);
             countryListBox.ItemHeight = DeviceCaps.GetScaledHeight(countryListBox.ItemHeight);
 
-            // 研究機関リストビュー
+            // Research institution list view
             teamRankColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TeamListColumnWidth[1];
             teamDaysColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TeamListColumnWidth[2];
             teamEndDateColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TeamListColumnWidth[3];
@@ -207,58 +207,58 @@ namespace HoI2Editor.Forms
             teamSkillColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TeamListColumnWidth[6];
             teamSpecialityColumnHeader.Width = HoI2EditorController.Settings.ResearchViewer.TeamListColumnWidth[7];
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.ResearchViewer.Location;
             Size = HoI2EditorController.Settings.ResearchViewer.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // 研究特性を初期化する
+            // Initialize research characteristics
             Techs.InitSpecialities();
 
-            // ゲーム設定ファイルを読み込む
+            // Load the game settings file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 技術リストビューの高さを設定するためにダミーのイメージリストを作成する
+            // Create a dummy image list to set the height of the tech list view
             techListView.SmallImageList = new ImageList { ImageSize = new Size(1, DeviceCaps.GetScaledHeight(18)) };
 
-            // 研究機関リストビューの高さを設定するためにダミーのイメージリストを作成する
+            // Create a dummy image list to set the height of the research institution list view
             teamListView.SmallImageList = new ImageList { ImageSize = new Size(1, DeviceCaps.GetScaledHeight(18)) };
 
-            // 研究特性オーバーレイアイコンを初期化する
+            // Initialize the research characteristic overlay icon
             _techOverlayIcon = new Bitmap(Game.GetReadFileName(Game.TechIconOverlayPathName));
             _techOverlayIcon.MakeTransparent(Color.Lime);
 
-            // オプション項目を初期化する
+            // Initialize option items
             InitOptionItems();
 
-            // 技術定義ファイルを読み込む
+            // Read the technical definition file
             Techs.Load();
 
-            // 研究機関ファイルを読み込む
+            // Read research institution files
             Teams.Load();
 
-            // 国家リストボックスを初期化する
+            // Initialize the national list box
             InitCountryListBox();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -268,7 +268,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -281,7 +281,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -294,7 +294,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -305,10 +305,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 技術カテゴリリスト
+        #region Technology category list
 
         /// <summary>
-        ///     カテゴリリストボックスを初期化する
+        ///     Initialize the category list box
         /// </summary>
         private void InitCategoryList()
         {
@@ -318,7 +318,7 @@ namespace HoI2Editor.Forms
                 categoryListBox.Items.Add(grp);
             }
 
-            // 選択中のカテゴリを反映する
+            // Reflect the selected category
             int index = HoI2EditorController.Settings.ResearchViewer.Category;
             if ((index < 0) || (index >= categoryListBox.Items.Count))
             {
@@ -328,29 +328,29 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     カテゴリリストボックスの選択項目変更時の処理
+        ///     Processing when changing the selected item in the category list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCategoryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 技術リストを更新する
+            // Update the tech list
             UpdateTechList();
 
-            // 選択中のカテゴリを保存する
+            // Save the selected category
             HoI2EditorController.Settings.ResearchViewer.Category = categoryListBox.SelectedIndex;
         }
 
         #endregion
 
-        #region 技術リストビュー
+        #region Technique list view
 
         /// <summary>
-        ///     技術リストの表示を更新する
+        ///     Update the display of the technology list
         /// </summary>
         private void UpdateTechList()
         {
-            // 技術リストを絞り込む
+            // Narrow down the technology list
             _techList.Clear();
             _techList.AddRange(categoryListBox.SelectedIndices.Cast<int>()
                 .SelectMany(index => Techs.Groups[index].Items.Where(item => item is TechItem).Cast<TechItem>()));
@@ -358,7 +358,7 @@ namespace HoI2Editor.Forms
             techListView.BeginUpdate();
             techListView.Items.Clear();
 
-            // 項目を順に登録する
+            // Register items in order
             foreach (TechItem tech in _techList)
             {
                 techListView.Items.Add(CreateTechListViewItem(tech));
@@ -366,7 +366,7 @@ namespace HoI2Editor.Forms
 
             if (techListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 techListView.Items[0].Focused = true;
                 techListView.Items[0].Selected = true;
             }
@@ -375,10 +375,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術リストビューの項目を作成する
+        ///     Create an item in the technical list view
         /// </summary>
-        /// <param name="tech">技術データ</param>
-        /// <returns>技術リストビューの項目</returns>
+        /// <param name="tech">Technical data</param>
+        /// <returns>Items in the technical list view</returns>
         private static ListViewItem CreateTechListViewItem(TechItem tech)
         {
             if (tech == null)
@@ -399,7 +399,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術リストビューのサブ項目描画処理
+        ///     Technical list view sub-item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -407,7 +407,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.ColumnIndex)
             {
-                case 3: // 小研究
+                case 3: // Small study
                     e.Graphics.FillRectangle(
                         techListView.SelectedIndices.Count > 0 && e.ItemIndex == techListView.SelectedIndices[0]
                             ? (techListView.Focused ? SystemBrushes.Highlight : SystemBrushes.Control)
@@ -427,10 +427,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術リストビューの研究特性項目描画処理
+        ///     Technology list view research characteristic item drawing process
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="tech">技術項目</param>
+        /// <param name="tech">Technical items</param>
         private void DrawTechSpecialityItems(DrawListViewSubItemEventArgs e, TechItem tech)
         {
             if (tech == null)
@@ -450,7 +450,7 @@ namespace HoI2Editor.Forms
 
             foreach (TechComponent component in tech.Components)
             {
-                // 研究特性アイコンを描画する
+                // Draw a research characteristic icon
                 if ((component.Speciality != TechSpeciality.None) &&
                     ((int) component.Speciality - 1 < Techs.SpecialityImages.Images.Count))
                 {
@@ -458,10 +458,10 @@ namespace HoI2Editor.Forms
                         Techs.SpecialityImages.Images[Array.IndexOf(Techs.Specialities, component.Speciality) - 1], gr);
                 }
 
-                // 研究難易度を描画する
+                // Draw study difficulty
                 e.Graphics.DrawString(IntHelper.ToString(component.Difficulty), techListView.Font, brush, tr);
 
-                // 次の項目の開始位置を計算する
+                // Calculate the start position of the next item
                 int offset = DeviceCaps.GetScaledWidth(32);
                 gr.X += offset;
                 tr.X += offset;
@@ -471,7 +471,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの列ヘッダ描画処理
+        ///     Column header drawing process of research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -481,24 +481,24 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the technical list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (techListView.SelectedIndices.Count == 0)
             {
                 return;
             }
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     技術リストビューの列の幅変更時の処理
+        ///     What to do when changing the width of a column in the technical list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -513,10 +513,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家リストボックス
+        #region National list box
 
         /// <summary>
-        ///     国家リストボックスを初期化する
+        ///     Initialize the national list box
         /// </summary>
         private void InitCountryListBox()
         {
@@ -527,9 +527,9 @@ namespace HoI2Editor.Forms
                 countryListBox.Items.Add(Countries.Strings[(int) country]);
             }
 
-            // 選択イベントを処理すると時間がかかるので、一時的に無効化する
+            // Processing selection events takes time, so temporarily disable it
             countryListBox.SelectedIndexChanged -= OnCountryListBoxSelectedIndexChanged;
-            // 選択中の国家を反映する
+            // Reflect the selected nation
             foreach (Country country in HoI2EditorController.Settings.ResearchViewer.Countries)
             {
                 int index = Array.IndexOf(Countries.Tags, country);
@@ -538,38 +538,38 @@ namespace HoI2Editor.Forms
                     countryListBox.SetSelected(Array.IndexOf(Countries.Tags, country), true);
                 }
             }
-            // 選択イベントを元に戻す
+            // Undo selection event
             countryListBox.SelectedIndexChanged += OnCountryListBoxSelectedIndexChanged;
 
             countryListBox.EndUpdate();
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中の国家を保存する
+            // Save the selected nation
             HoI2EditorController.Settings.ResearchViewer.Countries =
                 countryListBox.SelectedIndices.Cast<int>().Select(index => Countries.Tags[index]).ToList();
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             NarrowTeamList();
             UpdateTeamList();
         }
 
         #endregion
 
-        #region 研究機関リスト
+        #region Research institution list
 
         /// <summary>
-        ///     研究機関リストを更新する
+        ///     Update the list of research institutes
         /// </summary>
         private void UpdateTeamList()
         {
-            // 技術リストビューの選択項目がなければ研究機関リストをクリアする
+            // Clear the research institute list if there is no selection in the technology list view
             if (techListView.SelectedItems.Count == 0)
             {
                 teamListView.BeginUpdate();
@@ -584,13 +584,13 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 研究速度リストを更新する
+            // Update research speed list
             Researches.UpdateResearchList(tech, _teamList);
 
             teamListView.BeginUpdate();
             teamListView.Items.Clear();
 
-            // 項目を順に登録する
+            // Register items in order
             int rank = 1;
             foreach (Research research in Researches.Items)
             {
@@ -602,26 +602,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストを絞り込む
+        ///     Narrow down the list of research institutes
         /// </summary>
         private void NarrowTeamList()
         {
             _teamList.Clear();
 
-            // 選択中の国家リストを作成する
+            // Create a list of selected nations
             List<Country> tags =
                 countryListBox.SelectedItems.Cast<string>().Select(s => Countries.StringMap[s]).ToList();
 
-            // 選択中の国家に所属する研究機関を順に絞り込む
+            // Narrow down the research institutions belonging to the selected country in order
             _teamList.AddRange(Teams.Items.Where(team => tags.Contains(team.Country)));
         }
 
         /// <summary>
-        ///     研究機関リストビューの項目を作成する
+        ///     Create an item in the research institution list view
         /// </summary>
-        /// <param name="research">研究速度データ</param>
-        /// <param name="rank">研究速度順位</param>
-        /// <returns>研究機関リストビューの項目</returns>
+        /// <param name="research">Research speed data</param>
+        /// <param name="rank">Research speed ranking</param>
+        /// <returns>Items in the research institution list view</returns>
         private static ListViewItem CreateTeamListViewItem(Research research, int rank)
         {
             if (research == null)
@@ -645,7 +645,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューのサブ項目描画処理
+        ///     Research institution list view sub-item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -653,7 +653,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.ColumnIndex)
             {
-                case 7: // 研究特性
+                case 7: // Research characteristics
                     e.Graphics.FillRectangle(
                         teamListView.SelectedIndices.Count > 0 && e.ItemIndex == teamListView.SelectedIndices[0]
                             ? (teamListView.Focused ? SystemBrushes.Highlight : SystemBrushes.Control)
@@ -673,10 +673,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの研究特性アイコン描画処理
+        ///     Research characteristic icon drawing process of research institution list view
         /// </summary>
         /// <param name="e"></param>
-        /// <param name="research">研究速度データ</param>
+        /// <param name="research">Research speed data</param>
         private void DrawTeamSpecialityIcon(DrawListViewSubItemEventArgs e, Research research)
         {
             if (research == null)
@@ -688,13 +688,13 @@ namespace HoI2Editor.Forms
                 DeviceCaps.GetScaledHeight(16));
             for (int i = 0; i < Team.SpecialityLength; i++)
             {
-                // 研究特性なしならば何もしない
+                // Do nothing without research characteristics
                 if (research.Team.Specialities[i] == TechSpeciality.None)
                 {
                     continue;
                 }
 
-                // 研究特性アイコンを描画する
+                // Draw a research characteristic icon
                 if ((int) research.Team.Specialities[i] - 1 < Techs.SpecialityImages.Images.Count)
                 {
                     e.Graphics.DrawImage(
@@ -702,7 +702,7 @@ namespace HoI2Editor.Forms
                             Array.IndexOf(Techs.Specialities, research.Team.Specialities[i]) - 1], rect);
                 }
 
-                // 研究特性オーバーレイアイコンを描画する
+                // Draw a research characteristic overlay icon
                 if (research.Tech.Components.Any(component => component.Speciality == research.Team.Specialities[i]))
                 {
                     e.Graphics.DrawImage(_techOverlayIcon, rect);
@@ -713,7 +713,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの列ヘッダ描画処理
+        ///     Column header drawing process of research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -723,7 +723,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the research institution list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -738,10 +738,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region オプション項目
+        #region Optional item
 
         /// <summary>
-        ///     オプション項目を初期化する
+        ///     Initialize option items
         /// </summary>
         private void InitOptionItems()
         {
@@ -769,29 +769,29 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     史実年度を使用チェックボックスの状態変更時の処理
+        ///     Use historical year Processing when changing the state of the check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnHistoricalRadioButtonCheckedChanged(object sender, EventArgs e)
         {
-            // 値を更新する
+            // Update value
             Researches.DateMode = historicalRadioButton.Checked
                 ? ResearchDateMode.Historical
                 : ResearchDateMode.Specified;
 
-            // 指定日付を使用の時だけ日付の編集を許可する
+            // Allow editing of dates only when using specified dates
             bool flag = Researches.DateMode == ResearchDateMode.Specified;
             yearNumericUpDown.Enabled = flag;
             monthNumericUpDown.Enabled = flag;
             dayNumericUpDown.Enabled = flag;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     指定年度変更時の処理
+        ///     Processing when changing the designated year
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -799,12 +799,12 @@ namespace HoI2Editor.Forms
         {
             Researches.SpecifiedDate.Year = (int) yearNumericUpDown.Value;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     指定月変更時の処理
+        ///     Processing when changing the specified month
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -812,12 +812,12 @@ namespace HoI2Editor.Forms
         {
             Researches.SpecifiedDate.Month = (int) monthNumericUpDown.Value;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     指定日変更時の処理
+        ///     Processing when changing the specified date
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -825,12 +825,12 @@ namespace HoI2Editor.Forms
         {
             Researches.SpecifiedDate.Day = (int) dayNumericUpDown.Value;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     ロケット試験場の規模変更時の処理
+        ///     Processing when the scale of the rocket test site is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -838,12 +838,12 @@ namespace HoI2Editor.Forms
         {
             Researches.RocketTestingSites = (int) rocketNumericUpDown.Value;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     原子炉の規模変更時の処理
+        ///     Processing when the scale of the reactor is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -851,12 +851,12 @@ namespace HoI2Editor.Forms
         {
             Researches.NuclearReactors = (int) nuclearNumericUpDown.Value;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     青写真チェックボックスの状態変更時の処理
+        ///     Processing when changing the state of the blue photo check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -864,12 +864,12 @@ namespace HoI2Editor.Forms
         {
             Researches.Blueprint = blueprintCheckBox.Checked;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     研究機関開始年考慮チェックボックスの状態変更時の処理
+        ///     Processing when the state of the research institution start year consideration check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -877,18 +877,18 @@ namespace HoI2Editor.Forms
         {
             Researches.ConsiderStartYear = techteamstartyearCheckBox.Checked;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 
         /// <summary>
-        ///     研究速度補正の値変更時の処理
+        ///     Processing when changing the value of research speed correction
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnModifierTextBoxValidated(object sender, EventArgs e)
         {
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double modifier;
             if (!DoubleHelper.TryParse(modifierTextBox.Text, out modifier))
             {
@@ -896,23 +896,23 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 0以下の値だとまともに計算できなくなるので保険
+            // 0 If the value is below, it will not be possible to calculate properly, so insurance
             if (modifier <= 0.00005)
             {
                 modifierTextBox.Text = DoubleHelper.ToString(Researches.Modifier);
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(modifier, Researches.Modifier))
             {
                 return;
             }
 
-            // 値を更新する
+            // Update value
             Researches.Modifier = modifier;
 
-            // 研究機関リストを更新する
+            // Update the research institution list
             UpdateTeamList();
         }
 

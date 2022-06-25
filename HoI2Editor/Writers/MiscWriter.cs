@@ -7,20 +7,20 @@ using HoI2Editor.Models;
 namespace HoI2Editor.Writers
 {
     /// <summary>
-    ///     miscファイル書き込みを担当するクラス
+    ///     misc Class in charge of writing files
     /// </summary>
     public static class MiscWriter
     {
         /// <summary>
-        ///     miscファイルへ書き込む
+        ///     misc Write to file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         public static void Write(string fileName)
         {
-            // miscファイルの種類を設定する
+            // misc Set the file type
             MiscGameType type = Misc.GetGameType();
 
-            // ファイルへ書き込む
+            // Write to file
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
                 writer.WriteLine("# NOTE: Obviously, the order of these variables cannot be changed.");
@@ -35,17 +35,17 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     セクションを書き出す
+        ///     Export a section
         /// </summary>
-        /// <param name="section">セクションID</param>
-        /// <param name="type">ゲームの種類</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="section">section ID</param>
+        /// <param name="type">Game type</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteSection(MiscSectionId section, MiscGameType type, StreamWriter writer)
         {
             writer.WriteLine();
             writer.Write("{0} = {{", Misc.SectionStrings[(int) section]);
 
-            // 項目のコメントと値を順に書き出す
+            // Export item comments and values in order
             foreach (MiscItemId id in Misc.SectionItems[(int) section]
                 .Where(id => Misc.ItemTable[(int) id, (int) type]))
             {
@@ -53,7 +53,7 @@ namespace HoI2Editor.Writers
                 writer.Write(Misc.GetString(id));
             }
 
-            // セクション末尾の空白文字/コメントを書き出す
+            // White space at the end of the section / / Write a comment
             writer.Write(Misc.GetSuffix(section));
 
             writer.WriteLine("}");

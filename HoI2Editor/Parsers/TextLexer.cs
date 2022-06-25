@@ -7,55 +7,55 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     テキストファイルの字句解析クラス
+    ///     Text file phrase analysis class
     /// </summary>
     public class TextLexer : IDisposable
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     解析中のファイル名
+        ///     File name being analyzed
         /// </summary>
         public string PathName { get; private set; }
 
         /// <summary>
-        ///     解析中のファイル名 (ディレクトリ除く)
+        ///     File name being analyzed (( Excluding directories )
         /// </summary>
         public string FileName => Path.GetFileName(PathName);
 
         /// <summary>
-        ///     解析中の行番号
+        ///     Line number being analyzed
         /// </summary>
         public int LineNo { get; private set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     空白文字をスキップするかどうか
+        ///     Whether to skip whitespace
         /// </summary>
         private readonly bool _skipWhiteSpace;
 
         /// <summary>
-        ///     テキストファイルの読み込み用
+        ///     For reading text files
         /// </summary>
         private StreamReader _reader;
 
         /// <summary>
-        ///     保留中のトークン
+        ///     Tokens on hold
         /// </summary>
         private Token _token;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="fileName">解析対象のファイル名</param>
-        /// <param name="skipWhiteSpace">空白文字をスキップするかどうか</param>
+        /// <param name="fileName">File name to be analyzed</param>
+        /// <param name="skipWhiteSpace">Whether to skip whitespace</param>
         public TextLexer(string fileName, bool skipWhiteSpace)
         {
             _skipWhiteSpace = skipWhiteSpace;
@@ -64,7 +64,20 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     オブジェクト破棄時の処理
+        ///     constructor
+        /// </summary>
+        /// <param name="fileName">File name to be analyzed</param>
+        /// <param name="skipWhiteSpace">Whether to skip whitespace</param>
+        /// <param name="textCodePage">text file encoding</param>
+        public TextLexer(string fileName, bool skipWhiteSpace, int textCodePage)
+        {
+            _skipWhiteSpace = skipWhiteSpace;
+
+            Open(fileName, textCodePage);
+        }
+
+        /// <summary>
+        ///     Processing when destroying an object
         /// </summary>
         public void Dispose()
         {
@@ -74,7 +87,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     デストラクタ
+        ///     Destructor
         /// </summary>
         ~TextLexer()
         {
@@ -82,7 +95,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     オブジェクト破棄時の処理
+        ///     Processing when destroying an object
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
@@ -93,30 +106,40 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     ファイルを開く
+        ///     Open file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         public void Open(string fileName)
+        {
+            Open(fileName, Game.CodePage);
+        }
+
+        /// <summary>
+        ///     Open file
+        /// </summary>
+        /// <param name="fileName">file name</param>
+        /// <param name="textCodePage">text file encoding</param>
+        public void Open(string fileName, int textCodePage)
         {
             if (!File.Exists(fileName))
             {
                 return;
             }
 
-            // 既に開いているファイルがあれば閉じる
+            // Close any files that are already open
             if (_reader != null)
             {
                 Close();
             }
 
-            _reader = new StreamReader(fileName, Encoding.GetEncoding(Game.CodePage));
+            _reader = new StreamReader(fileName, Encoding.GetEncoding(textCodePage));
 
             PathName = fileName;
             LineNo = 1;
         }
 
         /// <summary>
-        ///     ファイルを閉じる
+        ///     Close file
         /// </summary>
         public void Close()
         {
@@ -126,22 +149,22 @@ namespace HoI2Editor.Parsers
 
         #endregion
 
-        #region 字句解析
+        #region Phrase analysis
 
         /// <summary>
-        ///     字句解析
+        ///     Lexical analysis
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         public Token GetToken()
         {
             return Read();
         }
 
         /// <summary>
-        ///     指定の種類のトークンを要求する
+        ///     Request a token of the specified type
         /// </summary>
-        /// <param name="type">要求するトークンの種類</param>
-        /// <returns>次のトークンが要求する種類ならばtrueを返す</returns>
+        /// <param name="type">Token type to request</param>
+        /// <returns>If the type required by the next token true true return it</returns>
         public bool WantToken(TokenType type)
         {
             Token token = Peek();
@@ -156,10 +179,10 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     指定の種類の識別子トークンを要求する
+        ///     Request an identifier token of the specified type
         /// </summary>
-        /// <param name="keyword">要求するキーワード名</param>
-        /// <returns>要求する識別子ならばtrueを返す</returns>
+        /// <param name="keyword">Keyword name to request</param>
+        /// <returns>If the required identifier true true return it</returns>
         public bool WantIdentifier(string keyword)
         {
             Token token = Peek();
@@ -174,12 +197,12 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     先頭のトークンを解析し、読み込みポインタを移動する
+        ///     Analyze the first token and move the reading pointer
         /// </summary>
         /// <returns></returns>
         private Token Read()
         {
-            // 既に解析済みのトークンがあれば返す
+            // Return if there is already an analyzed token
             if (_token != null)
             {
                 Token result = _token;
@@ -191,12 +214,12 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     先頭のトークンを解析し、読み込みポインタを移動しない
+        ///     Parse the first token and do not move the read pointer
         /// </summary>
         /// <returns></returns>
         private Token Peek()
         {
-            // 既に解析済みのトークンがあれば返す
+            // Returns any tokens that have already been parsed
             if (_token != null)
             {
                 return _token;
@@ -207,31 +230,31 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     字句解析
+        ///     Word analysis
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token Parse()
         {
             int c = _reader.Peek();
 
-            // ファイルの末尾ならばnullを返す
+            // Return null at the end of the file
             if (c == -1)
             {
                 return null;
             }
 
-            // 空白文字とコメントを読み飛ばす
+            // Skip whitespace and comments
             if (_skipWhiteSpace)
             {
                 while (true)
                 {
-                    // ファイルの末尾ならばnullを返す
+                    // At the end of the file null return it
                     if (c == -1)
                     {
                         return null;
                     }
 
-                    // 空白文字/制御文字を読み飛ばす
+                    // Blank character / / Skip control characters
                     if (char.IsWhiteSpace((char) c) || char.IsControl((char) c))
                     {
                         if (c == '\r')
@@ -255,7 +278,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // #の後は行コメントとみなす
+                    // # After that is regarded as a line comment
                     if (c == '#')
                     {
                         _reader.ReadLine();
@@ -264,45 +287,45 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 空白文字とコメント以外ならばトークンの先頭と解釈する
+                    // If it is not a space character and a comment, it is interpreted as the beginning of the token.
                     break;
                 }
             }
 
-            // 数字
+            // Numbers
             if (char.IsDigit((char) c) || c == '-' || c == '.')
             {
                 return ParseNumber();
             }
 
-            // 識別子
+            // identifier
             if (char.IsLetter((char) c) || c == '_')
             {
                 return ParseIdentifier();
             }
 
-            // 文字列
+            // Character string
             if (c == '"')
             {
                 _reader.Read();
                 return ParseString();
             }
 
-            // 等号
+            // equal sign
             if (c == '=')
             {
                 _reader.Read();
                 return new Token { Type = TokenType.Equal };
             }
 
-            // 開き波括弧
+            // Open curly braces
             if (c == '{')
             {
                 _reader.Read();
                 return new Token { Type = TokenType.OpenBrace };
             }
 
-            // 閉じ波括弧
+            // Closed curly braces
             if (c == '}')
             {
                 _reader.Read();
@@ -311,27 +334,27 @@ namespace HoI2Editor.Parsers
 
             if (!_skipWhiteSpace)
             {
-                // 空白文字/制御文字
+                // White space / / Control character
                 if (char.IsWhiteSpace((char) c) || char.IsControl((char) c))
                 {
                     return ParseWhiteSpace();
                 }
 
-                // コメント開始
+                // Start commenting
                 if (c == '#')
                 {
                     return ParseComment();
                 }
             }
 
-            // 無効な文字列
+            // Invalid string
             return ParseInvalid();
         }
 
         /// <summary>
-        ///     数字を解析する
+        ///     Analyze numbers
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token ParseNumber()
         {
             StringBuilder sb = new StringBuilder();
@@ -351,13 +374,13 @@ namespace HoI2Editor.Parsers
             {
                 c = _reader.Peek();
 
-                // ファイルの末尾ならば読み込み終了
+                // If it is the end of the file, the reading ends
                 if (c == -1)
                 {
                     break;
                 }
 
-                // 数字ならば読み進める
+                // Read on if it's a number
                 if (char.IsDigit((char) c))
                 {
                     _reader.Read();
@@ -365,7 +388,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 小数点
+                // Decimal point
                 if (!point && !identifier && c == '.')
                 {
                     point = true;
@@ -374,7 +397,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 英文字ならば識別子に切り替えて読み進める
+                // If it is an alphabetic character, switch to the identifier and continue reading
                 if (!minus && !point && (char.IsLetter((char) c) || c == '_'))
                 {
                     identifier = true;
@@ -383,17 +406,17 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 対象外の文字ならば抜ける
+                // If it is a character that is not covered, it will be omitted
                 break;
             }
 
-            // 識別子トークンを返す
+            // Returns an identifier token
             if (identifier)
             {
                 return new Token { Type = TokenType.Identifier, Value = sb.ToString() };
             }
 
-            // 数字トークンを返す
+            // Returns a numeric token
             double d;
             if (DoubleHelper.TryParse(sb.ToString(), out d))
             {
@@ -404,9 +427,9 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     識別子を解析する
+        ///     Parse the identifier
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token ParseIdentifier()
         {
             StringBuilder sb = new StringBuilder();
@@ -415,13 +438,13 @@ namespace HoI2Editor.Parsers
             {
                 int c = _reader.Peek();
 
-                // ファイルの末尾ならば読み込み終了
+                // If it is the end of the file, the reading ends
                 if (c == -1)
                 {
                     break;
                 }
 
-                // 英文字または数字ならば読み進める
+                // Continue reading if it is an alphabetic letter or number
                 if (char.IsLetter((char) c) || char.IsNumber((char) c) || c == '_')
                 {
                     _reader.Read();
@@ -429,7 +452,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 対象外の文字ならば抜ける
+                // If it is a character that is not covered, it will be omitted
                 break;
             }
 
@@ -437,9 +460,9 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     文字列を解析する
+        ///     Parse the string
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token ParseString()
         {
             StringBuilder sb = new StringBuilder();
@@ -448,20 +471,20 @@ namespace HoI2Editor.Parsers
             {
                 int c = _reader.Peek();
 
-                // ファイルの末尾ならば読み込み終了
+                // If it is the end of the file, the reading ends
                 if (c == -1)
                 {
                     break;
                 }
 
-                // 引用符閉じ忘れのフールプループ
-                // 改行文字が現れれば抜ける
+                // Fool loop forgot to close quotes
+                // Exit if a newline character appears
                 if (c == '\r' || c == '\n')
                 {
                     break;
                 }
 
-                // 引用符で文字列終了
+                // End of string with quote
                 if (c == '"')
                 {
                     _reader.Read();
@@ -476,9 +499,9 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     空白文字を解析する
+        ///     Parse blank characters
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token ParseWhiteSpace()
         {
             StringBuilder sb = new StringBuilder();
@@ -486,13 +509,13 @@ namespace HoI2Editor.Parsers
             int c = _reader.Peek();
             while (true)
             {
-                // ファイルの末尾ならば読み込み終了
+                // If it is the end of the file, the reading ends
                 if (c == -1)
                 {
                     break;
                 }
 
-                // 空白ならば読み進める
+                // If it is blank, read on
                 if (char.IsWhiteSpace((char) c) || char.IsControl((char) c))
                 {
                     if (c == '\r')
@@ -519,7 +542,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 対象外の文字ならば抜ける
+                // If it is a character that is not covered, it will be omitted
                 break;
             }
 
@@ -527,9 +550,9 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     コメントを解析する
+        ///     Analyze comments
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token ParseComment()
         {
             StringBuilder sb = new StringBuilder();
@@ -538,13 +561,13 @@ namespace HoI2Editor.Parsers
             {
                 int c = _reader.Peek();
 
-                // ファイルの末尾ならば読み込み終了
+                // If it is the end of the file, the reading ends
                 if (c == -1)
                 {
                     break;
                 }
 
-                // 改行ならば読み込み終了
+                // If it is a line break, reading ends
                 if (c == '\r' || c == '\n')
                 {
                     break;
@@ -558,9 +581,9 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     無効トークンを解析する
+        ///     Parse invalid tokens
         /// </summary>
-        /// <returns>トークン</returns>
+        /// <returns>token</returns>
         private Token ParseInvalid()
         {
             StringBuilder sb = new StringBuilder();
@@ -569,13 +592,13 @@ namespace HoI2Editor.Parsers
             {
                 int c = _reader.Peek();
 
-                // ファイルの末尾ならば読み込み終了
+                // If it is the end of the file, the reading ends
                 if (c == -1)
                 {
                     break;
                 }
 
-                // 他のトークンになり得る文字ならば読み込み終了
+                // If it is a character that can be another token, it ends reading
                 if (char.IsWhiteSpace((char) c) ||
                     char.IsLetter((char) c) ||
                     char.IsDigit((char) c) ||
@@ -597,7 +620,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     行末まで読み飛ばす
+        ///     Skip to the end of the line
         /// </summary>
         public void SkipLine()
         {
@@ -606,7 +629,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     指定種類のトークンまで読み飛ばす
+        ///     Skip to the specified type of token
         /// </summary>
         /// <param name="type"></param>
         public void SkipToToken(TokenType type)
@@ -627,7 +650,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     トークンを保留する
+        ///     Hold token
         /// </summary>
         /// <param name="token"></param>
         public void ReserveToken(Token token)

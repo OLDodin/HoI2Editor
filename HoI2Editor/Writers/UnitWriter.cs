@@ -7,17 +7,17 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Writers
 {
     /// <summary>
-    ///     ユニットデータの書き込みを担当するクラス
+    ///     Class in charge of writing unit data
     /// </summary>
     public static class UnitWriter
     {
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     ユニットデータをファイルへ書き込む
+        ///     Write unit data to a file
         /// </summary>
-        /// <param name="unit">ユニットデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="unit">Unit data</param>
+        /// <param name="fileName">file name</param>
         public static void Write(UnitClass unit, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -56,7 +56,7 @@ namespace HoI2Editor.Writers
                     writer.WriteLine();
                 }
 
-                // locked
+                // locked locked
                 if ((Game.Type == GameType.ArsenalOfDemocracy) &&
                     (unit.Organization == UnitOrganization.Brigade) &&
                     !unit.Detachable)
@@ -104,18 +104,18 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     modelセクションを書き出す
+        ///     model Export a section
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="unit">ユニットデータ</param>
-        /// <param name="index">ユニットモデルのインデックス</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="unit">Unit data</param>
+        /// <param name="index">Unit model index</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteModel(UnitModel model, UnitClass unit, int index, StreamWriter writer)
         {
             writer.WriteLine("# {0} - {1}", index, unit.GetModelName(index));
             writer.WriteLine("model = {");
 
-            // 兵科固有部分
+            // Military department specific part
             switch (unit.Branch)
             {
                 case Branch.Army:
@@ -154,7 +154,7 @@ namespace HoI2Editor.Writers
 
             if (Game.Type == GameType.DarkestHour)
             {
-                // 自動改良
+                // Automatic improvement
                 if (model.AutoUpgrade)
                 {
                     writer.WriteLine("\t{0}\t\t\t\t= {1}", Units.Strings[(int) model.UpgradeClass], model.UpgradeModel);
@@ -166,7 +166,7 @@ namespace HoI2Editor.Writers
                 }
             }
 
-            // equipment (DH1.03以降)
+            // equipment (DH1.03 from )
             if ((Game.Type == GameType.DarkestHour) && (Game.Version >= 103) && (model.Equipments.Count > 0))
             {
                 writer.Write("\tequipment = {");
@@ -181,14 +181,14 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     陸軍師団のモデルデータを書き出す
+        ///     Export army division model data
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteLandDivision(UnitModel model, StreamWriter writer)
         {
             writer.WriteLine("\tcost \t\t\t\t\t= {0}", DoubleHelper.ToString(model.Cost));
-            // 必要ICが0のモデルは未定義と扱う
+            // requirement I C But 0 Model is treated as undefined
             if (DoubleHelper.IsZero(model.Cost))
             {
                 return;
@@ -250,14 +250,14 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     海軍師団のモデルデータを書き出す
+        ///     Export the model data of the Navy Division
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteNavalDivision(UnitModel model, StreamWriter writer)
         {
             writer.WriteLine("\tcost\t\t\t\t\t\t= {0}", DoubleHelper.ToString(model.Cost));
-            // 必要ICが0のモデルは未定義と扱う
+            // requirement I C But 0 Model is treated as undefined
             if (DoubleHelper.IsZero(model.Cost))
             {
                 return;
@@ -303,14 +303,14 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     空軍師団のモデルデータを書き出す
+        ///     Export model data of the Air Force Division
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAirDivision(UnitModel model, StreamWriter writer)
         {
             writer.WriteLine("\tcost \t\t\t\t\t= {0}", DoubleHelper.ToString(model.Cost));
-            // 必要ICが0のモデルは未定義と扱う
+            // requirement I C But 0 Model is treated as undefined
             if (DoubleHelper.IsZero(model.Cost))
             {
                 return;
@@ -350,14 +350,14 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     陸軍旅団のモデルデータを書き出す
+        ///     Export model data of the Army Brigade
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteLandBrigade(UnitModel model, StreamWriter writer)
         {
             writer.WriteLine("\tcost \t\t\t\t= {0}", DoubleHelper.ToString(model.Cost));
-            // 必要ICが0のモデルは未定義と扱う
+            // requirement I C But 0 Model is treated as undefined
             if (DoubleHelper.IsZero(model.Cost))
             {
                 return;
@@ -430,14 +430,14 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     海軍旅団のモデルデータを書き出す
+        ///     Export model data for the Navy Brigade
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteNavalBrigade(UnitModel model, StreamWriter writer)
         {
             writer.WriteLine("\tcost \t\t\t\t= {0}", DoubleHelper.ToString(model.Cost));
-            // 必要ICが0のモデルは未定義と扱う
+            // requirement I C But 0 Model is treated as undefined
             if (DoubleHelper.IsZero(model.Cost))
             {
                 return;
@@ -490,14 +490,14 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     空軍旅団のモデルデータを書き出す
+        ///     Export model data of the Air Force Brigade
         /// </summary>
-        /// <param name="model">ユニットモデルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="model">Unit model data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAirBrigade(UnitModel model, StreamWriter writer)
         {
             writer.WriteLine("\tcost \t\t\t\t\t= {0}", DoubleHelper.ToString(model.Cost));
-            // 必要ICが0のモデルは未定義と扱う
+            // requirement I C But 0 Model is treated as undefined
             if (DoubleHelper.IsZero(model.Cost))
             {
                 return;
@@ -529,39 +529,39 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義データをファイルへ書き込む
+        ///     Write division unit class definition data to a file
         /// </summary>
-        /// <param name="units">ユニットクラス一覧</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="units">Unit class list</param>
+        /// <param name="fileName">file name</param>
         public static void WriteDivisionTypes(List<UnitClass> units, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
-                // ヘッダを出力する
+                // Output header
                 WriteDivisionTypesHeader(writer);
 
-                // ユニットクラス定義データを順に書き込む
+                // Write unit class definition data in order
                 foreach (UnitType type in Units.DivisionTypes)
                 {
                     UnitClass unit = units[(int) type];
 
-                    // ユーザー定義師団に定義内容がなければ出力しない
+                    // If there is no definition in the user-defined division, it will not be output.
                     if ((unit.Type >= UnitType.Division01) && !unit.ExistsEntity() && (unit.Models.Count == 0))
                     {
                         continue;
                     }
 
-                    // ユニットクラス定義データを書き込む
+                    // Write unit class definition data
                     WriteDivisionType(unit, writer);
                 }
             }
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義を書き込む
+        ///     Write the division unit class definition
         /// </summary>
-        /// <param name="unit">ユニットクラスデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="unit">Unit class data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDivisionType(UnitClass unit, StreamWriter writer)
         {
             writer.WriteLine();
@@ -621,9 +621,9 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     師団ユニットクラス定義ファイルのヘッダを書き込む
+        ///     Write the header of the division unit class definition file
         /// </summary>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDivisionTypesHeader(StreamWriter writer)
         {
             writer.WriteLine("# UNIT TYPES DEFINITION FILE");
@@ -787,39 +787,39 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義データをファイルへ書き込む
+        ///     Write brigade unit class definition data to a file
         /// </summary>
-        /// <param name="units">ユニットクラス一覧</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="units">Unit class list</param>
+        /// <param name="fileName">file name</param>
         public static void WriteBrigadeTypes(List<UnitClass> units, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
-                // ヘッダを出力する
+                // Output header
                 WriteBrigadeTypesHeader(writer);
 
-                // ユニットクラス定義データを順に書き込む
+                // Write unit class definition data in order
                 foreach (UnitType type in Units.BrigadeTypes)
                 {
                     UnitClass unit = units[(int) type];
 
-                    // ユーザー定義旅団に定義内容がなければ出力しない
+                    // If there is no definition in the user-defined brigade, it will not be output.
                     if ((unit.Type >= UnitType.Brigade01) && !unit.ExistsEntity() && (unit.Models.Count == 0))
                     {
                         continue;
                     }
 
-                    // ユニットクラス定義データを書き込む
+                    // Write unit class definition data
                     WriteBrigadeType(unit, writer);
                 }
             }
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義を書き込む
+        ///     Write the brigade unit class definition
         /// </summary>
-        /// <param name="unit">ユニットクラスデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="unit">Unit class data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBrigadeType(UnitClass unit, StreamWriter writer)
         {
             writer.WriteLine();
@@ -878,9 +878,9 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     旅団ユニットクラス定義ファイルのヘッダを書き込む
+        ///     Write the header of the brigade unit class definition file
         /// </summary>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBrigadeTypesHeader(StreamWriter writer)
         {
             writer.WriteLine("# BRIGADE TYPES DEFINITION FILE");

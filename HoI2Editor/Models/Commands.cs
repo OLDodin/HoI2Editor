@@ -5,42 +5,42 @@ using System.Linq;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     コマンドデータの管理クラス
+    ///     Command data management class
     /// </summary>
     public static class Commands
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     コマンド文字列とコマンド種類の対応付け
+        ///     Correspondence between command string and command type
         /// </summary>
         public static Dictionary<string, CommandType> StringMap = new Dictionary<string, CommandType>();
 
         /// <summary>
-        ///     利用可能なコマンド種類
+        ///     Available command types
         /// </summary>
         public static List<CommandType> Types = new List<CommandType>();
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     初期化済みフラグ
+        ///     Initialized flag
         /// </summary>
         private static bool _initialized;
 
         /// <summary>
-        ///     ゲーム種類
+        ///     Game type
         /// </summary>
         private static CommandGameType _gameType;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     コマンド文字列
+        ///     Command string
         /// </summary>
         public static readonly string[] Strings =
         {
@@ -343,10 +343,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     ゲームごとの項目の有無
+        ///     Presence or absence of items for each game
         /// </summary>
         private static readonly bool[,] CommandTypeTable =
         {
@@ -649,16 +649,16 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     初期化処理
+        ///     Initialization process
         /// </summary>
         public static void Init()
         {
             CommandGameType gameType = GetGameType();
 
-            // 初期化済みでゲーム種類に変更がなければ何もしない
+            // Do nothing if it is initialized and there is no change in the game type
             if (_initialized && (gameType == _gameType))
             {
                 return;
@@ -666,15 +666,15 @@ namespace HoI2Editor.Models
 
             _gameType = gameType;
 
-            // コマンド種類を初期化する
+            // Initialize command type
             InitTypes();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _initialized = true;
         }
 
         /// <summary>
-        ///     コマンド種類を初期化する
+        ///     Initialize command type
         /// </summary>
         private static void InitTypes()
         {
@@ -691,12 +691,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ゲームバージョン
+        #region Game version
 
         /// <summary>
-        ///     コマンドのゲーム種類を取得する
+        ///     Get the game type of the command
         /// </summary>
-        /// <returns>コマンドのゲーム種類</returns>
+        /// <returns>Command game type</returns>
         public static CommandGameType GetGameType()
         {
             switch (Game.Type)
@@ -721,7 +721,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     コマンドのゲーム種類
+    ///     Command game type
     /// </summary>
     public enum CommandGameType
     {

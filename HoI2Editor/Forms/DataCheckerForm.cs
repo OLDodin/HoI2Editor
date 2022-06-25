@@ -4,14 +4,14 @@ using System.Windows.Forms;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     チェック結果出力フォーム
+    ///     Check result output form
     /// </summary>
     public partial class DataCheckerForm : Form
     {
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public DataCheckerForm()
         {
@@ -20,10 +20,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     クリアボタン押下時の処理
+        ///     Processing when the clear button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -33,7 +33,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     コピーボタン押下時の処理
+        ///     Processing when the copy button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -45,7 +45,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -56,13 +56,13 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region チェック結果出力
+        #region Check result output
 
         /// <summary>
-        ///     チェック結果を出力する
+        ///     Output check result
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public void Write(string s, params object[] args)
         {
             string t = string.Format(s, args);
@@ -70,10 +70,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     チェック結果を出力する
+        ///     Output check result
         /// </summary>
-        /// <param name="s">対象文字列</param>
-        /// <param name="args">パラメータ</param>
+        /// <param name="s">Target character string</param>
+        /// <param name="args">Parameters</param>
         public void WriteLine(string s, params object[] args)
         {
             string t = string.Format(s, args);
@@ -82,7 +82,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     チェック結果を出力する
+        ///     Output check result
         /// </summary>
         public void WriteLine()
         {

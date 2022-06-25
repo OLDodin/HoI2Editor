@@ -3,19 +3,19 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     閣僚データ
+    ///     Ministerial data
     /// </summary>
     public class Minister
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     国タグ
+        ///     Country tag
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     閣僚ID
+        ///     Minister ID
         /// </summary>
         public int Id
         {
@@ -29,84 +29,84 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     名前
+        ///     name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     画像ファイル名
+        ///     Image file name
         /// </summary>
         public string PictureName { get; set; }
 
         /// <summary>
-        ///     閣僚地位
+        ///     Ministerial status
         /// </summary>
         public MinisterPosition Position { get; set; }
 
         /// <summary>
-        ///     閣僚特性
+        ///     Ministerial characteristics
         /// </summary>
         public int Personality { get; set; }
 
         /// <summary>
-        ///     忠誠度
+        ///     Loyalty
         /// </summary>
         public MinisterLoyalty Loyalty { get; set; }
 
         /// <summary>
-        ///     イデオロギー
+        ///     ideology
         /// </summary>
         public MinisterIdeology Ideology { get; set; }
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
         /// <summary>
-        ///     引退年
+        ///     Retirement year
         /// </summary>
         public int RetirementYear { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (MinisterItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     閣僚ID
+        ///     Minister ID
         /// </summary>
         private int _id;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Minister()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元の閣僚データ</param>
+        /// <param name="original">Copy source ministerial data</param>
         public Minister(Minister original)
         {
             Country = original.Country;
@@ -124,31 +124,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     閣僚データが編集済みかどうかを取得する
+        ///     Get if ministerial data has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(MinisterItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(MinisterItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -156,7 +156,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -168,7 +168,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -183,25 +183,25 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     閣僚地位
+    ///     Ministerial status
     /// </summary>
     public enum MinisterPosition
     {
         None,
-        HeadOfState, // 国家元首
-        HeadOfGovernment, // 政府首班
-        ForeignMinister, // 外務大臣
-        MinisterOfArmament, // 軍需大臣
-        MinisterOfSecurity, // 内務大臣
-        HeadOfMilitaryIntelligence, // 情報大臣
-        ChiefOfStaff, // 統合参謀総長
-        ChiefOfArmy, // 陸軍総司令官
-        ChiefOfNavy, // 海軍総司令官
-        ChiefOfAirForce // 空軍総司令官
+        HeadOfState, // National leader
+        HeadOfGovernment, // Government leaders
+        ForeignMinister, // Minister of Foreign Affairs
+        MinisterOfArmament, // Minister of Military Demand
+        MinisterOfSecurity, // Minister of Interior
+        HeadOfMilitaryIntelligence, // Minister of Information
+        ChiefOfStaff, // Chief of the Defense Staff
+        ChiefOfArmy, // Army General Commander
+        ChiefOfNavy, // Navy Commander
+        ChiefOfAirForce // Air Force Commander
     }
 
     /// <summary>
-    ///     閣僚忠誠度
+    ///     Ministerial loyalty
     /// </summary>
     public enum MinisterLoyalty
     {
@@ -216,38 +216,38 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     イデオロギー
+    ///     ideology
     /// </summary>
     public enum MinisterIdeology
     {
         None,
-        NationalSocialist, // NS 国家社会主義
-        Fascist, // FA ファシスト
-        PaternalAutocrat, // PA 権威主義者
-        SocialConservative, // SC 社会保守派
-        MarketLiberal, // ML 自由経済派
-        SocialLiberal, // SL 社会自由派
-        SocialDemocrat, // SD 社会民主派
-        LeftWingRadical, // LWR 急進的左翼
-        Leninist, // LE レーニン主義者
-        Stalinist // ST スターリン主義者
+        NationalSocialist, // NS National socialism
+        Fascist, // FA fascist
+        PaternalAutocrat, // PA Authorist
+        SocialConservative, // SC Social conservatives
+        MarketLiberal, // ML Free economics
+        SocialLiberal, // SL Social liberal
+        SocialDemocrat, // SD Social democracy
+        LeftWingRadical, // LWR Radical left wing
+        Leninist, // LELeninist
+        Stalinist // ST Stalinist
     }
 
     /// <summary>
-    ///     閣僚項目ID
+    ///     Ministerial items ID
     /// </summary>
     public enum MinisterItemId
     {
-        Country, // 国家
+        Country, // Nation
         Id, // ID
-        Name, // 名前
-        StartYear, // 開始年
-        EndYear, // 終了年
-        RetirementYear, // 引退年
-        Position, // 閣僚地位
-        Personality, // 閣僚特性
-        Ideology, // イデオロギー
-        Loyalty, // 忠誠度
-        PictureName // 画像ファイル名
+        Name, // name
+        StartYear, // Start year
+        EndYear, // End year
+        RetirementYear, // Retirement year
+        Position, // Ministerial status
+        Personality, // Ministerial characteristics
+        Ideology, // ideology
+        Loyalty, // Loyalty
+        PictureName // Image file name
     }
 }

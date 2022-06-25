@@ -12,81 +12,81 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     研究機関データ群
+    ///     Research institute data group
     /// </summary>
     public static class Teams
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マスター研究機関リスト
+        ///     List of master research institutes
         /// </summary>
         public static List<Team> Items { get; }
 
         /// <summary>
-        ///     国タグと研究機関ファイル名の対応付け
+        ///     Correspondence between country tag and research institution file name
         /// </summary>
         public static Dictionary<Country, string> FileNameMap { get; }
 
         /// <summary>
-        ///     使用済みIDリスト
+        ///     Already used ID list
         /// </summary>
         public static HashSet<int> IdSet { get; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For lazy loading
         /// </summary>
         private static readonly BackgroundWorker Worker = new BackgroundWorker();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static readonly bool[] DirtyFlags = new bool[Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     研究機関リストファイルの編集済みフラグ
+        ///     Edited flag for research institution list file
         /// </summary>
         private static bool _dirtyListFlag;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Teams()
         {
-            // マスター研究機関リスト
+            // List of master research institutes
             Items = new List<Team>();
 
-            // 国タグと研究機関ファイル名の対応付け
+            // Correspondence between country tag and research institution file name
             FileNameMap = new Dictionary<Country, string>();
 
-            // 使用済みIDリスト
+            // Already used ID list
             IdSet = new HashSet<int>();
         }
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     研究機関ファイルの再読み込みを要求する
+        ///     Request a reload of the laboratory file
         /// </summary>
         public static void RequestReload()
         {
@@ -94,11 +94,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関ファイル群を再読み込みする
+        ///     Reload the research institute files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -110,17 +110,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関ファイル群を読み込む
+        ///     Read research institution files
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -131,44 +131,44 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関ファイル群を遅延読み込みする
+        ///     Lazy loading of research institute files
         /// </summary>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="handler">Read complete event handler</param>
         public static void LoadAsync(RunWorkerCompletedEventHandler handler)
         {
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // Call the completion event handler if it has already been read
             if (_loaded)
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(null, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the read completion event handler
             if (handler != null)
             {
                 Worker.RunWorkerCompleted += handler;
                 Worker.RunWorkerCompleted += OnWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if loading is in progress
             if (Worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If it has already been read here, the completion event handler has already been called, so return without doing anything.
             if (_loaded)
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start lazy loading
             Worker.DoWork += OnWorkerDoWork;
             Worker.RunWorkerAsync();
         }
 
         /// <summary>
-        ///     読み込み完了まで待機する
+        ///     Wait until loading is complete
         /// </summary>
         public static void WaitLoading()
         {
@@ -179,16 +179,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Determine if lazy loading is in progress
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>If delayed reading is in progress true true return it</returns>
         public static bool IsLoading()
         {
             return Worker.IsBusy;
         }
 
         /// <summary>
-        ///     遅延読み込み処理
+        ///     Delayed read processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -198,18 +198,18 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing when lazy loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing when lazy loading is completed
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     研究機関ファイル群を読み込む
+        ///     Read research institution files
         /// </summary>
         private static void LoadFiles()
         {
@@ -235,24 +235,24 @@ namespace HoI2Editor.Models
                     break;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     研究機関ファイル群を読み込む(HoI2/AoD/DH-MOD未使用時)
+        ///     Read research institute files (HoI2 / AoD / DH-MOD When not in use )
         /// </summary>
-        /// <returns>読み込みに失敗すればfalseを返す</returns>
+        /// <returns>If reading fails false false return it</returns>
         private static bool LoadHoI2()
         {
             List<string> list = new List<string>();
             string folderName;
             bool error = false;
 
-            // 保存フォルダ内の研究機関ファイルを読み込む
+            // Read the research institute file in the save folder
             if (Game.IsExportFolderActive)
             {
                 folderName = Game.GetExportFileName(Game.TeamPathName);
@@ -262,10 +262,10 @@ namespace HoI2Editor.Models
                     {
                         try
                         {
-                            // 研究機関ファイルを読み込む
+                            // Read research institution files
                             LoadFile(fileName);
 
-                            // 研究機関ファイル一覧に読み込んだファイル名を登録する
+                            // Register the read file name in the research institute file list
                             string name = Path.GetFileName(fileName);
                             if (!string.IsNullOrEmpty(name))
                             {
@@ -287,7 +287,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // MODフォルダ内の研究機関ファイルを読み込む
+            // MOD Read the research institution files in the folder
             if (Game.IsModActive)
             {
                 folderName = Game.GetModFileName(Game.TeamPathName);
@@ -297,10 +297,10 @@ namespace HoI2Editor.Models
                     {
                         try
                         {
-                            // 研究機関ファイルを読み込む
+                            // Read research institution files
                             LoadFile(fileName);
 
-                            // 研究機関ファイル一覧に読み込んだファイル名を登録する
+                            // Register the read file name in the research institute file list
                             string name = Path.GetFileName(fileName);
                             if (!string.IsNullOrEmpty(name))
                             {
@@ -322,13 +322,13 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // バニラフォルダ内の研究機関ファイルを読み込む
+            // Read the research institution file in the vanilla folder
             folderName = Path.Combine(Game.FolderName, Game.TeamPathName);
             if (Directory.Exists(folderName))
             {
                 foreach (string fileName in Directory.GetFiles(folderName, "*.csv"))
                 {
-                    // MODフォルダ内で読み込んだファイルは無視する
+                    // MOD Ignore files read in folders
                     string name = Path.GetFileName(fileName);
                     if (string.IsNullOrEmpty(name) || list.Contains(name.ToLower()))
                     {
@@ -337,7 +337,7 @@ namespace HoI2Editor.Models
 
                     try
                     {
-                        // 研究機関ファイルを読み込む
+                        // Read research institution files
                         LoadFile(fileName);
                     }
                     catch (Exception)
@@ -358,19 +358,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関ファイル群を読み込む(DH-MOD使用時)
+        ///     Read research institute files (DH-MOD while using it )
         /// </summary>
-        /// <returns>読み込みに失敗すればfalseを返す</returns>
+        /// <returns>If reading fails false false return it</returns>
         private static bool LoadDh()
         {
-            // 研究機関リストファイルが存在しなければ従来通りの読み込み方法を使用する
+            // If the research institute list file does not exist, use the conventional reading method.
             string listFileName = Game.GetReadFileName(Game.DhTeamListPathName);
             if (!File.Exists(listFileName))
             {
                 return LoadHoI2();
             }
 
-            // 研究機関リストファイルを読み込む
+            // Read the research institution list file
             IEnumerable<string> fileList;
             try
             {
@@ -389,7 +389,7 @@ namespace HoI2Editor.Models
             {
                 try
                 {
-                    // 研究機関ファイルを読み込む
+                    // Read research institution files
                     LoadFile(fileName);
                 }
                 catch (Exception)
@@ -409,7 +409,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関リストファイルを読み込む(DH)
+        ///     Read the research institution list file (DH)
         /// </summary>
         private static IEnumerable<string> LoadList(string fileName)
         {
@@ -422,13 +422,13 @@ namespace HoI2Editor.Models
                 {
                     string line = reader.ReadLine();
 
-                    // 空行
+                    // Blank line
                     if (string.IsNullOrEmpty(line))
                     {
                         continue;
                     }
 
-                    // コメント行
+                    // Comment line
                     if (line[0] == '#')
                     {
                         continue;
@@ -441,35 +441,35 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関ファイルを読み込む
+        ///     Read the research institute file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[Team] Load: {0}", Path.GetFileName(fileName));
 
             using (CsvLexer lexer = new CsvLexer(fileName))
             {
-                // 空ファイルを読み飛ばす
+                // Skip empty files
                 if (lexer.EndOfStream)
                 {
                     return;
                 }
 
-                // 国タグ読み込み
+                // Country tag reading
                 string[] tokens = lexer.GetTokens();
                 if (tokens == null || tokens.Length == 0 || string.IsNullOrEmpty(tokens[0]))
                 {
                     return;
                 }
-                // サポート外の国タグの場合は何もしない
+                // Do nothing for unsupported country tags
                 if (!Countries.StringMap.ContainsKey(tokens[0].ToUpper()))
                 {
                     return;
                 }
                 Country country = Countries.StringMap[tokens[0].ToUpper()];
 
-                // ヘッダ行のみのファイルを読み飛ばす
+                // Skip files with only header lines
                 if (lexer.EndOfStream)
                 {
                     return;
@@ -479,7 +479,7 @@ namespace HoI2Editor.Models
                 {
                     Team team = ParseLine(lexer, country);
 
-                    // 空行を読み飛ばす
+                    // Skip blank lines
                     if (team == null)
                     {
                         continue;
@@ -498,26 +498,26 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関定義行を解釈する
+        ///     Interpret the research institute definition line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <param name="country">国家タグ</param>
-        /// <returns>研究機関データ</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <param name="country">National tag</param>
+        /// <returns>Research institution data</returns>
         private static Team ParseLine(CsvLexer lexer, Country country)
         {
             string[] tokens = lexer.GetTokens();
 
-            // ID指定のない行は読み飛ばす
+            // ID Skip lines that are not specified
             if (string.IsNullOrEmpty(tokens?[0]))
             {
                 return null;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length != 39)
             {
                 Log.Warning("[Team] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName, lexer.LineNo);
-                // 末尾のxがない/余分な項目がある場合は解析を続ける
+                // At the end x x There is no / / Continue analysis if there are extra items
                 if (tokens.Length < 38)
                 {
                     return null;
@@ -537,15 +537,15 @@ namespace HoI2Editor.Models
             team.Id = id;
             index++;
 
-            // 名前
+            // name
             team.Name = tokens[index];
             index++;
 
-            // 画像ファイル名
+            // Image file name
             team.PictureName = tokens[index];
             index++;
 
-            // スキル
+            // skill
             int skill;
             if (int.TryParse(tokens[index], out skill))
             {
@@ -559,7 +559,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 開始年
+            // Start year
             int startYear;
             if (int.TryParse(tokens[index], out startYear))
             {
@@ -573,7 +573,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 終了年
+            // End year
             int endYear;
             if (int.TryParse(tokens[index], out endYear))
             {
@@ -587,19 +587,19 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 研究特性
+            // Research characteristics
             for (int i = 0; i < Team.SpecialityLength; i++, index++)
             {
                 string s = tokens[index].ToLower();
 
-                // 空文字列
+                // Empty string
                 if (string.IsNullOrEmpty(s))
                 {
                     team.Specialities[i] = TechSpeciality.None;
                     continue;
                 }
 
-                // 無効な研究特性文字列
+                // Invalid research characteristic string
                 if (!Techs.SpecialityStringMap.ContainsKey(s))
                 {
                     team.Specialities[i] = TechSpeciality.None;
@@ -608,7 +608,7 @@ namespace HoI2Editor.Models
                     continue;
                 }
 
-                // サポート外の研究特性
+                // Unsupported research characteristics
                 TechSpeciality speciality = Techs.SpecialityStringMap[s];
                 if (!Techs.Specialities.Contains(speciality))
                 {
@@ -625,27 +625,27 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     研究機関ファイル群を保存する
+        ///     Save research institution files
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 編集済みでなければ何もしない
+            // Do nothing if not edited
             if (!IsDirty())
             {
                 return true;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
             }
 
-            // 研究機関リストファイルを保存する
+            // Save the research institute list file
             if ((Game.Type == GameType.DarkestHour) && IsDirtyList())
             {
                 try
@@ -668,7 +668,7 @@ namespace HoI2Editor.Models
             {
                 try
                 {
-                    // 研究機関ファイルを保存する
+                    // Save the laboratory file
                     SaveFile(country);
                 }
                 catch (Exception)
@@ -683,24 +683,24 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 保存に失敗していれば戻る
+            // Return if saving fails
             if (error)
             {
                 return false;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
             return true;
         }
 
         /// <summary>
-        ///     研究機関リストファイルを保存する (DH)
+        ///     Save the research institution list file (DH)
         /// </summary>
         private static void SaveList()
         {
-            // データベースフォルダが存在しなければ作成する
+            // Create a database folder if it does not exist
             string folderName = Game.GetWriteFileName(Game.DatabasePathName);
             if (!Directory.Exists(folderName))
             {
@@ -710,7 +710,7 @@ namespace HoI2Editor.Models
             string fileName = Game.GetWriteFileName(Game.DhTeamListPathName);
             Log.Info("[Team] Save: {0}", Path.GetFileName(fileName));
 
-            // 登録された研究機関ファイル名を順に書き込む
+            // Write the registered research institution file names in order
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
                 foreach (string name in FileNameMap.Select(pair => pair.Value))
@@ -719,17 +719,17 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyList();
         }
 
         /// <summary>
-        ///     研究機関ファイルを保存する
+        ///     Save the laboratory file
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void SaveFile(Country country)
         {
-            // 研究機関フォルダが存在しなければ作成する
+            // Create a research institution folder if it does not exist
             string folderName = Game.GetWriteFileName(Game.TeamPathName);
             if (!Directory.Exists(folderName))
             {
@@ -742,12 +742,12 @@ namespace HoI2Editor.Models
 
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
-                // ヘッダ行を書き込む
+                // Write header line
                 writer.WriteLine(
                     "{0};Name;Pic Name;Skill;Start Year;End Year;Speciality1;Speciality2;Speciality3;Speciality4;Speciality5;Speciality6;Speciality7;Speciality8;Speciality9;Speciality10;Speciality11;Speciality12;Speciality13;Speciality14;Speciality15;Speciality16;Speciality17;Speciality18;Speciality19;Speciality20;Speciality21;Speciality22;Speciality23;Speciality24;Speciality25;Speciality26;Speciality27;Speciality28;Speciality29;Speciality30;Speciality31;Speciality32;x",
                     Countries.Strings[(int) country]);
 
-                // 研究機関定義行を順に書き込む
+                // Write the research institution definition lines in order
                 foreach (Team team in Items.Where(team => team.Country == country))
                 {
                     writer.Write(
@@ -767,7 +767,7 @@ namespace HoI2Editor.Models
                     }
                     writer.WriteLine(";x");
 
-                    // 編集済みフラグを解除する
+                    // Clear the edited flag
                     team.ResetDirtyAll();
                 }
             }
@@ -777,12 +777,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 研究機関リスト操作
+        #region Research institution list operation
 
         /// <summary>
-        ///     研究機関リストに項目を追加する
+        ///     Add an item to the research institution list
         /// </summary>
-        /// <param name="team">追加対象の項目</param>
+        /// <param name="team">Items to be added</param>
         public static void AddItem(Team team)
         {
             Log.Info("[Team] Add team: ({0}: {1}) <{2}>", team.Id, team.Name, Countries.Strings[(int) team.Country]);
@@ -791,10 +791,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関リストに項目を挿入する
+        ///     Insert an item in the research institution list
         /// </summary>
-        /// <param name="team">挿入対象の項目</param>
-        /// <param name="position">挿入位置の直前の項目</param>
+        /// <param name="team">Items to be inserted</param>
+        /// <param name="position">Item immediately before the insertion position</param>
         public static void InsertItem(Team team, Team position)
         {
             int index = Items.IndexOf(position) + 1;
@@ -806,9 +806,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関リストから項目を削除する
+        ///     Remove an item from the research institute list
         /// </summary>
-        /// <param name="team">削除対象の項目</param>
+        /// <param name="team">Items to be deleted</param>
         public static void RemoveItem(Team team)
         {
             Log.Info("[Team] Remove team: ({0}: {1}) <{2}>", team.Id, team.Name,
@@ -816,15 +816,15 @@ namespace HoI2Editor.Models
 
             Items.Remove(team);
 
-            // 使用済みIDリストから削除する
+            // Already used ID Remove from list
             IdSet.Remove(team.Id);
         }
 
         /// <summary>
-        ///     研究機関リストの項目を移動する
+        ///     Move items in the research institute list
         /// </summary>
-        /// <param name="src">移動元の項目</param>
-        /// <param name="dest">移動先の項目</param>
+        /// <param name="src">Item of move source</param>
+        /// <param name="dest">Item to move to</param>
         public static void MoveItem(Team src, Team dest)
         {
             int srcIndex = Items.IndexOf(src);
@@ -835,13 +835,13 @@ namespace HoI2Editor.Models
 
             if (srcIndex > destIndex)
             {
-                // 上へ移動する場合
+                // When moving up
                 Items.Insert(destIndex, src);
                 Items.RemoveAt(srcIndex + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 Items.Insert(destIndex + 1, src);
                 Items.RemoveAt(srcIndex);
             }
@@ -849,12 +849,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 一括編集
+        #region Bulk editing
 
         /// <summary>
-        ///     一括編集
+        ///     Bulk editing
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         public static void BatchEdit(TeamBatchEditArgs args)
         {
             LogBatchEdit(args);
@@ -864,7 +864,7 @@ namespace HoI2Editor.Models
             switch (args.ActionMode)
             {
                 case BatchActionMode.Modify:
-                    // 研究機関を一括編集する
+                    // Batch edit research institutes
                     foreach (Team team in teams)
                     {
                         BatchEditTeam(team, args);
@@ -872,7 +872,7 @@ namespace HoI2Editor.Models
                     break;
 
                 case BatchActionMode.Copy:
-                    // 研究機関をコピーする
+                    // Copy the research institute
                     newCountry = args.Destination;
                     int id = args.Id;
                     foreach (Team team in teams)
@@ -887,10 +887,10 @@ namespace HoI2Editor.Models
                         Items.Add(newTeam);
                     }
 
-                    // コピー先の国の編集済みフラグを設定する
+                    // Set the edited flag for the destination country
                     SetDirty(newCountry);
 
-                    // コピー先の国がファイル一覧に存在しなければ追加する
+                    // If the copy destination country does not exist in the file list, add it
                     if (!FileNameMap.ContainsKey(newCountry))
                     {
                         FileNameMap.Add(newCountry, Game.GetTeamFileName(newCountry));
@@ -899,21 +899,21 @@ namespace HoI2Editor.Models
                     break;
 
                 case BatchActionMode.Move:
-                    // 研究機関を移動する
+                    // Move research institute
                     newCountry = args.Destination;
                     foreach (Team team in teams)
                     {
-                        // 移動前の国の編集済みフラグを設定する
+                        // Set the edited flag for the country before the move
                         SetDirty(team.Country);
 
                         team.Country = newCountry;
                         team.SetDirty(TeamItemId.Country);
                     }
 
-                    // 移動先の国の編集済みフラグを設定する
+                    // Set the edited flag for the destination country
                     SetDirty(newCountry);
 
-                    // 移動先の国がファイル一覧に存在しなければ追加する
+                    // If the destination country does not exist in the file list, add it.
                     if (!FileNameMap.ContainsKey(newCountry))
                     {
                         FileNameMap.Add(newCountry, Game.GetTeamFileName(newCountry));
@@ -924,13 +924,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集の個別処理
+        ///     Individual processing of batch editing
         /// </summary>
-        /// <param name="team">対象研究機関</param>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="team">Target research institute</param>
+        /// <param name="args">Batch editing parameters</param>
         private static void BatchEditTeam(Team team, TeamBatchEditArgs args)
         {
-            // スキル
+            // skill
             if (args.Items[(int) TeamBatchItemId.Skill])
             {
                 if (team.Skill != args.Skill)
@@ -941,7 +941,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 開始年
+            // Start year
             if (args.Items[(int) TeamBatchItemId.StartYear])
             {
                 if (team.StartYear != args.StartYear)
@@ -952,7 +952,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 終了年
+            // End year
             if (args.Items[(int) TeamBatchItemId.EndYear])
             {
                 if (team.EndYear != args.EndYear)
@@ -965,10 +965,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集対象の研究機関リストを取得する
+        ///     Get a list of research institutes to be edited in bulk
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>一括編集対象の研究機関リスト</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>List of research institutes subject to batch editing</returns>
         private static IEnumerable<Team> GetBatchEditTeams(TeamBatchEditArgs args)
         {
             return args.CountryMode == BatchCountryMode.All
@@ -977,19 +977,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集処理のログ出力
+        ///     Batch edit processing log output
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         private static void LogBatchEdit(TeamBatchEditArgs args)
         {
             Log.Verbose($"[Team] Batch {GetBatchEditItemLog(args)} ({GetBatchEditModeLog(args)})");
         }
 
         /// <summary>
-        ///     一括編集項目のログ文字列を取得する
+        ///     Get the log string of batch edit items
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>ログ文字列</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>Log string</returns>
         private static string GetBatchEditItemLog(TeamBatchEditArgs args)
         {
             StringBuilder sb = new StringBuilder();
@@ -1021,15 +1021,15 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集対象モードのログ文字列を取得する
+        ///     Get the log character string of the batch edit target mode
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>ログ文字列</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>Log string</returns>
         private static string GetBatchEditModeLog(TeamBatchEditArgs args)
         {
             StringBuilder sb = new StringBuilder();
 
-            // 一括編集対象国
+            // Countries subject to batch editing
             if (args.CountryMode == BatchCountryMode.All)
             {
                 sb.Append("ALL");
@@ -1051,26 +1051,26 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ID操作
+        #region ID operation
 
         /// <summary>
-        ///     未使用の研究機関IDを取得する
+        ///     Unused research institute ID To get
         /// </summary>
-        /// <param name="country">対象の国タグ</param>
-        /// <returns>研究機関ID</returns>
+        /// <param name="country">Target country tag</param>
+        /// <returns>research Institute ID</returns>
         public static int GetNewId(Country country)
         {
-            // 対象国の研究機関IDの最大値+1から検索を始める
+            // Research institutes in the target country ID Maximum value of +1 Start searching from
             int id = GetMaxId(country);
-            // 未使用IDが見つかるまでIDを1ずつ増やす
+            // unused ID Until you find ID of 1 Increase by little
             return GetNewId(id);
         }
 
         /// <summary>
-        ///     未使用の研究機関IDを取得する
+        ///     Unused research institute ID To get
         /// </summary>
-        /// <param name="id">開始ID</param>
-        /// <returns>研究機関ID</returns>
+        /// <param name="id">start ID</param>
+        /// <returns>research Institute ID</returns>
         public static int GetNewId(int id)
         {
             while (IdSet.Contains(id))
@@ -1081,10 +1081,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象国の研究機関IDの最大値を取得する
+        ///     Research institutes in the target country IDGet the maximum value of
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>研究機関ID</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>research Institute ID</returns>
         private static int GetMaxId(Country country)
         {
             if (country == Country.None)
@@ -1101,40 +1101,40 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag || _dirtyListFlag;
         }
 
         /// <summary>
-        ///     研究機関リストファイルが編集済みかどうかを取得する
+        ///     Get whether the research institute list file has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         private static bool IsDirtyList()
         {
             return _dirtyListFlag;
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Country country)
         {
             return DirtyFlags[(int) country];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         public static void SetDirty(Country country)
         {
             DirtyFlags[(int) country] = true;
@@ -1142,7 +1142,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関リストファイルの編集済みフラグを設定する
+        ///     Set the edited flag of the laboratory list file
         /// </summary>
         public static void SetDirtyList()
         {
@@ -1150,16 +1150,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを解除する
+        ///     Clear the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void ResetDirty(Country country)
         {
             DirtyFlags[(int) country] = false;
         }
 
         /// <summary>
-        ///     研究機関リストファイルの編集済みフラグを解除する
+        ///     Clear the edited flag of the research institute list file
         /// </summary>
         private static void ResetDirtyList()
         {
@@ -1170,54 +1170,54 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     研究機関一括編集のパラメータ
+    ///     Parameters for batch editing of research institutes
     /// </summary>
     public class TeamBatchEditArgs
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     一括編集対象国モード
+        ///     Batch edit target country mode
         /// </summary>
         public BatchCountryMode CountryMode { get; set; }
 
         /// <summary>
-        ///     対象国リスト
+        ///     Target country list
         /// </summary>
         public List<Country> TargetCountries { get; } = new List<Country>();
 
         /// <summary>
-        ///     一括編集動作モード
+        ///     Batch edit operation mode
         /// </summary>
         public BatchActionMode ActionMode { get; set; }
 
         /// <summary>
-        ///     コピー/移動先指定国
+        ///     copy / / Designated country of destination
         /// </summary>
         public Country Destination { get; set; }
 
         /// <summary>
-        ///     開始ID
+        ///     start ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     一括編集項目
+        ///     Bulk edit items
         /// </summary>
         public bool[] Items { get; } = new bool[Enum.GetValues(typeof (TeamBatchItemId)).Length];
 
         /// <summary>
-        ///     スキル
+        ///     skill
         /// </summary>
         public int Skill { get; set; }
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
@@ -1225,12 +1225,12 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     一括編集項目ID
+    ///     Bulk edit items ID
     /// </summary>
     public enum TeamBatchItemId
     {
-        Skill, // スキル
-        StartYear, // 開始年
-        EndYear // 終了年
+        Skill, // skill
+        StartYear, // Start year
+        EndYear // End year
     }
 }

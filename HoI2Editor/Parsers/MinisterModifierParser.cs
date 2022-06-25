@@ -5,14 +5,14 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     閣僚特性定義ファイルの構文解析(AoD)
+    ///     Parsing the ministerial trait definition file (AoD)
     /// </summary>
     internal class MinisterModifierParser
     {
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     閣僚特性定義ファイル内の閣僚地位名とIDの対応付け
+        ///     With the name of the ministerial status in the ministerial characteristic definition file ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, int> PositionMap
             = new Dictionary<string, int>
@@ -32,22 +32,22 @@ namespace HoI2Editor.Parsers
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     ログ出力時のカテゴリ名
+        ///     Category name at the time of log output
         /// </summary>
         private const string LogCategory = "Minister";
 
         #endregion
 
-        #region 構文解析
+        #region Parsing
 
         /// <summary>
-        ///     閣僚特性定義ファイルを構文解析する
+        ///     Parsing the ministerial trait definition file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>閣僚特性リスト</returns>
+        /// <param name="fileName">file name</param>
+        /// <returns>Ministerial Characteristic List</returns>
         public static List<MinisterPersonalityInfo> Parse(string fileName)
         {
             List<MinisterPersonalityInfo> list = null;
@@ -58,13 +58,13 @@ namespace HoI2Editor.Parsers
                 {
                     Token token = lexer.GetToken();
 
-                    // ファイルの終端
+                    // End of file
                     if (token == null)
                     {
                         return list;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     if (token.Type != TokenType.Identifier)
                     {
                         Log.InvalidToken(LogCategory, token, lexer);
@@ -77,7 +77,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // minister_modifiersセクション
+                    // minister_modifiers section
                     if (keyword.Equals("minister_modifiers"))
                     {
                         if (!ParseMinisterModifiers(lexer))
@@ -87,7 +87,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // minister_personalitiesセクション
+                    // minister_personalities section
                     if (keyword.Equals("minister_personalities"))
                     {
                         list = ParseMinisterPersonalities(lexer);
@@ -100,13 +100,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     minister_modifiersセクションを構文解析する
+        ///     minister_modifiers Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>構文解析の成否</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Success or failure of parsing</returns>
         private static bool ParseMinisterModifiers(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -124,7 +124,7 @@ namespace HoI2Editor.Parsers
 
             while (true)
             {
-                // 暫定: 識別子を読み飛ばす
+                // preliminary :: Skip the identifier
                 token = lexer.GetToken();
                 if (token.Type == TokenType.Identifier)
                 {
@@ -132,13 +132,13 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 return false;
             }
@@ -147,13 +147,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     minister_personalitiesセクションを構文解析する
+        ///     minister_personalities Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>閣僚特性リスト</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Ministerial Characteristic List</returns>
         private static List<MinisterPersonalityInfo> ParseMinisterPersonalities(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -172,27 +172,27 @@ namespace HoI2Editor.Parsers
             List<MinisterPersonalityInfo> list = new List<MinisterPersonalityInfo>();
             while (true)
             {
-                // ファイル終端
+                // File termination
                 token = lexer.GetToken();
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Identifier || !((string) token.Value).Equals("personality"))
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
                     continue;
                 }
 
-                // personalityセクション
+                // personality section
                 MinisterPersonalityInfo info = ParseMinisterPersonality(lexer);
                 if (info == null)
                 {
@@ -200,7 +200,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 閣僚特性リストへ登録
+                // Registered in the Ministerial Characteristic List
                 list.Add(info);
             }
 
@@ -208,13 +208,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     personalityセクションを構文解析する
+        ///     personality Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>閣僚特性データ</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Ministerial characteristic data</returns>
         private static MinisterPersonalityInfo ParseMinisterPersonality(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -233,20 +233,20 @@ namespace HoI2Editor.Parsers
             MinisterPersonalityInfo info = new MinisterPersonalityInfo();
             while (true)
             {
-                // ファイル終端
+                // File termination
                 token = lexer.GetToken();
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -262,7 +262,7 @@ namespace HoI2Editor.Parsers
                 // personality_string
                 if (keyword.Equals("personality_string"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -271,7 +271,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.String)
                     {
@@ -280,7 +280,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 閣僚特性文字列
+                    // Ministerial characteristic character string
                     info.String = token.Value as string;
                     continue;
                 }
@@ -288,7 +288,7 @@ namespace HoI2Editor.Parsers
                 // name
                 if (keyword.Equals("name"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -297,7 +297,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -306,7 +306,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 閣僚特性名
+                    // Ministerial characteristic name
                     info.Name = token.Value as string;
                     continue;
                 }
@@ -314,7 +314,7 @@ namespace HoI2Editor.Parsers
                 // desc
                 if (keyword.Equals("desc"))
                 {
-                    // 暫定: 1行単位で読み飛ばす
+                    // preliminary : 1 Skip line by line
                     lexer.SkipLine();
                     continue;
                 }
@@ -322,7 +322,7 @@ namespace HoI2Editor.Parsers
                 // minister_position
                 if (keyword.Equals("minister_position"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -331,7 +331,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -347,15 +347,15 @@ namespace HoI2Editor.Parsers
                     }
                     position = position.ToLower();
 
-                    // 閣僚地位
+                    // Ministerial status
                     if (PositionMap.ContainsKey(position))
                     {
-                        // いずれか1つ
+                        // either 1 One
                         info.Position[PositionMap[position]] = true;
                     }
                     else if (position.Equals("all"))
                     {
-                        // 全て
+                        // all
                         for (int i = 0; i < info.Position.Length; i++)
                         {
                             info.Position[i] = true;
@@ -363,7 +363,7 @@ namespace HoI2Editor.Parsers
                     }
                     else if (Game.Type != GameType.DarkestHour || !position.Equals("generic"))
                     {
-                        // 無効なトークン
+                        // Invalid token
                         Log.InvalidToken(LogCategory, token, lexer);
                         lexer.SkipLine();
                     }
@@ -380,7 +380,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
             }
 
@@ -388,13 +388,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     modifierセクションを構文解析する
+        ///     modifier Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>構文解析の成否</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Success or failure of parsing</returns>
         private static bool ParseMinisterPersonalityModifier(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -412,20 +412,20 @@ namespace HoI2Editor.Parsers
 
             while (true)
             {
-                // ファイル終端
+                // File termination
                 token = lexer.GetToken();
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -441,7 +441,7 @@ namespace HoI2Editor.Parsers
                 // type
                 if (keyword.Equals("type"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -449,7 +449,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 識別子
+                    // identifier
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -459,10 +459,10 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // value
+                // value value
                 if (keyword.Equals("value"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -470,7 +470,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 識別子/数字
+                    // identifier / / Numbers
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.Number)
                     {
@@ -483,7 +483,7 @@ namespace HoI2Editor.Parsers
                 // option1
                 if (keyword.Equals("option1"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -491,7 +491,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 数字
+                    // Numbers
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -504,7 +504,7 @@ namespace HoI2Editor.Parsers
                 // option2
                 if (keyword.Equals("option2"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -512,7 +512,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 数字
+                    // Numbers
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -525,7 +525,7 @@ namespace HoI2Editor.Parsers
                 // modifier_effect
                 if (keyword.Equals("modifier_effect"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -533,7 +533,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 数字
+                    // Numbers
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -546,7 +546,7 @@ namespace HoI2Editor.Parsers
                 // division
                 if (keyword.Equals("division"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -554,7 +554,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 識別子
+                    // identifier
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -567,7 +567,7 @@ namespace HoI2Editor.Parsers
                 // extra
                 if (keyword.Equals("extra"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -575,7 +575,7 @@ namespace HoI2Editor.Parsers
                         return false;
                     }
 
-                    // 識別子
+                    // identifier
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -585,7 +585,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 return false;
             }

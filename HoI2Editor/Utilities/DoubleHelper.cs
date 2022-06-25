@@ -4,148 +4,148 @@ using System.Globalization;
 namespace HoI2Editor.Utilities
 {
     /// <summary>
-    ///     実数型のヘルパークラス
+    ///     Real type helper class
     /// </summary>
     public static class DoubleHelper
     {
-        #region 数値比較
+        #region Numerical comparison
 
         /// <summary>
-        ///     数値が等しいかを判定する
+        ///     Determine if the numbers are equal
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual(double val1, double val2)
         {
-            // 小数点以下6桁まで考慮する
+            // After the decimal point 6 Consider up to digits
             return Math.Abs(val1 - val2) < 0.0000005;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下なし)
+        ///     Determine if the numbers are equal (( No subdecimal )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual0(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.5;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下1桁)
+        ///     Determine if the numbers are equal (( After the decimal point 1 digit )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual1(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.05;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下2桁)
+        ///     Determine if the numbers are equal (( After the decimal point 2 digit )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual2(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.005;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下3桁)
+        ///     Determine if the numbers are equal (( After the decimal point 3 digit )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual3(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.0005;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下4桁)
+        ///     Determine if the numbers are equal (( After the decimal point Four digit )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual4(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.00005;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下5桁)
+        ///     Determine if the numbers are equal (( After the decimal point Five digit )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual5(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.000005;
         }
 
         /// <summary>
-        ///     数値が等しいかを判定する (小数点以下6桁)
+        ///     Determine if the numbers are equal (( After the decimal point 6 digit )
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値が等しければtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>If the numbers are equal true true return it</returns>
         public static bool IsEqual6(double val1, double val2)
         {
             return Math.Abs(val1 - val2) < 0.0000005;
         }
 
         /// <summary>
-        ///     数値が0に等しいかを判定する
+        ///     The numbers are 0 To determine if it is equal to
         /// </summary>
-        /// <param name="val">数値</param>
-        /// <returns>数値が0に等しければtrueを返す</returns>
+        /// <param name="val">Numerical value</param>
+        /// <returns>The numbers are 0 If equal to true true return it</returns>
         public static bool IsZero(double val)
         {
             return Math.Abs(val) < 0.0000005;
         }
 
         /// <summary>
-        ///     数値が指定値以下であるかを判定する
+        ///     Determine if the value is less than or equal to the specified value
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値1が数値2以下であればtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>Numerical value 1 Is a numerical value 2 If true true return it</returns>
         public static bool IsLessOrEqual(double val1, double val2)
         {
             return val1 - val2 < 0.0000005;
         }
 
         /// <summary>
-        ///     数値が指定値以上であるかを判定する
+        ///     Determine if the value is greater than or equal to the specified value
         /// </summary>
-        /// <param name="val1">数値1</param>
-        /// <param name="val2">数値2</param>
-        /// <returns>数値1が数値2以上であればtrueを返す</returns>
+        /// <param name="val1">Numerical value 1</param>
+        /// <param name="val2">Numerical value 2</param>
+        /// <returns>Numerical value 1Is a numerical value 2 If it is above true true return it</returns>
         public static bool IsGreaterOrEqual(double val1, double val2)
         {
             return val1 - val2 > -0.0000005;
         }
 
         /// <summary>
-        ///     数値が正であるかを判定する
+        ///     Determine if the number is positive
         /// </summary>
-        /// <param name="val">数値</param>
-        /// <returns>数値が正であればtrueを返す</returns>
+        /// <param name="val">Numerical value</param>
+        /// <returns>If the number is positive true true return it</returns>
         public static bool IsPositive(double val)
         {
             return val > 0.0000005;
         }
 
         /// <summary>
-        ///     数値が負であるかを判定する
+        ///     Determine if the number is negative
         /// </summary>
-        /// <param name="val">数値</param>
-        /// <returns>数値が負であればtrueを返す</returns>
+        /// <param name="val">Numerical value</param>
+        /// <returns>If the number is negative true true return it</returns>
         public static bool IsNegative(double val)
         {
             return val < -0.0000005;
@@ -153,199 +153,199 @@ namespace HoI2Editor.Utilities
 
         #endregion
 
-        #region 文字列変換
+        #region String conversion
 
         /// <summary>
-        ///     文字列に変換する
+        ///     Convert to a string
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString(double val)
         {
             return val.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        ///     文字列に変換する (小数点以下なし)
+        ///     Convert to a string (( No decimal point )
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString0(double val)
         {
-            // 小数点以下6桁
+            // After the decimal point 6 digit
             if (Math.Abs(val - Math.Round(val, 5)) > 0.0000005)
             {
                 return val.ToString("F6", CultureInfo.InvariantCulture);
             }
-            // 小数点以下5桁
+            // After the decimal point Five digit
             if (Math.Abs(val - Math.Round(val, 4)) > 0.000005)
             {
                 return val.ToString("F5", CultureInfo.InvariantCulture);
             }
-            // 小数点以下4桁
+            // After the decimal point Four digit
             if (Math.Abs(val - Math.Round(val, 3)) > 0.00005)
             {
                 return val.ToString("F4", CultureInfo.InvariantCulture);
             }
-            // 小数点以下3桁
+            // After the decimal point 3 digit
             if (Math.Abs(val - Math.Round(val, 2)) > 0.0005)
             {
                 return val.ToString("F3", CultureInfo.InvariantCulture);
             }
-            // 小数点以下2桁
+            // After the decimal point 2 digit
             if (Math.Abs(val - Math.Round(val, 1)) > 0.005)
             {
                 return val.ToString("F2", CultureInfo.InvariantCulture);
             }
-            // 小数点以下1桁
+            // After the decimal point 1 digit
             if (Math.Abs(val - Math.Round(val)) > 0.05)
             {
                 return val.ToString("F1", CultureInfo.InvariantCulture);
             }
-            // 小数点以下なし
+            // No subdecimal
             return val.ToString(CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        ///     文字列に変換する (小数点以下1桁)
+        ///     Convert to a string (( After the decimal point 1 digit )
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString1(double val)
         {
-            // 小数点以下6桁
+            // After the decimal point 6 digit
             if (Math.Abs(val - Math.Round(val, 5)) > 0.0000005)
             {
                 return val.ToString("F6", CultureInfo.InvariantCulture);
             }
-            // 小数点以下5桁
+            // After the decimal point Five digit
             if (Math.Abs(val - Math.Round(val, 4)) > 0.000005)
             {
                 return val.ToString("F5", CultureInfo.InvariantCulture);
             }
-            // 小数点以下4桁
+            // After the decimal point Four digit
             if (Math.Abs(val - Math.Round(val, 3)) > 0.00005)
             {
                 return val.ToString("F4", CultureInfo.InvariantCulture);
             }
-            // 小数点以下3桁
+            // After the decimal point 3 digit
             if (Math.Abs(val - Math.Round(val, 2)) > 0.0005)
             {
                 return val.ToString("F3", CultureInfo.InvariantCulture);
             }
-            // 小数点以下2桁
+            // After the decimal point 2 digit
             if (Math.Abs(val - Math.Round(val, 1)) > 0.005)
             {
                 return val.ToString("F2", CultureInfo.InvariantCulture);
             }
-            // 小数点以下1桁を保証する
+            // After the decimal point 1 Guarantee digits
             return val.ToString("F1", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        ///     文字列に変換する (小数点以下2桁)
+        ///     Convert to a string (( After the decimal point 2 digit )
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString2(double val)
         {
-            // 小数点以下6桁
+            // After the decimal point 6 digit
             if (Math.Abs(val - Math.Round(val, 5)) > 0.0000005)
             {
                 return val.ToString("F6", CultureInfo.InvariantCulture);
             }
-            // 小数点以下5桁
+            // After the decimal point Five digit
             if (Math.Abs(val - Math.Round(val, 4)) > 0.000005)
             {
                 return val.ToString("F5", CultureInfo.InvariantCulture);
             }
-            // 小数点以下4桁
+            // After the decimal point Four digit
             if (Math.Abs(val - Math.Round(val, 3)) > 0.00005)
             {
                 return val.ToString("F4", CultureInfo.InvariantCulture);
             }
-            // 小数点以下3桁
+            // After the decimal point 3 digit
             if (Math.Abs(val - Math.Round(val, 2)) > 0.0005)
             {
                 return val.ToString("F3", CultureInfo.InvariantCulture);
             }
-            // 小数点以下2桁を保証する
+            // After the decimal point 2 Guarantee digits
             return val.ToString("F2", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        ///     文字列に変換する (小数点以下3桁)
+        ///     Convert to a string ((After the decimal point 3 digit )
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString3(double val)
         {
-            // 小数点以下6桁
+            // After the decimal point 6 digit
             if (Math.Abs(val - Math.Round(val, 5)) > 0.0000005)
             {
                 return val.ToString("F6", CultureInfo.InvariantCulture);
             }
-            // 小数点以下5桁
+            // After the decimal point Five digit
             if (Math.Abs(val - Math.Round(val, 4)) > 0.000005)
             {
                 return val.ToString("F5", CultureInfo.InvariantCulture);
             }
-            // 小数点以下4桁
+            // After the decimal point Four digit
             if (Math.Abs(val - Math.Round(val, 3)) > 0.00005)
             {
                 return val.ToString("F4", CultureInfo.InvariantCulture);
             }
-            // 小数点以下3桁を保証する
+            // After the decimal point 3 Guarantee digits
             return val.ToString("F3", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        ///     文字列に変換する (小数点以下4桁)
+        ///     Convert to a string (( After the decimal point Four digit )
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString4(double val)
         {
-            // 小数点以下6桁
+            // After the decimal point 6 digit
             if (Math.Abs(val - Math.Round(val, 5)) > 0.0000005)
             {
                 return val.ToString("F6", CultureInfo.InvariantCulture);
             }
-            // 小数点以下5桁
+            // After the decimal point Five digit
             if (Math.Abs(val - Math.Round(val, 4)) > 0.000005)
             {
                 return val.ToString("F5", CultureInfo.InvariantCulture);
             }
-            // 小数点以下4桁を保証する
+            // After the decimal point Four Guarantee digits
             return val.ToString("F4", CultureInfo.InvariantCulture);
         }
 
         /// <summary>
-        ///     文字列に変換する (実数/小数点以下5桁)
+        ///     Convert to a string (( Real number / / After the decimal point Five digit )
         /// </summary>
-        /// <param name="val">変換対象の値</param>
-        /// <returns>変換後の文字列</returns>
+        /// <param name="val">Value to be converted</param>
+        /// <returns>Converted string</returns>
         public static string ToString5(double val)
         {
-            // 小数点以下6桁
+            // After the decimal point 6 digit
             if (Math.Abs(val - Math.Round(val, 5)) > 0.0000005)
             {
                 return val.ToString("F6", CultureInfo.InvariantCulture);
             }
-            // 小数点以下5桁を保証する
+            // After the decimal point Five Guarantee digits
             return val.ToString("F5", CultureInfo.InvariantCulture);
         }
 
         #endregion
 
-        #region 数値変換
+        #region Numerical conversion
 
         /// <summary>
-        ///     文字列を数値に変換する
+        ///     Convert a string to a number
         /// </summary>
-        /// <param name="s">変換対象の文字列</param>
-        /// <param name="val">変換後の値</param>
-        /// <returns>変換が成功すればtrueを返す</returns>
+        /// <param name="s">Character string to be converted</param>
+        /// <param name="val">Converted value</param>
+        /// <returns>If the conversion is successful true true return it</returns>
         public static bool TryParse(string s, out double val)
         {
             return double.TryParse(s, NumberStyles.Float, CultureInfo.InvariantCulture, out val);

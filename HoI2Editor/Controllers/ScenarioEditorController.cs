@@ -11,167 +11,167 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Controllers
 {
     /// <summary>
-    ///     シナリオエディタのコントローラクラス
+    ///     Scenario editor controller class
     /// </summary>
     public class ScenarioEditorController
     {
-        #region 内部フィールド
+        #region Internal field
 
-        #region 共通
+        #region common
 
         /// <summary>
-        ///     シナリオエディタのフォーム
+        ///     Scenario editor form
         /// </summary>
         private readonly ScenarioEditorForm _form;
 
         /// <summary>
-        ///     マップパネルのコントローラ
+        ///     Map panel controller
         /// </summary>
         private readonly MapPanelController _mapPanelController;
 
         /// <summary>
-        ///     ユニットツリーのコントローラ
+        ///     Unit tree controller
         /// </summary>
         private readonly UnitTreeController _unitTreeController;
 
         #endregion
 
-        #region 指揮官候補リスト
+        #region Commander candidate list
 
         /// <summary>
-        ///     陸軍指揮官リスト
+        ///     Army commander list
         /// </summary>
         private List<Leader> _landLeaders;
 
         /// <summary>
-        ///     海軍指揮官リスト
+        ///     Navy commander list
         /// </summary>
         private List<Leader> _navalLeaders;
 
         /// <summary>
-        ///     空軍指揮官リスト
+        ///     Air Force Commander List
         /// </summary>
         private List<Leader> _airLeaders;
 
         #endregion
 
-        #region 閣僚候補リスト
+        #region Ministerial candidate list
 
         /// <summary>
-        ///     国家元首リスト
+        ///     National leader list
         /// </summary>
         private List<Minister> _headOfStateList;
 
         /// <summary>
-        ///     政府首班リスト
+        ///     Government leader list
         /// </summary>
         private List<Minister> _headOfGovernmentList;
 
         /// <summary>
-        ///     外務大臣リスト
+        ///     Foreign Minister List
         /// </summary>
         private List<Minister> _foreignMinisterList;
 
         /// <summary>
-        ///     軍需大臣リスト
+        ///     List of Ministers of Munitions
         /// </summary>
         private List<Minister> _armamentMinisterList;
 
         /// <summary>
-        ///     内務大臣リスト
+        ///     Interior Minister List
         /// </summary>
         private List<Minister> _ministerOfSecurityList;
 
         /// <summary>
-        ///     情報大臣リスト
+        ///     Information Minister List
         /// </summary>
         private List<Minister> _ministerOfIntelligenceList;
 
         /// <summary>
-        ///     統合参謀総長リスト
+        ///     Chief of the Defense Staff List
         /// </summary>
         private List<Minister> _chiefOfStaffList;
 
         /// <summary>
-        ///     陸軍総司令官リスト
+        ///     Army Commander List
         /// </summary>
         private List<Minister> _chiefOfArmyList;
 
         /// <summary>
-        ///     海軍総司令官リスト
+        ///     Navy Commander List
         /// </summary>
         private List<Minister> _chiefOfNavyList;
 
         /// <summary>
-        ///     空軍総司令官リスト
+        ///     Air Force General Commander List
         /// </summary>
         private List<Minister> _chiefOfAirList;
 
         #endregion
 
-        #region プロヴィンスリスト
+        #region Provincial list
 
         /// <summary>
-        ///     全プロヴィンスリスト
+        ///     All province list
         /// </summary>
         private List<Province> _provinces = new List<Province>();
 
         /// <summary>
-        ///     陸地プロヴィンスリスト
+        ///     Land Provincial List
         /// </summary>
         private readonly List<Province> _landProvinces = new List<Province>();
 
         /// <summary>
-        ///     海洋/海軍基地プロヴィンスリスト
+        ///     Ocean / / Naval Base Province List
         /// </summary>
         private readonly List<Province> _seaBaseProvinces = new List<Province>();
 
         /// <summary>
-        ///     海軍基地プロヴィンスリスト
+        ///     Naval Base Provincial List
         /// </summary>
         private readonly List<Province> _navalBaseProvinces = new List<Province>();
 
         /// <summary>
-        ///     空軍基地プロヴィンスリスト
+        ///     Air Force Base Provincial List
         /// </summary>
         private readonly List<Province> _airBaseProvinces = new List<Province>();
 
         /// <summary>
-        ///     プロヴィンスリストの初期化済みフラグ
+        ///     Provided list initialized flag
         /// </summary>
         private bool _provincesInitialized;
 
         #endregion
 
-        #region ユニット種類リスト
+        #region Unit type list
 
         /// <summary>
-        ///     陸軍師団のユニット種類
+        ///     Army division unit type
         /// </summary>
         private List<UnitType> _landDivisionTypes;
 
         /// <summary>
-        ///     海軍師団のユニット種類
+        ///     Navy division unit type
         /// </summary>
         private List<UnitType> _navalDivisionTypes;
 
         /// <summary>
-        ///     空軍師団のユニット種類
+        ///     Air Force Division Unit Type
         /// </summary>
         private List<UnitType> _airDivisionTypes;
 
         /// <summary>
-        ///     陸軍旅団のユニット種類
+        ///     Army brigade unit type
         /// </summary>
         private List<UnitType> _landBrigadeTypes;
 
         /// <summary>
-        ///     海軍旅団のユニット種類
+        ///     Navy brigade unit type
         /// </summary>
         private List<UnitType> _navalBrigadeTypes;
 
         /// <summary>
-        ///     空軍旅団のユニット種類
+        ///     Air Force Brigade unit type
         /// </summary>
         private List<UnitType> _airBrigadeTypes;
 
@@ -179,10 +179,10 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     編集項目の編集済みフラグ
+        ///     Edited flag of edit item
         /// </summary>
         private static readonly object[] ItemDirtyFlags =
         {
@@ -451,7 +451,7 @@ namespace HoI2Editor.Controllers
         };
 
         /// <summary>
-        ///     編集項目の文字列
+        ///     Edit item string
         /// </summary>
         private static readonly string[] ItemStrings =
         {
@@ -721,14 +721,14 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="form">シナリオエディタのフォーム</param>
-        /// <param name="mapPanelController">マップパネルのコントローラ</param>
-        /// <param name="unitTreeController">ユニットツリーのコントローラ</param>
+        /// <param name="form">Scenario editor form</param>
+        /// <param name="mapPanelController">Map panel controller</param>
+        /// <param name="unitTreeController">Unit tree controller</param>
         public ScenarioEditorController(ScenarioEditorForm form, MapPanelController mapPanelController,
             UnitTreeController unitTreeController)
         {
@@ -739,13 +739,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 指揮官候補リスト
+        #region Commander candidate list
 
         /// <summary>
-        ///     指揮官候補リストを更新する
+        ///     Update the list of candidate commanders
         /// </summary>
-        /// <param name="country">選択国</param>
-        /// <param name="year">現在年</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="year">Current year</param>
         public void UpdateLeaderList(Country country, int year)
         {
             List<Leader> leaders = Misc.EnableRetirementYearLeaders
@@ -765,13 +765,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 閣僚候補リスト
+        #region Ministerial candidate list
 
         /// <summary>
-        ///     閣僚候補リストを更新する
+        ///     Update the list of ministerial candidates
         /// </summary>
-        /// <param name="country">選択国</param>
-        /// <param name="year">現在年</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="year">Current year</param>
         public void UpdateMinisterList(Country country, int year)
         {
             List<Minister> ministers = Misc.EnableRetirementYearMinisters
@@ -805,14 +805,14 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region プロヴィンスリスト
+        #region Provincial list
 
         /// <summary>
-        ///     プロヴィンスリストを初期化する
+        ///     Initialize the province list
         /// </summary>
         public void InitProvinceList()
         {
-            // 既に初期化済みならば戻る
+            // Return if already initialized
             if (_provincesInitialized)
             {
                 return;
@@ -860,7 +860,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     陸地プロヴィンスリストを取得する
+        ///     Get the Land Provincial List
         /// </summary>
         /// <returns></returns>
         public List<Province> GetLandProvinces()
@@ -869,10 +869,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     陸地プロヴィンスリストのインデックスを取得する
+        ///     Get the index of the land provision list
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>陸地プロヴィンスリストのインデックス</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>Land Provincial List Index</returns>
         public int GetLandProvinceIndex(int id)
         {
             return _landProvinces.FindIndex(province => province.Id == id);
@@ -880,10 +880,10 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region ユニット種類リスト
+        #region Unit type list
 
         /// <summary>
-        ///     ユニット種類リストを初期化する
+        ///     Initialize the unit type list
         /// </summary>
         public void InitUnitTypeList()
         {
@@ -903,14 +903,14 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目
+        #region Edit items
 
-        #region 編集項目 - 項目値更新
+        #region Edit items ―――― Item value update
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
+        /// <param name="control">Control</param>
         public void UpdateItemValue(TextBox control)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -918,9 +918,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
+        /// <param name="control">Control</param>
         public void UpdateItemValue(ComboBox control)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -928,9 +928,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
+        /// <param name="control">Control</param>
         public void UpdateItemValue(CheckBox control)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -938,10 +938,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="major">主要国設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="major">Major country setting</param>
         public void UpdateItemValue(TextBox control, MajorCountrySettings major)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -949,22 +949,22 @@ namespace HoI2Editor.Controllers
             switch (itemId)
             {
                 case ScenarioEditorItemId.MajorCountryNameString:
-                    // 主要国設定の国名定義がなければ編集不可
+                    // Cannot be edited without the country name definition set for the major country
                     control.ReadOnly = string.IsNullOrEmpty(major.Name);
                     break;
 
                 case ScenarioEditorItemId.MajorCountryDescString:
-                    // 主要国設定の説明文定義がなければ編集不可
+                    // Cannot be edited without a descriptive definition for major country settings
                     control.ReadOnly = string.IsNullOrEmpty(major.Desc);
                     break;
             }
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="control">Control</param>
+        /// <param name="alliance">alliance</param>
         public void UpdateItemValue(TextBox control, Alliance alliance)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -972,10 +972,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">Control</param>
+        /// <param name="war">war</param>
         public void UpdateItemValue(TextBox control, War war)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -983,10 +983,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="control">Control</param>
+        /// <param name="relation">National relations</param>
         public void UpdateItemValue(TextBox control, Relation relation)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -994,10 +994,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="control">Control</param>
+        /// <param name="relation">National relations</param>
         public void UpdateItemValue(CheckBox control, Relation relation)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1005,10 +1005,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control">Control</param>
+        /// <param name="treaty">Agreement</param>
         public void UpdateItemValue(TextBox control, Treaty treaty)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1037,10 +1037,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control">Control</param>
+        /// <param name="treaty">Agreement</param>
         public void UpdateItemValue(ComboBox control, Treaty treaty)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1048,10 +1048,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control">Control</param>
+        /// <param name="treaty">Agreement</param>
         public void UpdateItemValue(CheckBox control, Treaty treaty)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1059,10 +1059,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="spy">Intelligence settings</param>
         public void UpdateItemValue(NumericUpDown control, SpySettings spy)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1070,10 +1070,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemValue(TextBox control, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1081,10 +1081,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemValue(ComboBox control, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1123,10 +1123,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemValue(TrackBar control, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1149,11 +1149,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="country">選択国</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemValue(TextBox control, Country country, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1161,18 +1161,18 @@ namespace HoI2Editor.Controllers
             switch (itemId)
             {
                 case ScenarioEditorItemId.CountryNameString:
-                    // 国家設定の国名定義がないか、文字列直接埋め込み形式ならば編集不可
+                    // Cannot be edited if there is no country name definition in the national setting or if the character string is directly embedded.
                     control.ReadOnly = string.IsNullOrEmpty(settings?.Name) || !Config.ExistsKey(settings.Name);
                     break;
             }
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="country">選択国</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemValue(CheckBox control, Country country, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1180,11 +1180,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemValue(CheckBox control, Province province, CountrySettings settings)
         {
             if (settings == null)
@@ -1223,10 +1223,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="control">Control</param>
+        /// <param name="province">Providence</param>
         public void UpdateItemValue(Control control, Province province)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1234,10 +1234,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="settings">Providence settings</param>
         public void UpdateItemValue(Control control, ProvinceSettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1245,11 +1245,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
         public void UpdateItemValue(TextBox control, Province province, ProvinceSettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1257,17 +1257,17 @@ namespace HoI2Editor.Controllers
             switch (itemId)
             {
                 case ScenarioEditorItemId.ProvinceNameString:
-                    // プロヴィンス設定のプロヴィンス名定義がなければ編集不可
+                    // Cannot be edited without the provision name definition in the provision settings
                     control.ReadOnly = string.IsNullOrEmpty(settings?.Name);
                     break;
             }
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Control</param>
+        /// <param name="unit">unit</param>
         public void UpdateItemValue(TextBox control, Unit unit)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1275,10 +1275,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Control</param>
+        /// <param name="unit">unit</param>
         public void UpdateItemValue(ComboBox control, Unit unit)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1299,10 +1299,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="division">師団</param>
+        /// <param name="control">Control</param>
+        /// <param name="division">Division</param>
         public void UpdateItemValue(TextBox control, Division division)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1310,10 +1310,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="division">師団</param>
+        /// <param name="control">Control</param>
+        /// <param name="division">Division</param>
         public void UpdateItemValue(ComboBox control, Division division)
         {
             List<UnitType> types;
@@ -1563,10 +1563,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="division">師団</param>
+        /// <param name="control">Control</param>
+        /// <param name="division">Division</param>
         public void UpdateItemValue(CheckBox control, Division division)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1575,13 +1575,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - リスト項目更新
+        #region Edit items ―――― List item update
 
         /// <summary>
-        ///     リスト項目の値を更新する
+        ///     Update the value of the list item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Control</param>
+        /// <param name="unit">unit</param>
         public void UpdateListItems(ComboBox control, Unit unit)
         {
             control.BeginUpdate();
@@ -1614,11 +1614,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     リスト項目の値を更新する
+        ///     Update the value of the list item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         public void UpdateListItems(ComboBox control, Division division, CountrySettings settings)
         {
             control.BeginUpdate();
@@ -1723,12 +1723,12 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 項目色更新
+        #region Edit items ―――― Item color update
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
+        /// <param name="control">Control</param>
         public void UpdateItemColor(Control control)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1736,10 +1736,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="major">主要国設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="major">Major country setting</param>
         public void UpdateItemColor(Control control, MajorCountrySettings major)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1747,10 +1747,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="control">Control</param>
+        /// <param name="alliance">alliance</param>
         public void UpdateItemColor(Control control, Alliance alliance)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1758,10 +1758,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">Control</param>
+        /// <param name="war">war</param>
         public void UpdateItemColor(Control control, War war)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1769,10 +1769,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="control">Control</param>
+        /// <param name="relation">National relations</param>
         public void UpdateItemColor(Control control, Relation relation)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1780,10 +1780,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control">Control</param>
+        /// <param name="treaty">Agreement</param>
         public void UpdateItemColor(Control control, Treaty treaty)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1791,10 +1791,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="spy">Intelligence settings</param>
         public void UpdateItemColor(Control control, SpySettings spy)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1802,10 +1802,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemColor(Control control, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1813,11 +1813,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="country">選択国</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemColor(Control control, Country country, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1825,11 +1825,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void UpdateItemColor(Control control, Province province, CountrySettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1837,10 +1837,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control">Control</param>
+        /// <param name="settings">Providence settings</param>
         public void UpdateItemColor(Control control, ProvinceSettings settings)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1848,10 +1848,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Control</param>
+        /// <param name="unit">unit</param>
         public void UpdateItemColor(Control control, Unit unit)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1859,10 +1859,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="division">師団</param>
+        /// <param name="control">Control</param>
+        /// <param name="division">Division</param>
         public void UpdateItemColor(Control control, Division division)
         {
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -1871,13 +1871,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 項目値取得
+        #region Edit items ―――― Item value acquisition
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId)
         {
             Scenario scenario = Scenarios.Data;
@@ -1940,11 +1940,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="major">主要国設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="major">Major country setting</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, MajorCountrySettings major)
         {
             switch (itemId)
@@ -1971,9 +1971,9 @@ namespace HoI2Editor.Controllers
                         : Scenarios.Data.Header.StartDate != null
                             ? Scenarios.Data.Header.StartDate.Year
                             : Scenarios.Data.Header.StartYear;
-                    // 年数の下2桁のみ使用する
+                    // Under the number of years 2 Use only digits
                     year = year % 100;
-                    // 年数別の説明があれば使用する
+                    // Use if there is an explanation by age
                     string key = $"{major.Country}_{year}_DESC";
                     if (Config.ExistsKey(key))
                     {
@@ -1990,11 +1990,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="alliance">同盟</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="alliance">alliance</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Alliance alliance)
         {
             switch (itemId)
@@ -2030,11 +2030,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="war">戦争</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="war">war</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, War war)
         {
             switch (itemId)
@@ -2088,11 +2088,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="relation">国家関係</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="relation">National relations</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Relation relation)
         {
             switch (itemId)
@@ -2124,11 +2124,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="treaty">協定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="treaty">Agreement</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Treaty treaty)
         {
             switch (itemId)
@@ -2227,11 +2227,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="spy">諜報設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="spy">Intelligence settings</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, SpySettings spy)
         {
             switch (itemId)
@@ -2244,11 +2244,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, CountrySettings settings)
         {
             switch (itemId)
@@ -2469,12 +2469,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="country">選択国</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Country country, CountrySettings settings)
         {
             switch (itemId)
@@ -2491,12 +2491,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Province province, CountrySettings settings)
         {
             if (settings == null)
@@ -2526,11 +2526,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="province">Providence</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Province province)
         {
             switch (itemId)
@@ -2542,11 +2542,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, ProvinceSettings settings)
         {
             switch (itemId)
@@ -2724,12 +2724,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Province province, ProvinceSettings settings)
         {
             switch (itemId)
@@ -2745,11 +2745,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="unit">ユニット</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="unit">unit</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Unit unit)
         {
             switch (itemId)
@@ -2794,11 +2794,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を取得する
+        ///     Get the value of an edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="division">師団</param>
-        /// <returns>編集項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="division">Division</param>
+        /// <returns>Edit item value</returns>
         public object GetItemValue(ScenarioEditorItemId itemId, Division division)
         {
             switch (itemId)
@@ -2878,13 +2878,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - リスト項目取得
+        #region Edit items ―――― Get list items
 
         /// <summary>
-        ///     項目値のリストを取得する
+        ///     Get a list of item values
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <returns>項目値のリスト</returns>
+        /// <param name="itemId">item ID</param>
+        /// <returns>List of item values</returns>
         public object GetListItems(ScenarioEditorItemId itemId)
         {
             switch (itemId)
@@ -2924,11 +2924,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値のリストを取得する
+        ///     Get a list of item values
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="unit">ユニット</param>
-        /// <returns>項目値のリスト</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="unit">unit</param>
+        /// <returns>List of item values</returns>
         public object GetListItems(ScenarioEditorItemId itemId, Unit unit)
         {
             switch (itemId)
@@ -2977,11 +2977,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値のリストを取得する
+        ///     Get a list of item values
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="division">師団</param>
-        /// <returns>項目値のリスト</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="division">Division</param>
+        /// <returns>List of item values</returns>
         public object GetListItems(ScenarioEditorItemId itemId, Division division)
         {
             switch (itemId)
@@ -3023,11 +3023,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     リスト項目の値を取得する
+        ///     Get the value of a list item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="index">リストのインデックス</param>
-        /// <returns>リスト項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="index">List index</param>
+        /// <returns>List item value</returns>
         public object GetListItemValue(ScenarioEditorItemId itemId, int index)
         {
             switch (itemId)
@@ -3060,12 +3060,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     リスト項目の値を取得する
+        ///     Get the value of a list item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="index">リストのインデックス</param>
-        /// <param name="unit">ユニット</param>
-        /// <returns>リスト項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="index">List index</param>
+        /// <param name="unit">unit</param>
+        /// <returns>List item value</returns>
         public object GetListItemValue(ScenarioEditorItemId itemId, int index, Unit unit)
         {
             switch (itemId)
@@ -3082,12 +3082,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     リスト項目の値を取得する
+        ///     Get the value of a list item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="index">リストのインデックス</param>
-        /// <param name="division">師団</param>
-        /// <returns>リスト項目の値</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="index">List index</param>
+        /// <param name="division">Division</param>
+        /// <returns>List item value</returns>
         public object GetListItemValue(ScenarioEditorItemId itemId, int index, Division division)
         {
             switch (itemId)
@@ -3114,13 +3114,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 項目値設定
+        #region Edit items ――――Item value setting
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val)
         {
             Scenario scenario = Scenarios.Data;
@@ -3205,11 +3205,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="major">主要国設定</param>
-        /// <param name="val">編集項目の値</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="major">Major country setting</param>
+        /// <param name="val">Edit item value</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, MajorCountrySettings major)
         {
             switch (itemId)
@@ -3219,20 +3219,20 @@ namespace HoI2Editor.Controllers
                     break;
 
                 case ScenarioEditorItemId.MajorCountryNameString:
-                    // 主要国設定の国名
+                    // Country name set in major countries
                     if (!string.IsNullOrEmpty(major.Name))
                     {
                         Config.SetText(major.Name, (string) val, Game.WorldTextFileName);
                         break;
                     }
-                    // 国家設定の国名
+                    // Country name of national setting
                     CountrySettings settings = Scenarios.GetCountrySettings(major.Country);
                     if (!string.IsNullOrEmpty(settings?.Name))
                     {
                         Config.SetText(settings.Name, (string) val, Game.WorldTextFileName);
                         break;
                     }
-                    // 標準の国名
+                    // Standard country name
                     Config.SetText(Countries.Strings[(int) major.Country], (string) val, Game.WorldTextFileName);
                     break;
 
@@ -3245,7 +3245,7 @@ namespace HoI2Editor.Controllers
                     break;
 
                 case ScenarioEditorItemId.MajorCountryDescString:
-                    // 主要国設定の説明文
+                    // Description of major country settings
                     if (!string.IsNullOrEmpty(major.Desc))
                     {
                         Config.SetText(major.Desc, (string) val, Game.ScenarioTextFileName);
@@ -3256,16 +3256,16 @@ namespace HoI2Editor.Controllers
                         : Scenarios.Data.Header.StartDate != null
                             ? Scenarios.Data.Header.StartDate.Year
                             : Scenarios.Data.Header.StartYear;
-                    // 年数の下2桁のみ使用する
+                    // Under the number of years 2 Use only digits
                     year = year % 100;
-                    // 年数別の説明文
+                    // Description by age
                     string key = $"{major.Country}_{year}_DESC";
                     if (Config.ExistsKey(key))
                     {
                         Config.SetText(key, (string) val, Game.ScenarioTextFileName);
                         break;
                     }
-                    // 標準の説明文
+                    // Standard description
                     key = $"{major.Country}_DESC";
                     Config.SetText(key, (string) val, Game.ScenarioTextFileName);
                     break;
@@ -3277,11 +3277,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, Alliance alliance)
         {
             switch (itemId)
@@ -3320,11 +3320,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, War war)
         {
             switch (itemId)
@@ -3380,11 +3380,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="relation">National relations</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, Relation relation)
         {
             switch (itemId)
@@ -3416,11 +3416,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, Treaty treaty)
         {
             switch (itemId)
@@ -3536,11 +3536,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="spy">Intelligence settings</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, SpySettings spy)
         {
             switch (itemId)
@@ -3552,11 +3552,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">National setting</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, CountrySettings settings)
         {
             switch (itemId)
@@ -3846,12 +3846,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, Province province, CountrySettings settings)
         {
             switch (itemId)
@@ -3907,11 +3907,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, ProvinceSettings settings)
         {
             switch (itemId)
@@ -4151,11 +4151,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="unit">unit</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, Unit unit)
         {
             switch (itemId)
@@ -4198,11 +4198,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値を設定する
+        ///     Set the value of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="division">師団</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="division">Division</param>
         public void SetItemValue(ScenarioEditorItemId itemId, object val, Division division)
         {
             switch (itemId)
@@ -4303,14 +4303,14 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 有効値判定
+        #region Edit items ―――― Valid value judgment
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val)
         {
             switch (itemId)
@@ -4434,12 +4434,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val, Alliance alliance)
         {
             switch (itemId)
@@ -4463,12 +4463,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val, War war)
         {
             switch (itemId)
@@ -4543,12 +4543,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val, Treaty treaty)
         {
             switch (itemId)
@@ -4612,12 +4612,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val, CountrySettings settings)
         {
             switch (itemId)
@@ -4811,12 +4811,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="unit">ユニット</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="unit">unit</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val, Unit unit)
         {
             switch (itemId)
@@ -4840,12 +4840,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値が有効かどうかを判定する
+        ///     Determine if the value of the edit item is valid
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="division">師団</param>
-        /// <returns>編集項目の値が有効でなければfalseを返す</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="division">Division</param>
+        /// <returns>If the value of the edit item is not valid false false return it</returns>
         public bool IsItemValueValid(ScenarioEditorItemId itemId, object val, Division division)
         {
             switch (itemId)
@@ -4870,68 +4870,68 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 編集済みフラグ取得
+        #region Edit items ―――― Get edited flag
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId)
         {
             return Scenarios.Data.IsDirty((Scenario.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="major">主要国設定</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="major">Major country setting</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, MajorCountrySettings major)
         {
             return major.IsDirty((MajorCountrySettings.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="alliance">同盟</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="alliance">alliance</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, Alliance alliance)
         {
             return alliance.IsDirty((Alliance.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="war">戦争</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="war">war</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, War war)
         {
             return war.IsDirty((War.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="relation">国家関係</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="relation">National relations</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, Relation relation)
         {
             return (relation != null) && relation.IsDirty((Relation.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="treaty">協定</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="treaty">Agreement</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, Treaty treaty)
         {
             switch (itemId)
@@ -4946,34 +4946,34 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="spy">諜報設定</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="spy">Intelligence settings</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, SpySettings spy)
         {
             return (spy != null) && spy.IsDirty((SpySettings.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, CountrySettings settings)
         {
             return (settings != null) && settings.IsDirty((CountrySettings.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, Province province, CountrySettings settings)
         {
             if (settings == null)
@@ -5003,33 +5003,33 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, ProvinceSettings settings)
         {
             return (settings != null) && settings.IsDirty((ProvinceSettings.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="unit">ユニット</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="unit">unit</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, Unit unit)
         {
             return unit.IsDirty((Unit.ItemId) ItemDirtyFlags[(int) itemId]);
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを取得する
+        ///     Get the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="division">師団</param>
-        /// <returns>編集済みフラグ</returns>
+        /// <param name="itemId">item ID</param>
+        /// <param name="division">Division</param>
+        /// <returns>Edited flag</returns>
         public bool IsItemDirty(ScenarioEditorItemId itemId, Division division)
         {
             return division.IsDirty((Division.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5037,12 +5037,12 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 編集済みフラグ設定
+        #region Edit items ―――― Edited flag setting
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
+        /// <param name="itemId">item ID</param>
         public void SetItemDirty(ScenarioEditorItemId itemId)
         {
             Scenarios.Data.SetDirty((Scenario.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5050,10 +5050,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="major">主要国設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="major">Major country setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, MajorCountrySettings major)
         {
             major.SetDirty((MajorCountrySettings.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5062,10 +5062,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="alliance">alliance</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, Alliance alliance)
         {
             alliance.SetDirty((Alliance.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5074,10 +5074,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="war">戦争</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="war">war</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, War war)
         {
             war.SetDirty((War.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5086,11 +5086,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="relation">国家関係</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="relation">National relations</param>
+        /// <param name="settings">National setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, Relation relation, CountrySettings settings)
         {
             relation.SetDirty((Relation.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5099,10 +5099,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="treaty">Agreement</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, Treaty treaty)
         {
             switch (itemId)
@@ -5132,11 +5132,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="spy">諜報設定</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="spy">Intelligence settings</param>
+        /// <param name="settings">National setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, SpySettings spy, CountrySettings settings)
         {
             spy.SetDirty((SpySettings.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5145,10 +5145,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">National setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, CountrySettings settings)
         {
             settings.SetDirty((CountrySettings.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5156,11 +5156,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, Province province, CountrySettings settings)
         {
             switch (itemId)
@@ -5194,10 +5194,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">Providence settings</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, ProvinceSettings settings)
         {
             settings.SetDirty((ProvinceSettings.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5309,11 +5309,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="unit">ユニット</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="unit">unit</param>
+        /// <param name="settings">National setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, Unit unit, CountrySettings settings)
         {
             unit.SetDirty((Unit.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5322,11 +5322,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の編集済みフラグを設定する
+        ///     Set the edited flag of the edit item
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         public void SetItemDirty(ScenarioEditorItemId itemId, Division division, CountrySettings settings)
         {
             division.SetDirty((Division.ItemId) ItemDirtyFlags[(int) itemId]);
@@ -5336,13 +5336,13 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 編集項目 - 変更前処理
+        #region Edit items ―――― Pre-change processing
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val)
         {
             switch (itemId)
@@ -5395,22 +5395,22 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="major">主要国設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="major">Major country setting</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, MajorCountrySettings major)
         {
-            // 何もしない
+            // do nothing
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, Alliance alliance)
         {
             switch (itemId)
@@ -5436,11 +5436,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">同盟</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">alliance</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, War war)
         {
             switch (itemId)
@@ -5530,22 +5530,22 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="relation">National relations</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, Relation relation)
         {
-            // 何もしない
+            // do nothing
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, Treaty treaty)
         {
             switch (itemId)
@@ -5709,22 +5709,22 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="spy">Intelligence settings</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, SpySettings spy)
         {
-            // 何もしない
+            // do nothing
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">National setting</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, CountrySettings settings)
         {
             switch (itemId)
@@ -6009,12 +6009,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, Province province, CountrySettings settings)
         {
             switch (itemId)
@@ -6034,10 +6034,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目変更前の処理
+        ///     Processing before changing items
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="settings">Providence settings</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, ProvinceSettings settings)
         {
             switch (itemId)
@@ -6162,12 +6162,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="unit">ユニット</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="unit">unit</param>
+        /// <param name="settings">National setting</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, Unit unit, CountrySettings settings)
         {
             switch (itemId)
@@ -6193,12 +6193,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更前の処理
+        ///     Processing before changing item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         public void PreItemChanged(ScenarioEditorItemId itemId, object val, Division division, CountrySettings settings)
         {
             switch (itemId)
@@ -6226,296 +6226,296 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目変更前の処理 - シナリオ開始日時
+        ///     Processing before changing items ―――― Scenario start date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
         private void PreItemChangedScenarioStartDate(TextBox control1, TextBox control2)
         {
             if (Scenarios.Data.GlobalData.StartDate == null)
             {
                 Scenarios.Data.GlobalData.StartDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1);
                 UpdateItemValue(control2);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1);
                 UpdateItemColor(control2);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - シナリオ終了日時
+        ///     Processing before changing items ―――― Scenario end date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
         private void PreItemChangedScenarioEndDate(TextBox control1, TextBox control2)
         {
             if (Scenarios.Data.GlobalData.EndDate == null)
             {
                 Scenarios.Data.GlobalData.EndDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1);
                 UpdateItemValue(control2);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1);
                 UpdateItemColor(control2);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 同盟type
+        ///     Processing before changing items ―――― alliance type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
         private void PreItemChangedAllianceType(TextBox control, object val, Alliance alliance)
         {
-            // 新規idを設定する
+            // New id To set
             alliance.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, alliance);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, alliance);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, alliance);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 同盟id
+        ///     Processing before changing items ―――― alliance id id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
         private void PreItemChangedAllianceId(TextBox control, object val, Alliance alliance)
         {
             alliance.Id.Type = Scenarios.GetNewType(Scenarios.DefaultAllianceType, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, alliance);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, alliance);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, alliance);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争開始日時
+        ///     Processing before changing items ―――― War start date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarStartDate(TextBox control1, TextBox control2, War war)
         {
             if (war.StartDate == null)
             {
                 war.StartDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1, war);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2, war);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1, war);
                 UpdateItemValue(control2, war);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1, war);
                 UpdateItemColor(control2, war);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争終了日時
+        ///     Processing before changing items ―――― End date and time of the war
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarEndDate(TextBox control1, TextBox control2, War war)
         {
             if (war.EndDate == null)
             {
                 war.EndDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1, war);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2, war);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1, war);
                 UpdateItemValue(control2, war);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1, war);
                 UpdateItemColor(control2, war);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争type
+        ///     Processing before changing items ―――― war type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarType(TextBox control, object val, War war)
         {
-            // 新規idを設定する
+            // New id To set
             war.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, war);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, war);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争id
+        ///     Processing before changing items ―――― war id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarId(TextBox control, object val, War war)
         {
             war.Id.Type = Scenarios.GetNewType(Scenarios.DefaultWarType, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, war);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, war);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争攻撃側type
+        ///     Processing before changing items ―――― War attacker type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarAttackerType(TextBox control, object val, War war)
         {
-            // 新規idを設定する
+            // New id To set
             war.Attackers.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, war);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, war);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争攻撃側id
+        ///     Processing before changing items ―――― War attacker id id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarAttackerId(TextBox control, object val, War war)
         {
             war.Attackers.Id.Type = Scenarios.GetNewType(Scenarios.DefaultWarType, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, war);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, war);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争防御側type
+        ///     Processing before changing items ―――― War defender type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarDefenderType(TextBox control, object val, War war)
         {
-            // 新規idを設定する
+            // New id To set
             war.Defenders.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, war);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, war);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 戦争防御側id
+        ///     Processing before changing items―――― War defender id id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         private void PreItemChangedWarDefenderId(TextBox control, object val, War war)
         {
             war.Defenders.Id.Type = Scenarios.GetNewType(Scenarios.DefaultWarType, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, war);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, war);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 宗主国/統帥権取得国
+        ///     Processing before changing items ―――― Sect / / Country of acquisition of commandership
         /// </summary>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="prev">変更前の値</param>
-        /// <param name="no">関係リストビューの項目番号</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="prev">Value before change</param>
+        /// <param name="no">Item number in relationship list view</param>
         private void PreItemChangedRelation(Country val, Country prev, int no)
         {
-            // 関係リストビューの表示を更新する
+            // Update the display of the relationship list view
             if (prev != Country.None)
             {
                 int index = Array.IndexOf(Countries.Tags, prev);
@@ -6528,138 +6528,138 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 協定開始日時
+        ///     Processing before changing items ―――― Agreement start date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
+        /// <param name="treaty">Agreement</param>
         private void PreItemChangedTreatyStartDate(TextBox control1, TextBox control2, Treaty treaty)
         {
             if (treaty.StartDate == null)
             {
                 treaty.StartDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1, treaty);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2, treaty);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1, treaty);
                 UpdateItemValue(control2, treaty);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1, treaty);
                 UpdateItemColor(control2, treaty);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 協定終了日時
+        ///     Processing before changing items ―――― Agreement end date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
+        /// <param name="treaty">Agreement</param>
         private void PreItemChangedTreatyEndDate(TextBox control1, TextBox control2, Treaty treaty)
         {
             if (treaty.EndDate == null)
             {
                 treaty.EndDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1, treaty);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2, treaty);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1, treaty);
                 UpdateItemValue(control2, treaty);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1, treaty);
                 UpdateItemColor(control2, treaty);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 協定type
+        ///     Processing before changing items ―――― Agreement type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
         private void PreItemChangedTreatyType(TextBox control, object val, Treaty treaty)
         {
-            // 新規idを設定する
+            // New id To set
             treaty.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, treaty);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, treaty);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, treaty);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 協定id
+        ///     Processing before changing items ―――― Agreement id id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
         private void PreItemChangedTreatyId(TextBox control, object val, Treaty treaty)
         {
             treaty.Id.Type = Scenarios.GetNewType(Scenarios.DefaultTreatyType, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, treaty);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, treaty);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, treaty);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 核兵器生産日時
+        ///     Processing before changing items ―――― Nuclear weapon production date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedNukeDate(TextBox control1, TextBox control2, CountrySettings settings)
         {
             if (settings.NukeDate == null)
             {
                 settings.NukeDate = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1, settings);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2, settings);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1, settings);
                 UpdateItemValue(control2, settings);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1, settings);
                 UpdateItemColor(control2, settings);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - スライダー移動日時
+        ///     Processing before changing items ―――― Slider movement date and time
         /// </summary>
-        /// <param name="control1">連動するコントロール1</param>
-        /// <param name="control2">連動するコントロール2</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control1">Interlocking controls 1</param>
+        /// <param name="control2">Interlocking controls2</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedSliderDate(TextBox control1, TextBox control2, CountrySettings settings)
         {
             if (settings.Policy == null)
@@ -6670,82 +6670,82 @@ namespace HoI2Editor.Controllers
             {
                 settings.Policy.Date = new GameDate();
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
                 SetItemDirty(itemId1, settings);
                 ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
                 SetItemDirty(itemId2, settings);
 
-                // 編集項目の値を更新する
+                // Update the value of the edit item
                 UpdateItemValue(control1, settings);
                 UpdateItemValue(control2, settings);
 
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(control1, settings);
                 UpdateItemColor(control2, settings);
             }
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 閣僚type
+        ///     Processing before changing items ―――― Minister type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">国家設定</param>
-        /// <param name="typeId">typeとidの組</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="typeId">type When id id Pair of</param>
         private void PreItemChangedCabinetType(TextBox control, object val, CountrySettings settings, TypeId typeId)
         {
-            // 新規idを設定する
+            // New id To set
             typeId.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, settings);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, settings);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 閣僚id
+        ///     Processing before changing items ―――― Minister id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="settings">国家設定</param>
-        /// <param name="typeId">typeとidの組</param>
+        /// <param name="control">type Control</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="typeId">type When id id Pair of</param>
         private void PreItemChangedCabinetId(TextBox control, CountrySettings settings, TypeId typeId)
         {
             typeId.Type = Scenarios.GetNewType(settings.HeadOfState?.Type ?? 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, settings);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, settings);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 首都
+        ///     Processing before changing items ―――― capital
         /// </summary>
-        /// <param name="control">対象コントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Target control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedCapital(Control control, object val, Province province, CountrySettings settings)
         {
-            // チェックを入れた後はチェックボックスを無効化する
+            // Disable the check box after checking
             if ((bool) val)
             {
                 control.Enabled = false;
             }
 
-            // プロヴィンスリストビューの表示を更新する
+            // Update the display of the provisions list view
             int index = GetLandProvinceIndex(settings.Capital);
             if (index >= 0)
             {
@@ -6759,20 +6759,20 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 保有プロヴィンス
+        ///     Processing before changing items ―――― Owned Providence
         /// </summary>
-        /// <param name="control">対象コントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="control">Target control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
         private static void PreItemChangedOwnedProvinces(Control control, object val, Province province)
         {
-            // チェックを入れた後はチェックボックスを無効化する
+            // Disable the check box after checking
             if ((bool) val)
             {
                 control.Enabled = false;
             }
 
-            // 元の保有国を解除する
+            // Release the original possession country
             foreach (Country country in Countries.Tags)
             {
                 CountrySettings settings = Scenarios.GetCountrySettings(country);
@@ -6789,20 +6789,20 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 支配プロヴィンス
+        ///     Processing before changing items ―――― Domination Providence
         /// </summary>
-        /// <param name="control">対象コントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="control">Target control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
         private static void PreItemChangedControlledProvinces(Control control, object val, Province province)
         {
-            // チェックを入れた後はチェックボックスを無効化する
+            // Disable the check box after checking
             if ((bool) val)
             {
                 control.Enabled = false;
             }
 
-            // 元の支配国を解除する
+            // Release the original ruler
             foreach (Country country in Countries.Tags)
             {
                 CountrySettings settings = Scenarios.GetCountrySettings(country);
@@ -6819,104 +6819,104 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目変更前の処理 - ユニットtype
+        ///     Processing before changing items ―――― unit type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="unit">ユニット</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="unit">unit</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedUnitType(TextBox control, object val, Unit unit, CountrySettings settings)
         {
-            // 新規idを設定する
+            // New id To set
             unit.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, unit, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, unit);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, unit);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - ユニットid
+        ///     Processing before changing items ―――― unit id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="unit">ユニット</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="unit">unit</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedUnitId(TextBox control, object val, Unit unit, CountrySettings settings)
         {
             unit.Id.Type = Scenarios.GetNewType(1, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, unit, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, unit);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, unit);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 師団type
+        ///     Processing before changing items ―――― Division type
         /// </summary>
-        /// <param name="control">idのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">id Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedDivisionType(TextBox control, object val, Division division, CountrySettings settings)
         {
-            // 新規idを設定する
+            // New id To set
             division.Id.Id = Scenarios.GetNewId((int) val, 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, division, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, division);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, division);
         }
 
         /// <summary>
-        ///     項目変更前の処理 - 師団id
+        ///     Processing before changing items ―――― Division id
         /// </summary>
-        /// <param name="control">typeのコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">type Control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PreItemChangedDivisionId(TextBox control, object val, Division division, CountrySettings settings)
         {
             division.Id.Type = Scenarios.GetNewType(1, (int) val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             SetItemDirty(itemId, division, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateItemValue(control, division);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(control, division);
         }
 
         #endregion
 
-        #region 編集項目 - 変更後処理
+        #region Edit items ―――― Post-change processing
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val)
         {
             switch (itemId)
@@ -6928,11 +6928,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="major">主要国設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="major">Major country setting</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, MajorCountrySettings major)
         {
             TextBox control;
@@ -6957,11 +6957,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, Alliance alliance)
         {
             switch (itemId)
@@ -6973,22 +6973,22 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, War war)
         {
-            // 何もしない
+            // do nothing
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="relation">National relations</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, Relation relation)
         {
             switch (itemId)
@@ -7004,12 +7004,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="relation">国家関係</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="relation">National relations</param>
+        /// <param name="settings">National setting</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, Relation relation, CountrySettings settings)
         {
             switch (itemId)
@@ -7025,11 +7025,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, Treaty treaty)
         {
             switch (itemId)
@@ -7128,11 +7128,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="spy">Intelligence settings</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, SpySettings spy)
         {
             switch (itemId)
@@ -7144,11 +7144,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">National setting</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, CountrySettings settings)
         {
             switch (itemId)
@@ -7267,12 +7267,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, Province province, CountrySettings settings)
         {
             switch (itemId)
@@ -7296,11 +7296,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, ProvinceSettings settings)
         {
             switch (itemId)
@@ -7596,12 +7596,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, object val, Province province,
             ProvinceSettings settings)
         {
@@ -7616,10 +7616,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="unit">unit</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, Unit unit)
         {
             switch (itemId)
@@ -7655,11 +7655,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理
+        ///     Processing after changing the item value
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         public void PostItemChanged(ScenarioEditorItemId itemId, Division division, CountrySettings settings)
         {
             switch (itemId)
@@ -7722,18 +7722,18 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 独立保障
+        ///     Processing after changing the item value ―――― Independence guarantee
         /// </summary>
-        /// <param name="control1">コントロール1</param>
-        /// <param name="control2">コントロール2</param>
-        /// <param name="control3">コントロール3</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="relation">国家関係</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control1">Control 1</param>
+        /// <param name="control2">Control 2</param>
+        /// <param name="control3">Control 3</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="relation">National relations</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedGuaranteed(TextBox control1, TextBox control2, TextBox control3, object val,
             Relation relation, CountrySettings settings)
         {
-            // 編集済みフラグを設定する
+            // Set the edited flag
             ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
             SetItemDirty(itemId1, relation, settings);
             ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
@@ -7741,43 +7741,43 @@ namespace HoI2Editor.Controllers
             ScenarioEditorItemId itemId3 = (ScenarioEditorItemId) control3.Tag;
             SetItemDirty(itemId3, relation, settings);
 
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control1, relation);
             UpdateItemValue(control2, relation);
             UpdateItemValue(control3, relation);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control1, relation);
             UpdateItemColor(control2, relation);
             UpdateItemColor(control3, relation);
 
-            // 項目を有効化/無効化する
+            // Enable item / /Disable
             control1.Enabled = (bool) val;
             control2.Enabled = (bool) val;
             control3.Enabled = (bool) val;
 
-            // 関係リストビューの項目を更新する
+            // Update items in the relationship list view
             _form.SetRelationListItemText(5, (bool) val ? Resources.Yes : "");
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 不可侵条約/講和条約
+        ///     Processing after changing the item value ―――― Non-aggression treaty / / Peace treaty
         /// </summary>
-        /// <param name="control1">コントロール1</param>
-        /// <param name="control2">コントロール2</param>
-        /// <param name="control3">コントロール3</param>
-        /// <param name="control4">コントロール4</param>
-        /// <param name="control5">コントロール5</param>
-        /// <param name="control6">コントロール6</param>
-        /// <param name="control7">コントロール7</param>
-        /// <param name="control8">コントロール8</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
-        /// <param name="no">関係リストビューの項目番号</param>
+        /// <param name="control1">Control 1</param>
+        /// <param name="control2">Control 2</param>
+        /// <param name="control3">Control 3</param>
+        /// <param name="control4">Control Four</param>
+        /// <param name="control5">Control Five</param>
+        /// <param name="control6">Control 6</param>
+        /// <param name="control7">Control 7</param>
+        /// <param name="control8">Control 8</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
+        /// <param name="no">Item number in relationship list view</param>
         private void PostItemChangedTreaty(TextBox control1, TextBox control2, TextBox control3, TextBox control4,
             TextBox control5, TextBox control6, TextBox control7, TextBox control8, object val, Treaty treaty, int no)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control1, treaty);
             UpdateItemValue(control2, treaty);
             UpdateItemValue(control3, treaty);
@@ -7787,7 +7787,7 @@ namespace HoI2Editor.Controllers
             UpdateItemValue(control7, treaty);
             UpdateItemValue(control8, treaty);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control1, treaty);
             UpdateItemColor(control2, treaty);
             UpdateItemColor(control3, treaty);
@@ -7797,7 +7797,7 @@ namespace HoI2Editor.Controllers
             UpdateItemColor(control7, treaty);
             UpdateItemColor(control8, treaty);
 
-            // 項目を有効化/無効化する
+            // Enable item / /Disable
             control1.Enabled = (bool) val;
             control2.Enabled = (bool) val;
             control3.Enabled = (bool) val;
@@ -7807,70 +7807,70 @@ namespace HoI2Editor.Controllers
             control7.Enabled = (bool) val;
             control8.Enabled = (bool) val;
 
-            // 関係リストビューの項目を更新する
+            // Update items in the relationship list view
             _form.SetRelationListItemText(no, (bool) val ? Resources.Yes : "");
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 貿易量
+        ///     Processing after changing the item value ―――― Trade volume
         /// </summary>
-        /// <param name="control1">変更対象のコントロール</param>
-        /// <param name="control2">連動するコントロール</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="control1">Control to change</param>
+        /// <param name="control2">Interlocking controls</param>
+        /// <param name="treaty">Agreement</param>
         private void PostItemChangedTradeDeals(TextBox control1, TextBox control2, Treaty treaty)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control1, treaty);
             UpdateItemValue(control2, treaty);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control2, treaty);
 
-            // 貿易リストビューの項目を更新する
+            // Update items in the trade list view
             _form.SetTradeListItemText(2, treaty.GetTradeString());
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 閣僚
+        ///     Processing after changing the item value ―――― Minister
         /// </summary>
-        /// <param name="control">閣僚idのコントロール</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Minister id Control</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedCabinet(TextBox control, CountrySettings settings)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, settings);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, settings);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 閣僚id
+        ///     Processing after changing the item value ―――― Minister id
         /// </summary>
-        /// <param name="control">閣僚コンボボックス</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="ministers">閣僚候補リスト</param>
+        /// <param name="control">Minister combo box</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="ministers">Ministerial candidate list</param>
         private static void PostItemChangedCabinetId(ComboBox control, object val, List<Minister> ministers)
         {
-            // コンボボックスの選択項目を変更する
+            // Change the selection of the combo box
             control.SelectedIndex = ministers.FindIndex(minister => minister.Id == (int) val);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 中核プロヴィンス
+        ///     Processing after changing the item value ―――― Core province
         /// </summary>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
         private void PostItemChangedCoreProvinces(object val, Province province)
         {
-            // プロヴィンスリストビューの表示を更新する
+            // Update the display of the provisions list view
             int index = GetLandProvinceIndex(province.Id);
             if (index >= 0)
             {
                 _form.SetProvinceListItemText(index, 3, (bool) val ? Resources.Yes : "");
             }
 
-            // プロヴィンスの強調表示を更新する
+            // Update Providence Highlights
             if (_mapPanelController.FilterMode == MapPanelController.MapFilterMode.Core)
             {
                 _mapPanelController.UpdateProvince((ushort) province.Id, (bool) val);
@@ -7878,14 +7878,14 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 保有プロヴィンス
+        ///     Processing after changing the item value ――――Owned Providence
         /// </summary>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedOwnedProvinces(object val, Province province, CountrySettings settings)
         {
-            // 変更前の保有国を解除
+            // Cancel the holding country before the change
             foreach (Country country in Countries.Tags)
             {
                 CountrySettings cs = Scenarios.GetCountrySettings(country);
@@ -7898,14 +7898,14 @@ namespace HoI2Editor.Controllers
                 cs.SetDirtyOwnedProvinces(province.Id);
             }
 
-            // プロヴィンスリストビューの表示を更新する
+            // Update the display of the provisions list view
             int index = GetLandProvinceIndex(province.Id);
             if (index >= 0)
             {
                 _form.SetProvinceListItemText(index, 4, (bool) val ? Resources.Yes : "");
             }
 
-            // プロヴィンスの強調表示を更新する
+            // Update Providence Highlights
             if (_mapPanelController.FilterMode == MapPanelController.MapFilterMode.Owned)
             {
                 _mapPanelController.UpdateProvince((ushort) province.Id, (bool) val);
@@ -7913,14 +7913,14 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 支配プロヴィンス
+        ///     Processing after changing the item value ―――― Domination Providence
         /// </summary>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedControlledProvinces(object val, Province province, CountrySettings settings)
         {
-            // 変更前の支配国を解除
+            // Release the controlling country before the change
             foreach (Country country in Countries.Tags)
             {
                 CountrySettings cs = Scenarios.GetCountrySettings(country);
@@ -7933,14 +7933,14 @@ namespace HoI2Editor.Controllers
                 cs.SetDirtyControlledProvinces(province.Id);
             }
 
-            // プロヴィンスリストビューの表示を更新する
+            // Update the display of the provisions list view
             int index = GetLandProvinceIndex(province.Id);
             if (index >= 0)
             {
                 _form.SetProvinceListItemText(index, 5, (bool) val ? Resources.Yes : "");
             }
 
-            // プロヴィンスの強調表示を更新する
+            // Update Providence Highlights
             if (_mapPanelController.FilterMode == MapPanelController.MapFilterMode.Controlled)
             {
                 _mapPanelController.UpdateProvince((ushort) province.Id, (bool) val);
@@ -7948,20 +7948,20 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 領有権主張プロヴィンス
+        ///     Processing after changing the item value ―――― Province claim
         /// </summary>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
         private void PostItemChangedClaimedProvinces(object val, Province province)
         {
-            // プロヴィンスリストビューの表示を更新する
+            // Update the display of the provisions list view
             int index = GetLandProvinceIndex(province.Id);
             if (index >= 0)
             {
                 _form.SetProvinceListItemText(index, 6, (bool) val ? Resources.Yes : "");
             }
 
-            // プロヴィンスの強調表示を更新する
+            // Update Providence Highlights
             if (_mapPanelController.FilterMode == MapPanelController.MapFilterMode.Claimed)
             {
                 _mapPanelController.UpdateProvince((ushort) province.Id, (bool) val);
@@ -7969,14 +7969,14 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 資源現在値
+        ///     Processing after changing the item value ―――― Current resource value
         /// </summary>
-        /// <param name="control">最大値のコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control">Maximum control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         private void PostItemChangedResourceCurrent(Control control, object val, ProvinceSettings settings)
         {
-            // 現在値が最大値以下ならば何もしない
+            // If the current value is less than or equal to the maximum value, do nothing
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             double max = (double) GetItemValue(itemId, settings);
             if (DoubleHelper.IsLessOrEqual((double) val, max))
@@ -7986,28 +7986,28 @@ namespace HoI2Editor.Controllers
 
             OutputItemValueChangedLog(itemId, val, settings);
 
-            // 最大値を現在値で更新する
+            // Update the maximum value with the current value
             SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetItemDirty(itemId, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             control.Text = DoubleHelper.ToString((double) val);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             control.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 資源最大値
+        ///     Processing after changing the item value ―――― Maximum resource value
         /// </summary>
-        /// <param name="control">現在値のコントロール</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control">Current value control</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         private void PostItemChangedResourceMax(Control control, object val, ProvinceSettings settings)
         {
-            // 最大値が現在値以上ならば何もしない
+            // If the maximum value is greater than or equal to the current value, do nothing
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             double current = (double) GetItemValue(itemId, settings);
             if (DoubleHelper.IsGreaterOrEqual((double) val, current))
@@ -8017,47 +8017,47 @@ namespace HoI2Editor.Controllers
 
             OutputItemValueChangedLog(itemId, val, settings);
 
-            // 現在値を最大値で更新する
+            // Update the current value with the maximum value
             SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetItemDirty(itemId, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             control.Text = DoubleHelper.ToString((double) val);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             control.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 建物現在値
+        ///     Processing after changing the item value ―――― Building current price
         /// </summary>
-        /// <param name="control1">最大値のコントロール1</param>
-        /// <param name="control2">相対値のコントロール2</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control1">Maximum control 1</param>
+        /// <param name="control2">Relative value control 2</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         private void PostItemChangedBuildingCurrent(Control control1, Control control2, object val,
             ProvinceSettings settings)
         {
-            // 相対値が0でなければクリアする
+            // Relative value 0 If not, clear
             ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
             double relative = (double) GetItemValue(itemId2, settings);
             if (!DoubleHelper.IsZero(relative))
             {
                 OutputItemValueChangedLog(itemId2, val, settings);
 
-                // 相対値を0に設定する
+                // Relative value 0 Set to
                 SetItemValue(itemId2, (double) 0, settings);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 SetItemDirty(itemId2, settings);
 
-                // 編集項目の値をクリアする
+                // Clear the value of the edit item
                 control2.Text = "";
             }
 
-            // 現在値が最大値以下ならば何もしない
+            // If the current value is less than or equal to the maximum value, do nothing
             ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
             double max = (double) GetItemValue(itemId1, settings);
             if (DoubleHelper.IsLessOrEqual((double) val, max))
@@ -8067,47 +8067,47 @@ namespace HoI2Editor.Controllers
 
             OutputItemValueChangedLog(itemId1, val, settings);
 
-            // 最大値を現在値で更新する
+            // Update the maximum value with the current value
             SetItemValue(itemId1, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetItemDirty(itemId1, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             control1.Text = DoubleHelper.ToString((double) val);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             control1.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 建物最大値
+        ///     Processing after changing the item value ―――― Building maximum
         /// </summary>
-        /// <param name="control1">現在値のコントロール1</param>
-        /// <param name="control2">相対値のコントロール2</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control1">Current value control 1</param>
+        /// <param name="control2">Relative value control 2</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         private void PostItemChangedBuildingMax(Control control1, Control control2, object val,
             ProvinceSettings settings)
         {
-            // 相対値が0でなければクリアする
+            // Relative value 0 If not, clear
             ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
             double relative = (double) GetItemValue(itemId2, settings);
             if (!DoubleHelper.IsZero(relative))
             {
                 OutputItemValueChangedLog(itemId2, val, settings);
 
-                // 相対値を0に設定する
+                // Relative value 0 Set to
                 SetItemValue(itemId2, (double) 0, settings);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 SetItemDirty(itemId2, settings);
 
-                // 編集項目の値をクリアする
+                // Clear the value of the edit item
                 control2.Text = "";
             }
 
-            // 最大値が現在値以上ならば何もしない
+            // If the maximum value is greater than or equal to the current value, do nothing
             ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
             double current = (double) GetItemValue(itemId1, settings);
             if (DoubleHelper.IsGreaterOrEqual((double) val, current))
@@ -8117,135 +8117,135 @@ namespace HoI2Editor.Controllers
 
             OutputItemValueChangedLog(itemId1, val, settings);
 
-            // 現在値を最大値で更新する
+            // Update the current value with the maximum value
             SetItemValue(itemId1, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetItemDirty(itemId1, settings);
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             control1.Text = DoubleHelper.ToString((double) val);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             control1.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 建物相対値
+        ///     Processing after changing the item value ―――― Relative building value
         /// </summary>
-        /// <param name="control1">現在値のコントロール1</param>
-        /// <param name="control2">最大値のコントロール2</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="control1">Current value control 1</param>
+        /// <param name="control2">Maximum control 2</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         private void PostItemChangedBuildingRelative(Control control1, Control control2, object val,
             ProvinceSettings settings)
         {
-            // 現在値が0でなければクリアする
+            // The current value is 0 If not, clear
             ScenarioEditorItemId itemId1 = (ScenarioEditorItemId) control1.Tag;
             double current = (double) GetItemValue(itemId1, settings);
             if (!DoubleHelper.IsZero(current))
             {
                 OutputItemValueChangedLog(itemId1, val, settings);
 
-                // 現在値を0に設定する
+                // Current value 0 Set to
                 SetItemValue(itemId1, (double) 0, settings);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 SetItemDirty(itemId1, settings);
 
-                // 編集項目の値をクリアする
+                // Clear the value of the edit item
                 control1.Text = "";
             }
 
-            // 最大値が0でなければクリアする
+            // The maximum value is 0 If not, clear
             ScenarioEditorItemId itemId2 = (ScenarioEditorItemId) control2.Tag;
             double max = (double) GetItemValue(itemId2, settings);
             if (!DoubleHelper.IsZero(max))
             {
                 OutputItemValueChangedLog(itemId2, val, settings);
 
-                // 最大値を0に設定する
+                // Maximum value 0 Set to
                 SetItemValue(itemId2, (double) 0, settings);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 SetItemDirty(itemId2, settings);
 
-                // 編集項目の値をクリアする
+                // Clear the value of the edit item
                 control2.Text = "";
             }
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - プロヴィンス
+        ///     Processing after changing the item value ―――― Providence
         /// </summary>
-        /// <param name="control">プロヴィンスIDのコントロール</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Province ID Control</param>
+        /// <param name="unit">unit</param>
         private void PostItemChangedProvince(TextBox control, Unit unit)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, unit);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, unit);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - プロヴィンスID
+        ///     Processing after changing the item value ―――― Providence ID
         /// </summary>
-        /// <param name="control">プロヴィンスコンボボックス</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Providence Combo Box</param>
+        /// <param name="unit">unit</param>
         private void PostItemChangedProvinceId(ComboBox control, Unit unit)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, unit);
 
-            // 項目の色を更新する
+            // Update item color
             control.Refresh();
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 指揮官
+        ///     Processing after changing the item value ―――― Commander
         /// </summary>
-        /// <param name="control">指揮官IDのコントロール</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Commander ID Control</param>
+        /// <param name="unit">unit</param>
         private void PostItemChangedLeader(TextBox control, Unit unit)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, unit);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, unit);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 指揮官ID
+        ///     Processing after changing the item value ―――― Commander ID
         /// </summary>
-        /// <param name="control">指揮官コンボボックス</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="control">Commander combo box</param>
+        /// <param name="unit">unit</param>
         private void PostItemChangedLeaderId(ComboBox control, Unit unit)
         {
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, unit);
 
-            // 項目の色を更新する
+            // Update item color
             control.Refresh();
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 師団のユニット種類
+        ///     Processing after changing the item value ――――Division unit type
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedDivisionType(Division division, CountrySettings settings)
         {
-            // ユニットモデル項目の候補を更新する
+            // Update candidate unit model items
             ComboBox control = (ComboBox) _form.GetItemControl(ScenarioEditorItemId.DivisionModel);
             UpdateListItems(control, division, settings);
 
-            // ユニットモデル項目の値を更新する
+            // Update the value of the unit model item
             UpdateItemValue(control, division);
 
-            // 付属旅団の項目の値を更新する
+            // Update the value of the attached brigade item
             UpdateItemValue((ComboBox) _form.GetItemControl(ScenarioEditorItemId.DivisionBrigadeType1), division);
             UpdateItemValue((ComboBox) _form.GetItemControl(ScenarioEditorItemId.DivisionBrigadeModel1), division);
             UpdateItemValue((ComboBox) _form.GetItemControl(ScenarioEditorItemId.DivisionBrigadeType2), division);
@@ -8259,26 +8259,26 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 旅団のユニット種類
+        ///     Processing after changing the item value ―――― Brigade unit type
         /// </summary>
-        /// <param name="control">ユニットモデルコンボボックス</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Unit model combo box</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedBrigadeType(ComboBox control, Division division, CountrySettings settings)
         {
-            // 項目の候補を更新する
+            // Update item suggestions
             UpdateListItems(control, division, settings);
 
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, division);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 師団の戦力
+        ///     Processing after changing the item value ―――― Division strength
         /// </summary>
-        /// <param name="control">最大値のコントロール</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Maximum control</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedStrength(TextBox control, Division division, CountrySettings settings)
         {
             if (DoubleHelper.IsZero(division.MaxStrength) ||
@@ -8287,27 +8287,27 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 最大値を現在値に合わせる
+            // Adjust the maximum value to the current value
             division.MaxStrength = division.Strength;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             division.SetDirty(Division.ItemId.MaxStrength);
             settings.SetDirty();
             Scenarios.SetDirty();
 
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, division);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, division);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 師団の最大戦力
+        ///     Processing after changing the item value ―――― The maximum strength of the division
         /// </summary>
-        /// <param name="control">現在値のコントロール</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Current value control</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedMaxStrength(TextBox control, Division division, CountrySettings settings)
         {
             if (DoubleHelper.IsZero(division.Strength) ||
@@ -8316,27 +8316,27 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 現在値を最大値に合わせる
+            // Adjust the current value to the maximum value
             division.Strength = division.MaxStrength;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             division.SetDirty(Division.ItemId.Strength);
             settings.SetDirty();
             Scenarios.SetDirty();
 
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, division);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, division);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 師団の組織率
+        ///     Processing after changing the item value ―――― Division organization rate
         /// </summary>
-        /// <param name="control">最大値のコントロール</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Maximum control</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedOrganisation(TextBox control, Division division, CountrySettings settings)
         {
             if (DoubleHelper.IsZero(division.MaxOrganisation) ||
@@ -8345,27 +8345,27 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 最大値を現在値に合わせる
+            // Adjust the maximum value to the current value
             division.MaxOrganisation = division.Organisation;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             division.SetDirty(Division.ItemId.MaxOrganisation);
             settings.SetDirty();
             Scenarios.SetDirty();
 
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, division);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, division);
         }
 
         /// <summary>
-        ///     項目値変更後の処理 - 師団の最大組織率
+        ///     Processing after changing the item value ―――― Maximum organization rate of the division
         /// </summary>
-        /// <param name="control">現在値のコントロール</param>
-        /// <param name="division">師団</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="control">Current value control</param>
+        /// <param name="division">Division</param>
+        /// <param name="settings">National setting</param>
         private void PostItemChangedMaxOrganisation(TextBox control, Division division, CountrySettings settings)
         {
             if (DoubleHelper.IsZero(division.Organisation) ||
@@ -8374,30 +8374,30 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 現在値を最大値に合わせる
+            // Adjust the current value to the maximum value
             division.Organisation = division.MaxOrganisation;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             division.SetDirty(Division.ItemId.Organisation);
             settings.SetDirty();
             Scenarios.SetDirty();
 
-            // 項目の値を更新する
+            // Update the value of the item
             UpdateItemValue(control, division);
 
-            // 項目の色を更新する
+            // Update item color
             UpdateItemColor(control, division);
         }
 
         #endregion
 
-        #region 編集項目 - ログ出力
+        #region Edit items ―――― Log output
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val)
         {
             Log.Info("[Scenario] {0}: {1} -> {2}", ItemStrings[(int) itemId],
@@ -8405,11 +8405,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="major">主要国設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="major">Major country setting</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, MajorCountrySettings major)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8418,12 +8418,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="alliance">同盟</param>
-        /// <param name="index">同盟リストのインデックス</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="alliance">alliance</param>
+        /// <param name="index">Alliance list index</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Alliance alliance, int index)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8431,12 +8431,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="war">戦争</param>
-        /// <param name="index">戦争リストのインデックス</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="war">war</param>
+        /// <param name="index">War list index</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, War war, int index)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8444,12 +8444,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="country">選択国</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="relation">National relations</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Country country,
             Relation relation)
         {
@@ -8459,11 +8459,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="treaty">Agreement</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Treaty treaty)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3}:{4})", ItemStrings[(int) itemId],
@@ -8472,12 +8472,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="prev">変更前の値</param>
-        /// <param name="treaty">協定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="prev">Value before change</param>
+        /// <param name="treaty">Agreement</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, object prev, Treaty treaty)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3}:{4})", ItemStrings[(int) itemId],
@@ -8486,12 +8486,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="country">選択国</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="spy">Intelligence settings</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Country country, SpySettings spy)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3}=>{4})", ItemStrings[(int) itemId],
@@ -8500,11 +8500,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">National setting</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, CountrySettings settings)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8513,12 +8513,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Province province,
             CountrySettings settings)
         {
@@ -8540,12 +8540,12 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Province province,
             ProvinceSettings settings)
         {
@@ -8560,11 +8560,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="settings">Providence settings</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, ProvinceSettings settings)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8572,11 +8572,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="unit">ユニット</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="unit">unit</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Unit unit)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8584,11 +8584,11 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     編集項目の値変更時のログを出力する
+        ///     Output the log when the value of the edit item is changed
         /// </summary>
-        /// <param name="itemId">項目ID</param>
-        /// <param name="val">編集項目の値</param>
-        /// <param name="division">師団</param>
+        /// <param name="itemId">item ID</param>
+        /// <param name="val">Edit item value</param>
+        /// <param name="division">Division</param>
         public void OutputItemValueChangedLog(ScenarioEditorItemId itemId, object val, Division division)
         {
             Log.Info("[Scenario] {0}: {1} -> {2} ({3})", ItemStrings[(int) itemId],
@@ -8601,7 +8601,7 @@ namespace HoI2Editor.Controllers
     }
 
     /// <summary>
-    ///     シナリオエディタの項目ID
+    ///     Items in the scenario editor ID
     /// </summary>
     public enum ScenarioEditorItemId
     {

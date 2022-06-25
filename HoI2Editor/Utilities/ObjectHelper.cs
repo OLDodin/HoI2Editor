@@ -4,15 +4,15 @@ using HoI2Editor.Models;
 namespace HoI2Editor.Utilities
 {
     /// <summary>
-    ///     オブジェクト型のヘルパークラス
+    ///     Object type helper class
     /// </summary>
     public static class ObjectHelper
     {
         /// <summary>
-        ///     オブジェクト型を文字列に変換する
+        ///     Convert object type to string
         /// </summary>
-        /// <param name="o">変換対象</param>
-        /// <returns>文字列</returns>
+        /// <param name="o">Conversion target</param>
+        /// <returns>Character string</returns>
         public static string ToString(object o)
         {
             if (o == null)
@@ -39,11 +39,11 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     2つのオブジェクトが等しい値かどうかを返す
+        ///     2 Returns whether two objects have equal values
         /// </summary>
-        /// <param name="x">比較対象1</param>
-        /// <param name="y">比較対象2</param>
-        /// <returns>2つのオブジェクトが等しい値ならばtrueを返す</returns>
+        /// <param name="x">targets for comparison 1</param>
+        /// <param name="y">targets for comparison 2</param>
+        /// <returns>2 If two objects have equal values true true return it</returns>
         public static bool IsEqual(object x, object y)
         {
             if (x is double && y is double)
@@ -54,10 +54,10 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     オブジェクトがnullか空文字列のどちらかかを返す
+        ///     The object is null Returns either the empty string or the empty string
         /// </summary>
-        /// <param name="o">判定対象</param>
-        /// <returns>nullまたは空文字列ならばtrueを返す</returns>
+        /// <param name="o">Judgment target</param>
+        /// <returns>null null Or if it is an empty string true true return it</returns>
         public static bool IsNullOrEmpty(object o)
         {
             return string.IsNullOrEmpty(o as string);

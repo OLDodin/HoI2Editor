@@ -71,6 +71,7 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Controllers\DataChecker.cs" />
+    <Compile Include="Controllers\LocHelperController.cs" />
     <Compile Include="Controllers\MapPanelController.cs" />
     <Compile Include="Controllers\ScenarioEditorController.cs" />
     <Compile Include="Controllers\TechTreePanelController.cs" />
@@ -131,6 +132,12 @@
     </Compile>
     <Compile Include="Forms\DataCheckerForm.Designer.cs">
       <DependentUpon>DataCheckerForm.cs</DependentUpon>
+    </Compile>
+    <Compile Include="Forms\LocHelperForm.cs">
+      <SubType>Form</SubType>
+    </Compile>
+    <Compile Include="Forms\LocHelperForm.Designer.cs">
+      <DependentUpon>LocHelperForm.cs</DependentUpon>
     </Compile>
     <Compile Include="Forms\LeaderEditorForm.cs">
       <SubType>Form</SubType>
@@ -222,6 +229,8 @@
     <Compile Include="Models\Command.cs" />
     <Compile Include="Models\Commands.cs" />
     <Compile Include="Models\CorpsNames.cs" />
+    <Compile Include="Models\Event.cs" />
+    <Compile Include="Models\Events.cs" />
     <Compile Include="Models\Game.cs" />
     <Compile Include="HoI2EditorApplication.cs" />
     <Compile Include="Models\Config.cs" />
@@ -229,6 +238,7 @@
     <Compile Include="Models\GameDate.cs" />
     <Compile Include="Models\Leader.cs" />
     <Compile Include="Models\Leaders.cs" />
+    <Compile Include="Parsers\EventParser.cs" />
     <Compile Include="Utilities\Log.cs" />
     <Compile Include="Models\Map.cs" />
     <Compile Include="Models\Maps.cs" />
@@ -305,6 +315,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\DataCheckerForm.resx">
       <DependentUpon>DataCheckerForm.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Forms\LocHelperForm.resx">
+      <DependentUpon>LocHelperForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="Forms\LeaderEditorForm.ja.resx">
       <DependentUpon>LeaderEditorForm.cs</DependentUpon>
@@ -408,7 +421,6 @@
     <EmbeddedResource Include="Properties\Resources.ja.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
-    <None Include="app.config" />
     <None Include="Documents\Design\commands.xlsx" />
     <None Include="Documents\Design\misc.xlsx" />
     <None Include="Documents\Design\miscedit.xlsx" />
@@ -442,16 +454,8 @@
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <PropertyGroup>
-    <PostBuildEvent>cd $(SolutionDir)..\
-mkdir HoI2Editor
-mkdir HoI2Editor\ja
-del HoI2Editor\* /q
-rd /s /q HoI2Editor\ja
-copy $(TargetPath) HoI2Editor\$(TargetFileName)
-echo D | xcopy $(TargetDir)\ja HoI2Editor\ja
-copy $(ProjectDir)\Documents\Jp\*.txt HoI2Editor\
-del HoI2Editor.zip /q
-"C:\Program Files (x86)\Lhaplus\Lhaplus.exe" /c:zip /o:.\ .\HoI2Editor</PostBuildEvent>
+    <PostBuildEvent>
+    </PostBuildEvent>
   </PropertyGroup>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

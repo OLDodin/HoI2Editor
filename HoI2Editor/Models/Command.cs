@@ -6,76 +6,76 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     イベントコマンド
+    ///     Event command
     /// </summary>
     public class Command
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     コマンド種類
+        ///     Command type
         /// </summary>
         public CommandType Type { get; set; }
 
         /// <summary>
-        ///     パラメータ - which
+        ///     Parameters --which which
         /// </summary>
         public object Which { get; set; }
 
         /// <summary>
-        ///     パラメータ - value
+        ///     Parameters --value
         /// </summary>
         public object Value { get; set; }
 
         /// <summary>
-        ///     パラメータ - when
+        ///     Parameters --when
         /// </summary>
         public object When { get; set; }
 
         /// <summary>
-        ///     パラメータ - where
+        ///     Parameters --where
         /// </summary>
         public object Where { get; set; }
 
         /// <summary>
-        ///     コマンドトリガー
+        ///     Command trigger
         /// </summary>
         public List<Trigger> Triggers { get; } = new List<Trigger>();
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (CommandItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Command()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元のイベントコマンド</param>
+        /// <param name="original">Event command from the replication source</param>
         public Command(Command original)
         {
             Type = original.Type;
 
-            // 参照型のオブジェクトを格納する場合はここをdeep copyに変える
+            // If you want to store a reference type object, click here deep copy Change to
             Which = original.Which;
             Value = original.Value;
             When = original.When;
@@ -89,12 +89,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     文字列に変換する
+        ///     Convert to a string
         /// </summary>
-        /// <returns>文字列</returns>
+        /// <returns>Character string</returns>
         public override string ToString()
         {
             StringBuilder sb = new StringBuilder();
@@ -129,29 +129,29 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     技術項目データが編集済みかどうかを取得する
+        ///     Get if the technical item data has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(CommandItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public void SetDirty()
         {
@@ -159,9 +159,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(CommandItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -169,7 +169,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -181,7 +181,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -196,7 +196,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     コマンド種類
+    ///     Command type
     /// </summary>
     public enum CommandType
     {
@@ -498,14 +498,14 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     コマンド項目ID
+    ///     Command item ID
     /// </summary>
     public enum CommandItemId
     {
-        Type, // コマンドの種類
-        Which, // whichパラメータ
-        Value, // valueパラメータ
-        When, // whenパラメータ
-        Where // whereパラメータ
+        Type, // Command type
+        Which, // which which Parameters
+        Value, // value value Parameters
+        When, // when Parameters
+        Where // where Parameters
     }
 }

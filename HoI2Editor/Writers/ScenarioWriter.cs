@@ -8,17 +8,17 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Writers
 {
     /// <summary>
-    ///     シナリオデータのファイル書き込みを担当するクラス
+    ///     Class in charge of writing scenario data to a file
     /// </summary>
     public static class ScenarioWriter
     {
-        #region シナリオデータ
+        #region Scenario data
 
         /// <summary>
-        ///     シナリオデータをファイルへ書き込む
+        ///     Write scenario data to a file
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="fileName">file name</param>
         public static void Write(Scenario scenario, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -37,10 +37,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     イベント履歴リストを書き出す
+        ///     Export event history list
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteHistoryEvents(Scenario scenario, TextWriter writer)
         {
             if (scenario.HistoryEvents.Count > 0)
@@ -53,10 +53,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止イベントリストを書き出す
+        ///     Export a dormant event list
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteSleepEvents(Scenario scenario, TextWriter writer)
         {
             if (scenario.SleepEvents.Count > 0)
@@ -69,10 +69,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     保存日時リストを書き出す
+        ///     Export the save date and time list
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteSaveDates(Scenario scenario, TextWriter writer)
         {
             if (scenario.SaveDates == null || scenario.SaveDates.Count == 0)
@@ -80,7 +80,7 @@ namespace HoI2Editor.Writers
                 return;
             }
 
-            // シナリオ開始日時が設定されていなければ1936/1/1とみなす
+            // If the scenario start date and time is not set 1936/1/1 Consider
             GameDate startDate = scenario.GlobalData?.StartDate ?? new GameDate();
 
             writer.WriteLine();
@@ -93,10 +93,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     マップ設定を書き出す
+        ///     Export map settings
         /// </summary>
-        /// <param name="map">マップ設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="map">Map settings</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteMap(MapSettings map, TextWriter writer)
         {
             if (map == null)
@@ -131,10 +131,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     イベントファイルリストを書き出す
+        ///     Export event file list
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteEvents(Scenario scenario, TextWriter writer)
         {
             if (scenario.EventFiles.Count == 0)
@@ -149,10 +149,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     インクルードファイルリストを書き出す
+        ///     Export include file list
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteIncludes(Scenario scenario, TextWriter writer)
         {
             if (scenario.IncludeFiles.Count == 0)
@@ -168,13 +168,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region シナリオヘッダ
+        #region Scenario header
 
         /// <summary>
-        ///     シナリオヘッダを書き出す
+        ///     Export scenario header
         /// </summary>
-        /// <param name="header">シナリオヘッダ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="header">Scenario header</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteHeader(ScenarioHeader header, TextWriter writer)
         {
             writer.WriteLine("header = {");
@@ -211,10 +211,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     選択可能国リストを書き出す
+        ///     Export selectable country list
         /// </summary>
-        /// <param name="header">シナリオヘッダ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="header">Scenario header</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteSelectableCountries(ScenarioHeader header, TextWriter writer)
         {
             if (header.SelectableCountries.Count == 0)
@@ -227,10 +227,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     主要国設定リストを書き出す
+        ///     Export a list of major country settings
         /// </summary>
-        /// <param name="header">シナリオヘッダ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="header">Scenario header</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteMajorCountries(ScenarioHeader header, TextWriter writer)
         {
             foreach (MajorCountrySettings major in header.MajorCountries)
@@ -240,10 +240,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     主要国設定を書き出す
+        ///     Export major country settings
         /// </summary>
-        /// <param name="major">主要国設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="major">Major country setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteMajorCountry(MajorCountrySettings major, TextWriter writer)
         {
             writer.Write("  {0}        = {{", Countries.Strings[(int) major.Country]);
@@ -280,13 +280,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region シナリオグローバルデータ
+        #region Scenario global data
 
         /// <summary>
-        ///     シナリオグローバルデータを書き出す
+        ///     Export scenario global data
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteGlobalData(ScenarioGlobalData data, TextWriter writer)
         {
             writer.WriteLine("globaldata = {");
@@ -304,10 +304,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     シナリオ開始日を書き出す
+        ///     Export the scenario start date
         /// </summary>
-        /// <param name="date">シナリオ開始日</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="date">Scenario start date</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteScenarioStartDate(GameDate date, TextWriter writer)
         {
             if (date == null)
@@ -320,10 +320,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     シナリオ終了日を書き出す
+        ///     Export the scenario end date
         /// </summary>
-        /// <param name="date">シナリオ終了日</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="date">Scenario end date</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteScenarioEndDate(GameDate date, TextWriter writer)
         {
             if (date == null)
@@ -336,13 +336,13 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     ルール設定を書き出す
+        ///     Export rule settings
         /// </summary>
-        /// <param name="rules">ルール設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="rules">Rule setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteRules(ScenarioRules rules, TextWriter writer)
         {
-            // 禁止項目がなければセクションを書き出さない
+            // Do not export section if there are no prohibited items
             if (rules.AllowDiplomacy && rules.AllowProduction && rules.AllowTechnology)
             {
                 return;
@@ -365,7 +365,7 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     グローバルフラグリストを書き出す
+        ///     Export the global flag list
         /// </summary>
         /// <param name="flags"></param>
         /// <param name="writer"></param>
@@ -384,10 +384,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     同盟リストを書き出す
+        ///     Export the alliance list
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAlliances(ScenarioGlobalData data, TextWriter writer)
         {
             if (data.Axis?.Id != null)
@@ -409,10 +409,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     戦争リストを書き出す
+        ///     Export the war list
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteWars(ScenarioGlobalData data, TextWriter writer)
         {
             if (data.Wars.Count == 0)
@@ -426,25 +426,25 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     外交協定リストを書き出す
+        ///     Export a list of diplomatic agreements
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteTreaties(ScenarioGlobalData data, TextWriter writer)
         {
-            // 不可侵条約
+            // Non-invasion treaty
             foreach (Treaty treaty in data.NonAggressions)
             {
                 WriteTreaty(treaty, writer);
             }
 
-            // 講和条約
+            // Peace treaty
             foreach (Treaty treaty in data.Peaces)
             {
                 WriteTreaty(treaty, writer);
             }
 
-            // 貿易
+            // Trade
             foreach (Treaty treaty in data.Trades)
             {
                 WriteTreaty(treaty, writer);
@@ -452,11 +452,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     同盟情報を書き出す
+        ///     Export alliance information
         /// </summary>
-        /// <param name="alliance">同盟情報</param>
-        /// <param name="type">同盟の種類</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="alliance">Alliance information</param>
+        /// <param name="type">Types of alliances</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAlliance(Alliance alliance, string type, TextWriter writer)
         {
             writer.WriteLine("  {0} = {{", type);
@@ -481,10 +481,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     戦争情報を書き出す
+        ///     Export war information
         /// </summary>
-        /// <param name="war">戦争情報</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="war">War information</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteWar(War war, TextWriter writer)
         {
             writer.WriteLine("  war = {");
@@ -532,10 +532,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     外交協定情報を書き出す
+        ///     Export diplomatic agreement information
         /// </summary>
-        /// <param name="treaty">外交協定情報</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="treaty">Diplomatic agreement information</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteTreaty(Treaty treaty, TextWriter writer)
         {
             writer.WriteLine("  treaty = {");
@@ -596,10 +596,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止指揮官リストを書き出す (シナリオグローバルデータ)
+        ///     Export a list of paused commanders (( Scenario global data )
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteScenarioDormantLeaders(ScenarioGlobalData data, TextWriter writer)
         {
             if (data.DormantLeadersAll)
@@ -608,7 +608,7 @@ namespace HoI2Editor.Writers
                 return;
             }
 
-            // 休止指揮官がない場合は何も書き出さない
+            // Do not write anything if there is no pause commander
             if (data.DormantLeaders.Count == 0)
             {
                 return;
@@ -620,13 +620,13 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止閣僚リストを書き出す (シナリオグローバルデータ)
+        ///     Export a list of dormant ministers (( Scenario global data )
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteScenarioDormantMinisters(ScenarioGlobalData data, TextWriter writer)
         {
-            // 休止閣僚がない場合は何も書き出さない
+            // Do not write anything if there are no paused ministers
             if (data.DormantMinisters.Count == 0)
             {
                 return;
@@ -638,13 +638,13 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止研究機関リストを書き出す (シナリオグローバルデータ)
+        ///     Export a list of dormant research institutes (( Scenario global data )
         /// </summary>
-        /// <param name="data">シナリオグローバルデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="data">Scenario global data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteScenarioDormantTeams(ScenarioGlobalData data, TextWriter writer)
         {
-            // 休止研究機関がない場合は何も書き出さない
+            // Do not write anything if there is no suspended research institute
             if (data.DormantTeams.Count == 0)
             {
                 return;
@@ -657,13 +657,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region プロヴィンス
+        #region Providence
 
         /// <summary>
-        ///     プロヴィンス設定をbases.incに書き込む
+        ///     Province settings bases.inc Write to
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="fileName">file name</param>
         public static void WriteBasesInc(Scenario scenario, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -675,17 +675,17 @@ namespace HoI2Editor.Writers
                 }
                 else
                 {
-                    // HoI2/AoD/DH None
+                    // HoI2 / AoD / DH None
                     WriteBasesIncHoI2(scenario, writer);
                 }
             }
         }
 
         /// <summary>
-        ///     プロヴィンス設定をbases.incに書き込む (HoI2/AoD/DH None)
+        ///     Province settings bases.inc Write to (HoI2 / AoD / DH None)
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBasesIncHoI2(Scenario scenario, TextWriter writer)
         {
             foreach (ProvinceSettings settings in scenario.Provinces.Where(settings => settings.NavalBase != null))
@@ -707,10 +707,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定をbases.incに書き込む (DH Full)
+        ///     Province settings bases.inc Write to (DH Full)
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBasesIncDhFull(Scenario scenario, TextWriter writer)
         {
             foreach (ProvinceSettings settings in scenario.Provinces.Where(p => ExistsBasesIncDataDhFull(p, scenario)))
@@ -862,10 +862,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定をbases_DOD.incに書き込む
+        ///     Province settings bases_DOD.inc Write to
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="fileName">file name</param>
         public static void WriteBasesDodInc(Scenario scenario, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -890,10 +890,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定をdepots.incに書き込む
+        ///     Province settings depots.inc Write to
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="fileName">file name</param>
         public static void WriteDepotsInc(Scenario scenario, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -929,13 +929,13 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定をvp.incに書き込む
+        ///     Province settings vp.inc Write to
         /// </summary>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="fileName">file name</param>
         public static void WriteVpInc(Scenario scenario, string fileName)
         {
-            // vp.incに保存しないならば何もしない
+            // vp.inc Do nothing if you don't save to
             if (!scenario.IsVpProvinceSettings)
             {
                 return;
@@ -958,12 +958,12 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定のリストを国別incに書き込む
+        ///     List of provision settings by country inc Write to
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
-        /// <returns>書き込むデータがあればtrueを返す</returns>
+        /// <param name="settings">National setting</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
+        /// <returns>If there is data to write true true return it</returns>
         private static bool WriteCountryProvinces(CountrySettings settings, Scenario scenario,
             TextWriter writer)
         {
@@ -982,11 +982,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定を国別incに書き込む
+        ///     Providence settings by country inc Write to
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">Providence settings</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryProvince(ProvinceSettings settings, Scenario scenario, TextWriter writer)
         {
             if (IsProvinceSingleLine(settings))
@@ -1000,11 +1000,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     単一行のプロヴィンス設定を国別incに書き込む
+        ///     Single-line provision settings by country inc Write to
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">Providence settings</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryProvinceSingleLine(ProvinceSettings settings, Scenario scenario,
             TextWriter writer)
         {
@@ -1093,11 +1093,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     複数行のプロヴィンス設定を国別incに書き込む
+        ///     Multi-line province settings by country inc Write to
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">Providence settings</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryProvinceMultiLine(ProvinceSettings settings, Scenario scenario,
             TextWriter writer)
         {
@@ -1264,10 +1264,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     プロヴィンス設定が単一行で記載できるかどうかを返す
+        ///     Returns whether the province settings can be described in a single line
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>単一行で記載できればtrueを返す</returns>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>If it can be described in a single line true true return it</returns>
         private static bool IsProvinceSingleLine(ProvinceSettings settings)
         {
             if ((settings.Ic != null && settings.Ic.MaxSize > 0) ||
@@ -1319,11 +1319,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     bases.incに保存するプロヴィンスデータが存在するかどうかを返す (DH Full)
+        ///     bases.inc Returns whether there is any province data to save to (DH Full)
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <returns>bases.incに保存するデータが存在すればtrueを返す</returns>
+        /// <param name="settings">Providence settings</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <returns>bases.inc If there is data to save in true true return it</returns>
         private static bool ExistsBasesIncDataDhFull(ProvinceSettings settings, Scenario scenario)
         {
             if (!scenario.IsBaseDodProvinceSettings)
@@ -1390,20 +1390,20 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     bases_DOD.incに保存するプロヴィンスデータが存在するかどうかを返す
+        ///     bases_DOD.inc Returns whether there is any province data to save to
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>bases_DOD.incに保存するデータが存在すればtrueを返す</returns>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>bases_DOD.inc If there is data to save in true true return it</returns>
         private static bool ExistsBasesDodIncData(ProvinceSettings settings)
         {
             return (settings.Ic != null) || (settings.Infrastructure != null);
         }
 
         /// <summary>
-        ///     depots.incに保存するプロヴィンスデータが存在するかどうかを返す
+        ///     depots.inc Returns whether there is provision data to store in
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>depots.incに保存するデータが存在すればtrueを返す</returns>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>depots.inc If there is data to save in true true return it</returns>
         private static bool ExistsDepotsIncData(ProvinceSettings settings)
         {
             if (settings.EnergyPool > 0 ||
@@ -1419,11 +1419,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     国別.incに保存するプロヴィンスデータが存在するかどうかを返す
+        ///     By country .inc Returns whether there is any province data to save to
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <returns>bases.incに保存するデータが存在すればtrueを返す</returns>
+        /// <param name="settings">Providence settings</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <returns>bases.inc If there is data to save in true true return it</returns>
         private static bool ExistsCountryIncData(ProvinceSettings settings, Scenario scenario)
         {
             if (Game.IsDhFull() && scenario.IsBaseProvinceSettings)
@@ -1496,13 +1496,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region 建物
+        #region building
 
         /// <summary>
-        ///     生産中建物リストを書き出す
+        ///     Export a list of buildings in production
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBuildingDevelopments(CountrySettings settings, TextWriter writer)
         {
             if (settings.BuildingDevelopments.Count == 0)
@@ -1517,10 +1517,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     生産中建物を書き出す
+        ///     Export a building in production
         /// </summary>
-        /// <param name="building">生産中建物</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="building">Building in production</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBuildingDevelopment(BuildingDevelopment building, TextWriter writer)
         {
             writer.WriteLine("  province_development = {");
@@ -1595,14 +1595,14 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region 国家設定
+        #region National setting
 
         /// <summary>
-        ///     国家設定をファイルへ書き込む
+        ///     Write national settings to a file
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="scenario">シナリオデータ</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="scenario">Scenario data</param>
+        /// <param name="fileName">file name</param>
         public static void WriteCountrySettings(CountrySettings settings, Scenario scenario, string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
@@ -1648,10 +1648,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     国家ヘッダを書き出す
+        ///     Export national header
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryHeader(CountrySettings settings, TextWriter writer)
         {
             writer.WriteLine("##############################");
@@ -1660,9 +1660,9 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     メインヘッダを書き出す
+        ///     Export the main header
         /// </summary>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteMainHeader(StreamWriter writer)
         {
             writer.WriteLine();
@@ -1672,10 +1672,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     国家情報を書き出す
+        ///     Write out national information
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryInfo(CountrySettings settings, TextWriter writer)
         {
             writer.WriteLine("  tag                = {0}", Countries.Strings[(int) settings.Country]);
@@ -1741,10 +1741,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     AI設定を書き出す
+        ///     AI Export settings
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAiSettings(CountrySettings settings, TextWriter writer)
         {
             writer.Write("{");
@@ -1756,10 +1756,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     資源設定を書き出す
+        ///     Export resource settings
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryResources(CountrySettings settings, TextWriter writer)
         {
             writer.WriteLine("  # Resource Reserves");
@@ -1780,10 +1780,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     マップ外資源設定を書き出す
+        ///     Export off-map resource settings
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteOffmapResources(CountrySettings settings, TextWriter writer)
         {
             ResourceSettings offmap = settings.Offmap;
@@ -1836,10 +1836,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     外交設定を書き出す
+        ///     Export diplomatic settings
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDiplomacy(CountrySettings settings, TextWriter writer)
         {
             if (settings.Relations.Count == 0)
@@ -1856,10 +1856,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     国家関係を書き出す
+        ///     Write down national relations
         /// </summary>
-        /// <param name="relation">国家関係</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="relation">National relations</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteRelation(Relation relation, TextWriter writer)
         {
             if (relation.Guaranteed == null)
@@ -1889,10 +1889,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     諜報設定リストを書き出す
+        ///     Export the intelligence settings list
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteSpyInfos(CountrySettings settings, TextWriter writer)
         {
             foreach (SpySettings spy in settings.Intelligence)
@@ -1903,10 +1903,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     領土設定を書き出す
+        ///     Export territory settings
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryTerritories(CountrySettings settings, TextWriter writer)
         {
             writer.WriteLine();
@@ -1928,10 +1928,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     保有技術リストを書き出す
+        ///     Export the list of owned technologies
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteTechApps(CountrySettings settings, TextWriter writer)
         {
             if (settings.TechApps.Count == 0)
@@ -1945,10 +1945,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     青写真リストを書き出す
+        ///     Export a blueprint list
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBlueprints(CountrySettings settings, TextWriter writer)
         {
             if (settings.BluePrints.Count == 0)
@@ -1961,10 +1961,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     発明イベントリストを書き出す
+        ///     Export the invention event list
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteInventions(CountrySettings settings, TextWriter writer)
         {
             if (settings.Inventions.Count == 0)
@@ -1977,10 +1977,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     無効技術リストを書き出す
+        ///     Export the list of invalid techniques
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDeactivate(CountrySettings settings, TextWriter writer)
         {
             if (settings.Deactivate.Count == 0)
@@ -1993,10 +1993,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     政策スライダーを書き出す
+        ///     Export policy sliders
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryPolicy(CountrySettings settings, TextWriter writer)
         {
             CountryPolicy policy = settings.Policy;
@@ -2023,10 +2023,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     国家補正値を書き出す
+        ///     Export national correction value
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryModifiers(CountrySettings settings, TextWriter writer)
         {
             if (!DoubleHelper.IsZero(settings.TcModifier))
@@ -2076,10 +2076,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     閣僚リストを書き出す
+        ///     Export a list of ministers
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCabinet(CountrySettings settings, TextWriter writer)
         {
             if (settings.HeadOfState != null)
@@ -2135,10 +2135,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     閣僚を書き出す
+        ///     Write out ministers
         /// </summary>
-        /// <param name="typeId">閣僚のtypeとid</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="typeId">Of the ministers type When id</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteMinister(TypeId typeId, TextWriter writer)
         {
             WriteTypeId(typeId, writer);
@@ -2154,13 +2154,13 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     国策を書き出す
+        ///     Write out national policy
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteIdea(CountrySettings settings, TextWriter writer)
         {
-            // 国策をサポートするのはAoDのみ
+            // Supporting national policy AoD only
             if (Game.Type != GameType.ArsenalOfDemocracy)
             {
                 return;
@@ -2181,10 +2181,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止指揮官リストを書き出す (国家設定)
+        ///     Export a list of paused commanders (( National setting )
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryDormantLeaders(CountrySettings settings, TextWriter writer)
         {
             if (settings.DormantLeaders.Count == 0)
@@ -2197,10 +2197,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止閣僚リストを書き出す (国家設定)
+        ///     Export a list of dormant ministers (( National setting )
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryDormantMinisters(CountrySettings settings, TextWriter writer)
         {
             if (settings.DormantMinisters.Count == 0)
@@ -2213,10 +2213,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止研究機関リストを書き出す (国家設定)
+        ///     Export a list of dormant research institutes (( National setting )
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryDormantTeams(CountrySettings settings, TextWriter writer)
         {
             if (settings.DormantTeams.Count == 0)
@@ -2229,10 +2229,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     抽出指揮官リストを書き出す
+        ///     Export a list of extraction commanders
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteStealLeaders(CountrySettings settings, TextWriter writer)
         {
             if (settings.StealLeaders.Count == 0)
@@ -2248,13 +2248,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region ユニット
+        #region unit
 
         /// <summary>
-        ///     陸軍ユニットリストを書き出す
+        ///     Export Army Unit List
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteLandUnits(CountrySettings settings, TextWriter writer)
         {
             if (settings.LandUnits.Count == 0)
@@ -2269,10 +2269,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     海軍ユニットリストを書き出す
+        ///     Export Navy Unit List
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteNavalUnits(CountrySettings settings, TextWriter writer)
         {
             if (settings.NavalUnits.Count == 0)
@@ -2287,10 +2287,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     空軍ユニットリストを書き出す
+        ///     Export Air Force Unit List
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAirUnits(CountrySettings settings, TextWriter writer)
         {
             if (settings.AirUnits.Count == 0)
@@ -2305,11 +2305,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     陸軍ユニットを書き出す
+        ///     Export army units
         /// </summary>
-        /// <param name="unit">ユニット</param>
-        /// <param name="writer">ファイル書き込み用</param>
-        /// <param name="indent">インデント文字列</param>
+        /// <param name="unit">unit</param>
+        /// <param name="writer">For writing files</param>
+        /// <param name="indent">Indent string</param>
         private static void WriteLandUnit(Unit unit, TextWriter writer, string indent)
         {
             writer.WriteLine("{0}landunit = {{", indent);
@@ -2419,10 +2419,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     海軍ユニットを書き出す
+        ///     Export Navy units
         /// </summary>
-        /// <param name="unit">ユニット</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="unit">unit</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteNavalUnit(Unit unit, TextWriter writer)
         {
             writer.WriteLine("  navalunit = {");
@@ -2524,10 +2524,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     空軍ユニットを書き出す
+        ///     Export Air Force Units
         /// </summary>
-        /// <param name="unit">ユニット</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="unit">unit</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAirUnit(Unit unit, TextWriter writer)
         {
             writer.WriteLine("  airunit = { ");
@@ -2626,14 +2626,14 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region 師団
+        #region Division
 
         /// <summary>
-        ///     陸軍師団を書き出す
+        ///     Export the Army Division
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
-        /// <param name="indent">インデント文字列</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
+        /// <param name="indent">Indent string</param>
         private static void WriteLandDivision(Division division, TextWriter writer, string indent)
         {
             writer.WriteLine("{0}division = {{", indent);
@@ -2838,10 +2838,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     海軍師団を書き出す
+        ///     Export the Navy Division
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteNavalDivision(Division division, TextWriter writer)
         {
             writer.WriteLine("    division = {");
@@ -3026,10 +3026,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     空軍師団を書き出す
+        ///     Export the Air Force Division
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAirDivision(Division division, TextWriter writer)
         {
             writer.WriteLine("    division = {");
@@ -3200,10 +3200,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     生産中師団リストを書き出す
+        ///     Export a list of divisions in production
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDivisionDevelopments(CountrySettings settings, TextWriter writer)
         {
             if (settings.DivisionDevelopments.Count == 0)
@@ -3218,10 +3218,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     生産中師団を書き出す
+        ///     Export the in-production division
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDivisionDevelopment(DivisionDevelopment division, TextWriter writer)
         {
             writer.WriteLine("  division_development = {");
@@ -3348,10 +3348,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止中陸軍師団リストを書き出す
+        ///     Export a list of army divisions during hibernation
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDormantLandDivisions(CountrySettings settings, TextWriter writer)
         {
             if (settings.LandDivisions.Count == 0)
@@ -3366,10 +3366,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止中海軍師団リストを書き出す
+        ///     Export the list of dormant naval divisions
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDormantNavalDivisions(CountrySettings settings, TextWriter writer)
         {
             if (settings.NavalDivisions.Count == 0)
@@ -3384,10 +3384,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止中空軍師団リストを書き出す
+        ///     Export a list of dormant hollow army divisions
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDormantAirDivisions(CountrySettings settings, TextWriter writer)
         {
             if (settings.AirDivisions.Count == 0)
@@ -3402,10 +3402,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止中陸軍師団を書き出す
+        ///     Export the army division during hibernation
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDormantLandDivision(Division division, TextWriter writer)
         {
             writer.Write("  landdivision = {");
@@ -3497,10 +3497,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止中海軍師団を書き出す
+        ///     Export the Navy Division during hibernation
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDormantNavalDivision(Division division, TextWriter writer)
         {
             writer.Write("  navaldivision = {");
@@ -3594,10 +3594,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     休止中空軍師団を書き出す
+        ///     Export the dormant hollow army division
         /// </summary>
-        /// <param name="division">師団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="division">Division</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDormantAirDivision(Division division, TextWriter writer)
         {
             writer.Write("  airdivision = {");
@@ -3693,10 +3693,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     生産可能師団を書き出す
+        ///     Export a productionable division
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAllowedDivisions(CountrySettings settings, TextWriter writer)
         {
             if (settings.AllowedDivisions.Count == 0)
@@ -3713,10 +3713,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     生産可能旅団を書き出す
+        ///     Export a productionable brigade
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAllowedBrigades(CountrySettings settings, TextWriter writer)
         {
             if (settings.AllowedBrigades.Count == 0)
@@ -3732,11 +3732,11 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     ユニット種類と論理値の組を出力する
+        ///     Output a set of unit type and logical value
         /// </summary>
-        /// <param name="type">ユニット種類</param>
-        /// <param name="b">論理値</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="type">Unit type</param>
+        /// <param name="b">Logical value</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteUnitBoolPair(UnitType type, bool b, TextWriter writer)
         {
             writer.WriteLine("    {0} = {1}", Units.Strings[(int) type], b ? "yes" : "no");
@@ -3744,14 +3744,14 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region 任務
+        #region mission
 
         /// <summary>
-        ///     陸軍任務を書き出す
+        ///     Export Army missions
         /// </summary>
-        /// <param name="mission">任務</param>
-        /// <param name="writer">ファイル書き込み用</param>
-        /// <param name="indent">インデント文字列</param>
+        /// <param name="mission">mission</param>
+        /// <param name="writer">For writing files</param>
+        /// <param name="indent">Indent string</param>
         private static void WriteLandMission(Mission mission, TextWriter writer, string indent)
         {
             writer.WriteLine("{0}mission = {{", indent);
@@ -3796,10 +3796,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     海軍任務を書き出す
+        ///     Export Navy missions
         /// </summary>
-        /// <param name="mission">任務</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="mission">mission</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteNavalMission(Mission mission, TextWriter writer)
         {
             writer.WriteLine("    mission = {");
@@ -3855,10 +3855,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     空軍任務を書き出す
+        ///     Export Air Force missions
         /// </summary>
-        /// <param name="mission">任務</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="mission">mission</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteAirMission(Mission mission, TextWriter writer)
         {
             writer.WriteLine("    mission = {");
@@ -3911,13 +3911,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region 輸送船団
+        #region Transport fleet
 
         /// <summary>
-        ///     生産中輸送船団リストを書き出す
+        ///     Export a list of convoys in production
         /// </summary>
-        /// <param name="settings">国家設定</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteConvoyDevelopments(CountrySettings settings, TextWriter writer)
         {
             if (settings.ConvoyDevelopments.Count == 0)
@@ -3932,10 +3932,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     生産中輸送船団を書き出す
+        ///     Export the convoy in production
         /// </summary>
-        /// <param name="convoy">生産中輸送船団</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="convoy">Transport fleet in production</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteConvoyDevelopment(ConvoyDevelopment convoy, TextWriter writer)
         {
             writer.WriteLine("  convoy_development = {");
@@ -4014,13 +4014,13 @@ namespace HoI2Editor.Writers
 
         #endregion
 
-        #region 汎用
+        #region General purpose
 
         /// <summary>
-        ///     国家リストを書き出す
+        ///     Export a national list
         /// </summary>
-        /// <param name="countries">国家リスト</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="countries">National list</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteCountryList(IEnumerable<Country> countries, TextWriter writer)
         {
             foreach (Country country in countries)
@@ -4030,10 +4030,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     IDリストを書き出す
+        ///     ID Export the list
         /// </summary>
-        /// <param name="ids">IDリスト</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="ids">ID list</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteIdList(IEnumerable<int> ids, TextWriter writer)
         {
             foreach (int id in ids)
@@ -4043,10 +4043,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     建物のサイズを書き出す
+        ///     Export the size of the building
         /// </summary>
-        /// <param name="building">建物のサイズ</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="building">Building size</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteBuilding(BuildingSize building, TextWriter writer)
         {
             if (DoubleHelper.IsZero(building.Size))
@@ -4061,10 +4061,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     日時を書き出す
+        ///     Write out the date and time
         /// </summary>
-        /// <param name="date">日時</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="date">Date and time</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteDate(GameDate date, TextWriter writer)
         {
             if (date.Hour == 0)
@@ -4080,10 +4080,10 @@ namespace HoI2Editor.Writers
         }
 
         /// <summary>
-        ///     typeとidの組を書き出す
+        ///     type When id Export the set of
         /// </summary>
-        /// <param name="id">typeとidの組</param>
-        /// <param name="writer">ファイル書き込み用</param>
+        /// <param name="id">type When id id Pair of</param>
+        /// <param name="writer">For writing files</param>
         private static void WriteTypeId(TypeId id, TextWriter writer)
         {
             writer.Write("{{ type = {0} id = {1} }}", id.Type, id.Id);

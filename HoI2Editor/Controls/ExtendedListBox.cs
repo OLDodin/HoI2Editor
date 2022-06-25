@@ -9,10 +9,10 @@ namespace HoI2Editor.Controls
 {
     public partial class ExtendedListBox : ListBox
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     項目の入れ替えをサポートするかどうか
+        ///     Whether to support item swapping
         /// </summary>
         [Category("動作")]
         [DefaultValue(typeof (bool), "false")]
@@ -29,29 +29,29 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     行の入れ替えをサポートするかどうか
+        ///     Whether to support line swapping
         /// </summary>
         private bool _allowItemReorder;
 
         /// <summary>
-        ///     ドラッグアンドドロップの開始位置
+        ///     Drag and drop start position
         /// </summary>
         private static Point _dragPoint = Point.Empty;
 
         /// <summary>
-        ///     ドラッグアンドドロップ中の項目のインデックス
+        ///     Index of items being dragged and dropped
         /// </summary>
         private static readonly List<int> DragIndices = new List<int>();
 
         #endregion
 
-        #region 公開イベント
+        #region Public event
 
         /// <summary>
-        ///     項目の入れ替え時の処理
+        ///     Processing when replacing items
         /// </summary>
         [Category("動作")]
         [Description("項目の順番を再変更したときに発生します。")]
@@ -59,10 +59,10 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     拡張リストボックス
+        ///     Extended list box
         /// </summary>
         public ExtendedListBox()
         {
@@ -71,23 +71,23 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region イベントハンドラ
+        #region Event handler
 
         /// <summary>
-        ///     マウスダウン時の処理
+        ///     Processing when mouse down
         /// </summary>
         /// <param name="e"></param>
         protected override void OnMouseDown(MouseEventArgs e)
         {
             base.OnMouseDown(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // カーソル位置の項目が選択されていなければ何もしない
+            // Do nothing if the item at the cursor position is not selected
             int index = IndexFromPoint(e.X, e.Y);
             if (index < 0)
             {
@@ -98,7 +98,7 @@ namespace HoI2Editor.Controls
                 return;
             }
 
-            // 左ボタンダウンでなければドラッグ状態を解除する
+            // If the left button is not down, the drag state is canceled.
             if (e.Button != MouseButtons.Left)
             {
                 _dragPoint = Point.Empty;
@@ -106,53 +106,53 @@ namespace HoI2Editor.Controls
                 return;
             }
 
-            // ドラッグ開始位置を設定する
+            // Set the drag start position
             _dragPoint = new Point(e.X, e.Y);
 
-            // 項目のインデックスを保存する
+            // Save item index
             DragIndices.AddRange(SelectedIndices.Cast<int>());
         }
 
         /// <summary>
-        ///     マウスアップ時の処理
+        ///     Processing when mouse up
         /// </summary>
         /// <param name="e"></param>
         protected override void OnMouseUp(MouseEventArgs e)
         {
             base.OnMouseUp(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // ドラッグ状態を解除する
+            // Release the drag state
             _dragPoint = Point.Empty;
             DragIndices.Clear();
         }
 
         /// <summary>
-        ///     マウス移動時の処理
+        ///     Processing when moving the mouse
         /// </summary>
         /// <param name="e"></param>
         protected override void OnMouseMove(MouseEventArgs e)
         {
             base.OnMouseMove(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // ドラッグ中でなければ何もしない
+            // Do nothing unless you are dragging
             if (_dragPoint == Point.Empty)
             {
                 return;
             }
 
-            // ドラッグ判定サイズを超えていなければ何もしない
+            // Do nothing if the drag judgment size is not exceeded
             Size dragSize = SystemInformation.DragSize;
             Rectangle dragRect = new Rectangle(_dragPoint.X - dragSize.Width / 2, _dragPoint.Y - dragSize.Height / 2,
                 dragSize.Width, dragSize.Height);
@@ -161,56 +161,56 @@ namespace HoI2Editor.Controls
                 return;
             }
 
-            // ドラッグアンドドロップを開始する
+            // Start drag and drop
             DoDragDrop(this, DragDropEffects.Move);
         }
 
         /// <summary>
-        ///     ドラッグした項目が領域内に移動した時の処理
+        ///     Processing when the dragged item moves into the area
         /// </summary>
         /// <param name="e"></param>
         protected override void OnDragEnter(DragEventArgs e)
         {
             base.OnDragEnter(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // ExtendedListBoxの項目でなければドロップを許可しない
+            // ExtendedListBox Do not allow drop unless it is an item of
             if (!e.Data.GetDataPresent(typeof (ExtendedListBox)))
             {
                 e.Effect = DragDropEffects.None;
                 return;
             }
 
-            // ドロップを許可する
+            // Allow drop
             e.Effect = e.AllowedEffect;
         }
 
         /// <summary>
-        ///     ドラッグした項目が領域内で移動した時の処理
+        ///     Processing when the dragged item moves within the area
         /// </summary>
         protected override void OnDragOver(DragEventArgs e)
         {
             base.OnDragOver(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // ExtendedListBoxの項目でなければドロップを許可しない
+            // ExtendedListBox Do not allow drop unless it is an item of
             if (!e.Data.GetDataPresent(typeof (ExtendedListBox)))
             {
                 e.Effect = DragDropEffects.None;
                 return;
             }
 
-            // 挿入位置に項目がなければドロップを許可しない
+            // Do not allow drop if there is no item at the insertion position
             Point p = PointToClient(new Point(e.X, e.Y));
             int index = IndexFromPoint(p);
             if (index < 0)
@@ -219,7 +219,7 @@ namespace HoI2Editor.Controls
                 return;
             }
 
-            // 表示領域の端までドラッグしたら自動スクロールする
+            // Automatically scroll when dragged to the edge of the display area
             if (index > 0 && p.Y < ItemHeight)
             {
                 TopIndex = index - 1;
@@ -232,7 +232,7 @@ namespace HoI2Editor.Controls
                 }
             }
 
-            // 挿入位置の項目がドラッグ対象ならばドロップを許可しない
+            // Do not allow drop if the item at the insertion position is the target of dragging
             if (DragIndices.Contains(index))
             {
                 e.Effect = DragDropEffects.None;
@@ -243,27 +243,27 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     項目をドロップしたときの処理
+        ///     What to do when you drop an item
         /// </summary>
         /// <param name="e"></param>
         protected override void OnDragDrop(DragEventArgs e)
         {
             base.OnDragDrop(e);
 
-            // ドラッグアンドドロップによる項目入れ替えが許可されていなければ何もしない
+            // Do nothing if drag and drop item swapping is not allowed
             if (!AllowItemReorder)
             {
                 return;
             }
 
-            // 自分自身の項目でなければドロップを許可しない
+            // Do not allow drops unless it is your own item
             ExtendedListBox listBox = e.Data.GetData(typeof (ExtendedListBox)) as ExtendedListBox;
             if (listBox != this)
             {
                 return;
             }
 
-            // 挿入位置に項目がなければドロップを許可しない
+            // Do not allow drop if there is no item at the insertion position
             Point p = PointToClient(new Point(e.X, e.Y));
             int index = IndexFromPoint(p);
             if (index < 0)
@@ -273,24 +273,24 @@ namespace HoI2Editor.Controls
                 return;
             }
 
-            // 挿入位置の項目がドラッグ対象ならばドロップを許可しない
+            // Do not allow drop if the item at the insertion position is the target of dragging
             if (DragIndices.Contains(index))
             {
                 return;
             }
 
-            // イベントハンドラを呼び出す
+            // Call the event handler
             ItemReorderedEventArgs re = new ItemReorderedEventArgs(DragIndices, index);
             ItemReordered?.Invoke(this, re);
             if (re.Cancel)
             {
-                // ドラッグ状態を解除する
+                // Release the drag state
                 _dragPoint = Point.Empty;
                 DragIndices.Clear();
                 return;
             }
 
-            // リストボックスの項目を移動する
+            // Move items in the list box
             foreach (int dragIndex in DragIndices)
             {
                 Items.Insert(index, Items[dragIndex]);
@@ -305,13 +305,13 @@ namespace HoI2Editor.Controls
                 }
             }
 
-            // ドラッグ状態を解除する
+            // Release the drag state
             _dragPoint = Point.Empty;
             DragIndices.Clear();
         }
 
         /// <summary>
-        ///     描画更新時の処理
+        ///     Processing when updating drawing
         /// </summary>
         /// <param name="pe"></param>
         protected override void OnPaint(PaintEventArgs pe)

@@ -12,34 +12,34 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     プロヴィンスエディタのフォーム
+    ///     Providence Editor Form
     /// </summary>
     public partial class ProvinceEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     絞り込み後のプロヴィンスリスト
+        ///     Provincial list after narrowing down
         /// </summary>
         private readonly List<Province> _list = new List<Province>();
 
         /// <summary>
-        ///     世界全体ノード
+        ///     World-wide node
         /// </summary>
         private readonly TreeNode _worldNode = new TreeNode { Text = Resources.World };
 
         /// <summary>
-        ///     ソート対象
+        ///     Sort target
         /// </summary>
         private SortKey _key = SortKey.None;
 
         /// <summary>
-        ///     ソート順
+        ///     Sort order
         /// </summary>
         private SortOrder _order = SortOrder.Ascendant;
 
         /// <summary>
-        ///     ソート対象
+        ///     Sort target
         /// </summary>
         private enum SortKey
         {
@@ -59,7 +59,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ソート順
+        ///     Sort order
         /// </summary>
         private enum SortOrder
         {
@@ -69,72 +69,72 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     プロヴィンスリストビューの列の数
+        ///     Number of columns in the Providence list view
         /// </summary>
         public const int ProvinceListColumnCount = 12;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public ProvinceEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 海域の編集項目を更新する
+            // Update the edit items of the sea area
             UpdateSeaZoneItems();
 
-            // ワールドツリービューの表示を更新する
+            // Update the display of the world tree view
             UpdateWorldTree();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
-            // 何もしない
+            // do nothing
         }
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // プロヴィンスリストビュー
+            // Providence list view
             nameColumnHeader.Width = HoI2EditorController.Settings.ProvinceEditor.ListColumnWidth[0];
             idColumnHeader.Width = HoI2EditorController.Settings.ProvinceEditor.ListColumnWidth[1];
             seaColumnHeader.Width = HoI2EditorController.Settings.ProvinceEditor.ListColumnWidth[2];
@@ -148,51 +148,51 @@ namespace HoI2Editor.Forms
             rareMaterialsColumnHeader.Width = HoI2EditorController.Settings.ProvinceEditor.ListColumnWidth[10];
             oilColumnHeader.Width = HoI2EditorController.Settings.ProvinceEditor.ListColumnWidth[11];
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.ProvinceEditor.Location;
             Size = HoI2EditorController.Settings.ProvinceEditor.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // プロヴィンスデータを初期化する
+            // Initialize province data
             Provinces.Init();
 
-            // ゲーム設定ファイルを読み込む
+            // Load the game settings file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 編集項目を初期化する
+            // Initialize edit items
             InitEditableItems();
 
-            // プロヴィンスファイルを読み込む
+            // Read the province file
             Provinces.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -210,7 +210,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -220,7 +220,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -233,7 +233,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -246,13 +246,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -271,7 +271,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -281,7 +281,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -292,61 +292,61 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region ワールドツリービュー
+        #region World tree view
 
         /// <summary>
-        ///     ワールドツリーの表示を更新する
+        ///     Update the world tree display
         /// </summary>
         private void UpdateWorldTree()
         {
             worldTreeView.BeginUpdate();
             worldTreeView.Nodes.Clear();
 
-            // 世界全体ノードを追加する
+            // Add world-wide nodes
             worldTreeView.Nodes.Add(_worldNode);
 
-            // 大陸ノードを順に追加する
+            // Add continental nodes in order
             _worldNode.Nodes.Clear();
             foreach (ContinentId continent in Enum.GetValues(typeof (ContinentId)))
             {
                 AddContinentTreeItem(continent, _worldNode);
             }
 
-            // 世界全体ノードを展開する
+            // Expand world-wide nodes
             _worldNode.Expand();
 
-            // 世界全体ノードを選択する
+            // Select a global node
             worldTreeView.SelectedNode = _worldNode;
 
             worldTreeView.EndUpdate();
         }
 
         /// <summary>
-        ///     ワールドツリービューの選択ノード変更時の処理
+        ///     Processing when changing the selected node in the world tree view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWorldTreeViewAfterSelect(object sender, TreeViewEventArgs e)
         {
-            // プロヴィンスリストを絞り込む
+            // Narrow down the Providence list
             NarrowProvinceList();
 
-            // プロヴィンスリストの表示を更新する
+            // Update the display of the provision list
             UpdateProvinceList();
         }
 
         /// <summary>
-        ///     大陸ノードを追加する
+        ///     Add a continental node
         /// </summary>
-        /// <param name="continent">大陸</param>
-        /// <param name="parent">親ノード</param>
+        /// <param name="continent">Continent</param>
+        /// <param name="parent">Parent node</param>
         private static void AddContinentTreeItem(ContinentId continent, TreeNode parent)
         {
-            // 大陸ノードを追加する
+            // Add a continental node
             TreeNode node = new TreeNode { Text = Provinces.GetContinentName(continent), Tag = continent };
             parent.Nodes.Add(node);
 
-            // 地方ノードを順に追加する
+            // Add local nodes in order
             if (Provinces.ContinentRegionMap.ContainsKey(continent))
             {
                 foreach (RegionId region in Provinces.ContinentRegionMap[continent])
@@ -357,17 +357,17 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     地方ノードを追加する
+        ///     Add a local node
         /// </summary>
-        /// <param name="region">地方</param>
-        /// <param name="parent">親ノード</param>
+        /// <param name="region">Local</param>
+        /// <param name="parent">Parent node</param>
         private static void AddRegionTreeItem(RegionId region, TreeNode parent)
         {
-            // 地方ノードを追加する
+            // Add a local node
             TreeNode node = new TreeNode { Text = Provinces.GetRegionName(region), Tag = region };
             parent.Nodes.Add(node);
 
-            // 地域ノードを順に追加する
+            // Add regional nodes in order
             if (Provinces.RegionAreaMap.ContainsKey(region))
             {
                 foreach (AreaId area in Provinces.RegionAreaMap[region])
@@ -378,30 +378,30 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     地域ノードを追加する
+        ///     Add a regional node
         /// </summary>
-        /// <param name="area">地域</param>
-        /// <param name="parent">親ノード</param>
+        /// <param name="area">area</param>
+        /// <param name="parent">Parent node</param>
         private static void AddAreaTreeItem(AreaId area, TreeNode parent)
         {
-            // 地域ノードを追加する
+            // Add a regional node
             TreeNode node = new TreeNode { Text = Provinces.GetAreaName(area), Tag = area };
             parent.Nodes.Add(node);
         }
 
         #endregion
 
-        #region プロヴィンスリストビュー
+        #region Providence list view
 
         /// <summary>
-        ///     プロヴィンスリストの表示を更新する
+        ///     Update the display of the provision list
         /// </summary>
         private void UpdateProvinceList()
         {
             provinceListView.BeginUpdate();
             provinceListView.Items.Clear();
 
-            // 項目を順に登録する
+            // Register items in order
             foreach (Province province in _list)
             {
                 provinceListView.Items.Add(CreateProvinceListViewItem(province));
@@ -409,16 +409,16 @@ namespace HoI2Editor.Forms
 
             if (provinceListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 provinceListView.Items[0].Focused = true;
                 provinceListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEditableItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableEditableItems();
             }
 
@@ -426,7 +426,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストを絞り込む
+        ///     Narrow down the Providence list
         /// </summary>
         private void NarrowProvinceList()
         {
@@ -434,14 +434,14 @@ namespace HoI2Editor.Forms
 
             TreeNode node = worldTreeView.SelectedNode;
 
-            // 世界全体
+            // The whole world
             if (node.Tag == null)
             {
                 _list.AddRange(Provinces.Items);
                 return;
             }
 
-            // 大陸
+            // Continent
             if (node.Tag is ContinentId)
             {
                 ContinentId continent = (ContinentId) node.Tag;
@@ -449,7 +449,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 地方
+            // Local
             if (node.Tag is RegionId)
             {
                 RegionId region = (RegionId) node.Tag;
@@ -457,7 +457,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 地域
+            // area
             if (node.Tag is AreaId)
             {
                 AreaId area = (AreaId) node.Tag;
@@ -469,16 +469,16 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストをソートする
+        ///     Sort the province list
         /// </summary>
         private void SortProvinceList()
         {
             switch (_key)
             {
-                case SortKey.None: // ソートなし
+                case SortKey.None: // No sort
                     break;
 
-                case SortKey.Name: // 名前
+                case SortKey.Name: // name
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) => string.CompareOrdinal(province1.Name, province2.Name));
@@ -500,7 +500,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Sea: // 海洋プロヴィンスかどうか
+                case SortKey.Sea: // Whether it is a marine province
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) =>
@@ -533,7 +533,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Port: // 港の有無
+                case SortKey.Port: // Presence or absence of a port
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) =>
@@ -566,7 +566,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Beach: // 砂浜の有無
+                case SortKey.Beach: // Presence or absence of sandy beach
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) =>
@@ -599,7 +599,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Infrastructure: // インフラ
+                case SortKey.Infrastructure: // infrastructure
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort(
@@ -612,7 +612,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Ic: // IC
+                case SortKey.Ic: // I C
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) => Math.Sign(province1.Ic - province2.Ic));
@@ -623,7 +623,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Manpower: // 労働力
+                case SortKey.Manpower: // Labor force
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) => Math.Sign(province1.Manpower - province2.Manpower));
@@ -634,7 +634,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Energy: // エネルギー
+                case SortKey.Energy: // energy
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) => Math.Sign(province1.Energy - province2.Energy));
@@ -645,7 +645,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Metal: // 金属
+                case SortKey.Metal: // metal
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) => Math.Sign(province1.Metal - province2.Metal));
@@ -656,7 +656,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.RareMaterials: // 希少資源
+                case SortKey.RareMaterials: // Rare resources
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort(
@@ -669,7 +669,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Oil: // 石油
+                case SortKey.Oil: // oil
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((province1, province2) => Math.Sign(province1.Oil - province2.Oil));
@@ -683,18 +683,18 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the province list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProvinceListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの項目編集前の処理
+        ///     Processing before editing items in the Providence list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -702,52 +702,52 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 名前
+                case 0: // name
                     e.Type = ItemEditType.Text;
                     e.Text = nameTextBox.Text;
                     break;
 
-                case 3: // 港
+                case 3: // Harbor
                     e.Type = ItemEditType.Bool;
                     e.Flag = portCheckBox.Checked;
                     break;
 
-                case 4: // 砂浜
+                case 4: // Sandy beach
                     e.Type = ItemEditType.Bool;
                     e.Flag = beachCheckBox.Checked;
                     break;
 
-                case 5: // インフラ
+                case 5: // infrastructure
                     e.Type = ItemEditType.Text;
                     e.Text = infraTextBox.Text;
                     break;
 
-                case 6: // IC
+                case 6: // I C
                     e.Type = ItemEditType.Text;
                     e.Text = icTextBox.Text;
                     break;
 
-                case 7: // 労働力
+                case 7: // Labor force
                     e.Type = ItemEditType.Text;
                     e.Text = manpowerTextBox.Text;
                     break;
 
-                case 8: // エネルギー
+                case 8: // energy
                     e.Type = ItemEditType.Text;
                     e.Text = energyTextBox.Text;
                     break;
 
-                case 9: // 金属
+                case 9: // metal
                     e.Type = ItemEditType.Text;
                     e.Text = metalTextBox.Text;
                     break;
 
-                case 10: // 希少資源
+                case 10: // Rare resources
                     e.Type = ItemEditType.Text;
                     e.Text = rareMaterialsTextBox.Text;
                     break;
 
-                case 11: // 石油
+                case 11: // oil
                     e.Type = ItemEditType.Text;
                     e.Text = oilTextBox.Text;
                     break;
@@ -755,7 +755,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの項目編集後の処理
+        ///     Processing after editing items in the Providence list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -763,60 +763,60 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 名前
+                case 0: // name
                     nameTextBox.Text = e.Text;
                     break;
 
-                case 3: // 港
+                case 3: // Harbor
                     portCheckBox.Checked = e.Flag;
                     break;
 
-                case 4: // 砂浜
+                case 4: // Sandy beach
                     beachCheckBox.Checked = e.Flag;
                     break;
 
-                case 5: // インフラ
+                case 5: // infrastructure
                     infraTextBox.Text = e.Text;
                     OnInfraTextBoxValidated(infraTextBox, new EventArgs());
                     break;
 
-                case 6: // IC
+                case 6: // I C
                     icTextBox.Text = e.Text;
                     OnIcTextBoxValidated(icTextBox, new EventArgs());
                     break;
 
-                case 7: // 労働力
+                case 7: // Labor force
                     manpowerTextBox.Text = e.Text;
                     OnManpowerTextBoxValidated(manpowerTextBox, new EventArgs());
                     break;
 
-                case 8: // エネルギー
+                case 8: // energy
                     energyTextBox.Text = e.Text;
                     OnEnergyTextBoxValidated(energyTextBox, new EventArgs());
                     break;
 
-                case 9: // 金属
+                case 9: // metal
                     metalTextBox.Text = e.Text;
                     OnMetalTextBoxValidated(metalTextBox, new EventArgs());
                     break;
 
-                case 10: // 希少資源
+                case 10: // Rare resources
                     rareMaterialsTextBox.Text = e.Text;
                     OnRareMaterialsTextBoxValidated(rareMaterialsTextBox, new EventArgs());
                     break;
 
-                case 11: // 石油
+                case 11: // oil
                     oilTextBox.Text = e.Text;
                     OnOilNumericUpDownValidated(oilTextBox, new EventArgs());
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     閣僚リストビューのカラムクリック時の処理
+        ///     Processing when a column is clicked in the ministerial list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -824,7 +824,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 名前
+                case 0: // name
                     if (_key == SortKey.Name)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -846,7 +846,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 2: // 海洋プロヴィンスかどうか
+                case 2: // Whether it is a marine province
                     if (_key == SortKey.Sea)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -857,7 +857,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 3: // 港の有無
+                case 3: // Presence or absence of a port
                     if (_key == SortKey.Port)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -868,7 +868,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 4: // 砂浜の有無
+                case 4: // Presence or absence of sandy beach
                     if (_key == SortKey.Beach)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -879,7 +879,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 5: // インフラ
+                case 5: // infrastructure
                     if (_key == SortKey.Infrastructure)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -890,7 +890,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 6: // IC
+                case 6: // I C
                     if (_key == SortKey.Ic)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -901,7 +901,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 7: // 労働力
+                case 7: // Labor force
                     if (_key == SortKey.Manpower)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -912,7 +912,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 8: // エネルギー
+                case 8: // energy
                     if (_key == SortKey.Energy)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -923,7 +923,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 9: // 金属
+                case 9: // metal
                     if (_key == SortKey.Metal)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -934,7 +934,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 10: // 希少資源
+                case 10: // Rare resources
                     if (_key == SortKey.RareMaterials)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -945,7 +945,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 11: // 石油
+                case 11: // oil
                     if (_key == SortKey.Oil)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -957,19 +957,19 @@ namespace HoI2Editor.Forms
                     break;
 
                 default:
-                    // 項目のない列をクリックした時には何もしない
+                    // Do nothing when clicking on a column with no items
                     return;
             }
 
-            // プロヴィンスリストをソートする
+            // Sort the provisions list
             SortProvinceList();
 
-            // プロヴィンスリストを更新する
+            // Update the province list
             UpdateProvinceList();
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the Providence list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -983,10 +983,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの項目を作成する
+        ///     Create an item in the Providence list view
         /// </summary>
-        /// <param name="province">プロヴィンスデータ</param>
-        /// <returns>プロヴィンスリストビューの項目</returns>
+        /// <param name="province">Providence data</param>
+        /// <returns>Province list view items</returns>
         private static ListViewItem CreateProvinceListViewItem(Province province)
         {
             if (province == null)
@@ -1015,12 +1015,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中のプロヴィンスデータを取得する
+        ///     Get the selected province data
         /// </summary>
-        /// <returns>選択中のプロヴィンスデータ</returns>
+        /// <returns>Selected province data</returns>
         private Province GetSelectedProvince()
         {
-            // 選択項目がない場合
+            // If there is no selection
             if (provinceListView.SelectedItems.Count == 0)
             {
                 return null;
@@ -1031,17 +1031,17 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 編集項目
+        #region Edit items
 
         /// <summary>
-        ///     編集項目を初期化する
+        ///     Initialize edit items
         /// </summary>
         private void InitEditableItems()
         {
             Graphics g = Graphics.FromHwnd(Handle);
             int margin = DeviceCaps.GetScaledWidth(2) + 1;
 
-            // 大陸
+            // Continent
             continentComboBox.BeginUpdate();
             continentComboBox.Items.Clear();
             int width = continentComboBox.Width;
@@ -1054,7 +1054,7 @@ namespace HoI2Editor.Forms
             continentComboBox.DropDownWidth = width;
             continentComboBox.EndUpdate();
 
-            // 地方
+            // Local
             regionComboBox.BeginUpdate();
             regionComboBox.Items.Clear();
             width = regionComboBox.Width;
@@ -1069,7 +1069,7 @@ namespace HoI2Editor.Forms
             regionComboBox.DropDownWidth = width;
             regionComboBox.EndUpdate();
 
-            // 地域
+            // area
             areaComboBox.BeginUpdate();
             areaComboBox.Items.Clear();
             width = areaComboBox.Width;
@@ -1084,7 +1084,7 @@ namespace HoI2Editor.Forms
             areaComboBox.DropDownWidth = width;
             areaComboBox.EndUpdate();
 
-            // 気候
+            // climate
             climateComboBox.BeginUpdate();
             climateComboBox.Items.Clear();
             width = climateComboBox.Width;
@@ -1097,7 +1097,7 @@ namespace HoI2Editor.Forms
             climateComboBox.DropDownWidth = width;
             climateComboBox.EndUpdate();
 
-            // 地形
+            // terrain
             terrainComboBox.BeginUpdate();
             terrainComboBox.Items.Clear();
             width = terrainComboBox.Width;
@@ -1112,34 +1112,34 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を更新する
+        ///     Update edit items
         /// </summary>
         private void UpdateEditableItems()
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             UpdateEditableItemsValue(province);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateEditableItemsColor(province);
 
-            // プロヴィンス画像を更新する
+            // Update the Providence image
             UpdateProvinceImage(province);
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="province">プロヴィンスデータ</param>
+        /// <param name="province">Providence data</param>
         private void UpdateEditableItemsValue(Province province)
         {
-            // 基本設定
+            // basic setting
             idNumericUpDown.Value = province.Id;
             nameTextBox.Text = province.GetName();
             if (Provinces.Continents.Contains(province.Continent))
@@ -1188,7 +1188,7 @@ namespace HoI2Editor.Forms
                 terrainComboBox.Text = Provinces.GetTerrainName(province.Terrain);
             }
 
-            // 資源設定
+            // Resource setting
             infraTextBox.Text = DoubleHelper.ToString(province.Infrastructure);
             icTextBox.Text = DoubleHelper.ToString(province.Ic);
             manpowerTextBox.Text = DoubleHelper.ToString(province.Manpower);
@@ -1197,7 +1197,7 @@ namespace HoI2Editor.Forms
             rareMaterialsTextBox.Text = DoubleHelper.ToString(province.RareMaterials);
             oilTextBox.Text = DoubleHelper.ToString(province.Oil);
 
-            // 座標設定
+            // Coordinate setting
             beachCheckBox.Checked = province.Beaches;
             beachXNumericUpDown.Value = province.BeachXPos;
             beachYNumericUpDown.Value = province.BeachYPos;
@@ -1240,12 +1240,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="province">プロヴィンスデータ</param>
+        /// <param name="province">Providence data</param>
         private void UpdateEditableItemsColor(Province province)
         {
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             continentComboBox.Refresh();
             regionComboBox.Refresh();
             areaComboBox.Refresh();
@@ -1253,7 +1253,7 @@ namespace HoI2Editor.Forms
             terrainComboBox.Refresh();
             portSeaZoneComboBox.Refresh();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             idNumericUpDown.ForeColor = province.IsDirty(ProvinceItemId.Id) ? Color.Red : SystemColors.WindowText;
             nameTextBox.ForeColor = province.IsDirty(ProvinceItemId.Name) ? Color.Red : SystemColors.WindowText;
 
@@ -1344,7 +1344,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を有効化する
+        ///     Enable edit items
         /// </summary>
         private void EnableEditableItems()
         {
@@ -1352,7 +1352,7 @@ namespace HoI2Editor.Forms
             resourceGroupBox.Enabled = true;
             positionGroupBox.Enabled = true;
 
-            // 無効化時にクリアした文字列を再設定する
+            // Reset the character string cleared at the time of invalidation
             idNumericUpDown.Text = IntHelper.ToString((int) idNumericUpDown.Value);
             beachXNumericUpDown.Text = IntHelper.ToString((int) beachXNumericUpDown.Value);
             beachYNumericUpDown.Text = IntHelper.ToString((int) beachYNumericUpDown.Value);
@@ -1381,7 +1381,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を無効化する
+        ///     Disable edit items
         /// </summary>
         private void DisableEditableItems()
         {
@@ -1441,7 +1441,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     港の海域コンボボックスの項目を更新する
+        ///     Update the item of the sea area combo box of the port
         /// </summary>
         private void UpdateSeaZoneItems()
         {
@@ -1465,9 +1465,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス画像を更新する
+        ///     Update province images
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="province">Providence</param>
         private void UpdateProvinceImage(Province province)
         {
             string fileName = Game.GetReadFileName(Game.GetProvinceImageFileName(province.Id));
@@ -1475,22 +1475,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     大陸コンボボックスの項目描画処理
+        ///     Item drawing process of continental combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnContinentComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -1508,27 +1508,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     地方コンボボックスの項目描画処理
+        ///     Item drawing process of local combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRegionComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -1546,27 +1546,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     地域コンボボックスの項目描画処理
+        ///     Item drawing process of regional combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAreaComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -1584,27 +1584,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     気候コンボボックスの項目描画処理
+        ///     Item drawing process of climate combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClimateComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -1622,27 +1622,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     地形コンボボックスの項目描画処理
+        ///     Item drawing process of terrain combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTerrainComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -1660,27 +1660,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     港の海域コンボボックスの項目描画処理
+        ///     Item drawing process of the sea area combo box of the port
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPortSeaZoneComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -1699,25 +1699,25 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     名前文字列変更時の処理
+        ///     Processing when changing the name string
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string name = nameTextBox.Text;
             if (string.IsNullOrEmpty(name))
             {
@@ -1736,34 +1736,34 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Province] name: {0} -> {1} ({2})", province.GetName(), name, province.Id);
 
-            // 値を更新する
+            // Update value
             Config.SetText(province.Name, name, Game.ProvinceTextFileName);
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[0].Text = province.GetName();
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             province.SetDirty(ProvinceItemId.Name);
 
-            // 文字色を変更する
+            // Change the font color
             nameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     大陸変更時の処理
+        ///     Processing when changing continents
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnContinentComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (continentComboBox.SelectedIndex == -1)
             {
                 return;
@@ -1777,32 +1777,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] continent: {0} -> {1} ({2}: {3})", Provinces.GetContinentName(province.Continent),
                 Provinces.GetContinentName(continent), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             Provinces.ModifyContinent(province, continent);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Continent);
 
-            // 大陸コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the continent combo box
             continentComboBox.Refresh();
         }
 
         /// <summary>
-        ///     地方変更時の処理
+        ///     Processing when changing regions
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRegionComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (regionComboBox.SelectedIndex == -1)
             {
                 return;
@@ -1816,32 +1816,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] region: {0} -> {1} ({2}: {3})", Provinces.GetRegionName(province.Region),
                 Provinces.GetRegionName(region), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             Provinces.ModifyRegion(province, region);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Region);
 
-            // 地方コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the local combo box
             regionComboBox.Refresh();
         }
 
         /// <summary>
-        ///     地域変更時の処理
+        ///     Processing when changing regions
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAreaComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (areaComboBox.SelectedIndex == -1)
             {
                 return;
@@ -1855,32 +1855,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] area: {0} -> {1} ({2}: {3})", Provinces.GetAreaName(province.Area),
                 Provinces.GetAreaName(area), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             Provinces.ModifyArea(province, area);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Area);
 
-            // 地域コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the area combo box
             areaComboBox.Refresh();
         }
 
         /// <summary>
-        ///     気候変更時の処理
+        ///     Treatment at the time of climate change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnClimateComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (climateComboBox.SelectedIndex == -1)
             {
                 return;
@@ -1894,32 +1894,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] climate: {0} -> {1} ({2}: {3})", Provinces.GetClimateName(province.Climate),
                 Provinces.GetClimateName(climate), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Climate = climate;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Climate);
 
-            // 気候コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the climate combo box
             climateComboBox.Refresh();
         }
 
         /// <summary>
-        ///     地形変更時の処理
+        ///     Processing when changing terrain
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTerrainComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (terrainComboBox.SelectedIndex == -1)
             {
                 return;
@@ -1933,32 +1933,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] terrain: {0} -> {1} ({2}: {3})", Provinces.GetTerrainName(province.Terrain),
                 Provinces.GetTerrainName(terrain), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Terrain = terrain;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Terrain);
 
-            // 地形コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the terrain combo box
             terrainComboBox.Refresh();
         }
 
         /// <summary>
-        ///     インフラ変更時の処理
+        ///     Processing when infrastructure changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnInfraTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(infraTextBox.Text, out val))
             {
@@ -1966,7 +1966,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.Infrastructure))
             {
                 return;
@@ -1975,35 +1975,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] infrastructure: {0} -> {1} ({2}: {3})", province.Infrastructure, val, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Infrastructure = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[5].Text = DoubleHelper.ToString(province.Infrastructure);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Infrastructure);
 
-            // 文字色を変更する
+            // Change the font color
             infraTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     IC変更時の処理
+        ///     I C Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnIcTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(icTextBox.Text, out val))
             {
@@ -2011,7 +2011,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.Ic))
             {
                 return;
@@ -2019,35 +2019,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Province] ic: {0} -> {1} ({2}: {3})", province.Ic, val, province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Ic = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[6].Text = DoubleHelper.ToString(province.Ic);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Ic);
 
-            // 文字色を変更する
+            // Change the font color
             icTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     労働力変更時の処理
+        ///     Processing when changing labor force
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnManpowerTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(manpowerTextBox.Text, out val))
             {
@@ -2055,7 +2055,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.Manpower))
             {
                 return;
@@ -2064,35 +2064,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] manpower: {0} -> {1} ({2}: {3})", province.Manpower, val, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Manpower = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[7].Text = DoubleHelper.ToString(province.Manpower);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Manpower);
 
-            // 文字色を変更する
+            // Change the font color
             manpowerTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     エネルギー変更時の処理
+        ///     Processing when changing energy
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEnergyTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(energyTextBox.Text, out val))
             {
@@ -2100,7 +2100,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.Energy))
             {
                 return;
@@ -2108,35 +2108,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Province] energy: {0} -> {1} ({2}: {3})", province.Energy, val, province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Energy = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[8].Text = DoubleHelper.ToString(province.Energy);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Energy);
 
-            // 文字色を変更する
+            // Change the font color
             energyTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     金属変更時の処理
+        ///     Processing when changing metal
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMetalTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(metalTextBox.Text, out val))
             {
@@ -2144,7 +2144,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.Metal))
             {
                 return;
@@ -2152,35 +2152,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Province] metal: {0} -> {1} ({2}: {3})", province.Metal, val, province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Metal = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[9].Text = DoubleHelper.ToString(province.Metal);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Metal);
 
-            // 文字色を変更する
+            // Change the font color
             metalTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     希少資源変更時の処理
+        ///     Processing when changing rare resources
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRareMaterialsTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(rareMaterialsTextBox.Text, out val))
             {
@@ -2188,7 +2188,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.RareMaterials))
             {
                 return;
@@ -2197,35 +2197,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] rare materials: {0} -> {1} ({2}: {3})", province.RareMaterials, val, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.RareMaterials = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[10].Text = DoubleHelper.ToString(province.RareMaterials);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.RareMaterials);
 
-            // 文字色を変更する
+            // Change the font color
             rareMaterialsTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     石油変更時の処理
+        ///     Processing when changing oil
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOilNumericUpDownValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             double val;
             if (!DoubleHelper.TryParse(oilTextBox.Text, out val))
             {
@@ -2233,7 +2233,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (DoubleHelper.IsEqual(val, province.Oil))
             {
                 return;
@@ -2241,35 +2241,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Province] oil: {0} -> {1} ({2}: {3})", province.Oil, val, province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Oil = val;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[11].Text = DoubleHelper.ToString(province.Oil);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Oil);
 
-            // 文字色を変更する
+            // Change the font color
             oilTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     砂浜チェックボックスのチェック状態変化時の処理
+        ///     Processing when the check status of the sandy beach check box changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBeachCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool flag = beachCheckBox.Checked;
             if (flag == province.Beaches)
             {
@@ -2279,35 +2279,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] beach: {0} -> {1} ({2}: {3})", BoolHelper.ToString(province.Beaches),
                 BoolHelper.ToString(flag), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.Beaches = flag;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[4].Text = province.Beaches ? Resources.Yes : Resources.No;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.Beaches);
 
-            // 文字色を変更する
+            // Change the font color
             beachCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     砂浜のX座標変更時の処理
+        ///     On the sandy beach X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBeachXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) beachXNumericUpDown.Value;
             if (x == province.BeachXPos)
             {
@@ -2317,32 +2317,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] beach position x: {0} -> {1} ({2}: {3})", province.BeachXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.BeachXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.BeachXPos);
 
-            // 文字色を変更する
+            // Change the font color
             beachXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     砂浜のY座標変更時の処理
+        ///     On the sandy beach Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBeachYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) beachYNumericUpDown.Value;
             if (y == province.BeachYPos)
             {
@@ -2352,32 +2352,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] beach position y: {0} -> {1} ({2}: {3})", province.BeachYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.BeachYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.BeachYPos);
 
-            // 文字色を変更する
+            // Change the font color
             beachYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     砂浜のアイコン変更時の処理
+        ///     Processing when changing the icon of the sandy beach
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBeachIconNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int icon = (int) beachIconNumericUpDown.Value;
             if (icon == province.BeachIcon)
             {
@@ -2387,32 +2387,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] beach icon: {0} -> {1} ({2}: {3})", province.BeachIcon, icon, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.BeachIcon = icon;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.BeachIcon);
 
-            // 文字色を変更する
+            // Change the font color
             beachIconNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     港チェックボックスのチェック状態変化時の処理
+        ///     Processing when the check status of the port check box changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPortCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool flag = portCheckBox.Checked;
             if (flag == province.PortAllowed)
             {
@@ -2422,35 +2422,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] port allowed: {0} -> {1} ({2}: {3})", BoolHelper.ToString(province.PortAllowed),
                 BoolHelper.ToString(flag), province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.PortAllowed = flag;
 
-            // プロヴィンスリストビューの項目を更新する
+            // Update items in the province list view
             provinceListView.SelectedItems[0].SubItems[3].Text = province.PortAllowed ? Resources.Yes : Resources.No;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.PortAllowed);
 
-            // 文字色を変更する
+            // Change the font color
             portCheckBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     港のX座標変更時の処理
+        ///     Of the harbor X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPortXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) portXNumericUpDown.Value;
             if (x == province.PortXPos)
             {
@@ -2460,32 +2460,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] port position x: {0} -> {1} ({2}: {3})", province.PortXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.PortXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.PortXPos);
 
-            // 文字色を変更する
+            // Change the font color
             portXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     港のY座標変更時の処理
+        ///     Of the harbor Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPortYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) portYNumericUpDown.Value;
             if (y == province.PortYPos)
             {
@@ -2495,32 +2495,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] port position y: {0} -> {1} ({2}: {3})", province.PortYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.PortYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.PortYPos);
 
-            // 文字色を変更する
+            // Change the font color
             portYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     港の海域変更時の処理
+        ///     Processing when changing the sea area of the port
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPortSeaZoneNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int seaZone = (int) portSeaZoneNumericUpDown.Value;
             if (seaZone == province.PortSeaZone)
             {
@@ -2534,10 +2534,10 @@ namespace HoI2Editor.Forms
                 oldProv != null ? oldProv.GetName() : "", seaZone, newProv != null ? newProv.GetName() : "",
                 province.Id, province.GetName());
 
-            // 値を更新する
+            // Update value
             province.PortSeaZone = seaZone;
 
-            // 港の海域コンボボックスの項目を更新する
+            // Update the item of the sea area combo box of the port
             if (Provinces.SeaZones.Contains(seaZone))
             {
                 portSeaZoneComboBox.SelectedIndex = Provinces.SeaZones.IndexOf(seaZone);
@@ -2555,32 +2555,32 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.PortSeaZone);
 
-            // 文字色を変更する
+            // Change the font color
             portSeaZoneNumericUpDown.ForeColor = Color.Red;
 
-            // 港の海域コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the sea area combo box of the port
             portSeaZoneComboBox.Refresh();
         }
 
         /// <summary>
-        ///     港の海域コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the sea area combo box of the port
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPortSeaZoneComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (portSeaZoneComboBox.SelectedIndex == -1)
             {
                 return;
@@ -2591,25 +2591,25 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 港の海域の値を更新する
+            // Update the value of the sea area of the port
             portSeaZoneNumericUpDown.Value = seaZone;
         }
 
         /// <summary>
-        ///     都市のX座標変更時の処理
+        ///     Of city X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCityXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) cityXNumericUpDown.Value;
             if (x == province.CityXPos)
             {
@@ -2619,32 +2619,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] city position x: {0} -> {1} ({2}: {3})", province.CityXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.CityXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.CityXPos);
 
-            // 文字色を変更する
+            // Change the font color
             cityXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     都市のY座標変更時の処理
+        ///     Of city Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCityYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) cityYNumericUpDown.Value;
             if (y == province.CityYPos)
             {
@@ -2654,32 +2654,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] city position y: {0} -> {1} ({2}: {3})", province.CityYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.CityYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.CityYPos);
 
-            // 文字色を変更する
+            // Change the font color
             cityYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     要塞のX座標変更時の処理
+        ///     Fortress X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFortXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) fortXNumericUpDown.Value;
             if (x == province.FortXPos)
             {
@@ -2689,32 +2689,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fort position x: {0} -> {1} ({2}: {3})", province.FortXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FortXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FortXPos);
 
-            // 文字色を変更する
+            // Change the font color
             fortXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     要塞のY座標変更時の処理
+        ///     Fortress Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFortYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) fortYNumericUpDown.Value;
             if (y == province.FortYPos)
             {
@@ -2724,32 +2724,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fort position y: {0} -> {1} ({2}: {3})", province.FortYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FortYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FortYPos);
 
-            // 文字色を変更する
+            // Change the font color
             fortYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対空砲のX座標変更時の処理
+        ///     Anti-aircraft gun X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAaXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) aaXNumericUpDown.Value;
             if (x == province.AaXPos)
             {
@@ -2759,32 +2759,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] aa position x: {0} -> {1} ({2}: {3})", province.AaXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.AaXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.AaXPos);
 
-            // 文字色を変更する
+            // Change the font color
             aaXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     対空砲のY座標変更時の処理
+        ///     Anti-aircraft gun Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAaYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) aaYNumericUpDown.Value;
             if (y == province.AaYPos)
             {
@@ -2794,32 +2794,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] aa position y: {0} -> {1} ({2}: {3})", province.AaYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.AaYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.AaYPos);
 
-            // 文字色を変更する
+            // Change the font color
             aaYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     軍隊のX座標変更時の処理
+        ///     Of the army X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnArmyXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) armyXNumericUpDown.Value;
             if (x == province.ArmyXPos)
             {
@@ -2829,32 +2829,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] army position x: {0} -> {1} ({2}: {3})", province.ArmyXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.ArmyXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.ArmyXPos);
 
-            // 文字色を変更する
+            // Change the font color
             armyXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     軍隊のY座標変更時の処理
+        ///     Of the army Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnArmyYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) armyYNumericUpDown.Value;
             if (y == province.ArmyYPos)
             {
@@ -2864,32 +2864,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] army position y: {0} -> {1} ({2}: {3})", province.ArmyYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.ArmyYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.ArmyYPos);
 
-            // 文字色を変更する
+            // Change the font color
             armyYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     カウンターのX座標変更時の処理
+        ///     Of the counter X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCounterXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) counterXNumericUpDown.Value;
             if (x == province.CounterXPos)
             {
@@ -2899,32 +2899,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] counter position x: {0} -> {1} ({2}: {3})", province.CounterXPos, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.CounterXPos = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.CounterXPos);
 
-            // 文字色を変更する
+            // Change the font color
             counterXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     カウンターのY座標変更時の処理
+        ///     Of the counter Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCounterYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) counterYNumericUpDown.Value;
             if (y == province.CounterYPos)
             {
@@ -2934,32 +2934,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] counter position y: {0} -> {1} ({2}: {3})", province.CounterYPos, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.CounterYPos = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.CounterYPos);
 
-            // 文字色を変更する
+            // Change the font color
             counterYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしX座標1変更時の処理
+        ///     fill X Coordinate 1 Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillXNumericUpDown1ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) fillXNumericUpDown1.Value;
             if (x == province.FillCoordX1)
             {
@@ -2969,32 +2969,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position x1: {0} -> {1} ({2}: {3})", province.FillCoordX1, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordX1 = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordX1);
 
-            // 文字色を変更する
+            // Change the font color
             fillXNumericUpDown1.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしY座標1変更時の処理
+        ///     fill Y Coordinate 1 Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillYNumericUpDown1ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) fillYNumericUpDown1.Value;
             if (y == province.FillCoordY1)
             {
@@ -3004,32 +3004,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position y1: {0} -> {1} ({2}: {3})", province.FillCoordY1, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordY1 = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordY1);
 
-            // 文字色を変更する
+            // Change the font color
             fillYNumericUpDown1.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしX座標2変更時の処理
+        ///     fill X Coordinate 2 Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillXNumericUpDown2ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) fillXNumericUpDown2.Value;
             if (x == province.FillCoordX2)
             {
@@ -3039,32 +3039,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position x2: {0} -> {1} ({2}: {3})", province.FillCoordX2, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordX2 = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordX2);
 
-            // 文字色を変更する
+            // Change the font color
             fillXNumericUpDown2.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしY座標2変更時の処理
+        ///     fill YCoordinate 2 Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillYNumericUpDown2ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) fillYNumericUpDown2.Value;
             if (y == province.FillCoordY2)
             {
@@ -3074,32 +3074,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position y2: {0} -> {1} ({2}: {3})", province.FillCoordY2, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordY2 = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordY2);
 
-            // 文字色を変更する
+            // Change the font color
             fillYNumericUpDown2.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしX座標3変更時の処理
+        ///     fill X Coordinate 3 Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillXNumericUpDown3ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) fillXNumericUpDown3.Value;
             if (x == province.FillCoordX3)
             {
@@ -3109,32 +3109,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position x3: {0} -> {1} ({2}: {3})", province.FillCoordX3, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordX3 = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordX3);
 
-            // 文字色を変更する
+            // Change the font color
             fillXNumericUpDown3.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしY座標3変更時の処理
+        ///     fill Y Coordinate 3 Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillYNumericUpDown3ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) fillYNumericUpDown3.Value;
             if (y == province.FillCoordY3)
             {
@@ -3144,32 +3144,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position y3: {0} -> {1} ({2}: {3})", province.FillCoordY3, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordY3 = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordY3);
 
-            // 文字色を変更する
+            // Change the font color
             fillYNumericUpDown3.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしX座標4変更時の処理
+        ///     fill X Coordinate Four Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillXNumericUpDown4ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) fillXNumericUpDown4.Value;
             if (x == province.FillCoordX4)
             {
@@ -3179,32 +3179,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position x4: {0} -> {1} ({2}: {3})", province.FillCoordX4, x, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordX4 = x;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordX4);
 
-            // 文字色を変更する
+            // Change the font color
             fillXNumericUpDown4.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     塗りつぶしY座標4変更時の処理
+        ///     fill Y Coordinate Four Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFillYNumericUpDown4ValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) fillYNumericUpDown4.Value;
             if (y == province.FillCoordY4)
             {
@@ -3214,14 +3214,14 @@ namespace HoI2Editor.Forms
             Log.Info("[Province] fill coord position y4: {0} -> {1} ({2}: {3})", province.FillCoordY4, y, province.Id,
                 province.GetName());
 
-            // 値を更新する
+            // Update value
             province.FillCoordY4 = y;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Provinces.SetDirty();
             province.SetDirty(ProvinceItemId.FillCoordY4);
 
-            // 文字色を変更する
+            // Change the font color
             fillYNumericUpDown4.ForeColor = Color.Red;
         }
 

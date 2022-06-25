@@ -12,45 +12,45 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     新規軍団名を保持するクラス
+    ///     Class holding new corps name
     /// </summary>
     public static class CorpsNames
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     軍団名リスト
+        ///     Army name list
         /// </summary>
         private static readonly List<string>[,] Items =
             new List<string>[Enum.GetValues(typeof (Branch)).Length, Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     兵科ごとの編集済みフラグ
+        ///     Edited flags for each military department
         /// </summary>
         private static readonly bool[] BranchDirtyFlags = new bool[Enum.GetValues(typeof (Branch)).Length];
 
         /// <summary>
-        ///     国家ごとの編集済みフラグ
+        ///     Edited flags by nation
         /// </summary>
         private static readonly bool[,] CountryDirtyFlags =
             new bool[Enum.GetValues(typeof (Branch)).Length, Enum.GetValues(typeof (Country)).Length];
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     軍団名定義ファイルの再読み込みを要求する
+        ///     Request reloading of army name definition file
         /// </summary>
         public static void RequestReload()
         {
@@ -58,11 +58,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     軍団名定義ファイル群を再読み込みする
+        ///     Reload the army name definition files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -74,17 +74,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     軍団名定義ファイルを読み込む
+        ///     Read the corps name definition file
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 軍団名リストをクリアする
+            // Clear the corps name list
             foreach (
                 Branch branch in Enum.GetValues(typeof (Branch)).Cast<Branch>().Where(branch => branch != Branch.None))
             {
@@ -96,7 +96,7 @@ namespace HoI2Editor.Models
 
             bool error = false;
 
-            // 陸軍軍団名定義ファイルを読み込む
+            // Read the army corps name definition file
             string fileName = Game.GetReadFileName(Game.ArmyNamesPathName);
             if (File.Exists(fileName))
             {
@@ -121,7 +121,7 @@ namespace HoI2Editor.Models
                 error = true;
             }
 
-            // 海軍軍団名定義ファイルを読み込む
+            // Read the Navy Corps name definition file
             fileName = Game.GetReadFileName(Game.NavyNamesPathName);
             if (File.Exists(fileName))
             {
@@ -146,7 +146,7 @@ namespace HoI2Editor.Models
                 error = true;
             }
 
-            // 空軍軍団名定義ファイルを読み込む
+            // Read the Air Force Corps name definition file
             fileName = Game.GetReadFileName(Game.AirNamesPathName);
             if (File.Exists(fileName))
             {
@@ -171,24 +171,24 @@ namespace HoI2Editor.Models
                 error = true;
             }
 
-            // 読み込みに失敗していれば戻る
+            // Return if reading fails
             if (error)
             {
                 return;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     軍団名定義ファイルを読み込む
+        ///     Read the corps name definition file
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="fileName">file name</param>
         private static void LoadFile(Branch branch, string fileName)
         {
             Log.Verbose("[CorpsName] Load: {0}", Path.GetFileName(fileName));
@@ -203,33 +203,33 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     軍団名定義行を解釈する
+        ///     Interpret the corps name definition line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <param name="branch">兵科</param>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <param name="branch">Military department</param>
         private static void ParseLine(CsvLexer lexer, Branch branch)
         {
             string[] tokens = lexer.GetTokens();
 
-            // 空行を読み飛ばす
+            // Skip blank lines
             if (tokens == null)
             {
                 return;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length != 2)
             {
                 Log.Warning("[CorpsName] Invalid token count: {0} ({1} L{2})\n", tokens.Length, lexer.FileName,
                     lexer.LineNo);
-                // 余分な項目がある場合は解析を続ける
+                // Continue analysis if there are extra items
                 if (tokens.Length < 2)
                 {
                     return;
                 }
             }
 
-            // 国タグ
+            // Country tag
             string countryName = tokens[0].ToUpper();
             if (!Countries.StringMap.ContainsKey(countryName))
             {
@@ -238,30 +238,30 @@ namespace HoI2Editor.Models
             }
             Country country = Countries.StringMap[countryName];
 
-            // 軍団名
+            // Army name
             string name = tokens[1];
             if (string.IsNullOrEmpty(name))
             {
                 return;
             }
 
-            // 軍団名を追加する
+            // Add corps name
             AddName(name, branch, country);
         }
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     軍団名定義ファイルを保存する
+        ///     Save the corps name definition file
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
             bool error = false;
 
-            // 陸軍軍団名定義ファイルを保存する
+            // Save the Army Corps name definition file
             if (IsDirty(Branch.Army))
             {
                 string fileName = Game.GetWriteFileName(Game.ArmyNamesPathName);
@@ -283,7 +283,7 @@ namespace HoI2Editor.Models
             }
 
 
-            // 海軍軍団名定義ファイルを保存する
+            // Save the Navy Corps name definition file
             if (IsDirty(Branch.Navy))
             {
                 string fileName = Game.GetWriteFileName(Game.NavyNamesPathName);
@@ -304,7 +304,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 空軍軍団名定義ファイルを保存する
+            // Save the Air Force Corps name definition file
             if (IsDirty(Branch.Airforce))
             {
                 string fileName = Game.GetWriteFileName(Game.AirNamesPathName);
@@ -325,26 +325,26 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 保存に失敗していれば戻る
+            // Return if saving fails
             if (error)
             {
                 return false;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
             return true;
         }
 
         /// <summary>
-        ///     軍団名定義ファイルを保存する
+        ///     Save the corps name definition file
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="fileName">file name</param>
         private static void SaveFile(Branch branch, string fileName)
         {
-            // dbフォルダがなければ作成する
+            // db db. If there is no folder, create it
             string folderName = Game.GetWriteFileName(Game.DatabasePathName);
             if (!Directory.Exists(folderName))
             {
@@ -367,46 +367,46 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 軍団名操作
+        #region Army name operation
 
         /// <summary>
-        ///     軍団名リストを取得する
+        ///     Get a corps name list
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
-        /// <returns>軍団名リスト</returns>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
+        /// <returns>Corps name list</returns>
         public static IEnumerable<string> GetNames(Branch branch, Country country)
         {
             return Items[(int) branch, (int) country] ?? new List<string>();
         }
 
         /// <summary>
-        ///     軍団名を追加する
+        ///     Add corps name
         /// </summary>
-        /// <param name="name">軍団名</param>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="name">Corps name</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
         private static void AddName(string name, Branch branch, Country country)
         {
-            // 未登録の場合はリストを作成する
+            // Create a list if not registered
             if (Items[(int) branch, (int) country] == null)
             {
                 Items[(int) branch, (int) country] = new List<string>();
             }
 
-            // 軍団名を追加する
+            // Add corps name
             Items[(int) branch, (int) country].Add(name);
         }
 
         /// <summary>
-        ///     軍団名リストを設定する
+        ///     Set the corps name list
         /// </summary>
-        /// <param name="names">軍団名リスト</param>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="names">Corps name list</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
         public static void SetNames(List<string> names, Branch branch, Country country)
         {
-            // 軍団名リストに変更がなければ戻る
+            // Return if there is no change in the corps name list
             if (Items[(int) branch, (int) country] != null && names.SequenceEqual(Items[(int) branch, (int) country]))
             {
                 return;
@@ -414,24 +414,24 @@ namespace HoI2Editor.Models
 
             Log.Info("[CorpsName] Set: [{0}] <{1}>", Branches.GetName(branch), Countries.Strings[(int) country]);
 
-            // 軍団名リストを設定する
+            // Set up a corps name list
             Items[(int) branch, (int) country] = names;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetDirty(branch, country);
         }
 
         /// <summary>
-        ///     軍団名を置換する
+        ///     Replace the corps name
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void Replace(string s, string t, Branch branch, Country country, bool regex)
         {
-            // 未登録ならば何もしない
+            // Do nothing if not registered
             if (Items[(int) branch, (int) country] == null)
             {
                 return;
@@ -443,11 +443,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての軍団名を置換する
+        ///     Replace all corps names
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAll(string s, string t, bool regex)
         {
             foreach (Branch branch in Enum.GetValues(typeof (Branch)))
@@ -460,12 +460,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての兵科の軍団名を置換する
+        ///     Replace all military corps names
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAllBranches(string s, string t, Country country, bool regex)
         {
             foreach (Branch branch in Enum.GetValues(typeof (Branch)))
@@ -475,12 +475,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての国の軍団名を置換する
+        ///     Replace army names in all countries
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="branch">兵科</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAllCountries(string s, string t, Branch branch, bool regex)
         {
             foreach (Country country in Countries.Tags)
@@ -490,18 +490,18 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     軍団名を連番追加する
+        ///     Add a serial number to the corps name
         /// </summary>
-        /// <param name="prefix">接頭辞</param>
-        /// <param name="suffix">接尾辞</param>
-        /// <param name="start">開始番号</param>
-        /// <param name="end">終了番号</param>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="prefix">prefix</param>
+        /// <param name="suffix">Suffix</param>
+        /// <param name="start">Starting number</param>
+        /// <param name="end">End number</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
         public static void AddSequential(string prefix, string suffix, int start, int end, Branch branch,
             Country country)
         {
-            // 未登録の場合はリストを作成する
+            // Create a list if not registered
             if (Items[(int) branch, (int) country] == null)
             {
                 Items[(int) branch, (int) country] = new List<string>();
@@ -519,13 +519,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     軍団名を連番補間する
+        ///     Serial number interpolation of army names
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
         public static void Interpolate(Branch branch, Country country)
         {
-            // 未登録ならば何もしない
+            // Do nothing if not registered
             if (Items[(int) branch, (int) country] == null)
             {
                 return;
@@ -545,13 +545,13 @@ namespace HoI2Editor.Models
                     {
                         if (!found)
                         {
-                            // 出力パターンを設定する
+                            // Set the output pattern
                             pattern = r.Replace(name, "$1{0}$3");
                             found = true;
                         }
                         else
                         {
-                            // 前の番号と現在の番号の間を補間する
+                            // Interpolate between the previous number and the current number
                             if (prev + 1 < n)
                             {
                                 for (int i = prev + 1; i < n; i++)
@@ -574,7 +574,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての軍団名を連番補間する
+        ///     Serial number interpolation of all army names
         /// </summary>
         public static void InterpolateAll()
         {
@@ -588,9 +588,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての兵科の軍団名を連番補間する
+        ///     Serial number interpolation of all military corps names
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         public static void InterpolateAllBranches(Country country)
         {
             foreach (Branch branch in Enum.GetValues(typeof (Branch)))
@@ -600,9 +600,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての国の軍団名を連番補間する
+        ///     Interpolate the names of all nations in sequence
         /// </summary>
-        /// <param name="branch">兵科</param>
+        /// <param name="branch">Military department</param>
         public static void InterpolateAllCountries(Branch branch)
         {
             foreach (Country country in Countries.Tags)
@@ -613,43 +613,43 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="branch">Military department</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Branch branch)
         {
             return BranchDirtyFlags[(int) branch];
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Branch branch, Country country)
         {
             return CountryDirtyFlags[(int) branch, (int) country];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <param name="country">国タグ</param>
+        /// <param name="branch">Military department</param>
+        /// <param name="country">Country tag</param>
         private static void SetDirty(Branch branch, Country country)
         {
             CountryDirtyFlags[(int) branch, (int) country] = true;
@@ -658,7 +658,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         private static void ResetDirtyAll()
         {

@@ -5,28 +5,28 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     トリガー
+    ///     trigger
     /// </summary>
     public class Trigger
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     トリガーの種類
+        ///     Trigger type
         /// </summary>
         public TriggerType Type { get; set; }
 
         /// <summary>
-        ///     トリガーの値
+        ///     Trigger value
         /// </summary>
         public object Value { get; set; }
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     トリガー文字列テーブル
+        ///     Trigger string table
         /// </summary>
         public static readonly string[] TypeStringTable =
         {
@@ -166,7 +166,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     トリガーパラメータ種類テーブル
+        ///     Trigger parameter type table
         /// </summary>
         public static readonly TriggerParamType[] ParamTypeTable =
         {
@@ -174,13 +174,13 @@ namespace HoI2Editor.Models
             TriggerParamType.Container, // and
             TriggerParamType.Container, // or
             TriggerParamType.Container, // not
-            TriggerParamType.Int, // year
+            TriggerParamType.Int, // year year
             TriggerParamType.Int, // month
             TriggerParamType.Int, // day
-            TriggerParamType.Int, // event
+            TriggerParamType.Int, // event event
             TriggerParamType.Random, // random
             TriggerParamType.CountryYesNo, // ai
-            TriggerParamType.String, // flag
+            TriggerParamType.String, // flag flag
             TriggerParamType.String, // local_flag
             TriggerParamType.IntelDiff, // intel_diff
             TriggerParamType.Int, // dissent
@@ -205,7 +205,7 @@ namespace HoI2Editor.Models
             TriggerParamType.Int, // oil
             TriggerParamType.Int, // rare_materials
             TriggerParamType.Int, // metal
-            TriggerParamType.Int, // supplies
+            TriggerParamType.Int, // supplies supplies
             TriggerParamType.Int, // manpower
             TriggerParamType.ProvinceCountry2, // owned
             TriggerParamType.ProvinceCountry2, // control
@@ -244,17 +244,17 @@ namespace HoI2Editor.Models
             TriggerParamType.Size, // nuclear_submarine
             TriggerParamType.Size, // transport
             TriggerParamType.Int, // army
-            TriggerParamType.Country, // exists
+            TriggerParamType.Country, // exists exists
             TriggerParamType.CountryPair, // alliance
             TriggerParamType.CountryPair, // access
             TriggerParamType.CountryPair, // non_aggression
             TriggerParamType.CountryPair, // trade
-            TriggerParamType.CountryPair, // guarantee
+            TriggerParamType.CountryPair, // guarantee guarantee
             TriggerParamType.CountryPair, // war
             TriggerParamType.CountryInt, // lost_vp
             TriggerParamType.CountryInt, // lost_national
             TriggerParamType.CountryInt, // lost_ic
-            TriggerParamType.Int, // axis
+            TriggerParamType.Int, // axis axis
             TriggerParamType.Int, // allies
             TriggerParamType.Int, // comintern
             TriggerParamType.Int, // vp
@@ -262,16 +262,16 @@ namespace HoI2Editor.Models
             TriggerParamType.Belligerence, // belligerence
             TriggerParamType.UnderAttack, // under_attack
             TriggerParamType.Country, // attack
-            TriggerParamType.Int, // difficulty
+            TriggerParamType.Int, // difficulty difficulty
             TriggerParamType.CountryDouble, // land_percentage
             TriggerParamType.CountryDouble, // naval_percentage
             TriggerParamType.CountryDouble, // air_percentage
-            TriggerParamType.Country, // country
+            TriggerParamType.Country, // country country
             TriggerParamType.Relation, // relation
             TriggerParamType.Int, // team
             TriggerParamType.ProvinceCountry2, // areaowned
             TriggerParamType.ProvinceCountry2, // areacontrol
-            TriggerParamType.Size, // ic
+            TriggerParamType.Size, // I C
             TriggerParamType.CapitalProvince, // capital_province
             TriggerParamType.CountryAlliance, // big_alliance
             TriggerParamType.CountryIdea, // national_idea
@@ -279,7 +279,7 @@ namespace HoI2Editor.Models
             TriggerParamType.TechTeam, // tech_ream
             TriggerParamType.Int, // money
             TriggerParamType.CountryPair, // military_control
-            TriggerParamType.Losses, // losses
+            TriggerParamType.Losses, // losses losses
             TriggerParamType.ProvinceBuilding, // province_building
             TriggerParamType.CountryInt, // participant
             TriggerParamType.Embargo, // embargo
@@ -288,7 +288,7 @@ namespace HoI2Editor.Models
             TriggerParamType.Int, // convoypool
             TriggerParamType.Resource, // stockpile
             TriggerParamType.Resource, // import
-            TriggerParamType.Resource, // export
+            TriggerParamType.Resource, // export export
             TriggerParamType.ResourceAll, // resource_shortage
             TriggerParamType.ProvinceCountry, // capital
             TriggerParamType.String, // continent
@@ -307,19 +307,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Trigger()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">コピー元のトリガー</param>
+        /// <param name="original">Copy source trigger</param>
         public Trigger(Trigger original)
         {
             Type = original.Type;
@@ -339,21 +339,21 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     文字列に変換する
+        ///     Convert to a string
         /// </summary>
-        /// <returns>文字列</returns>
+        /// <returns>Character string</returns>
         public override string ToString()
         {
-            // 単発トリガーの場合
+            // For single trigger
             if (ParamTypeTable[(int) Type] != TriggerParamType.Container)
             {
                 return $"{TypeStringTable[(int) Type]} = {ObjectHelper.ToString(Value)}";
             }
 
-            // コンテナトリガーの場合
+            // For container triggers
             StringBuilder sb = new StringBuilder();
             sb.AppendFormat("{0} = {{", TypeStringTable[(int) Type]);
             List<Trigger> triggers = Value as List<Trigger>;
@@ -372,7 +372,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     トリガーの種類
+    ///     Trigger type
     /// </summary>
     public enum TriggerType
     {
@@ -474,7 +474,7 @@ namespace HoI2Editor.Models
         AirPercentage,
         Country,
         Relation,
-        // AoDで追加
+        // AoD Add with
         Team,
         AreaOwned,
         AreaControl,
@@ -488,7 +488,7 @@ namespace HoI2Editor.Models
         MilitaryControl,
         Losses,
         ProvinceBuilding,
-        // DHで追加
+        // DH Add with
         Participant,
         Embargo,
         Claims,
@@ -514,7 +514,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     トリガーパラメータの種類
+    ///     Types of trigger parameters
     /// </summary>
     public enum TriggerParamType
     {

@@ -8,12 +8,12 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor
 {
     /// <summary>
-    ///     アプリケーションクラス
+    ///     Application class
     /// </summary>
     public static class HoI2EditorApplication
     {
         /// <summary>
-        ///     アプリケーションのエントリーポイント
+        ///     Application entry point
         /// </summary>
         [STAThread]
         public static void Main()
@@ -44,7 +44,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     メインスレッドの未処理例外ハンドラ
+        ///     Main thread unprocessed exception handler
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -54,7 +54,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     メインスレッド以外の未処理例外ハンドラ
+        ///     Unprocessed exception handler other than the main thread
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -68,9 +68,9 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     未処理例外ハンドラ
+        ///     Uncreted exception handler
         /// </summary>
-        /// <param name="e">例外</param>
+        /// <param name="e">exception exception</param>
         private static void UnhandledExceptionHandler(Exception e)
         {
             Log.Error($"===== {Resources.CriticalError} =====");

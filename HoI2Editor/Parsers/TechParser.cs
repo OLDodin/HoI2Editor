@@ -5,32 +5,32 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     技術データの構文解析クラス
+    ///     Technical data syntax analysis class
     /// </summary>
     public static class TechParser
     {
-        #region 内部定数
+        #region Internal fixed number
 
         /// <summary>
-        ///     ログ出力時のカテゴリ名
+        ///     Category name at the time of log output
         /// </summary>
         private const string LogCategory = "Tech";
 
         #endregion
 
-        #region 構文解析
+        #region Parsing
 
         /// <summary>
-        ///     技術ファイルを構文解析する
+        ///     Synthetic analysis of technical files
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>技術グループデータ</returns>
+        /// <param name="fileName">file name</param>
+        /// <returns>Technical group data</returns>
         public static TechGroup Parse(string fileName)
         {
             using (TextLexer lexer = new TextLexer(fileName, true))
             {
                 Token token = lexer.GetToken();
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -55,20 +55,20 @@ namespace HoI2Editor.Parsers
                     return group;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 return null;
             }
         }
 
         /// <summary>
-        ///     technologyセクションを構文解析する
+        ///     Synthetic analysis of the Technology section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>技術グループデータ</returns>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Technical group data</returns>
         private static TechGroup ParseTechnology(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -89,19 +89,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -116,10 +116,10 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // id
+                // id id
                 if (keyword.Equals("id"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -128,7 +128,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -137,7 +137,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術グループID
+                    // Technical group ID
                     group.Id = (int) (double) token.Value;
                     continue;
                 }
@@ -145,7 +145,7 @@ namespace HoI2Editor.Parsers
                 // category
                 if (keyword.Equals("category"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -154,7 +154,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -163,7 +163,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なカテゴリ文字列
+                    // Invalid category string
                     string s = token.Value as string;
                     if (string.IsNullOrEmpty(s))
                     {
@@ -176,7 +176,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術カテゴリ
+                    // Technical category
                     group.Category = Techs.CategoryMap[s];
                     continue;
                 }
@@ -184,7 +184,7 @@ namespace HoI2Editor.Parsers
                 // name
                 if (keyword.Equals("name"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -193,7 +193,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -202,7 +202,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術グループ名
+                    // Technical group name
                     group.Name = token.Value as string;
                     continue;
                 }
@@ -210,7 +210,7 @@ namespace HoI2Editor.Parsers
                 // desc
                 if (keyword.Equals("desc"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -219,7 +219,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -228,12 +228,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術グループ説明
+                    // Technical group explanation
                     group.Desc = token.Value as string;
                     continue;
                 }
 
-                // label
+                // label label
                 if (keyword.Equals("label"))
                 {
                     TechLabel label = ParseLabel(lexer);
@@ -243,12 +243,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // ラベル
+                    // label label
                     group.Items.Add(label);
                     continue;
                 }
 
-                // event
+                // event event
                 if (keyword.Equals("event"))
                 {
                     TechEvent ev = ParseEvent(lexer);
@@ -258,7 +258,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術イベント
+                    // Technical event
                     group.Items.Add(ev);
                     continue;
                 }
@@ -273,12 +273,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術
+                    // technology
                     group.Items.Add(application);
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }
@@ -287,13 +287,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     applicationセクションを構文解析する
+        ///     Synthetic analysis of the Application section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>技術データ</returns>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Technical data</returns>
         private static TechItem ParseApplication(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -314,19 +314,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -341,10 +341,10 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // id
+                // id id
                 if (keyword.Equals("id"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -353,7 +353,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -362,7 +362,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術ID
+                    // Technical ID
                     application.Id = (int) (double) token.Value;
                     continue;
                 }
@@ -370,7 +370,7 @@ namespace HoI2Editor.Parsers
                 // name
                 if (keyword.Equals("name"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -379,7 +379,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -388,10 +388,10 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術名
+                    // Technical name
                     application.Name = token.Value as string;
 
-                    // 短縮名
+                    // Shortening name
                     application.ShortName = "SHORT_" + application.Name;
                     continue;
                 }
@@ -399,7 +399,7 @@ namespace HoI2Editor.Parsers
                 // desc
                 if (keyword.Equals("desc"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -408,7 +408,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -417,12 +417,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術説明
+                    // Technical explanation
                     application.Desc = token.Value as string;
                     continue;
                 }
 
-                // position
+                // position position
                 if (keyword.Equals("position"))
                 {
                     TechPosition position = ParsePosition(lexer);
@@ -432,7 +432,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 座標リスト
+                    // Coordinates
                     application.Positions.Add(position);
                     continue;
                 }
@@ -440,7 +440,7 @@ namespace HoI2Editor.Parsers
                 // picture
                 if (keyword.Equals("picture"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -449,7 +449,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.String)
                     {
@@ -458,15 +458,15 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 画像ファイル名
+                    // Image file name
                     application.PictureName = token.Value as string;
                     continue;
                 }
 
-                // year
+                // year year
                 if (keyword.Equals("year"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -475,7 +475,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -484,7 +484,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 史実年
+                    // Historical year
                     application.Year = (int) (double) token.Value;
                     continue;
                 }
@@ -499,7 +499,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 小研究
+                    // Small study
                     application.Components.Add(component);
                     continue;
                 }
@@ -514,7 +514,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 必要とする技術群(AND)
+                    // The necessary technical groups (AND)
                     foreach (int id in ids)
                     {
                         RequiredTech tech = new RequiredTech { Id = id };
@@ -533,7 +533,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 必要とする技術群(OR)
+                    // The necessary technical groups (OR)
                     foreach (int id in ids)
                     {
                         RequiredTech tech = new RequiredTech { Id = id };
@@ -542,7 +542,7 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                // effects
+                // effects effects
                 if (keyword.Equals("effects"))
                 {
                     IEnumerable<Command> commands = ParseEffects(lexer);
@@ -552,12 +552,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術効果
+                    // Technical effect
                     application.Effects.AddRange(commands);
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }
@@ -566,13 +566,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     labelセクションを構文解析する
+        ///     Synthetic analysis of the Label section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>技術ラベルデータ</returns>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Technical label data</returns>
         private static TechLabel ParseLabel(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -593,19 +593,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -623,7 +623,7 @@ namespace HoI2Editor.Parsers
                 // tag
                 if (keyword.Equals("tag"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -632,7 +632,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -641,12 +641,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // タグ名
+                    // Tag name
                     label.Name = token.Value as string;
                     continue;
                 }
 
-                // position
+                // position position
                 if (keyword.Equals("position"))
                 {
                     TechPosition position = ParsePosition(lexer);
@@ -656,12 +656,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 座標リスト
+                    // Coordinates
                     label.Positions.Add(position);
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }
@@ -670,13 +670,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     eventセクションを構文解析する
+        ///     Synthetic analysis of Event section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>技術イベントデータ</returns>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Technical event data</returns>
         private static TechEvent ParseEvent(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -697,19 +697,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -724,10 +724,10 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // id
+                // id id
                 if (keyword.Equals("id"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -736,7 +736,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -745,12 +745,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術イベントID
+                    // Technical event ID
                     ev.Id = (int) (double) token.Value;
                     continue;
                 }
 
-                // position
+                // position position
                 if (keyword.Equals("position"))
                 {
                     TechPosition position = ParsePosition(lexer);
@@ -760,7 +760,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 座標リスト
+                    // Coordinates
                     ev.Positions.Add(position);
                     continue;
                 }
@@ -768,7 +768,7 @@ namespace HoI2Editor.Parsers
                 // technology
                 if (keyword.Equals("technology"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -777,7 +777,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -786,12 +786,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 技術ID
+                    // Technical ID
                     ev.TechId = (int) (double) token.Value;
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }
@@ -800,13 +800,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     posotionセクションを構文解析する
+        ///     Synthetic analysis of the Posotion section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>座標データ</returns>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Coordinate data</returns>
         private static TechPosition ParsePosition(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -827,19 +827,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -854,10 +854,10 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // x
+                // x x
                 if (keyword.Equals("x"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -866,7 +866,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -875,15 +875,15 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // X座標
+                    // X Block
                     position.X = (int) (double) token.Value;
                     continue;
                 }
 
-                // y
+                // y y
                 if (keyword.Equals("y"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -892,7 +892,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -901,12 +901,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // Y座標
+                    // Block
                     position.Y = (int) (double) token.Value;
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }
@@ -915,13 +915,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     componentセクションを構文解析する
+        ///     Synthetic analysis of the Component section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>小研究データ</returns>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Small research data</returns>
         private static TechComponent ParseComponent(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -942,19 +942,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -969,10 +969,10 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // id
+                // id id
                 if (keyword.Equals("id"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -981,7 +981,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -990,7 +990,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 小研究ID
+                    // Small research ID
                     component.Id = (int) (double) token.Value;
                     continue;
                 }
@@ -998,7 +998,7 @@ namespace HoI2Editor.Parsers
                 // name
                 if (keyword.Equals("name"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -1007,7 +1007,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier && token.Type != TokenType.String)
                     {
@@ -1016,7 +1016,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 小研究名
+                    // Small research name
                     component.Name = token.Value as string;
                     continue;
                 }
@@ -1024,7 +1024,7 @@ namespace HoI2Editor.Parsers
                 // type
                 if (keyword.Equals("type"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -1033,7 +1033,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -1042,7 +1042,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効な研究特性文字列
+                    // Involvable research characteristic character string
                     string s = token.Value as string;
                     if (string.IsNullOrEmpty(s))
                     {
@@ -1056,15 +1056,15 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 小研究特性
+                    // Small research characteristics
                     component.Speciality = Techs.SpecialityStringMap[s];
                     continue;
                 }
 
-                // difficulty
+                // difficulty difficulty
                 if (keyword.Equals("difficulty"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -1073,7 +1073,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Number)
                     {
@@ -1082,7 +1082,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 難易度
+                    // Degree of difficulty
                     component.Difficulty = (int) (double) token.Value;
                     continue;
                 }
@@ -1090,7 +1090,7 @@ namespace HoI2Editor.Parsers
                 // double_time
                 if (keyword.Equals("double_time"))
                 {
-                    // =
+                    // = =
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Equal)
                     {
@@ -1099,7 +1099,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     token = lexer.GetToken();
                     if (token.Type != TokenType.Identifier)
                     {
@@ -1117,25 +1117,25 @@ namespace HoI2Editor.Parsers
 
                     if (s.Equals("yes"))
                     {
-                        // 倍の時間を要するかどうか
+                        // Whether it takes twice as much time
                         component.DoubleTime = true;
                         continue;
                     }
 
                     if (s.Equals("no"))
                     {
-                        // 倍の時間を要するかどうか
+                        // Whether it takes twice as much time
                         component.DoubleTime = false;
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid tokens
                     Log.InvalidToken(LogCategory, token, lexer);
                     lexer.SkipLine();
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid tokens
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }
@@ -1144,13 +1144,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     required/or_requiredセクションを構文解析する
+        ///     Parse the required / or required section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>技術IDリスト</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Technology ID list</returns>
         private static IEnumerable<int> ParseRequired(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -1171,19 +1171,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Number)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -1197,13 +1197,13 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     effectsセクションを構文解析する
+        ///     effects effects Parse the section
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>コマンドリスト</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Command list</returns>
         private static IEnumerable<Command> ParseEffects(TextLexer lexer)
         {
-            // =
+            // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
             {
@@ -1224,19 +1224,19 @@ namespace HoI2Editor.Parsers
             {
                 token = lexer.GetToken();
 
-                // ファイルの終端
+                // End of file
                 if (token == null)
                 {
                     break;
                 }
 
-                // } (セクション終端)
+                // } ( Section end )
                 if (token.Type == TokenType.CloseBrace)
                 {
                     break;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 if (token.Type != TokenType.Identifier)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -1251,7 +1251,7 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // command
+                // command command
                 if (keyword.Equals("command"))
                 {
                     Command command = CommandParser.Parse(lexer);
@@ -1265,12 +1265,12 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // コマンド
+                    // command
                     list.Add(command);
                     continue;
                 }
 
-                // 無効なトークン
+                // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
             }

@@ -13,29 +13,29 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     閣僚エディタのフォーム
+    ///     Minister Editor Form
     /// </summary>
     public partial class MinisterEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     絞り込み後の閣僚リスト
+        ///     List of ministers after narrowing down
         /// </summary>
         private readonly List<Minister> _list = new List<Minister>();
 
         /// <summary>
-        ///     ソート対象
+        ///     Sort target
         /// </summary>
         private SortKey _key = SortKey.None;
 
         /// <summary>
-        ///     ソート順
+        ///     Sort order
         /// </summary>
         private SortOrder _order = SortOrder.Ascendant;
 
         /// <summary>
-        ///     ソート対象
+        ///     Sort target
         /// </summary>
         private enum SortKey
         {
@@ -51,7 +51,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ソート順
+        ///     Sort order
         /// </summary>
         private enum SortOrder
         {
@@ -61,79 +61,79 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     閣僚リストビューの列の数
+        ///     Number of columns in the ministerial list view
         /// </summary>
         public const int MinisterListColumnCount = 8;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public MinisterEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 閣僚リストを絞り込む
+            // Narrow down the ministerial list
             NarrowMinisterList();
 
-            // 閣僚リストをソートする
+            // Sort the ministerial list
             SortMinisterList();
 
-            // 閣僚リストの表示を更新する
+            // Update the display of the cabinet list
             UpdateMinisterList();
 
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
-            // 何もしない
+            // do nothing
         }
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // 閣僚リストビュー
+            // Minister list view
             countryColumnHeader.Width = HoI2EditorController.Settings.MinisterEditor.ListColumnWidth[0];
             idColumnHeader.Width = HoI2EditorController.Settings.MinisterEditor.ListColumnWidth[1];
             nameColumnHeader.Width = HoI2EditorController.Settings.MinisterEditor.ListColumnWidth[2];
@@ -143,61 +143,61 @@ namespace HoI2Editor.Forms
             personalityColumnHeader.Width = HoI2EditorController.Settings.MinisterEditor.ListColumnWidth[6];
             ideologyColumnHeader.Width = HoI2EditorController.Settings.MinisterEditor.ListColumnWidth[7];
 
-            // 国家リストボックス
+            // National list box
             countryListBox.ColumnWidth = DeviceCaps.GetScaledWidth(countryListBox.ColumnWidth);
             countryListBox.ItemHeight = DeviceCaps.GetScaledHeight(countryListBox.ItemHeight);
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.MinisterEditor.Location;
             Size = HoI2EditorController.Settings.MinisterEditor.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // 閣僚特性を初期化する
+            // Initialize ministerial characteristics
             Ministers.InitPersonality();
 
-            // ゲーム設定ファイルを読み込む
+            // Load the game settings file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 編集項目を初期化する
+            // Initialize edit items
             InitEditableItems();
 
-            // 国家リストボックスを初期化する
+            // Initialize the national list box
             InitCountryListBox();
 
-            // 閣僚ファイルを読み込む
+            // Read ministerial files
             Ministers.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -215,7 +215,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -225,7 +225,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -238,7 +238,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -251,7 +251,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     一括編集ボタン押下時の処理
+        ///     Processing when the batch edit button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -261,46 +261,46 @@ namespace HoI2Editor.Forms
             args.TargetCountries.AddRange(from string name in countryListBox.SelectedItems
                 select Countries.StringMap[name]);
 
-            // 一括編集ダイアログを表示する
+            // Display the batch edit dialog
             MinisterBatchDialog dialog = new MinisterBatchDialog(args);
             if (dialog.ShowDialog() == DialogResult.Cancel)
             {
                 return;
             }
 
-            // 終了年が未設定ならばMiscの値を変更する
+            // If the end year is not set Misc Change the value of
             if (args.Items[(int) MinisterBatchItemId.EndYear] && !Misc.UseNewMinisterFilesFormat)
             {
                 Misc.UseNewMinisterFilesFormat = true;
                 HoI2EditorController.OnItemChanged(EditorItemId.MinisterEndYear, this);
             }
 
-            // 引退年が未設定ならばMiscの値を変更する
+            // If the retirement year is not set Misc Change the value of
             if (args.Items[(int) MinisterBatchItemId.RetirementYear] && !Misc.EnableRetirementYearMinisters)
             {
                 Misc.EnableRetirementYearMinisters = true;
                 HoI2EditorController.OnItemChanged(EditorItemId.MinisterRetirementYear, this);
             }
 
-            // 一括編集処理
+            // Bulk editing process
             Ministers.BatchEdit(args);
 
-            // 閣僚リストを更新する
+            // Update ministerial list
             NarrowMinisterList();
             UpdateMinisterList();
 
-            // 国家リストボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the national list box
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -319,7 +319,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -329,7 +329,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -340,17 +340,17 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 閣僚リストビュー
+        #region Minister list view
 
         /// <summary>
-        ///     閣僚リストの表示を更新する
+        ///     Update the display of the ministerial list
         /// </summary>
         private void UpdateMinisterList()
         {
             ministerListView.BeginUpdate();
             ministerListView.Items.Clear();
 
-            // 項目を順に登録する
+            // Register items in order
             foreach (Minister minister in _list)
             {
                 ministerListView.Items.Add(CreateMinisterListViewItem(minister));
@@ -358,16 +358,16 @@ namespace HoI2Editor.Forms
 
             if (ministerListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 ministerListView.Items[0].Focused = true;
                 ministerListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEditableItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableEditableItems();
             }
 
@@ -375,30 +375,30 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚リストを国タグで絞り込む
+        ///     Narrow down the ministerial list by country tag
         /// </summary>
         private void NarrowMinisterList()
         {
             _list.Clear();
 
-            // 選択中の国家リストを作成する
+            // Create a list of selected nations
             List<Country> tags = (from string s in countryListBox.SelectedItems select Countries.StringMap[s]).ToList();
 
-            // 選択中の国家に所属する指揮官を順に絞り込む
+            // Narrow down the commanders belonging to the selected nation in order
             _list.AddRange(Ministers.Items.Where(minister => tags.Contains(minister.Country)));
         }
 
         /// <summary>
-        ///     閣僚リストをソートする
+        ///     Sort the ministerial list
         /// </summary>
         private void SortMinisterList()
         {
             switch (_key)
             {
-                case SortKey.None: // ソートなし
+                case SortKey.None: // No sort
                     break;
 
-                case SortKey.Tag: // 国タグ
+                case SortKey.Tag: // Country tag
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => minister1.Country - minister2.Country);
@@ -420,7 +420,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Name: // 名前
+                case SortKey.Name: // name
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => string.CompareOrdinal(minister1.Name, minister2.Name));
@@ -431,7 +431,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.StartYear: // 開始年
+                case SortKey.StartYear: // Start year
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => minister1.StartYear - minister2.StartYear);
@@ -442,7 +442,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.EndYear: // 終了年
+                case SortKey.EndYear: // End year
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => minister1.EndYear - minister2.EndYear);
@@ -453,7 +453,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Position: // 地位
+                case SortKey.Position: // Status
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => minister1.Position - minister2.Position);
@@ -464,7 +464,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Personality: // 特性
+                case SortKey.Personality: // Characteristic
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => minister1.Personality - minister2.Personality);
@@ -475,7 +475,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case SortKey.Ideology: // イデオロギー
+                case SortKey.Ideology: // ideology
                     if (_order == SortOrder.Ascendant)
                     {
                         _list.Sort((minister1, minister2) => minister1.Ideology - minister2.Ideology);
@@ -489,18 +489,18 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the ministerial list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMinisterListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     閣僚リストビューの項目編集前の処理
+        ///     Processing before editing items in the ministerial list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -508,7 +508,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 国タグ
+                case 0: // Country tag
                     e.Type = ItemEditType.List;
                     e.Items = countryComboBox.Items.Cast<string>();
                     e.Index = countryComboBox.SelectedIndex;
@@ -520,36 +520,36 @@ namespace HoI2Editor.Forms
                     e.Text = idNumericUpDown.Text;
                     break;
 
-                case 2: // 名前
+                case 2: // name
                     e.Type = ItemEditType.Text;
                     e.Text = nameTextBox.Text;
                     break;
 
-                case 3: // 開始年
+                case 3: // Start year
                     e.Type = ItemEditType.Text;
                     e.Text = startYearNumericUpDown.Text;
                     break;
 
-                case 4: // 終了年
+                case 4: // End year
                     e.Type = ItemEditType.Text;
                     e.Text = endYearNumericUpDown.Text;
                     break;
 
-                case 5: // 地位
+                case 5: // Status
                     e.Type = ItemEditType.List;
                     e.Items = positionComboBox.Items.Cast<string>();
                     e.Index = positionComboBox.SelectedIndex;
                     e.DropDownWidth = positionComboBox.DropDownWidth;
                     break;
 
-                case 6: // 特性
+                case 6: // Characteristic
                     e.Type = ItemEditType.List;
                     e.Items = personalityComboBox.Items.Cast<string>();
                     e.Index = personalityComboBox.SelectedIndex;
                     e.DropDownWidth = personalityComboBox.DropDownWidth;
                     break;
 
-                case 7: // イデオロギー
+                case 7: // ideology
                     e.Type = ItemEditType.List;
                     e.Items = ideologyComboBox.Items.Cast<string>();
                     e.Index = ideologyComboBox.SelectedIndex;
@@ -559,7 +559,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚リストビューの項目編集後の処理
+        ///     Processing after editing items in the ministerial list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -567,7 +567,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 国タグ
+                case 0: // Country tag
                     countryComboBox.SelectedIndex = e.Index;
                     break;
 
@@ -575,43 +575,43 @@ namespace HoI2Editor.Forms
                     idNumericUpDown.Text = e.Text;
                     break;
 
-                case 2: // 名前
+                case 2: // name
                     nameTextBox.Text = e.Text;
                     break;
 
-                case 3: // 開始年
+                case 3: // Start year
                     startYearNumericUpDown.Text = e.Text;
                     break;
 
-                case 4: // 終了年
+                case 4: // End year
                     endYearNumericUpDown.Text = e.Text;
                     break;
 
-                case 5: // 地位
+                case 5: // Status
                     positionComboBox.SelectedIndex = e.Index;
                     break;
 
-                case 6: // 特性
+                case 6: // Characteristic
                     personalityComboBox.SelectedIndex = e.Index;
                     break;
 
-                case 7: // イデオロギー
+                case 7: // ideology
                     ideologyComboBox.SelectedIndex = e.Index;
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     閣僚リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the ministerial list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMinisterListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 自前で項目を入れ替えるのでキャンセル扱いにする
+            // I will replace the items on my own, so I will treat it as canceled
             e.Cancel = true;
 
             int srcIndex = e.OldDisplayIndices[0];
@@ -632,16 +632,16 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 閣僚リストの項目を移動する
+            // Move items in the ministerial list
             Ministers.MoveItem(src, dest);
             MoveListItem(srcIndex, destIndex);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Ministers.SetDirty(src.Country);
         }
 
         /// <summary>
-        ///     閣僚リストビューのカラムクリック時の処理
+        ///     Processing when a column is clicked in the ministerial list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -649,7 +649,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 国タグ
+                case 0: // Country tag
                     if (_key == SortKey.Tag)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -671,7 +671,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 2: // 名前
+                case 2: // name
                     if (_key == SortKey.Name)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -682,7 +682,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 3: // 開始年
+                case 3: // Start year
                     if (_key == SortKey.StartYear)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -693,7 +693,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 4: // 終了年
+                case 4: // End year
                     if (_key == SortKey.EndYear)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -704,7 +704,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 5: // 地位
+                case 5: // Status
                     if (_key == SortKey.Position)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -715,7 +715,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 6: // 特性
+                case 6: // Characteristic
                     if (_key == SortKey.Personality)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -726,7 +726,7 @@ namespace HoI2Editor.Forms
                     }
                     break;
 
-                case 7: // イデオロギー
+                case 7: // ideology
                     if (_key == SortKey.Ideology)
                     {
                         _order = _order == SortOrder.Ascendant ? SortOrder.Decendant : SortOrder.Ascendant;
@@ -738,19 +738,19 @@ namespace HoI2Editor.Forms
                     break;
 
                 default:
-                    // 項目のない列をクリックした時には何もしない
+                    // Do nothing when clicking on a column with no items
                     return;
             }
 
-            // 閣僚リストをソートする
+            // Sort the ministerial list
             SortMinisterList();
 
-            // 閣僚リストを更新する
+            // Update ministerial list
             UpdateMinisterList();
         }
 
         /// <summary>
-        ///     閣僚リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the cabinet list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -764,7 +764,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     新規ボタン押下時の処理
+        ///     Processing when a new button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -774,7 +774,7 @@ namespace HoI2Editor.Forms
             Minister selected = GetSelectedMinister();
             if (selected != null)
             {
-                // 選択項目がある場合、国タグやIDを引き継いで項目を作成する
+                // If there is a choice, the country tag or ID To take over and create an item
                 minister = new Minister(selected)
                 {
                     Id = Ministers.GetNewId(selected.Country),
@@ -782,17 +782,17 @@ namespace HoI2Editor.Forms
                     PictureName = ""
                 };
 
-                // 閣僚ごとの編集済みフラグを設定する
+                // Set edited flags for each minister
                 minister.SetDirtyAll();
 
-                // 閣僚リストに項目を挿入する
+                // Insert an item into the cabinet list
                 Ministers.InsertItem(minister, selected);
                 InsertListItem(minister, ministerListView.SelectedIndices[0] + 1);
             }
             else
             {
                 Country country = Countries.Tags[countryListBox.SelectedIndex];
-                // 新規項目を作成する
+                // Create a new item
                 minister = new Minister
                 {
                     Country = country,
@@ -806,21 +806,21 @@ namespace HoI2Editor.Forms
                     Loyalty = MinisterLoyalty.None
                 };
 
-                // 閣僚ごとの編集済みフラグを設定する
+                // Set edited flags for each minister
                 minister.SetDirtyAll();
 
-                // 閣僚リストに項目を追加する
+                // Add an item to the cabinet list
                 Ministers.AddItem(minister);
                 AddListItem(minister);
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEditableItems();
             }
 
-            // 国家ごとの編集済みフラグを設定する
+            // Set edited flags for each country
             Ministers.SetDirty(minister.Country);
 
-            // ファイル一覧に存在しなければ追加する
+            // If it does not exist in the file list, add it
             if (!Ministers.FileNameMap.ContainsKey(minister.Country))
             {
                 Ministers.FileNameMap.Add(minister.Country, Game.GetMinisterFileName(minister.Country));
@@ -829,79 +829,79 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     複製ボタン押下時の処理
+        ///     Processing when the duplicate button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCloneButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister selected = GetSelectedMinister();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目を引き継いで項目を作成する
+            // Create an item by taking over the selected item
             Minister minister = new Minister(selected)
             {
                 Id = Ministers.GetNewId(selected.Country)
             };
 
-            // 閣僚ごとの編集済みフラグを設定する
+            // Set edited flags for each minister
             minister.SetDirtyAll();
 
-            // 閣僚リストに項目を挿入する
+            // Insert an item into the cabinet list
             Ministers.InsertItem(minister, selected);
             InsertListItem(minister, ministerListView.SelectedIndices[0] + 1);
 
-            // 国家ごとの編集済みフラグを設定する
+            // Set edited flags for each country
             Ministers.SetDirty(minister.Country);
         }
 
         /// <summary>
-        ///     削除ボタン押下時の処理
+        ///     Processing when the delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister selected = GetSelectedMinister();
             if (selected == null)
             {
                 return;
             }
 
-            // 閣僚リストから項目を削除する
+            // Remove an item from the cabinet list
             Ministers.RemoveItem(selected);
             RemoveItem(ministerListView.SelectedIndices[0]);
 
-            // リストから項目がなくなれば編集項目を無効化する
+            // Disable edit items when there are no items in the list
             if (ministerListView.Items.Count == 0)
             {
                 DisableEditableItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Ministers.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     先頭へボタン押下時の処理
+        ///     Processing when the button is pressed to the beginning
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTopButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister selected = GetSelectedMinister();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの先頭ならば何もしない
+            // Do nothing if the selection is at the top of the list
             int index = ministerListView.SelectedIndices[0];
             if (ministerListView.SelectedIndices[0] == 0)
             {
@@ -914,29 +914,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 閣僚リストの項目を移動する
+            // Move items in the ministerial list
             Ministers.MoveItem(selected, top);
             MoveListItem(index, 0);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Ministers.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     上へボタン押下時の処理
+        ///     Processing when pressing the up button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister selected = GetSelectedMinister();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの先頭ならば何もしない
+            // Do nothing if the selection is at the top of the list
             int index = ministerListView.SelectedIndices[0];
             if (index == 0)
             {
@@ -949,29 +949,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 閣僚リストの項目を移動する
+            // Move items in the ministerial list
             Ministers.MoveItem(selected, upper);
             MoveListItem(index, index - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Ministers.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     下へボタン押下時の処理
+        ///     Processing when the down button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDownButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister selected = GetSelectedMinister();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの末尾ならば何もしない
+            // Do nothing if the selection is at the end of the list
             int index = ministerListView.SelectedIndices[0];
             if (index == ministerListView.Items.Count - 1)
             {
@@ -984,29 +984,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 閣僚リストの項目を移動する
+            // Move items in the ministerial list
             Ministers.MoveItem(selected, lower);
             MoveListItem(index, index + 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Ministers.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     末尾へボタン押下時の処理
+        ///     Processing when the button is pressed to the end
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBottomButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister selected = GetSelectedMinister();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの末尾ならば何もしない
+            // Do nothing if the selection is at the end of the list
             int index = ministerListView.SelectedIndices[0];
             int bottomIndex = ministerListView.Items.Count - 1;
             if (ministerListView.SelectedIndices[0] == bottomIndex)
@@ -1020,64 +1020,64 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 閣僚リストの項目を移動する
+            // Move items in the ministerial list
             Ministers.MoveItem(selected, bottom);
             MoveListItem(index, ministerListView.Items.Count - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Ministers.SetDirty(selected.Country);
         }
 
         /// <summary>
-        ///     閣僚リストに項目を追加する
+        ///     Add an item to the cabinet list
         /// </summary>
-        /// <param name="minister">挿入対象の項目</param>
+        /// <param name="minister">Items to be inserted</param>
         private void AddListItem(Minister minister)
         {
-            // 絞り込みリストに項目を追加する
+            // Add an item to the refined list
             _list.Add(minister);
 
-            // 閣僚リストビューに項目を追加する
+            // Add an item to the ministerial list view
             ministerListView.Items.Add(CreateMinisterListViewItem(minister));
 
-            // 追加した項目を選択する
+            // Select the added item
             ministerListView.Items[ministerListView.Items.Count - 1].Focused = true;
             ministerListView.Items[ministerListView.Items.Count - 1].Selected = true;
             ministerListView.EnsureVisible(ministerListView.Items.Count - 1);
         }
 
         /// <summary>
-        ///     閣僚リストに項目を挿入する
+        ///     Insert an item into the cabinet list
         /// </summary>
-        /// <param name="minister">挿入対象の項目</param>
-        /// <param name="index">挿入先の位置</param>
+        /// <param name="minister">Items to be inserted</param>
+        /// <param name="index">Insertion destination position</param>
         private void InsertListItem(Minister minister, int index)
         {
-            // 絞り込みリストに項目を挿入する
+            // Insert an item in the refined list
             _list.Insert(index, minister);
 
-            // 閣僚リストビューに項目を挿入する
+            // Insert an item in the ministerial list view
             ministerListView.Items.Insert(index, CreateMinisterListViewItem(minister));
 
-            // 挿入した項目を選択する
+            // Select the inserted item
             ministerListView.Items[index].Focused = true;
             ministerListView.Items[index].Selected = true;
             ministerListView.EnsureVisible(index);
         }
 
         /// <summary>
-        ///     閣僚リストから項目を削除する
+        ///     Remove an item from the cabinet list
         /// </summary>
-        /// <param name="index">削除対象の位置</param>
+        /// <param name="index">Position to be deleted</param>
         private void RemoveItem(int index)
         {
-            // 絞り込みリストから項目を削除する
+            // Remove an item from the refined list
             _list.RemoveAt(index);
 
-            // 閣僚リストビューから項目を削除する
+            // Remove an item from the ministerial list view
             ministerListView.Items.RemoveAt(index);
 
-            // 削除した項目の次の項目を選択する
+            // Select the next item after the deleted item
             if (index < ministerListView.Items.Count)
             {
                 ministerListView.Items[index].Focused = true;
@@ -1085,55 +1085,55 @@ namespace HoI2Editor.Forms
             }
             else if (index - 1 >= 0)
             {
-                // リストの末尾ならば、削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 ministerListView.Items[index - 1].Focused = true;
                 ministerListView.Items[index - 1].Selected = true;
             }
         }
 
         /// <summary>
-        ///     閣僚リストの項目を移動する
+        ///     Move items in the cabinet list
         /// </summary>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="src">Source position</param>
+        /// <param name="dest">Destination position</param>
         private void MoveListItem(int src, int dest)
         {
             Minister minister = _list[src];
 
             if (src > dest)
             {
-                // 上へ移動する場合
-                // 絞り込みリストの項目を移動する
+                // When moving up
+                // Move items in the refined list
                 _list.Insert(dest, minister);
                 _list.RemoveAt(src + 1);
 
-                // 閣僚リストビューの項目を移動する
+                // Move items in the ministerial list view
                 ministerListView.Items.Insert(dest, CreateMinisterListViewItem(minister));
                 ministerListView.Items.RemoveAt(src + 1);
             }
             else
             {
-                // 下へ移動する場合
-                // 絞り込みリストの項目を移動する
+                // When moving down
+                // Move items in the refined list
                 _list.Insert(dest + 1, minister);
                 _list.RemoveAt(src);
 
-                // 閣僚リストビューの項目を移動する
+                // Move items in the ministerial list view
                 ministerListView.Items.Insert(dest + 1, CreateMinisterListViewItem(minister));
                 ministerListView.Items.RemoveAt(src);
             }
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             ministerListView.Items[dest].Focused = true;
             ministerListView.Items[dest].Selected = true;
             ministerListView.EnsureVisible(dest);
         }
 
         /// <summary>
-        ///     閣僚リストビューの項目を作成する
+        ///     Create an item in the ministerial list view
         /// </summary>
-        /// <param name="minister">閣僚データ</param>
-        /// <returns>閣僚リストビューの項目</returns>
+        /// <param name="minister">Ministerial data</param>
+        /// <returns>Items in the ministerial list view</returns>
         private static ListViewItem CreateMinisterListViewItem(Minister minister)
         {
             if (minister == null)
@@ -1158,12 +1158,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中の閣僚データを取得する
+        ///     Get selected ministerial data
         /// </summary>
-        /// <returns>選択中の閣僚データ</returns>
+        /// <returns>Selected ministerial data</returns>
         private Minister GetSelectedMinister()
         {
-            // 選択項目がない場合
+            // If there is no selection
             if (ministerListView.SelectedItems.Count == 0)
             {
                 return null;
@@ -1174,10 +1174,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家リストボックス
+        #region National list box
 
         /// <summary>
-        ///     国家リストボックスを初期化する
+        ///     Initialize the national list box
         /// </summary>
         private void InitCountryListBox()
         {
@@ -1188,9 +1188,9 @@ namespace HoI2Editor.Forms
                 countryListBox.Items.Add(Countries.Strings[(int) country]);
             }
 
-            // 選択イベントを処理すると時間がかかるので、一時的に無効化する
+            // Processing selection events takes time, so temporarily disable it
             countryListBox.SelectedIndexChanged -= OnCountryListBoxSelectedIndexChanged;
-            // 選択中の国家を反映する
+            // Reflect the selected nation
             foreach (Country country in HoI2EditorController.Settings.MinisterEditor.Countries)
             {
                 int index = Array.IndexOf(Countries.Tags, country);
@@ -1199,39 +1199,39 @@ namespace HoI2Editor.Forms
                     countryListBox.SetSelected(Array.IndexOf(Countries.Tags, country), true);
                 }
             }
-            // 選択イベントを元に戻す
+            // Undo selection event
             countryListBox.SelectedIndexChanged += OnCountryListBoxSelectedIndexChanged;
 
             int count = countryListBox.SelectedItems.Count;
-            // 選択数に合わせて全選択/全解除を切り替える
+            // Select all according to the number of selections / / Switch all cancellations
             countryAllButton.Text = count <= 1 ? Resources.KeySelectAll : Resources.KeyUnselectAll;
-            // 選択数がゼロの場合は新規追加ボタンを無効化する
+            // Disable the add new button if the number of selections is zero
             newButton.Enabled = count > 0;
 
             countryListBox.EndUpdate();
         }
 
         /// <summary>
-        ///     国家リストボックスの項目描画処理
+        ///     Item drawing process of national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 Country country = Countries.Tags[e.Index];
                 brush = Ministers.IsDirty(country) ? new SolidBrush(Color.Red) : new SolidBrush(SystemColors.WindowText);
             }
@@ -1243,12 +1243,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1256,23 +1256,23 @@ namespace HoI2Editor.Forms
         {
             int count = countryListBox.SelectedItems.Count;
 
-            // 選択数に合わせて全選択/全解除を切り替える
+            // Select all according to the number of selections / / Switch all cancellations
             countryAllButton.Text = count <= 1 ? Resources.KeySelectAll : Resources.KeyUnselectAll;
 
-            // 選択数がゼロの場合は新規追加ボタンを無効化する
+            // Disable the add new button if the number of selections is zero
             newButton.Enabled = count > 0;
 
-            // 選択中の国家を保存する
+            // Save the selected nation
             HoI2EditorController.Settings.MinisterEditor.Countries =
                 countryListBox.SelectedIndices.Cast<int>().Select(index => Countries.Tags[index]).ToList();
 
-            // 閣僚リストを更新する
+            // Update ministerial list
             NarrowMinisterList();
             UpdateMinisterList();
         }
 
         /// <summary>
-        ///     国家リストボックスの全選択/全解除ボタン押下時の処理
+        ///     Select all national list boxes / / Processing when all release buttons are pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1280,12 +1280,12 @@ namespace HoI2Editor.Forms
         {
             countryListBox.BeginUpdate();
 
-            // 選択イベントを処理すると時間がかかるので、一時的に無効化する
+            // Processing selection events takes time, so temporarily disable it
             countryListBox.SelectedIndexChanged -= OnCountryListBoxSelectedIndexChanged;
 
             if (countryListBox.SelectedItems.Count <= 1)
             {
-                // スクロール位置を先頭に設定するため、逆順で選択する
+                // Select in reverse order to set the scroll position to the beginning
                 for (int i = countryListBox.Items.Count - 1; i >= 0; i--)
                 {
                     countryListBox.SetSelected(i, true);
@@ -1299,10 +1299,10 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 選択イベントを元に戻す
+            // Undo selection event
             countryListBox.SelectedIndexChanged += OnCountryListBoxSelectedIndexChanged;
 
-            // 閣僚リスト絞り込みのため、ダミーでイベント発行する
+            // Issue a dummy event to narrow down the ministerial list
             OnCountryListBoxSelectedIndexChanged(sender, e);
 
             countryListBox.EndUpdate();
@@ -1310,17 +1310,17 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 編集項目
+        #region Edit items
 
         /// <summary>
-        ///     編集項目を初期化する
+        ///     Initialize edit items
         /// </summary>
         private void InitEditableItems()
         {
             Graphics g = Graphics.FromHwnd(Handle);
             int margin = DeviceCaps.GetScaledWidth(2) + 1;
 
-            // 国タグ
+            // Country tag
             countryComboBox.BeginUpdate();
             countryComboBox.Items.Clear();
             int width = countryComboBox.Width;
@@ -1338,7 +1338,7 @@ namespace HoI2Editor.Forms
             countryComboBox.DropDownWidth = width;
             countryComboBox.EndUpdate();
 
-            // 地位
+            // Status
             positionComboBox.BeginUpdate();
             positionComboBox.Items.Clear();
             width = positionComboBox.Width;
@@ -1350,7 +1350,7 @@ namespace HoI2Editor.Forms
             positionComboBox.DropDownWidth = width;
             positionComboBox.EndUpdate();
 
-            // 特性
+            // Characteristic
             personalityComboBox.DropDownWidth =
                 Ministers.Personalities
                     .Select(info => (int) g.MeasureString(info.NameText, personalityComboBox.Font).Width +
@@ -1358,7 +1358,7 @@ namespace HoI2Editor.Forms
                     .Concat(new[] { personalityComboBox.Width })
                     .Max();
 
-            // イデオロギー
+            // ideology
             ideologyComboBox.BeginUpdate();
             ideologyComboBox.Items.Clear();
             width = ideologyComboBox.Width;
@@ -1370,7 +1370,7 @@ namespace HoI2Editor.Forms
             ideologyComboBox.DropDownWidth = width;
             ideologyComboBox.EndUpdate();
 
-            // 忠誠度
+            // Loyalty
             loyaltyComboBox.BeginUpdate();
             loyaltyComboBox.Items.Clear();
             width = loyaltyComboBox.Width;
@@ -1384,24 +1384,24 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を更新する
+        ///     Update edit items
         /// </summary>
         private void UpdateEditableItems()
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItemsValue(minister);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateEditableItemsColor(minister);
 
-            // 項目移動ボタンの状態更新
+            // Item move button status update
             topButton.Enabled = ministerListView.SelectedIndices[0] != 0;
             upButton.Enabled = ministerListView.SelectedIndices[0] != 0;
             downButton.Enabled = ministerListView.SelectedIndices[0] != ministerListView.Items.Count - 1;
@@ -1409,9 +1409,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目の値を更新する
+        ///     Update the value of the edit item
         /// </summary>
-        /// <param name="minister">閣僚データ</param>
+        /// <param name="minister">Ministerial data</param>
         private void UpdateEditableItemsValue(Minister minister)
         {
             countryComboBox.SelectedIndex = minister.Country != Country.None ? (int) minister.Country - 1 : -1;
@@ -1457,19 +1457,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="minister">閣僚データ</param>
+        /// <param name="minister">Ministerial data</param>
         private void UpdateEditableItemsColor(Minister minister)
         {
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             countryComboBox.Refresh();
             positionComboBox.Refresh();
             personalityComboBox.Refresh();
             ideologyComboBox.Refresh();
             loyaltyComboBox.Refresh();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             idNumericUpDown.ForeColor = minister.IsDirty(MinisterItemId.Id) ? Color.Red : SystemColors.WindowText;
             nameTextBox.ForeColor = minister.IsDirty(MinisterItemId.Name) ? Color.Red : SystemColors.WindowText;
             startYearNumericUpDown.ForeColor = minister.IsDirty(MinisterItemId.StartYear)
@@ -1487,7 +1487,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を有効化する
+        ///     Enable edit items
         /// </summary>
         private void EnableEditableItems()
         {
@@ -1502,7 +1502,7 @@ namespace HoI2Editor.Forms
             pictureNameTextBox.Enabled = true;
             pictureNameBrowseButton.Enabled = true;
 
-            // 無効化時にクリアした文字列を再設定する
+            // Reset the character string cleared at the time of invalidation
             idNumericUpDown.Text = IntHelper.ToString((int) idNumericUpDown.Value);
             startYearNumericUpDown.Text = IntHelper.ToString((int) startYearNumericUpDown.Value);
 
@@ -1522,7 +1522,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目を無効化する
+        ///     Disable edit items
         /// </summary>
         private void DisableEditableItems()
         {
@@ -1558,26 +1558,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚特性コンボボックスの項目を更新する
+        ///     Update the item in the ministerial trait combo box
         /// </summary>
-        /// <param name="minister">閣僚データ</param>
+        /// <param name="minister">Ministerial data</param>
         private void UpdatePersonalityComboBox(Minister minister)
         {
             personalityComboBox.BeginUpdate();
             personalityComboBox.Items.Clear();
             if (minister.Position == MinisterPosition.None)
             {
-                // 閣僚地位の値が不正な場合は、現在の閣僚特性のみ登録する
+                // If the value of ministerial status is incorrect, register only the current ministerial characteristics
                 personalityComboBox.Items.Add(Ministers.Personalities[minister.Personality].NameText);
                 personalityComboBox.SelectedIndex = 0;
             }
             else if (!Ministers.PositionPersonalityTable[(int) minister.Position].Contains(minister.Personality))
             {
-                // 閣僚特性が閣僚地位とマッチしない場合、ワンショットで候補に登録する
+                // If the ministerial characteristics do not match the ministerial status, register as a candidate in one shot
                 personalityComboBox.Items.Add(Ministers.Personalities[minister.Personality].NameText);
                 personalityComboBox.SelectedIndex = 0;
 
-                // 閣僚地位と対応する閣僚特性を順に登録する
+                // Register ministerial status and corresponding ministerial characteristics in order
                 foreach (int personality in Ministers.PositionPersonalityTable[(int) minister.Position])
                 {
                     personalityComboBox.Items.Add(Ministers.Personalities[personality].NameText);
@@ -1585,7 +1585,7 @@ namespace HoI2Editor.Forms
             }
             else
             {
-                // 閣僚地位と対応する閣僚特性を順に登録する
+                // Register ministerial status and corresponding ministerial characteristics in order
                 foreach (int personality in Ministers.PositionPersonalityTable[(int) minister.Position])
                 {
                     personalityComboBox.Items.Add(Ministers.Personalities[personality].NameText);
@@ -1599,22 +1599,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家コンボボックスの項目描画処理
+        ///     Item drawing process of national combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Minister minister = GetSelectedMinister();
             if (minister != null)
             {
@@ -1632,27 +1632,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     閣僚地位コンボボックスの項目描画処理
+        ///     Item drawing process of ministerial status combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPositionComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Minister minister = GetSelectedMinister();
             if (minister != null)
             {
@@ -1670,27 +1670,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     閣僚特性コンボボックスの項目描画処理
+        ///     Item drawing process of ministerial characteristic combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPersonalityComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Minister minister = GetSelectedMinister();
             if (minister != null)
             {
@@ -1698,8 +1698,8 @@ namespace HoI2Editor.Forms
                 if ((minister.Position == MinisterPosition.None) ||
                     !Ministers.PositionPersonalityTable[(int) minister.Position].Contains(minister.Personality))
                 {
-                    // 閣僚地位の値が不正な場合は、現在の閣僚特性のみ登録されている
-                    // 閣僚地位とマッチしない閣僚特性の場合、現在の閣僚特性が先頭に登録されている
+                    // If the value of ministerial status is incorrect, only the current ministerial characteristics are registered.
+                    // If the ministerial trait does not match the ministerial status, the current ministerial trait is registered at the top.
                     if ((e.Index == 0) && minister.IsDirty(MinisterItemId.Personality))
                     {
                         brush = new SolidBrush(Color.Red);
@@ -1727,27 +1727,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     イデオロギーコンボボックスの項目描画処理
+        ///     Item drawing process of ideology combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnIdeologyComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Minister minister = GetSelectedMinister();
             if (minister != null)
             {
@@ -1765,27 +1765,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     忠誠度コンボボックスの項目描画処理
+        ///     Loyalty combo box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLoyaltyComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Minister minister = GetSelectedMinister();
             if (minister != null)
             {
@@ -1803,14 +1803,14 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     閣僚画像ピクチャーボックスの項目を更新する
+        ///     Update the item in the ministerial image picture box
         /// </summary>
-        /// <param name="minister">閣僚データ</param>
+        /// <param name="minister">Ministerial data</param>
         private void UpdateMinisterPicture(Minister minister)
         {
             if (!string.IsNullOrEmpty(minister.PictureName) &&
@@ -1827,73 +1827,73 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国タグ変更時の処理
+        ///     Processing when changing country tag
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             Country country = Countries.Tags[countryComboBox.SelectedIndex];
             if (country == minister.Country)
             {
                 return;
             }
 
-            // 変更前の国タグの編集済みフラグを設定する
+            // Set the edited flag for the country tag before the change
             Ministers.SetDirty(minister.Country);
 
             Log.Info("[Minister] country: {0} -> {1} ({2}: {3})", Countries.Strings[(int) minister.Country],
                 Countries.Strings[(int) country], minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.Country = country;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].Text = Countries.Strings[(int) minister.Country];
 
-            // 閣僚ごとの編集済みフラグを設定する
+            // Set edited flags for each minister
             minister.SetDirty(MinisterItemId.Country);
 
-            // 変更後の国タグの編集済みフラグを設定する
+            // Set the edited flag of the changed country tag
             Ministers.SetDirty(minister.Country);
 
-            // ファイル一覧に存在しなければ追加する
+            // If it does not exist in the file list, add it
             if (!Ministers.FileNameMap.ContainsKey(minister.Country))
             {
                 Ministers.FileNameMap.Add(minister.Country, Game.GetMinisterFileName(minister.Country));
                 Ministers.SetDirtyList();
             }
 
-            // 国家コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the national combo box
             countryComboBox.Refresh();
 
-            // 国家リストボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the national list box
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     ID変更時の処理
+        ///     ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int id = (int) idNumericUpDown.Value;
             if (id == minister.Id)
             {
@@ -1902,35 +1902,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Minister] id: {0} -> {1} ({2})", minister.Id, id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.Id = id;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[1].Text = IntHelper.ToString(minister.Id);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.Id);
             Ministers.SetDirty(minister.Country);
 
-            // 文字色を変更する
+            // Change the font color
             idNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     名前文字列変更時の処理
+        ///     Processing when changing the name string
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string name = nameTextBox.Text;
             if (string.IsNullOrEmpty(name))
             {
@@ -1949,35 +1949,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Minister] name: {0} -> {1} ({2})", minister.Name, name, minister.Id);
 
-            // 値を更新する
+            // Update value
             minister.Name = name;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[2].Text = minister.Name;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.Name);
             Ministers.SetDirty(minister.Country);
 
-            // 文字色を変更する
+            // Change the font color
             nameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     開始年変更時の処理
+        ///     Processing when changing the start year
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnStartYearNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int startYear = (int) startYearNumericUpDown.Value;
             if (startYear == minister.StartYear)
             {
@@ -1987,35 +1987,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Minister] start year: {0} -> {1} ({2}: {3})", minister.StartYear, startYear, minister.Id,
                 minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.StartYear = startYear;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[3].Text = IntHelper.ToString(minister.StartYear);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.StartYear);
             Ministers.SetDirty(minister.Country);
 
-            // 文字色を変更する
+            // Change the font color
             startYearNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     終了年変更時の処理
+        ///     Processing when changing the end year
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEndYearNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int endYear = (int) endYearNumericUpDown.Value;
             if (endYear == minister.EndYear)
             {
@@ -2024,35 +2024,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Minister] end year: {0} -> {1} ({2}: {3})", minister.EndYear, endYear, minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.EndYear = endYear;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[4].Text = IntHelper.ToString(minister.EndYear);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.EndYear);
             Ministers.SetDirty(minister.Country);
 
-            // 文字色を変更する
+            // Change the font color
             endYearNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     引退年変更時の処理
+        ///     Processing when changing retirement year
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRetirementYearNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int retirementYear = (int) retirementYearNumericUpDown.Value;
             if (retirementYear == minister.RetirementYear)
             {
@@ -2062,32 +2062,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Minister] retirement year: {0} -> {1} ({2}: {3})", minister.RetirementYear, retirementYear,
                 minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.RetirementYear = retirementYear;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.RetirementYear);
             Ministers.SetDirty(minister.Country);
 
-            // 文字色を変更する
+            // Change the font color
             retirementYearNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     閣僚地位変更時の処理
+        ///     Processing when changing ministerial status
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPositionComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             MinisterPosition position = (MinisterPosition) (positionComboBox.SelectedIndex + 1);
             if (position == minister.Position)
             {
@@ -2098,45 +2098,45 @@ namespace HoI2Editor.Forms
                 Config.GetText(Ministers.PositionNames[(int) minister.Position]),
                 Config.GetText(Ministers.PositionNames[(int) position]), minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.Position = position;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[5].Text =
                 Config.GetText(Ministers.PositionNames[(int) minister.Position]);
 
-            // 地位に連動して特性の選択肢も変更する
+            // Change trait options according to your position
             UpdatePersonalityComboBox(minister);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.Position);
             Ministers.SetDirty(minister.Country);
 
-            // 閣僚地位コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the ministerial status combo box
             positionComboBox.Refresh();
         }
 
         /// <summary>
-        ///     閣僚特性変更時の処理
+        ///     Processing when changing ministerial characteristics
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPersonalityComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 閣僚地位が不定値の時には変更不可
+            // Cannot be changed when the ministerial status is indefinite
             if (minister.Position == MinisterPosition.None)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int personality;
             if (Ministers.PositionPersonalityTable[(int) minister.Position].Contains(minister.Personality))
             {
@@ -2161,35 +2161,35 @@ namespace HoI2Editor.Forms
                 Ministers.Personalities[minister.Personality].NameText, Ministers.Personalities[personality].NameText,
                 minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.Personality = personality;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[6].Text = Ministers.Personalities[minister.Personality].NameText;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.Personality);
             Ministers.SetDirty(minister.Country);
 
-            // 閣僚コンボボックスの項目を更新する
+            // Update items in the ministerial combo box
             UpdatePersonalityComboBox(minister);
         }
 
         /// <summary>
-        ///     イデオロギー変更時の処理
+        ///     Processing when changing ideology
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnIdeologyComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             MinisterIdeology ideology = !string.IsNullOrEmpty(ideologyComboBox.Items[0].ToString())
                 ? (MinisterIdeology) (ideologyComboBox.SelectedIndex + 1)
                 : (MinisterIdeology) ideologyComboBox.SelectedIndex;
@@ -2202,36 +2202,36 @@ namespace HoI2Editor.Forms
                 Config.GetText(Ministers.IdeologyNames[(int) minister.Ideology]),
                 Config.GetText(Ministers.IdeologyNames[(int) ideology]), minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.Ideology = ideology;
 
-            // 閣僚リストビューの項目を更新する
+            // Update items in the ministerial list view
             ministerListView.SelectedItems[0].SubItems[7].Text =
                 Config.GetText(Ministers.IdeologyNames[(int) minister.Ideology]);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.Ideology);
             Ministers.SetDirty(minister.Country);
 
-            // イデオロギーコンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the ideology combo box
             ideologyComboBox.Refresh();
         }
 
         /// <summary>
-        ///     忠誠度変更時の処理
+        ///     Processing when changing loyalty
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLoyaltyComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             MinisterLoyalty loyalty = !string.IsNullOrEmpty(loyaltyComboBox.Items[0].ToString())
                 ? (MinisterLoyalty) (loyaltyComboBox.SelectedIndex + 1)
                 : (MinisterLoyalty) loyaltyComboBox.SelectedIndex;
@@ -2243,32 +2243,32 @@ namespace HoI2Editor.Forms
             Log.Info("[Minister] loyalty: {0} -> {1} ({2}: {3})", Ministers.LoyaltyNames[(int) minister.Loyalty],
                 Ministers.LoyaltyNames[(int) loyalty], minister.Id, minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.Loyalty = loyalty;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.Loyalty);
             Ministers.SetDirty(minister.Country);
 
-            // 忠誠度コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the loyalty combo box
             loyaltyComboBox.Refresh();
         }
 
         /// <summary>
-        ///     画像ファイル名変更時の処理
+        ///     Processing when changing the image file name
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string pictureName = pictureNameTextBox.Text;
             if (string.IsNullOrEmpty(pictureName))
             {
@@ -2288,35 +2288,35 @@ namespace HoI2Editor.Forms
             Log.Info("[Minister] picture name: {0} -> {1} ({2}: {3})", minister.PictureName, pictureName, minister.Id,
                 minister.Name);
 
-            // 値を更新する
+            // Update value
             minister.PictureName = pictureName;
 
-            // 閣僚画像を更新する
+            // Update ministerial image
             UpdateMinisterPicture(minister);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             minister.SetDirty(MinisterItemId.PictureName);
             Ministers.SetDirty(minister.Country);
 
-            // 文字色を設定する
+            // Set the font color
             pictureNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     画像ファイル名参照ボタン押下時の処理
+        ///     Processing when the image file name reference button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureNameReferButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Minister minister = GetSelectedMinister();
             if (minister == null)
             {
                 return;
             }
 
-            // ファイル選択ダイアログを開く
+            // Open the file selection dialog
             OpenFileDialog dialog = new OpenFileDialog
             {
                 InitialDirectory = Path.Combine(Game.FolderName, Game.PersonPicturePathName),

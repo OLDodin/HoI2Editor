@@ -3,58 +3,58 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     研究速度データ群
+    ///     Research velocity data group
     /// </summary>
     public static class Researches
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     研究速度リスト
+        ///     Research speed list
         /// </summary>
         public static readonly List<Research> Items = new List<Research>();
 
         /// <summary>
-        ///     研究速度計算時の基準年度
+        ///     Base year when calculating research speed
         /// </summary>
         public static ResearchDateMode DateMode { get; set; }
 
         /// <summary>
-        ///     指定日付
+        ///     Specified date
         /// </summary>
         public static GameDate SpecifiedDate { get; set; }
 
         /// <summary>
-        ///     ロケット試験場の規模
+        ///     Scale of rocket test site
         /// </summary>
         public static int RocketTestingSites { get; set; }
 
         /// <summary>
-        ///     原子炉の規模
+        ///     Reactor scale
         /// </summary>
         public static int NuclearReactors { get; set; }
 
         /// <summary>
-        ///     青写真の有無
+        ///     Presence or absence of blueprint
         /// </summary>
         public static bool Blueprint { get; set; }
 
         /// <summary>
-        ///     研究速度補正
+        ///     Research speed correction
         /// </summary>
         public static double Modifier { get; set; }
 
         /// <summary>
-        ///     研究機関の開始年の考慮
+        ///     Consideration of the starting year of the research institute
         /// </summary>
         public static bool ConsiderStartYear { get; set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Researches()
         {
@@ -64,23 +64,23 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 研究速度リスト
+        #region Research speed list
 
         /// <summary>
-        ///     研究速度リストを更新する
+        ///     Update research speed list
         /// </summary>
-        /// <param name="tech">対象技術</param>
-        /// <param name="teams">研究機関</param>
+        /// <param name="tech">Target technology</param>
+        /// <param name="teams">research Institute</param>
         public static void UpdateResearchList(TechItem tech, IEnumerable<Team> teams)
         {
             Items.Clear();
 
-            // 研究速度を順に登録する
+            // Register research speeds in order
             foreach (Team team in teams)
             {
                 Research research = new Research(tech, team);
 
-                // 研究機関の開始年・終了年を考慮する場合
+                // When considering the start and end years of a research institution
                 if( ConsiderStartYear )
                 {
                     GameDate date;    
@@ -91,7 +91,7 @@ namespace HoI2Editor.Models
                     {
                         date = new GameDate(tech.Year);
                     }
-                    // 研究機関が終了年を過ぎている
+                    // The research institution is past the end year
                     if ( team.EndYear <= date.Year )
                     {
                         continue;   /* リストに入れない */
@@ -101,7 +101,7 @@ namespace HoI2Editor.Models
                 Items.Add(research);
             }
 
-            // 研究日数の順にソートする
+            // Sort by number of study days
             Items.Sort((research1, research2) => research1.Days - research2.Days);
         }
 
@@ -109,11 +109,11 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     研究速度計算時の基準日付モード
+    ///     Reference date mode when calculating research speed
     /// </summary>
     public enum ResearchDateMode
     {
-        Historical, // 史実年度を使用する
-        Specified // 指定日付を使用する
+        Historical, // Use historical year
+        Specified // Use the specified date
     }
 }

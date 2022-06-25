@@ -3,76 +3,76 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     ゲーム内の日付
+    ///     In-game date
     /// </summary>
     public class GameDate
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     年
+        ///     Year
         /// </summary>
         public int Year { get; set; }
 
         /// <summary>
-        ///     月
+        ///     Moon
         /// </summary>
         public int Month { get; set; }
 
         /// <summary>
-        ///     日
+        ///     Day
         /// </summary>
         public int Day { get; set; }
 
         /// <summary>
-        ///     時
+        ///     Time
         /// </summary>
         public int Hour { get; set; }
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     年の最小値
+        ///     Minimum of the year
         /// </summary>
         public const int MinYear = 0;
 
         /// <summary>
-        ///     年の最大値
+        ///     Maximum value of the year
         /// </summary>
         public const int MaxYear = 9999;
 
         /// <summary>
-        ///     月の最小値
+        ///     Monthly minimum
         /// </summary>
         public const int MinMonth = 1;
 
         /// <summary>
-        ///     月の最大値
+        ///     Monthly maximum
         /// </summary>
         public const int MaxMonth = 12;
 
         /// <summary>
-        ///     日の最小値
+        ///     Minimum of days
         /// </summary>
         public const int MinDay = 1;
 
         /// <summary>
-        ///     日の最大値
+        ///     Maximum value of the day
         /// </summary>
         public const int MaxDay = 30;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="year">年</param>
-        /// <param name="month">月</param>
-        /// <param name="day">日</param>
+        /// <param name="year">Year</param>
+        /// <param name="month">Moon</param>
+        /// <param name="day">Day</param>
         public GameDate(int year, int month, int day)
         {
             Year = year;
@@ -81,9 +81,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="year">年</param>
+        /// <param name="year">Year</param>
         public GameDate(int year)
         {
             Year = year;
@@ -92,7 +92,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public GameDate()
         {
@@ -102,9 +102,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元のゲーム日時</param>
+        /// <param name="original">Copy source game date and time</param>
         public GameDate(GameDate original)
         {
             Year = original.Year;
@@ -115,13 +115,13 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 日数計算
+        #region Days calculation
 
         /// <summary>
-        ///     日数を加算する
+        ///     Add the number of days
         /// </summary>
-        /// <param name="days">加算する日数</param>
-        /// <returns>加算後の日付</returns>
+        /// <param name="days">Number of days to add</param>
+        /// <returns>Date after addition</returns>
         public GameDate Plus(int days)
         {
             int offset = Year * 360 + (Month - 1) * 30 + (Day - 1) + days;
@@ -135,10 +135,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     日数を減算する
+        ///     Subtract the number of days
         /// </summary>
-        /// <param name="days">減算する日数</param>
-        /// <returns>加算後の日付</returns>
+        /// <param name="days">Number of days to subtract</param>
+        /// <returns>Date after addition</returns>
         public GameDate Minus(int days)
         {
             int offset = Year * 360 + (Month - 1) * 30 + (Day - 1) - days;
@@ -152,20 +152,20 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     差分日数を取得する
+        ///     Get the difference days
         /// </summary>
-        /// <param name="date">比較対象の日付</param>
-        /// <returns>差分日数</returns>
+        /// <param name="date">Date to compare</param>
+        /// <returns>Difference days</returns>
         public int Difference(GameDate date)
         {
             return (Year - date.Year) * 360 + (Month - date.Month) * 30 + (Day - date.Day);
         }
 
         /// <summary>
-        ///     差分日数を取得する
+        ///     Get the difference days
         /// </summary>
-        /// <param name="year">比較対象の年</param>
-        /// <returns>差分日数</returns>
+        /// <param name="year">Year to compare</param>
+        /// <returns>Difference days</returns>
         public int Difference(int year)
         {
             return (Year - year) * 360 + (Month - 1) * 30 + (Day - 1);
@@ -173,12 +173,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     日付文字列を取得する
+        ///     Get the date string
         /// </summary>
-        /// <returns>日付文字列</returns>
+        /// <returns>Date string</returns>
         public override string ToString()
         {
             string format = CultureInfo.CurrentUICulture.DateTimeFormat.ShortDatePattern;

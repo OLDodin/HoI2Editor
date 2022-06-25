@@ -14,24 +14,24 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor
 {
     /// <summary>
-    ///     アプリケーションコントローラクラス
+    ///     Application controller class
     /// </summary>
     public static class HoI2EditorController
     {
-        #region エディタのバージョン
+        #region Editor version
 
         /// <summary>
-        ///     アプリケーション名
+        ///     Application name
         /// </summary>
         public const string Name = "Alternative HoI2 Editor";
 
         /// <summary>
-        ///     エディタのバージョン
+        ///     Editor version
         /// </summary>
         public static string Version { get; private set; }
 
         /// <summary>
-        ///     エディタのバージョンを初期化する
+        ///     Initialize the editor version
         /// </summary>
         public static void InitVersion()
         {
@@ -49,18 +49,18 @@ namespace HoI2Editor
 
         #endregion
 
-        #region リソース管理
+        #region Resource management
 
         /// <summary>
-        ///     リソースマネージャ
+        ///     Resource manager
         /// </summary>
         private static readonly ResourceManager ResourceManager
             = new ResourceManager("HoI2Editor.Properties.Resources", typeof (Resources).Assembly);
 
         /// <summary>
-        ///     リソース文字列を取得する
+        ///     Get resource string
         /// </summary>
-        /// <param name="name">リソース名</param>
+        /// <param name="name">Resource name</param>
         public static string GetResourceString(string name)
         {
             return ResourceManager.GetString(name);
@@ -68,17 +68,17 @@ namespace HoI2Editor
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     保存がキャンセルされたかどうか
+        ///     Whether the preservation was canceled
         /// </summary>
         public static bool SaveCanceled { get; set; }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get whether or not it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If you have edited, return True</returns>
         public static bool IsDirty()
         {
             return Misc.IsDirty() ||
@@ -96,7 +96,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ファイルの再読み込みを要求する
+        ///     Request a file reload
         /// </summary>
         public static void RequestReload()
         {
@@ -120,13 +120,13 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     データを再読み込みする
+        ///     Reload data
         /// </summary>
         public static void Reload()
         {
             Log.Info("Reload");
 
-            // データを再読み込みする
+            // Reload data
             Misc.Reload();
             Config.Reload();
             Leaders.Reload();
@@ -140,33 +140,33 @@ namespace HoI2Editor
             RandomLeaders.Reload();
             Scenarios.Reload();
 
-            // データ読み込み後の更新処理呼び出し
+            // Update processing call after data reading
             OnFileLoaded();
 
             SaveCanceled = false;
         }
 
         /// <summary>
-        ///     データを保存する
+        ///     Save data
         /// </summary>
         public static void Save()
         {
             Log.Info("Save");
 
-            // 文字列の一時キーを保存形式に変更する
+            // Change the temporary key of the character string to a preservation format
             Techs.RenameKeys();
 
-            // 編集したデータを保存する
+            // Save edited data
             SaveFiles();
 
-            // データ保存後の更新処理呼び出し
+            // Update processing call after data saving
             OnFileSaved();
 
             SaveCanceled = false;
         }
 
         /// <summary>
-        ///     データを保存する
+        ///     Save data
         /// </summary>
         private static void SaveFiles()
         {
@@ -218,7 +218,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     データ読み込み後の更新処理呼び出し
+        ///     Update processing call after data reading
         /// </summary>
         private static void OnFileLoaded()
         {
@@ -238,7 +238,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     データ保存後の更新処理呼び出し
+        ///     Update processing call after data saving
         /// </summary>
         private static void OnFileSaved()
         {
@@ -257,10 +257,10 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     編集項目変更後の更新処理呼び出し
+        ///     Update processing call after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
-        /// <param name="form">呼び出し元のフォーム</param>
+        /// <param name="id">Editing project ID</param>
+        /// <param name="form">Call source form</param>
         public static void OnItemChanged(EditorItemId id, Form form)
         {
             if (form != _leaderEditorForm)
@@ -315,7 +315,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     遅延読み込み完了後の更新処理呼び出し
+        ///     Update processing call after delayed reading
         /// </summary>
         public static void OnLoadingCompleted()
         {
@@ -330,9 +330,9 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     データを遅延読み込み中かどうかを判定する
+        ///     Determine whether the data is delayed
         /// </summary>
-        /// <returns>データを遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>Return True if you are reading the data delayed</returns>
         private static bool IsLoadingData()
         {
             return Leaders.IsLoading() ||
@@ -346,80 +346,85 @@ namespace HoI2Editor
 
         #endregion
 
-        #region エディタフォーム管理
+        #region Editorform management
 
         /// <summary>
-        ///     メインフォーム
+        ///     Main form
         /// </summary>
         private static MainForm _mainForm;
 
         /// <summary>
-        ///     指揮官エディタのフォーム
+        ///     Commander editor form
         /// </summary>
         private static LeaderEditorForm _leaderEditorForm;
 
         /// <summary>
-        ///     閣僚エディタのフォーム
+        ///     Ministerial editor form
         /// </summary>
         private static MinisterEditorForm _ministerEditorForm;
 
         /// <summary>
-        ///     研究機関エディタのフォーム
+        ///     Research institution editor form
         /// </summary>
         private static TeamEditorForm _teamEditorForm;
 
         /// <summary>
-        ///     プロヴィンスエディタのフォーム
+        ///     Provin Editor form
         /// </summary>
         private static ProvinceEditorForm _provinceEditorForm;
 
         /// <summary>
-        ///     技術ツリーエディタのフォーム
+        ///     Technical tree editor form
         /// </summary>
         private static TechEditorForm _techEditorForm;
 
         /// <summary>
-        ///     ユニットモデルエディタのフォーム
+        ///     Unit model editor form
         /// </summary>
         private static UnitEditorForm _unitEditorForm;
 
         /// <summary>
-        ///     ゲーム設定エディタのフォーム
+        ///     Game setting editor form
         /// </summary>
         private static MiscEditorForm _miscEditorForm;
 
         /// <summary>
-        ///     軍団名エディタのフォーム
+        ///     Corps name editor form
         /// </summary>
         private static CorpsNameEditorForm _corpsNameEditorForm;
 
         /// <summary>
-        ///     ユニット名エディタのフォーム
+        ///     Unit name editor form
         /// </summary>
         private static UnitNameEditorForm _unitNameEditorForm;
 
         /// <summary>
-        ///     モデル名エディタのフォーム
+        ///     Model name editor form
         /// </summary>
         private static ModelNameEditorForm _modelNameEditorForm;
 
         /// <summary>
-        ///     ランダム指揮官エディタのフォーム
+        ///     Random commander editor form
         /// </summary>
         private static RandomLeaderEditorForm _randomLeaderEditorForm;
 
         /// <summary>
-        ///     研究速度ビューアのフォーム
+        ///     Research speed viewer form
         /// </summary>
         private static ResearchViewerForm _researchViewerForm;
 
         /// <summary>
-        ///     シナリオエディタのフォーム
+        ///     Scenario editor form
         /// </summary>
         private static ScenarioEditorForm _scenarioEditorForm;
 
         /// <summary>
-        ///     メインフォームを起動する
+        ///     Event editor form
+        /// </summary>
+        private static LocHelperForm _locHelperForm;
+
+        /// <summary>
+        ///     Start the main form
         /// </summary>
         public static void LaunchMainForm()
         {
@@ -428,7 +433,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     指揮官エディタフォームを起動する
+        ///     Start the commander's editor form
         /// </summary>
         public static void LaunchLeaderEditorForm()
         {
@@ -446,7 +451,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     閣僚エディタフォームを起動する
+        ///     Start the ministerial editor form
         /// </summary>
         public static void LaunchMinisterEditorForm()
         {
@@ -464,7 +469,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     研究機関エディタフォームを起動する
+        ///     Start the research institution editor form
         /// </summary>
         public static void LaunchTeamEditorForm()
         {
@@ -482,7 +487,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     プロヴィンスエディタフォームを起動する
+        ///     Start Province Editor Form
         /// </summary>
         public static void LaunchProvinceEditorForm()
         {
@@ -500,7 +505,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     技術ツリーエディタフォームを起動する
+        ///     Start the Technical Tree Editor Form
         /// </summary>
         public static void LaunchTechEditorForm()
         {
@@ -518,7 +523,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ユニットモデルエディタフォームを起動する
+        ///     Start the unit model editorform
         /// </summary>
         public static void LaunchUnitEditorForm()
         {
@@ -536,7 +541,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ゲーム設定エディタフォームを起動する
+        ///     Start the game setting editor form
         /// </summary>
         public static void LaunchMiscEditorForm()
         {
@@ -554,7 +559,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     軍団名エディタフォームを起動する
+        ///     Start the corps name editorform
         /// </summary>
         public static void LaunchCorpsNameEditorForm()
         {
@@ -572,7 +577,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ユニット名エディタフォームを起動する
+        ///     Start the unit name editorform
         /// </summary>
         public static void LaunchUnitNameEditorForm()
         {
@@ -590,7 +595,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     モデル名エディタフォームを起動する
+        ///     Start the model name editorform
         /// </summary>
         public static void LaunchModelNameEditorForm()
         {
@@ -608,7 +613,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ランダム指揮官エディタフォームを起動する
+        ///     Start the random commander's editor form
         /// </summary>
         public static void LaunchRandomLeaderEditorForm()
         {
@@ -626,7 +631,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     研究速度ビューアフォームを起動する
+        ///     Start research speed view aphom
         /// </summary>
         public static void LaunchResearchViewerForm()
         {
@@ -644,7 +649,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     シナリオエディタフォームを起動する
+        ///     Start the scenario editorform
         /// </summary>
         public static void LaunchScenarioEditorForm()
         {
@@ -662,7 +667,25 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     指揮官エディタフォームクローズ時の処理
+        ///     Start the event editor form
+        /// </summary>
+        public static void LaunchLocHelperForm()
+        {
+            if (_locHelperForm == null)
+            {
+                _locHelperForm = new LocHelperForm();
+                _locHelperForm.Show();
+
+                OnEditorStatusUpdate();
+            }
+            else
+            {
+                _locHelperForm.Activate();
+            }
+        }
+
+        /// <summary>
+        ///     Commander Editor Form Close processing
         /// </summary>
         public static void OnLeaderEditorFormClosed()
         {
@@ -672,7 +695,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     閣僚エディタフォームクローズ時の処理
+        ///     Processing for the ministerial editor form close
         /// </summary>
         public static void OnMinisterEditorFormClosed()
         {
@@ -682,7 +705,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     研究機関エディタフォームクローズ時の処理
+        ///     Research institution editorform processing for closing lose
         /// </summary>
         public static void OnTeamEditorFormClosed()
         {
@@ -692,7 +715,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     プロヴィンスエディタフォームクローズ時の処理
+        ///     Province Editor Form Close Processing
         /// </summary>
         public static void OnProvinceEditorFormClosed()
         {
@@ -702,7 +725,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     技術ツリーエディタフォームクローズ時の処理
+        ///     Technical Tree Editor Form Close Processing
         /// </summary>
         public static void OnTechEditorFormClosed()
         {
@@ -712,7 +735,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ユニットモデルエディタフォームクローズ時の処理
+        ///     Unit model editorform processing for closing lose
         /// </summary>
         public static void OnUnitEditorFormClosed()
         {
@@ -722,7 +745,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ゲーム設定エディタフォームクローズ時の処理
+        ///     Game setting editor form processing when closed
         /// </summary>
         public static void OnMiscEditorFormClosed()
         {
@@ -732,7 +755,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     軍団名エディタフォームクローズ時の処理
+        ///     Corps name editorform processing for closing lose
         /// </summary>
         public static void OnCorpsNameEditorFormClosed()
         {
@@ -742,7 +765,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ユニット名エディタフォームクローズ時の処理
+        ///     Unit name editorform processing when closed
         /// </summary>
         public static void OnUnitNameEditorFormClosed()
         {
@@ -752,7 +775,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     モデル名エディタフォームクローズ時の処理
+        ///     Model name editorform processing for closing lose
         /// </summary>
         public static void OnModelNameEditorFormClosed()
         {
@@ -762,7 +785,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ランダム指揮官エディタフォームクローズ時の処理
+        ///     Random commander Editorform Close processing
         /// </summary>
         public static void OnRandomLeaderEditorFormClosed()
         {
@@ -772,7 +795,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     研究速度ビューアフォームクローズ時の処理
+        ///     Research speed View Affomed Close processing
         /// </summary>
         public static void OnResearchViewerFormClosed()
         {
@@ -782,7 +805,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     シナリオエディタフォームクローズ時の処理
+        ///     Scenario editorform processing for closing lose
         /// </summary>
         public static void OnScenarioEditorFormClosed()
         {
@@ -792,7 +815,17 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     エディタの状態更新時の処理
+        ///     Event editorform processing for closing lose
+        /// </summary>
+        public static void OnLocHelperFormClosed()
+        {
+            _locHelperForm = null;
+
+            OnEditorStatusUpdate();
+        }
+
+        /// <summary>
+        ///     Processing when updating the state of the editor
         /// </summary>
         private static void OnEditorStatusUpdate()
         {
@@ -807,9 +840,9 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     エディタのフォームが存在するかどうかを判定する
+        ///     Judge whether an editor form exists
         /// </summary>
-        /// <returns>エディタのフォームが存在すればtrueを返す</returns>
+        /// <returns>If there is an editor form, return True</returns>
         private static bool ExistsEditorForms()
         {
             return _leaderEditorForm != null ||
@@ -824,28 +857,29 @@ namespace HoI2Editor
                    _modelNameEditorForm != null ||
                    _randomLeaderEditorForm != null ||
                    _researchViewerForm != null ||
-                   _scenarioEditorForm != null;
+                   _scenarioEditorForm != null ||
+                   _locHelperForm != null;
         }
 
         #endregion
 
-        #region 多重編集禁止
+        #region Multi-compilation prohibition
 
         /// <summary>
-        ///     多重編集禁止用のミューテックス
+        ///     Mutex for multiple editing ban
         /// </summary>
         private const string MutextName = "Alternative HoI2 Editor";
 
         private static Mutex _mutex;
 
         /// <summary>
-        ///     ミューテックスをロックする
+        ///     Lock mutex
         /// </summary>
-        /// <param name="key">キー文字列</param>
-        /// <returns>ロックに成功したらtrueを返す</returns>
+        /// <param name="key">Key string</param>
+        /// <returns>If you succeed in locking, return True</returns>
         public static bool LockMutex(string key)
         {
-            // 既にミューテックスをロックしていれば解放する
+            // If you have already locked mutex, release it
             if (_mutex != null)
             {
                 _mutex.ReleaseMutex();
@@ -863,7 +897,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     ミューテックスをアンロックする
+        ///     Unlock Mutex
         /// </summary>
         public static void UnlockMutex()
         {
@@ -878,27 +912,27 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 設定値管理
+        #region Set value management
 
         /// <summary>
-        ///     設定ファイル名
+        ///     Setting file name
         /// </summary>
         private const string SettingsFileName = "HoI2Editor.settings";
 
         /// <summary>
-        ///     設定値
+        ///     Set value
         /// </summary>
         public static HoI2EditorSettings Settings { get; private set; }
 
         /// <summary>
-        ///     設定値を読み込む
+        ///     Read the configuration value
         /// </summary>
         public static void LoadSettings()
         {
             if (!File.Exists(SettingsFileName))
             {
                 Settings = new HoI2EditorSettings();
-                // ログ出力レベルを[情報]に設定する
+                //Set the log output level to Information
                 Log.Level = 3;
             }
             else
@@ -925,7 +959,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     設定値を保存する
+        ///     Save the set value
         /// </summary>
         public static void SaveSettings()
         {
@@ -951,31 +985,31 @@ namespace HoI2Editor
     }
 
     /// <summary>
-    ///     エディタの編集項目ID
+    ///     Edit item ID of the editor
     /// </summary>
     public enum EditorItemId
     {
-        LeaderRetirementYear, // 指揮官の引退年設定
-        MinisterEndYear, // 閣僚の終了年設定
-        MinisterRetirementYear, // 閣僚の引退年設定
-        TeamList, // 研究機関リスト
-        TeamCountry, // 研究機関の所属国
-        TeamName, // 研究機関名
-        TeamId, // 研究機関ID
-        TeamSkill, // 研究機関のスキル
-        TeamSpeciality, // 研究機関の特性
-        TechItemList, // 技術項目リスト
-        TechItemName, // 技術項目名
-        TechItemId, // 技術項目ID
-        TechItemYear, // 技術項目の史実年度
-        TechComponentList, // 小研究リスト
-        TechComponentSpeciality, // 小研究の特性
-        TechComponentDifficulty, // 小研究の難易度
-        TechComponentDoubleTime, // 小研究の2倍時間設定
-        UnitName, // ユニットクラス名
-        MaxAllowedBrigades, // 最大付属可能旅団数
-        ModelList, // ユニットモデルリスト
-        CommonModelName, // 共通のユニットモデル名
-        CountryModelName // 国別のユニットモデル名
+        LeaderRetirementYear, // Retirement year setting of commander
+        MinisterEndYear, // Ministerial End Year settings
+        MinisterRetirementYear, // Retirement year setting of ministers
+        TeamList, // Research institution list
+        TeamCountry, // Research institution affiliated country
+        TeamName, // Research institution name
+        TeamId, // Research institution ID
+        TeamSkill, // Research institution skills
+        TeamSpeciality, // Research institution characteristics
+        TechItemList, // Technical item list
+        TechItemName, // Technical project name
+        TechItemId, // Technical project ID
+        TechItemYear, // Fiscal year of technical items
+        TechComponentList, // Small research list
+        TechComponentSpeciality, // Characteristics of small research
+        TechComponentDifficulty, // Difficulty of small research
+        TechComponentDoubleTime, // Double time setting of small research
+        UnitName, // Unit class name
+        MaxAllowedBrigades, // Maximum attached number of brigades
+        ModelList, // Unit model list
+        CommonModelName, // Common unit model name
+        CountryModelName // Country unit model name
     }
 }

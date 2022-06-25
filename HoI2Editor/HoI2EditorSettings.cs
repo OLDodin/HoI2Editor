@@ -8,133 +8,133 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor
 {
     /// <summary>
-    ///     エディタの設定を管理するクラス
+    ///     Class to manage editor settings
     /// </summary>
     public class HoI2EditorSettings
     {
-        #region 公開プロパティ
+        #region Public properties
 
-        #region メインフォーム
+        #region Main form
 
         /// <summary>
-        ///     メインフォームの設定
+        ///     Main form settings
         /// </summary>
         public MainFormSettings Main = new MainFormSettings();
 
         #endregion
 
-        #region 指揮官エディタ
+        #region Commander Editor
 
         /// <summary>
-        ///     指揮官エディタの設定
+        ///     Commander editor settings
         /// </summary>
         public LeaderEditorSettings LeaderEditor = new LeaderEditorSettings();
 
         #endregion
 
-        #region 閣僚エディタ
+        #region Minister Editor
 
         /// <summary>
-        ///     閣僚エディタの設定
+        ///     Minister editor settings
         /// </summary>
         public MinisterEditorSettings MinisterEditor = new MinisterEditorSettings();
 
         #endregion
 
-        #region 研究機関エディタ
+        #region Research institution editor
 
         /// <summary>
-        ///     研究機関エディタの設定
+        ///     Research institution editor settings
         /// </summary>
         public TeamEditorSettings TeamEditor = new TeamEditorSettings();
 
         #endregion
 
-        #region プロヴィンスエディタ
+        #region Providence Editor
 
         /// <summary>
-        ///     プロヴィンスエディタの設定
+        ///     Province editor settings
         /// </summary>
         public ProvinceEditorSettings ProvinceEditor = new ProvinceEditorSettings();
 
         #endregion
 
-        #region 技術ツリーエディタ
+        #region Technology Tree Editor
 
         /// <summary>
-        ///     技術ツリーエディタの設定
+        ///     Technical tree editor settings
         /// </summary>
         public TechEditorSettings TechEditor = new TechEditorSettings();
 
         #endregion
 
-        #region ユニットモデルエディタ
+        #region Unit model editor
 
         /// <summary>
-        ///     ユニットモデルエディタの設定
+        ///     Unit model editor settings
         /// </summary>
         public UnitEditorSettings UnitEditor = new UnitEditorSettings();
 
         #endregion
 
-        #region 基礎データエディタ
+        #region Basic data editor
 
         /// <summary>
-        ///     基礎データエディタの設定
+        ///     Basic data editor settings
         /// </summary>
         public MiscEditorSettings MiscEditor = new MiscEditorSettings();
 
         #endregion
 
-        #region 軍団名エディタ
+        #region Army name editor
 
         /// <summary>
-        ///     軍団名エディタの設定
+        ///     Army name editor settings
         /// </summary>
         public CorpsNameEditorSettings CorpsNameEditor = new CorpsNameEditorSettings();
 
         #endregion
 
-        #region ユニット名エディタ
+        #region Unit name editor
 
         /// <summary>
-        ///     ユニット名エディタの設定
+        ///     Unit name editor settings
         /// </summary>
         public UnitNameEditorSettings UnitNameEditor = new UnitNameEditorSettings();
 
         #endregion
 
-        #region ユニットモデル名エディタ
+        #region Unit model name editor
 
         /// <summary>
-        ///     ユニットモデル名エディタの設定
+        ///     Unit model name editor settings
         /// </summary>
         public ModelNameEditorSettings ModelNameEditor = new ModelNameEditorSettings();
 
         #endregion
 
-        #region ランダム指揮官名エディタ
+        #region Random commander name editor
 
         /// <summary>
-        ///     ランダム指揮官名エディタの設定
+        ///     Random commander name editor settings
         /// </summary>
         public RandomLeaderEditorSettings RandomLeaderEditor = new RandomLeaderEditorSettings();
 
         #endregion
 
-        #region 研究速度ビューア
+        #region Research speed viewer
 
         /// <summary>
-        ///     研究速度ビューアの設定
+        ///     Research speed viewer settings
         /// </summary>
         public ResearchViewerSettings ResearchViewer = new ResearchViewerSettings();
 
         #endregion
 
-        #region シナリオエディタ
+        #region Scenario editor
 
         /// <summary>
-        ///     シナリオエディタの設定
+        ///     Scenario editor settings
         /// </summary>
         public ScenarioEditorSettings ScenarioEditor = new ScenarioEditorSettings();
 
@@ -142,10 +142,10 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     設定値を丸める
+        ///     Round the setting value
         /// </summary>
         public void Round()
         {
@@ -166,19 +166,19 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     フォームの位置を丸める
+        ///     Round the position of the form
         /// </summary>
-        /// <param name="location">現在の位置</param>
-        /// <param name="size">現在のサイズ</param>
-        /// <param name="defaultWidth">デフォルト幅</param>
-        /// <param name="defaultHeight">デフォルト高さ</param>
-        /// <returns>丸めた後の位置</returns>
+        /// <param name="location">Current position</param>
+        /// <param name="size">Current size</param>
+        /// <param name="defaultWidth">Default width</param>
+        /// <param name="defaultHeight">Default height</param>
+        /// <returns>Position after rolling</returns>
         private static Rectangle RoundFormPosition(Point location, Size size, int defaultWidth, int defaultHeight)
         {
-            // デスクトップのサイズを取得する
+            // Get the size of the desktop
             Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-            // フォームのサイズを丸める
+            // Round the size of the form
             int width = size.Width;
             int scaledWidth = DeviceCaps.GetScaledWidth(defaultWidth);
             if ((width > screenRect.Width) || (width < scaledWidth))
@@ -192,7 +192,7 @@ namespace HoI2Editor
                 height = scaledHeight;
             }
 
-            // フォームの位置を丸める
+            // Round the position of the form
             int x = location.X;
             if (x < screenRect.Left)
             {
@@ -216,21 +216,21 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     フォームの位置を丸める (低解像度と高解像度でデフォルトの高さが異なる場合)
+        ///     Round the position of the form (( If the default height is different between low resolution and high resolution )
         /// </summary>
-        /// <param name="location">現在の位置</param>
-        /// <param name="size">現在のサイズ</param>
-        /// <param name="defaultWidth">デフォルト幅</param>
-        /// <param name="defaultHeightShort">デフォルト高さ(低解像度)</param>
-        /// <param name="defaultHeightLong">デフォルト高さ(高解像度)</param>
-        /// <returns>丸めた後の位置</returns>
+        /// <param name="location">Current position</param>
+        /// <param name="size">Current size</param>
+        /// <param name="defaultWidth">Default width</param>
+        /// <param name="defaultHeightShort">Default height (( Low resolution )</param>
+        /// <param name="defaultHeightLong">Default height (( High resolution )</param>
+        /// <returns>Position after rolling</returns>
         private static Rectangle RoundFormPosition(Point location, Size size,
             int defaultWidth, int defaultHeightShort, int defaultHeightLong)
         {
-            // デスクトップのサイズを取得する
+            // Get the size of the desktop
             Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-            // フォームのサイズを丸める
+            // Round the size of the form
             int width = size.Width;
             int scaledWidth = DeviceCaps.GetScaledWidth(defaultWidth);
             if ((width > screenRect.Width) || (width < scaledWidth))
@@ -245,7 +245,7 @@ namespace HoI2Editor
                 height = screenRect.Height >= scaledHeightLong ? scaledHeightLong : scaledHeightShort;
             }
 
-            // フォームの位置を丸める
+            // Round the position of the form
             int x = location.X;
             if (x < screenRect.Left)
             {
@@ -270,17 +270,17 @@ namespace HoI2Editor
 
         #endregion
 
-        #region メインフォーム
+        #region Main form
 
         /// <summary>
-        ///     メインフォームの設定
+        ///     Main form setting
         /// </summary>
         public class MainFormSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ゲームフォルダ名
+            ///     Game folder name
             /// </summary>
             public string GameFolder
             {
@@ -289,7 +289,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     MODフォルダ名
+            ///     MOD Folder name
             /// </summary>
             public string ModFolder
             {
@@ -298,7 +298,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     保存フォルダ名
+            ///     Save folder name
             /// </summary>
             public string ExportFolder
             {
@@ -307,7 +307,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     ログ出力レベル
+            ///     Log output level
             /// </summary>
             public int LogLevel
             {
@@ -316,7 +316,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     マップ読み込みの禁止
+            ///     Prohibition of map loading
             /// </summary>
             public bool ForbidLoadMaps
             {
@@ -325,42 +325,42 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 480;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 350;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public MainFormSettings()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -370,11 +370,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -385,65 +385,65 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 指揮官エディタ
+        #region Commander Editor
 
         /// <summary>
-        ///     指揮官エディタの設定
+        ///     Commander editor settings
         /// </summary>
         public class LeaderEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     指揮官リストビューの列の幅
+            ///     Commander list view column width
             /// </summary>
             public int[] ListColumnWidth { get; set; } = new int[LeaderEditorForm.LeaderListColumnCount];
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public List<Country> Countries { get; set; } = new List<Country>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 1000;
 
             /// <summary>
-            ///     デフォルト高さ(低解像度)
+            ///     Default height (( Low resolution )
             /// </summary>
             private const int DefaultHeightShort = 670;
 
             /// <summary>
-            ///     デフォルト高さ(高解像度)
+            ///     Default height (( High resolution )
             /// </summary>
             private const int DefaultHeightLong = 720;
 
             /// <summary>
-            ///     指揮官リストビューの列のデフォルト幅
+            ///     Default width of columns in commander list view
             /// </summary>
             private static readonly int[] DefaultListColumnWidth = { 40, 60, 250, 55, 70, 70, 50, 50, 290 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public LeaderEditorSettings()
             {
@@ -451,14 +451,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int longHeight = DeviceCaps.GetScaledHeight(DefaultHeightLong);
                 int shortHeight = DeviceCaps.GetScaledHeight(DefaultHeightShort);
@@ -468,7 +468,7 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // 指揮官リストビューの列の幅を設定する
+                // Set the width of columns in the commander list view
                 for (int i = 0; i < LeaderEditorForm.LeaderListColumnCount; i++)
                 {
                     ListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultListColumnWidth[i]);
@@ -476,16 +476,16 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeightShort, DefaultHeightLong);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
 
-                // 選択中の国家がない場合、先頭になるAFGを選択する
+                // If no nation is selected, it will be the first AFG To select
                 if (Countries.Count == 0)
                 {
                     Countries.Add(Country.AFG);
@@ -497,60 +497,60 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 閣僚エディタ
+        #region Minister Editor
 
         /// <summary>
-        ///     閣僚エディタの設定
+        ///     Minister editor settings
         /// </summary>
         public class MinisterEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     閣僚リストビューの列の幅
+            ///     Column width in ministerial list view
             /// </summary>
             public int[] ListColumnWidth { get; set; } = new int[MinisterEditorForm.MinisterListColumnCount];
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public List<Country> Countries { get; set; } = new List<Country>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 800;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 600;
 
             /// <summary>
-            ///     閣僚リストビューの列のデフォルト幅
+            ///     Default width of columns in ministerial list view
             /// </summary>
             private static readonly int[] DefaultListColumnWidth = { 40, 60, 180, 50, 50, 95, 160, 100 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public MinisterEditorSettings()
             {
@@ -558,14 +558,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -573,7 +573,7 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // 閣僚リストビューの列の幅を設定する
+                // Set the width of columns in the ministerial list view
                 for (int i = 0; i < MinisterEditorForm.MinisterListColumnCount; i++)
                 {
                     ListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultListColumnWidth[i]);
@@ -581,16 +581,16 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
 
-                // 選択中の国家がない場合、先頭になるAFGを選択する
+                // If no nation is selected, it will be the first AFG To select
                 if (Countries.Count == 0)
                 {
                     Countries.Add(Country.AFG);
@@ -602,60 +602,60 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 研究機関エディタ
+        #region Research institution editor
 
         /// <summary>
-        ///     研究機関エディタの設定
+        ///     Research institution editor settings
         /// </summary>
         public class TeamEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     研究機関リストビューの列の幅
+            ///     Research institution list view column width
             /// </summary>
             public int[] ListColumnWidth { get; set; } = new int[TeamEditorForm.TeamListColumnCount];
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public List<Country> Countries { get; set; } = new List<Country>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 800;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 600;
 
             /// <summary>
-            ///     研究機関リストビューの列のデフォルト幅
+            ///     Default width of columns in research institution list view
             /// </summary>
             private static readonly int[] DefaultListColumnWidth = { 40, 60, 300, 50, 50, 50, 185 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public TeamEditorSettings()
             {
@@ -663,14 +663,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -678,7 +678,7 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // 研究機関リストビューの列の幅を設定する
+                // Set the width of columns in the research institution list view
                 for (int i = 0; i < TeamEditorForm.TeamListColumnCount; i++)
                 {
                     ListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultListColumnWidth[i]);
@@ -686,16 +686,16 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
 
-                // 選択中の国家がない場合、先頭になるAFGを選択する
+                // If no nation is selected, it will be the first AFG To select
                 if (Countries.Count == 0)
                 {
                     Countries.Add(Country.AFG);
@@ -707,60 +707,60 @@ namespace HoI2Editor
 
         #endregion
 
-        #region プロヴィンスエディタ
+        #region Providence Editor
 
         /// <summary>
-        ///     プロヴィンスエディタの設定
+        ///     Province editor settings
         /// </summary>
         public class ProvinceEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     プロヴィンスリストビューの列の幅
+            ///     Provincial list view column width
             /// </summary>
             public int[] ListColumnWidth { get; set; } = new int[ProvinceEditorForm.ProvinceListColumnCount];
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 800;
 
             /// <summary>
-            ///     デフォルト高さ(低解像度)
+            ///     Default height (( Low resolution )
             /// </summary>
             private const int DefaultHeightShort = 670;
 
             /// <summary>
-            ///     デフォルト高さ(高解像度)
+            ///     Default height (( High resolution )
             /// </summary>
             private const int DefaultHeightLong = 720;
 
             /// <summary>
-            ///     プロヴィンスリストビューの列のデフォルト幅
+            ///     Default width of columns in province list view
             /// </summary>
             private static readonly int[] DefaultListColumnWidth = { 185, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50, 50 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public ProvinceEditorSettings()
             {
@@ -768,14 +768,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int longHeight = DeviceCaps.GetScaledHeight(DefaultHeightLong);
                 int shortHeight = DeviceCaps.GetScaledHeight(DefaultHeightShort);
@@ -785,7 +785,7 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // プロヴィンスリストビューの列の幅を設定する
+                // Set the width of columns in the provisions list view
                 for (int i = 0; i < ProvinceEditorForm.ProvinceListColumnCount; i++)
                 {
                     ListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultListColumnWidth[i]);
@@ -793,11 +793,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeightShort, DefaultHeightLong);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -808,115 +808,115 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 技術ツリーエディタ
+        #region Technology Tree Editor
 
         /// <summary>
-        ///     技術ツリーエディタの設定
+        ///     Technical tree editor settings
         /// </summary>
         public class TechEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     AND必要技術リストビューの列の幅
+            ///     AND AND Required technology list view column width
             /// </summary>
             public int[] AndRequiredListColumnWidth { get; set; } = new int[TechEditorForm.RequiredListColumnCount];
 
             /// <summary>
-            ///     OR必要技術リストビューの列の幅
+            ///     OR Required technology list view column width
             /// </summary>
             public int[] OrRequiredListColumnWidth { get; set; } = new int[TechEditorForm.RequiredListColumnCount];
 
             /// <summary>
-            ///     小研究リストビューの列の幅
+            ///     Short study list view column width
             /// </summary>
             public int[] ComponentListColumnWidth { get; set; } = new int[TechEditorForm.ComponentListColumnCount];
 
             /// <summary>
-            ///     技術効果リストビューの列の幅
+            ///     Technique effect list view column width
             /// </summary>
             public int[] EffectListColumnWidth { get; set; } = new int[TechEditorForm.EffectListColumnCount];
 
             /// <summary>
-            ///     技術座標リストビューの列の幅
+            ///     Technical coordinate list view column width
             /// </summary>
             public int[] TechPositionListColumnWidth { get; set; } = new int[TechEditorForm.PositionListColumnCount];
 
             /// <summary>
-            ///     ラベル座標リストビューの列の幅
+            ///     Label coordinate list view column width
             /// </summary>
             public int[] LabelPositionListColumnWidth { get; set; } = new int[TechEditorForm.PositionListColumnCount];
 
             /// <summary>
-            ///     イベント座標リストビューの列の幅
+            ///     Event coordinate list view column width
             /// </summary>
             public int[] EventPositionListColumnWidth { get; set; } = new int[TechEditorForm.PositionListColumnCount];
 
             /// <summary>
-            ///     技術カテゴリリストボックスの選択項目
+            ///     Choices in the technical category list box
             /// </summary>
             public int Category { get; set; }
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 1000;
 
             /// <summary>
-            ///     デフォルト高さ(低解像度)
+            ///     Default height (( Low resolution )
             /// </summary>
             private const int DefaultHeightShort = 670;
 
             /// <summary>
-            ///     デフォルト高さ(中解像度)
+            ///     Default height (( Medium resolution )
             /// </summary>
             private const int DefaultHeightMiddle = 720;
 
             /// <summary>
-            ///     デフォルト高さ(高解像度)
+            ///     Default height (( High resolution )
             /// </summary>
             private const int DefaultHeightLong = 876;
 
             /// <summary>
-            ///     必要技術リストビューの列のデフォルト幅
+            ///     Required Technology List view column default width
             /// </summary>
             private static readonly int[] DefaultRequiredListColumnWidth = { 60, 235 };
 
             /// <summary>
-            ///     小研究リストビューの列のデフォルト幅
+            ///     Default width of columns in scholarship list view
             /// </summary>
             private static readonly int[] DefaultComponentListColumnWidth = { 60, 250, 180, 60, 60 };
 
             /// <summary>
-            ///     技術効果リストビューの列のデフォルト幅
+            ///     Default width of columns in technical effect list view
             /// </summary>
             private static readonly int[] DefaultEffectListColumnWidth = { 120, 120, 120, 120, 120 };
 
             /// <summary>
-            ///     座標リストビューの列のデフォルト幅
+            ///     Default width of columns in coordinate list view
             /// </summary>
             private static readonly int[] DefaultPositionListColumnWidth = { 50, 50 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public TechEditorSettings()
             {
@@ -924,14 +924,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int longHeight = DeviceCaps.GetScaledHeight(DefaultHeightLong);
                 int middleHeight = DeviceCaps.GetScaledHeight(DefaultHeightMiddle);
@@ -944,26 +944,26 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // 必要技術リストビューの列の幅を設定する
+                // Required technology Set the width of the list view column
                 for (int i = 0; i < TechEditorForm.RequiredListColumnCount; i++)
                 {
                     AndRequiredListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultRequiredListColumnWidth[i]);
                     OrRequiredListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultRequiredListColumnWidth[i]);
                 }
 
-                // 小研究リストビューの列の幅を設定する
+                // Set the width of columns in the scholarship list view
                 for (int i = 0; i < TechEditorForm.ComponentListColumnCount; i++)
                 {
                     ComponentListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultComponentListColumnWidth[i]);
                 }
 
-                // 技術効果リストビューの列の幅を設定する
+                // Set the width of the columns in the technical effect list view
                 for (int i = 0; i < TechEditorForm.EffectListColumnCount; i++)
                 {
                     EffectListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultEffectListColumnWidth[i]);
                 }
 
-                // 座標リストビューの列の幅を設定する
+                // Set the width of the columns in the coordinate list view
                 for (int i = 0; i < TechEditorForm.PositionListColumnCount; i++)
                 {
                     TechPositionListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultPositionListColumnWidth[i]);
@@ -973,11 +973,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeightShort, DefaultHeightLong);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -988,80 +988,80 @@ namespace HoI2Editor
 
         #endregion
 
-        #region ユニットモデルエディタ
+        #region Unit model editor
 
         /// <summary>
-        ///     ユニットモデルエディタの設定
+        ///     Unit model editor settings
         /// </summary>
         public class UnitEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     ユニットモデルリストビューの列の幅
+            ///     Unit model list view column width
             /// </summary>
             public int[] ModelListColumnWidth { get; set; } = new int[UnitEditorForm.ModelListColumnCount];
 
             /// <summary>
-            ///     改良リストビューの列の幅
+            ///     Improved list view column width
             /// </summary>
             public int[] UpgradeListColumnWidth { get; set; } = new int[UnitEditorForm.UpgradeListColumnCount];
 
             /// <summary>
-            ///     装備リストビューの列の幅
+            ///     Equipment list view column width
             /// </summary>
             public int[] EquipmentListColumnWidth { get; set; } = new int[UnitEditorForm.EquipmentListColumnCount];
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 1000;
 
             /// <summary>
-            ///     デフォルト高さ(低解像度)
+            ///     Default height (( Low resolution )
             /// </summary>
             private const int DefaultHeightShort = 670;
 
             /// <summary>
-            ///     デフォルト高さ(高解像度)
+            ///     Default height (( High resolution )
             /// </summary>
             private const int DefaultHeightLong = 720;
 
             /// <summary>
-            ///     ユニットモデルリストビューの列のデフォルト幅
+            ///     Default width of columns in unit model list view
             /// </summary>
             private static readonly int[] DefaultModelListColumnWidth = { 40, 310, 50, 50, 50, 50, 50, 50, 50, 50 };
 
             /// <summary>
-            ///     改良リストビューの列のデフォルト幅
+            ///     Default width of columns in improved list view
             /// </summary>
             private static readonly int[] DefaultUpgradeListColumnWidth = { 225, 40, 40 };
 
             /// <summary>
-            ///     装備リストビューの列のデフォルト幅
+            ///     Default width for columns in equipment list view
             /// </summary>
             private static readonly int[] DefaultEquipmentListColumnWidth = { 100, 60 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public UnitEditorSettings()
             {
@@ -1069,14 +1069,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int longHeight = DeviceCaps.GetScaledHeight(DefaultHeightLong);
                 int shortHeight = DeviceCaps.GetScaledHeight(DefaultHeightShort);
@@ -1086,19 +1086,19 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // ユニットモデルリストビューの列の幅を設定する
+                // Set the width of columns in the unit model list view
                 for (int i = 0; i < UnitEditorForm.ModelListColumnCount; i++)
                 {
                     ModelListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultModelListColumnWidth[i]);
                 }
 
-                // 改良リストビューの列の幅を設定する
+                // Set the width of columns in the improved list view
                 for (int i = 0; i < UnitEditorForm.UpgradeListColumnCount; i++)
                 {
                     UpgradeListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultUpgradeListColumnWidth[i]);
                 }
 
-                // 装備リストビューの列の幅を設定する
+                // Set the width of the equipment list view column
                 for (int i = 0; i < UnitEditorForm.EquipmentListColumnCount; i++)
                 {
                     EquipmentListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultEquipmentListColumnWidth[i]);
@@ -1106,11 +1106,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeightShort, DefaultHeightLong);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -1121,55 +1121,55 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 基礎データエディタ
+        #region Basic data editor
 
         /// <summary>
-        ///     基礎データエディタの設定
+        ///     Basic data editor settings
         /// </summary>
         public class MiscEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     選択中のタブページ
+            ///     Selected tab page
             /// </summary>
             public int SelectedTab { get; set; }
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 1000;
 
             /// <summary>
-            ///     デフォルト高さ(低解像度)
+            ///     Default height (( Low resolution )
             /// </summary>
             private const int DefaultHeightShort = 670;
 
             /// <summary>
-            ///     デフォルト高さ(高解像度)
+            ///     Default height (( High resolution )
             /// </summary>
             private const int DefaultHeightLong = 720;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public MiscEditorSettings()
             {
@@ -1177,14 +1177,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int longHeight = DeviceCaps.GetScaledHeight(DefaultHeightLong);
                 int shortHeight = DeviceCaps.GetScaledHeight(DefaultHeightShort);
@@ -1196,11 +1196,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeightShort, DefaultHeightLong);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -1211,90 +1211,90 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 軍団名エディタ
+        #region Army name editor
 
         /// <summary>
-        ///     軍団名エディタの設定
+        ///     Army name editor settings
         /// </summary>
         public class CorpsNameEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     選択中の兵科
+            ///     Selected military department
             /// </summary>
             public int Branch { get; set; }
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public int Country { get; set; }
 
             /// <summary>
-            ///     全ての兵科に適用するかどうか
+            ///     Whether to apply to all military departments
             /// </summary>
             public bool ApplyAllBranches { get; set; }
 
             /// <summary>
-            ///     全ての国家に適用するかどうか
+            ///     Whether to apply to all nations
             /// </summary>
             public bool ApplyAllCountires { get; set; }
 
             /// <summary>
-            ///     正規表現を使用するかどうか
+            ///     Whether to use regular expressions
             /// </summary>
             public bool RegularExpression { get; set; }
 
             /// <summary>
-            ///     置換元の履歴
+            ///     Replacement source history
             /// </summary>
             public List<string> ToHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     置換先の履歴
+            ///     Replacement history
             /// </summary>
             public List<string> WithHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     接頭辞の履歴
+            ///     Prefix history
             /// </summary>
             public List<string> PrefixHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     接尾辞の履歴
+            ///     History of suffixes
             /// </summary>
             public List<string> SuffixHistory { get; set; } = new List<string>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 640;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 480;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public CorpsNameEditorSettings()
             {
@@ -1302,14 +1302,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -1319,11 +1319,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -1334,55 +1334,55 @@ namespace HoI2Editor
 
         #endregion
 
-        #region ユニット名エディタ
+        #region Unit name editor
 
         /// <summary>
-        ///     ユニットモデル名エディタの設定
+        ///     Unit model name editor settings
         /// </summary>
         public class ModelNameEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public int Country { get; set; }
 
             /// <summary>
-            ///     選択中のユニット種類
+            ///     Selected unit type
             /// </summary>
             public int UnitType { get; set; }
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 640;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 480;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public ModelNameEditorSettings()
             {
@@ -1390,14 +1390,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -1407,11 +1407,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -1422,90 +1422,90 @@ namespace HoI2Editor
 
         #endregion
 
-        #region ユニットモデル名エディタ
+        #region Unit model name editor
 
         /// <summary>
-        ///     ユニット名エディタの設定
+        ///     Unit name editor settings
         /// </summary>
         public class UnitNameEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public int Country { get; set; }
 
             /// <summary>
-            ///     選択中のユニット種類
+            ///     Selected unit type
             /// </summary>
             public int UnitType { get; set; }
 
             /// <summary>
-            ///     全ての国家に適用するかどうか
+            ///     Whether to apply to all nations
             /// </summary>
             public bool ApplyAllCountires { get; set; }
 
             /// <summary>
-            ///     全てのユニット種類に適用するかどうか
+            ///     Whether to apply to all unit types
             /// </summary>
             public bool ApplyAllUnitTypes { get; set; }
 
             /// <summary>
-            ///     正規表現を使用するかどうか
+            ///     Whether to use regular expressions
             /// </summary>
             public bool RegularExpression { get; set; }
 
             /// <summary>
-            ///     置換元の履歴
+            ///     Replacement source history
             /// </summary>
             public List<string> ToHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     置換先の履歴
+            ///     Replacement history
             /// </summary>
             public List<string> WithHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     接頭辞の履歴
+            ///     Prefix history
             /// </summary>
             public List<string> PrefixHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     接尾辞の履歴
+            ///     History of suffixes
             /// </summary>
             public List<string> SuffixHistory { get; set; } = new List<string>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 640;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 480;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public UnitNameEditorSettings()
             {
@@ -1513,14 +1513,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -1530,11 +1530,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -1545,70 +1545,70 @@ namespace HoI2Editor
 
         #endregion
 
-        #region ランダム指揮官名エディタ
+        #region Random commander name editor
 
         /// <summary>
-        ///     ランダム指揮官名エディタの設定
+        ///     Random commander name editor settings
         /// </summary>
         public class RandomLeaderEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public int Country { get; set; }
 
             /// <summary>
-            ///     全ての国家に適用するかどうか
+            ///     Whether to apply to all nations
             /// </summary>
             public bool ApplyAllCountires { get; set; }
 
             /// <summary>
-            ///     正規表現を使用するかどうか
+            ///     Whether to use regular expressions
             /// </summary>
             public bool RegularExpression { get; set; }
 
             /// <summary>
-            ///     置換元の履歴
+            ///     Replacement source history
             /// </summary>
             public List<string> ToHistory { get; set; } = new List<string>();
 
             /// <summary>
-            ///     置換先の履歴
+            ///     Replacement history
             /// </summary>
             public List<string> WithHistory { get; set; } = new List<string>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 640;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 480;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public RandomLeaderEditorSettings()
             {
@@ -1616,14 +1616,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -1633,11 +1633,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
@@ -1648,42 +1648,42 @@ namespace HoI2Editor
 
         #endregion
 
-        #region 研究速度ビューア
+        #region Research speed viewer
 
         /// <summary>
-        ///     研究速度ビューアの設定
+        ///     Research speed viewer settings
         /// </summary>
         public class ResearchViewerSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             /// <summary>
-            ///     技術リストビューの列の幅
+            ///     Technology list view column width
             /// </summary>
             public int[] TechListColumnWidth { get; set; } = new int[LeaderEditorForm.LeaderListColumnCount];
 
             /// <summary>
-            ///     研究機関リストビューの列の幅
+            ///     Research institution list view column width
             /// </summary>
             public int[] TeamListColumnWidth { get; set; } = new int[LeaderEditorForm.LeaderListColumnCount];
 
             /// <summary>
-            ///     技術カテゴリリストボックスの選択項目
+            ///     Choices in the technical category list box
             /// </summary>
             public int Category { get; set; }
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             public List<Country> Countries
             {
@@ -1692,7 +1692,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     指定日付を使用するかどうか
+            ///     Whether to use the specified date
             /// </summary>
             public bool UseSpecifiedDate
             {
@@ -1701,7 +1701,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     指定日付
+            ///     Specified date
             /// </summary>
             public GameDate SpecifiedDate
             {
@@ -1710,7 +1710,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     ロケット試験場の規模
+            ///     Scale of rocket test site
             /// </summary>
             public int RocketTestingSites
             {
@@ -1719,7 +1719,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     原子炉の規模
+            ///     Reactor scale
             /// </summary>
             public int NuclearReactors
             {
@@ -1728,7 +1728,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     青写真の有無
+            ///     Presence or absence of blueprint
             /// </summary>
             public bool Blueprint
             {
@@ -1737,7 +1737,7 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     研究速度補正
+            ///     Research speed correction
             /// </summary>
             public string Modifier
             {
@@ -1748,7 +1748,7 @@ namespace HoI2Editor
                     DoubleHelper.TryParse(value, out d);
                     Researches.Modifier = d;
 
-                    // 0以下の値だとまともに計算できなくなるので保険
+                    // 0 If the value is below, it will not be possible to calculate properly, so insurance
                     if (Researches.Modifier <= 0)
                     {
                         Researches.Modifier = 1;
@@ -1758,43 +1758,43 @@ namespace HoI2Editor
 
             #endregion
 
-            #region 内部フィールド
+            #region Internal field
 
             /// <summary>
-            ///     選択中の国家
+            ///     Selected nation
             /// </summary>
             private List<Country> _countries = new List<Country>();
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 800;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 600;
 
             /// <summary>
-            ///     技術リストビューの列のデフォルト幅
+            ///     Default width of columns in technical list view
             /// </summary>
             private static readonly int[] DefaultTechListColumnWidth = { 310, 50, 50, 200 };
 
             /// <summary>
-            ///     研究機関リストビューの列のデフォルト幅
+            ///     Default width of columns in research institution list view
             /// </summary>
             private static readonly int[] DefaultTeamListColumnWidth = { 0, 40, 50, 85, 200, 50, 45, 120 };
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public ResearchViewerSettings()
             {
@@ -1802,14 +1802,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -1817,13 +1817,13 @@ namespace HoI2Editor
                 Location = new Point(x, y);
                 Size = new Size(width, height);
 
-                // 技術リストビューの列の幅を設定する
+                // Set the width of the columns in the tech list view
                 for (int i = 0; i < ResearchViewerForm.TechListColumnCount; i++)
                 {
                     TechListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultTechListColumnWidth[i]);
                 }
 
-                // 研究機関リストビューの列の幅を設定する
+                // Set the width of columns in the research institution list view
                 for (int i = 0; i < ResearchViewerForm.TeamListColumnCount; i++)
                 {
                     TeamListColumnWidth[i] = DeviceCaps.GetScaledWidth(DefaultTeamListColumnWidth[i]);
@@ -1831,16 +1831,16 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);
 
-                // 選択中の国家がない場合、先頭になるAFGを選択する
+                // If no nation is selected, it will be the first AFG To select
                 if (_countries.Count == 0)
                 {
                     _countries.Add(Country.AFG);
@@ -1852,45 +1852,45 @@ namespace HoI2Editor
 
         #endregion
 
-        #region シナリオエディタ
+        #region Scenario editor
 
         /// <summary>
-        ///     シナリオエディタの設定
+        ///     Scenario editor settings
         /// </summary>
         public class ScenarioEditorSettings
         {
-            #region 公開プロパティ
+            #region Public properties
 
             /// <summary>
-            ///     ウィンドウ位置
+            ///     Window position
             /// </summary>
             public Point Location { get; set; }
 
             /// <summary>
-            ///     ウィンドウサイズ
+            ///     Window size
             /// </summary>
             public Size Size { get; set; }
 
             #endregion
 
-            #region 内部定数
+            #region Internal constant
 
             /// <summary>
-            ///     デフォルト幅
+            ///     Default width
             /// </summary>
             private const int DefaultWidth = 1000;
 
             /// <summary>
-            ///     デフォルト高さ
+            ///     Default height
             /// </summary>
             private const int DefaultHeight = 670;
 
             #endregion
 
-            #region 初期化
+            #region Initialization
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
             public ScenarioEditorSettings()
             {
@@ -1898,14 +1898,14 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を初期化する
+            ///     Initialize the setting value
             /// </summary>
             private void Init()
             {
-                // デスクトップのサイズを取得する
+                // Get the size of the desktop
                 Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
-                // ウィンドウ位置を設定する
+                // Set the window position
                 int width = DeviceCaps.GetScaledWidth(DefaultWidth);
                 int height = DeviceCaps.GetScaledHeight(DefaultHeight);
                 int x = screenRect.X + (screenRect.Width - width) / 2;
@@ -1915,11 +1915,11 @@ namespace HoI2Editor
             }
 
             /// <summary>
-            ///     設定値を丸める
+            ///     Round the setting value
             /// </summary>
             public void Round()
             {
-                // ウィンドウ位置を丸める
+                // Round the window position
                 Rectangle rect = RoundFormPosition(Location, Size, DefaultWidth, DefaultHeight);
                 Location = new Point(rect.X, rect.Y);
                 Size = new Size(rect.Width, rect.Height);

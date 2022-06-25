@@ -6,65 +6,65 @@ using HoI2Editor.Models;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     CSVファイルの字句解析クラス
+    ///     CSV file phrase analysis class
     /// </summary>
     public class CsvLexer : IDisposable
     {
-        #region 公開プロパティ
+        #region Public property
 
         /// <summary>
-        ///     解析中のファイル名
+        ///     File name during analysis
         /// </summary>
         public string PathName { get; private set; }
 
         /// <summary>
-        ///     解析中のファイル名 (ディレクトリ除く)
+        ///     File name being analyzed (excluding directories)
         /// </summary>
         public string FileName => Path.GetFileName(PathName);
 
         /// <summary>
-        ///     解析中の行番号
+        ///     Row number during analysis
         /// </summary>
         public int LineNo { get; private set; }
 
         /// <summary>
-        ///     ファイルの末尾に到達したかどうかを返す
+        ///     Return if you reach the end of the file
         /// </summary>
         public bool EndOfStream => _reader.EndOfStream;
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     テキストファイルの読み込み用
+        ///     For reading text files
         /// </summary>
         private StreamReader _reader;
 
         #endregion
 
-        #region 内部定数
+        #region Internal fixed number
 
         /// <summary>
-        ///     CSVファイルの区切り文字
+        ///     CSV file separated character
         /// </summary>
         private static readonly char[] Separator = { ';' };
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="fileName">解析対象のファイル名</param>
+        /// <param name="fileName">File name to be analyzed</param>
         public CsvLexer(string fileName)
         {
             Open(fileName);
         }
 
         /// <summary>
-        ///     オブジェクト破棄時の処理
+        ///     Processing when the object is destroyed
         /// </summary>
         public void Dispose()
         {
@@ -74,7 +74,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     デストラクタ
+        ///     Destructor
         /// </summary>
         ~CsvLexer()
         {
@@ -82,7 +82,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     オブジェクト破棄時の処理
+        ///     Processing when the object is destroyed
         /// </summary>
         protected virtual void Dispose(bool disposing)
         {
@@ -93,9 +93,9 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     ファイルを開く
+        ///     Open the file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         public void Open(string fileName)
         {
             if (!File.Exists(fileName))
@@ -103,7 +103,7 @@ namespace HoI2Editor.Parsers
                 return;
             }
 
-            // 既に開いているファイルがあれば閉じる
+            // Close if there is already an open file
             if (_reader != null)
             {
                 Close();
@@ -116,7 +116,7 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     ファイルを閉じる
+        ///     Close the file
         /// </summary>
         public void Close()
         {
@@ -126,15 +126,15 @@ namespace HoI2Editor.Parsers
 
         #endregion
 
-        #region 字句解析
+        #region Word analysis
 
         /// <summary>
-        ///     字句解析
+        ///     Word analysis
         /// </summary>
-        /// <returns>トークン列</returns>
+        /// <returns>Token column</returns>
         public string[] GetTokens()
         {
-            // ファイルの末尾に到達したらnullを返す
+            // When you reach the end of the file, return null
             if (_reader.EndOfStream)
             {
                 return null;
@@ -143,13 +143,13 @@ namespace HoI2Editor.Parsers
             LineNo++;
             string line = _reader.ReadLine();
 
-            // 空白行ならばnullを返す
+            // Return NULL if it is a blank line
             if (string.IsNullOrEmpty(line))
             {
                 return null;
             }
 
-            // コメント行ならばnullを返す
+            // Return NULL if it is a comment
             if (line[0] == '#')
             {
                 return null;
@@ -159,11 +159,11 @@ namespace HoI2Editor.Parsers
         }
 
         /// <summary>
-        ///     1行読み飛ばす
+        ///     1 Read and skip
         /// </summary>
         public void SkipLine()
         {
-            // ファイルの末尾に到達したら何もしない
+            // Do nothing when you reach the end of the file
             if (_reader.EndOfStream)
             {
                 return;

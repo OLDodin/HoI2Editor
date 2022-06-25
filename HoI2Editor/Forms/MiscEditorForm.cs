@@ -10,47 +10,47 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     基礎データエディタのフォーム
+    ///     Basic data editor form
     /// </summary>
     public partial class MiscEditorForm : Form
     {
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public MiscEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
             foreach (TabPage page in miscTabControl.TabPages)
             {
-                // 編集項目を更新する
+                // Update edit items
                 UpdateEditableItems(page);
-                // 編集項目の色を更新する
+                // Update the color of the edit item
                 UpdateItemColor(page);
             }
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             foreach (TabPage page in miscTabControl.TabPages)
             {
                 UpdateItemColor(page);
@@ -58,9 +58,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
             switch (id)
@@ -88,11 +88,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     指揮官引退年の有無を更新する
+        ///     Update the presence or absence of the commander retirement year
         /// </summary>
         private void UpdateLeaderRetirementYear()
         {
-            // DH1.03以降でなければ何もしない
+            // DH1.03 Do nothing otherwise
             if ((Game.Type != GameType.DarkestHour) || (Game.Version < 103))
             {
                 return;
@@ -101,7 +101,7 @@ namespace HoI2Editor.Forms
             {
                 foreach (Control control in tabPage.Controls)
                 {
-                    // タグの設定されていないラベルをスキップする
+                    // Skip untagged labels
                     if (control.Tag == null)
                     {
                         continue;
@@ -123,11 +123,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚終了年の有無を更新する
+        ///     Update the presence or absence of the ministerial end year
         /// </summary>
         private void UpdateMinisterEndYear()
         {
-            // DHでなければ何もしない
+            // DH Otherwise do nothing
             if (Game.Type != GameType.DarkestHour)
             {
                 return;
@@ -136,7 +136,7 @@ namespace HoI2Editor.Forms
             {
                 foreach (Control control in tabPage.Controls)
                 {
-                    // タグの設定されていないラベルをスキップする
+                    // Skip untagged labels
                     if (control.Tag == null)
                     {
                         continue;
@@ -158,11 +158,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚引退年の有無を更新する
+        ///     Update the presence or absence of a ministerial retirement year
         /// </summary>
         private void UpdateMinisterRetirementYear()
         {
-            // DH1.03以降でなければ何もしない
+            // DH1.03 Do nothing otherwise
             if ((Game.Type != GameType.DarkestHour) || (Game.Version < 103))
             {
                 return;
@@ -171,7 +171,7 @@ namespace HoI2Editor.Forms
             {
                 foreach (Control control in tabPage.Controls)
                 {
-                    // タグの設定されていないラベルをスキップする
+                    // Skip untagged labels
                     if (control.Tag == null)
                     {
                         continue;
@@ -193,11 +193,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     最大付属可能旅団数を更新する
+        ///     Update the maximum number of brigades that can be attached
         /// </summary>
         private void UpdateMaxAllowedBrigades()
         {
-            // AoD1.07以降でなければ何もしない
+            // AoD1.07 Do nothing otherwise
             if ((Game.Type != GameType.ArsenalOfDemocracy) || (Game.Version < 107))
             {
                 return;
@@ -206,7 +206,7 @@ namespace HoI2Editor.Forms
             {
                 foreach (Control control in tabPage.Controls)
                 {
-                    // タグの設定されていないラベルをスキップする
+                    // Skip untagged labels
                     if (control.Tag == null)
                     {
                         continue;
@@ -215,16 +215,16 @@ namespace HoI2Editor.Forms
                     MiscItemId id = (MiscItemId) control.Tag;
                     switch (id)
                     {
-                        case MiscItemId.TpMaxAttach: // 輸送艦最大付属装備数
-                        case MiscItemId.SsMaxAttach: // 潜水艦最大付属装備数
-                        case MiscItemId.SsnMaxAttach: // 原子力潜水艦最大付属装備数
-                        case MiscItemId.DdMaxAttach: // 駆逐艦最大付属装備数
-                        case MiscItemId.ClMaxAttach: // 軽巡洋艦最大付属装備数
-                        case MiscItemId.CaMaxAttach: // 重巡洋艦最大付属装備数
-                        case MiscItemId.BcMaxAttach: // 巡洋戦艦最大付属装備数
-                        case MiscItemId.BbMaxAttach: // 戦艦最大付属装備数
-                        case MiscItemId.CvlMaxAttach: // 軽空母最大付属装備数
-                        case MiscItemId.CvMaxAttach: // 空母最大付属装備数
+                        case MiscItemId.TpMaxAttach: // Maximum number of equipment attached to the transport ship
+                        case MiscItemId.SsMaxAttach: // Maximum number of submersible equipment
+                        case MiscItemId.SsnMaxAttach: // Maximum number of equipment attached to nuclear submarines
+                        case MiscItemId.DdMaxAttach: // Maximum number of equipment attached to the destroyer
+                        case MiscItemId.ClMaxAttach: // Maximum number of equipment attached to light cruisers
+                        case MiscItemId.CaMaxAttach: // Maximum number of heavy cruisers attached
+                        case MiscItemId.BcMaxAttach: // Maximum number of equipment attached to cruise battleships
+                        case MiscItemId.BbMaxAttach: // Maximum number of attached equipment for battleships
+                        case MiscItemId.CvlMaxAttach: // Maximum number of equipment attached to the light carrier
+                        case MiscItemId.CvMaxAttach: // Maximum number of equipment attached to the aircraft carrier
                             TextBox textBox = control as TextBox;
                             if (textBox != null)
                             {
@@ -239,18 +239,18 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.MiscEditor.Location;
             //Size = HoI2Editor.Settings.MiscEditor.Size;
 
-            // 画面解像度が十分に広い場合はタブページが広く表示できるようにする
+            // Allow tab pages to be displayed wide if the screen resolution is wide enough
             int longHeight = DeviceCaps.GetScaledHeight(720);
             if (Screen.GetWorkingArea(this).Height >= longHeight)
             {
@@ -259,22 +259,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 基本データファイルを読み込む
+            // Read basic data file
             Misc.Load();
 
-            // タブページ群を初期化する
+            // Initialize tab pages
             InitTabPages();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
 
-            // 選択中のタブページを初期化する
+            // Initialize the selected tab page
             if (miscTabControl.TabCount > 0)
             {
                 int index = HoI2EditorController.Settings.MiscEditor.SelectedTab;
@@ -288,19 +288,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -318,7 +318,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -328,7 +328,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -341,7 +341,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -354,13 +354,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -379,7 +379,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -389,7 +389,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -400,10 +400,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region タブページ処理
+        #region Tab page processing
 
         /// <summary>
-        ///     タブページ群を初期化する
+        ///     Initialize tab pages
         /// </summary>
         private void InitTabPages()
         {
@@ -472,25 +472,25 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     タブページを初期化する
+        ///     Initialize the tab page
         /// </summary>
-        /// <param name="tabPage">対象のタブページ</param>
+        /// <param name="tabPage">Target tab page</param>
         private void InitTabPage(TabPage tabPage)
         {
-            // 編集項目を作成する
+            // Create an edit item
             CreateEditableItems(tabPage);
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItems(tabPage);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             UpdateItemColor(tabPage);
         }
 
         /// <summary>
-        ///     編集項目を作成する
+        ///     Create an edit item
         /// </summary>
-        /// <param name="tabPage">対象のタブページ</param>
+        /// <param name="tabPage">Target tab page</param>
         private void CreateEditableItems(TabPage tabPage)
         {
             List<List<MiscItemId>> table = tabPage.Tag as List<List<MiscItemId>>;
@@ -517,10 +517,10 @@ namespace HoI2Editor.Forms
             foreach (List<MiscItemId> list in table)
             {
                 int labelY = labelStartY;
-                int editX = labelX; // 編集コントロールの右端X座標(左端ではない)
+                int editX = labelX; // Right edge of edit control X Coordinate (( Not on the far left )
                 foreach (MiscItemId id in list)
                 {
-                    // ラベルを作成する
+                    // Create a label
                     Label label = new Label
                     {
                         Text = Misc.GetItemName(id),
@@ -534,7 +534,7 @@ namespace HoI2Editor.Forms
                     }
                     tabPage.Controls.Add(label);
 
-                    // 編集コントロールの幅のみ求める
+                    // Find only the width of the edit control
                     int x = labelX + label.Width + labelEditMargin;
                     MiscItemType type = Misc.ItemTypes[(int) id];
                     switch (type)
@@ -560,7 +560,7 @@ namespace HoI2Editor.Forms
                             break;
 
                         default:
-                            // テキストボックスの項目は固定
+                            // Items in the text box are fixed
                             x += textBoxWidth;
                             break;
                     }
@@ -573,7 +573,7 @@ namespace HoI2Editor.Forms
                 int editY = editStartY;
                 foreach (MiscItemId id in list)
                 {
-                    // 編集コントロールを作成する
+                    // Create an edit control
                     MiscItemType type = Misc.ItemTypes[(int) id];
                     switch (type)
                     {
@@ -585,7 +585,7 @@ namespace HoI2Editor.Forms
                                 DrawMode = DrawMode.OwnerDrawFixed,
                                 Tag = id
                             };
-                            // コンボボックスの選択項目を登録し、最大幅を求める
+                            // Register the selection items of the combo box and find the maximum width
                             int maxWidth = comboBoxWidthBase;
                             for (int i = Misc.IntMinValues[id]; i <= Misc.IntMaxValues[id]; i++)
                             {
@@ -623,20 +623,20 @@ namespace HoI2Editor.Forms
                     }
                     editY += itemHeight;
                 }
-                // 次の列との間を空ける
+                // Leave a space between the next column
                 labelX = editX + columnMargin;
             }
         }
 
         /// <summary>
-        ///     編集項目を更新する
+        ///     Update edit items
         /// </summary>
-        /// <param name="tabPage">対象のタブページ</param>
+        /// <param name="tabPage">Target tab page</param>
         private static void UpdateEditableItems(TabPage tabPage)
         {
             foreach (Control control in tabPage.Controls)
             {
-                // タグの設定されていないラベルをスキップする
+                // Skip untagged labels
                 if (control.Tag == null)
                 {
                     continue;
@@ -686,14 +686,14 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目の色を更新する
+        ///     Update the color of the edit item
         /// </summary>
-        /// <param name="tabPage">対象のタブページ</param>
+        /// <param name="tabPage">Target tab page</param>
         private static void UpdateItemColor(TabPage tabPage)
         {
             foreach (Control control in tabPage.Controls)
             {
-                // タグの設定されていないラベルをスキップする
+                // Skip untagged labels
                 if (control.Tag == null)
                 {
                     continue;
@@ -719,7 +719,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     タブページ変更時の処理
+        ///     Processing when changing tab page
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -731,16 +731,16 @@ namespace HoI2Editor.Forms
                 InitTabPage(tabPage);
             }
 
-            // 選択中のタブページを保存する
+            // Save the selected tab page
             HoI2EditorController.Settings.MiscEditor.SelectedTab = miscTabControl.SelectedIndex;
         }
 
         #endregion
 
-        #region 編集項目操作
+        #region Edit item operation
 
         /// <summary>
-        ///     編集項目テキストボックスフォーカス移動後の処理
+        ///     Edit item Text box Processing after moving focus
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -757,7 +757,7 @@ namespace HoI2Editor.Forms
             double d = 0;
             int i = 0;
 
-            // 変更後の文字列を数値に変換できなければ値を戻す
+            // If the changed character string cannot be converted to a numerical value, the value is returned.
             switch (type)
             {
                 case MiscItemType.Int:
@@ -813,7 +813,7 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 設定範囲外の値ならば戻す
+            // If the value is out of the set range, return it.
             switch (type)
             {
                 case MiscItemType.PosInt:
@@ -946,7 +946,7 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             switch (type)
             {
                 case MiscItemType.Int:
@@ -997,7 +997,7 @@ namespace HoI2Editor.Forms
 
             string old = Misc.GetString(id);
 
-            // 値を更新する
+            // Update value
             switch (type)
             {
                 case MiscItemType.Int:
@@ -1042,25 +1042,25 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Misc] {0}: {1} -> {2}", Misc.GetItemName(id), old, Misc.GetString(id));
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Misc.SetDirty(id);
 
-            // 文字色を変更する
+            // Change the font color
             textBox.ForeColor = Color.Red;
 
-            // 他のフォームに更新を通知する
+            // Notify other forms of updates
             NotifyItemChange(id);
         }
 
         /// <summary>
-        ///     他のフォームに更新を通知する
+        ///     Notify other forms of updates
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         private void NotifyItemChange(MiscItemId id)
         {
             switch (id)
             {
-                case MiscItemId.TpMaxAttach: // 輸送艦最大付属装備数
+                case MiscItemId.TpMaxAttach: // Maximum number of equipment attached to the transport ship
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.Transport].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1068,7 +1068,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.SsMaxAttach: // 潜水艦最大付属装備数
+                case MiscItemId.SsMaxAttach: // Maximum number of submersible equipment
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.Submarine].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1076,7 +1076,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.SsnMaxAttach: // 原子力潜水艦最大付属装備数
+                case MiscItemId.SsnMaxAttach: // Maximum number of equipment attached to nuclear submarines
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.NuclearSubmarine].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1084,7 +1084,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.DdMaxAttach: // 駆逐艦最大付属装備数
+                case MiscItemId.DdMaxAttach: // Maximum number of equipment attached to the destroyer
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.Destroyer].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1092,7 +1092,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.ClMaxAttach: // 軽巡洋艦最大付属装備数
+                case MiscItemId.ClMaxAttach: // Maximum number of equipment attached to light cruisers
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.LightCruiser].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1100,7 +1100,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.CaMaxAttach: // 重巡洋艦最大付属装備数
+                case MiscItemId.CaMaxAttach: // Maximum number of heavy cruisers attached
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.HeavyCruiser].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1108,7 +1108,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.BcMaxAttach: // 巡洋戦艦最大付属装備数
+                case MiscItemId.BcMaxAttach: // Maximum number of equipment attached to cruise battleships
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.BattleCruiser].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1116,7 +1116,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.BbMaxAttach: // 戦艦最大付属装備数
+                case MiscItemId.BbMaxAttach: // Maximum number of attached equipment for battleships
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.BattleShip].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1124,7 +1124,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.CvlMaxAttach: // 軽空母最大付属装備数
+                case MiscItemId.CvlMaxAttach: // Maximum number of equipment attached to the light carrier
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.EscortCarrier].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1132,7 +1132,7 @@ namespace HoI2Editor.Forms
                     HoI2EditorController.OnItemChanged(EditorItemId.MaxAllowedBrigades, this);
                     break;
 
-                case MiscItemId.CvMaxAttach: // 空母最大付属装備数
+                case MiscItemId.CvMaxAttach: // Maximum number of equipment attached to the aircraft carrier
                     if (Units.IsLoaded())
                     {
                         Units.Items[(int) UnitType.Carrier].SetDirty(UnitClassItemId.MaxAllowedBrigades);
@@ -1143,7 +1143,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目コンボボックスの項目描画処理
+        ///     Item drawing process of edit item combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1157,16 +1157,16 @@ namespace HoI2Editor.Forms
             MiscItemId id = (MiscItemId) comboBox.Tag;
             MiscItemType type = Misc.ItemTypes[(int) id];
 
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             int index = 0;
             switch (type)
@@ -1191,12 +1191,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     編集項目コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the edit item combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1218,7 +1218,7 @@ namespace HoI2Editor.Forms
             bool b = false;
             int i = 0;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             switch (type)
             {
                 case MiscItemType.Bool:
@@ -1238,7 +1238,7 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 値を更新する
+            // Update value
             switch (type)
             {
                 case MiscItemType.Bool:
@@ -1254,10 +1254,10 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Misc.SetDirty(id);
 
-            // 項目色を変更するために描画更新する
+            // Update drawing to change item color
             comboBox.Refresh();
         }
 

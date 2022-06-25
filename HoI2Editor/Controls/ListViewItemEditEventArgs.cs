@@ -3,52 +3,52 @@
 namespace HoI2Editor.Controls
 {
     /// <summary>
-    ///     リストビューの項目編集時イベントのパラメータ
+    ///     List view item edit event parameters
     /// </summary>
     public class ListViewItemEditEventArgs : EventArgs
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     キャンセルされたかどうか
+        ///     Whether it was canceled
         /// </summary>
         public bool Cancel { get; set; }
 
         /// <summary>
-        ///     リストビュー項目の行インデックス
+        ///     Row index of list view item
         /// </summary>
         public int Row { get; private set; }
 
         /// <summary>
-        ///     リストビュー項目の列インデックス
+        ///     Column index of list view item
         /// </summary>
         public int Column { get; private set; }
 
         /// <summary>
-        ///     編集後の真偽値
+        ///     Authenticity value after editing
         /// </summary>
         public bool Flag { get; private set; }
 
         /// <summary>
-        ///     編集後の文字列
+        ///     Edited string
         /// </summary>
         public string Text { get; private set; }
 
         /// <summary>
-        ///     選択後のインデックス
+        ///     Index after selection
         /// </summary>
         public int Index { get; private set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="row">リストビュー項目の行インデックス</param>
-        /// <param name="column">リストビュー項目の列インデックス</param>
-        /// <param name="flag">編集後の真偽値</param>
+        /// <param name="row">Row index of list view items</param>
+        /// <param name="column">Column index of list view item</param>
+        /// <param name="flag">Authenticity value after editing</param>
         public ListViewItemEditEventArgs(int row, int column, bool flag)
         {
             Row = row;
@@ -57,11 +57,11 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="row">リストビュー項目の行インデックス</param>
-        /// <param name="column">リストビュー項目の列インデックス</param>
-        /// <param name="text">編集後の文字列</param>
+        /// <param name="row">Row index of list view items</param>
+        /// <param name="column">Column index of list view item</param>
+        /// <param name="text">Edited string</param>
         public ListViewItemEditEventArgs(int row, int column, string text)
         {
             Row = row;
@@ -70,12 +70,12 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="row">リストビュー項目の行インデックス</param>
-        /// <param name="column">リストビュー項目の列インデックス</param>
-        /// <param name="text">編集後の文字列</param>
-        /// <param name="index">選択後のインデックス</param>
+        /// <param name="row">Row index of list view items</param>
+        /// <param name="column">Column index of list view item</param>
+        /// <param name="text">Edited string</param>
+        /// <param name="index">Index after selection</param>
         public ListViewItemEditEventArgs(int row, int column, string text, int index)
         {
             Row = row;

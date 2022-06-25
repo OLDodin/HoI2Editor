@@ -12,59 +12,59 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     新規ユニット名を保持するクラス
+    ///     Class to hold new unit name
     /// </summary>
     public static class UnitNames
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     利用可能なユニット名種類
+        ///     Available unit name types
         /// </summary>
         public static UnitNameType[] Types { get; private set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     ユニット名
+        ///     Unit name
         /// </summary>
         private static readonly Dictionary<Country, Dictionary<UnitNameType, List<string>>> Items =
             new Dictionary<Country, Dictionary<UnitNameType, List<string>>>();
 
         /// <summary>
-        ///     ユニット名種類文字列とIDの対応付け
+        ///     Unit name type string and ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, UnitNameType> TypeStringMap = new Dictionary<string, UnitNameType>();
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     国家ごとの編集済みフラグ
+        ///     Edited flags by nation
         /// </summary>
         private static readonly bool[] CountryDirtyFlags = new bool[Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     ユニット名種類ごとの編集済みフラグ
+        ///     Edited flag for each unit name type
         /// </summary>
         private static readonly bool[,] TypeDirtyFlags =
             new bool[Enum.GetValues(typeof (Country)).Length, Enum.GetValues(typeof (UnitNameType)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     ユニット種類名
+        ///     Unit type name
         /// </summary>
         public static readonly string[] TypeNames =
         {
@@ -213,10 +213,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     ユニット種類文字列
+        ///     Unit type string
         /// </summary>
         private static readonly string[] TypeStrings =
         {
@@ -364,7 +364,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能なユニット名種類 (DDA/AoD/DH1.02)
+        ///     Available unit name types (DDA / AoD / DH1.02)
         /// </summary>
         private static readonly UnitNameType[] TypesHoI2 =
         {
@@ -403,7 +403,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能なユニット名種類 (DH1.03)
+        ///     Available unit name types (DH1.03)
         /// </summary>
         private static readonly UnitNameType[] TypesDh103 =
         {
@@ -552,14 +552,14 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static UnitNames()
         {
-            // ユニット名種類
+            // Unit name type
             foreach (UnitNameType type in Enum.GetValues(typeof (UnitNameType)))
             {
                 TypeStringMap.Add(TypeStrings[(int) type].ToUpper(), type);
@@ -567,11 +567,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名データを初期化する
+        ///     Initialize unit name data
         /// </summary>
         public static void Init()
         {
-            // 利用可能なユニット名種類
+            // Available unit name types
             if (Game.Type == GameType.DarkestHour && Game.Version >= 103)
             {
                 Types = TypesDh103;
@@ -584,10 +584,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     ユニット名定義ファイルの再読み込みを要求する
+        ///     Request to reload the unit name definition file
         /// </summary>
         public static void RequestReload()
         {
@@ -595,11 +595,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名定義ファイル群を再読み込みする
+        ///     Reload the unit name definition files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -611,11 +611,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名定義ファイルを読み込む
+        ///     Read the unit name definition file
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
@@ -623,14 +623,14 @@ namespace HoI2Editor.Models
 
             Items.Clear();
 
-            // ユニット名定義ファイルが存在しなければ戻る
+            // Return if the unit name definition file does not exist
             string fileName = Game.GetReadFileName(Game.UnitNamesPathName);
             if (!File.Exists(fileName))
             {
                 return;
             }
 
-            // ユニット名定義ファイルを読み込む
+            // Read the unit name definition file
             try
             {
                 LoadFile(fileName);
@@ -643,17 +643,17 @@ namespace HoI2Editor.Models
                 return;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     ユニット名定義ファイルを読み込む
+        ///     Read the unit name definition file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[UnitName] Load: {0}", Path.GetFileName(fileName));
@@ -668,32 +668,32 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名定義行を解釈する
+        ///     Interpret the unit name definition line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
+        /// <param name="lexer">Lexical analyzer</param>
         private static void ParseLine(CsvLexer lexer)
         {
             string[] tokens = lexer.GetTokens();
 
-            // 空行を読み飛ばす
+            // Skip blank lines
             if (tokens == null)
             {
                 return;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length != 3)
             {
                 Log.Warning("[UnitName] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName,
                     lexer.LineNo);
-                // 余分な項目がある場合は解析を続ける
+                // Continue analysis if there are extra items
                 if (tokens.Length < 3)
                 {
                     return;
                 }
             }
 
-            // 国タグ
+            // Country tag
             string countryName = tokens[0].ToUpper();
             if (!Countries.StringMap.ContainsKey(countryName))
             {
@@ -702,7 +702,7 @@ namespace HoI2Editor.Models
             }
             Country country = Countries.StringMap[countryName];
 
-            // ユニット種類
+            // Unit type
             string typeName = tokens[1].ToUpper();
             if (!TypeStringMap.ContainsKey(typeName))
             {
@@ -716,28 +716,28 @@ namespace HoI2Editor.Models
                 return;
             }
 
-            // ユニット名
+            // Unit name
             string name = tokens[2];
             if (string.IsNullOrEmpty(name))
             {
                 return;
             }
 
-            // ユニット名を追加する
+            // Add a unit name
             AddName(name, country, type);
         }
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     ユニット名定義ファイルを保存する
+        ///     Save the unit name definition file
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 編集済みでなければ何もしない
+            // Do nothing if not edited
             if (!IsDirty())
             {
                 return true;
@@ -746,14 +746,14 @@ namespace HoI2Editor.Models
             string fileName = Game.GetWriteFileName(Game.UnitNamesPathName);
             try
             {
-                // dbフォルダがなければ作成する
+                // db db. If there is no folder, create it
                 string folderName = Game.GetWriteFileName(Game.DatabasePathName);
                 if (!Directory.Exists(folderName))
                 {
                     Directory.CreateDirectory(folderName);
                 }
 
-                // ユニット名定義ファイルを保存する
+                // Save the unit name definition file
                 SaveFile(fileName);
             }
             catch (Exception)
@@ -764,16 +764,16 @@ namespace HoI2Editor.Models
                 return false;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
             return true;
         }
 
         /// <summary>
-        ///     ユニット名定義ファイルを保存する
+        ///     Save the unit name definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void SaveFile(string fileName)
         {
             Log.Info("[UnitName] Save: {0}", Path.GetFileName(fileName));
@@ -799,17 +799,17 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ユニット名操作
+        #region Unit name operation
 
         /// <summary>
-        ///     ユニット名リストを取得する
+        ///     Get the unit name list
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名の種類</param>
-        /// <returns>ユニット名リスト</returns>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
+        /// <returns>Unit name list</returns>
         public static IEnumerable<string> GetNames(Country country, UnitNameType type)
         {
-            // 未登録の場合は空のリストを返す
+            // Returns an empty list if unregistered
             if (!ExistsType(country, type))
             {
                 return new List<string>();
@@ -819,14 +819,14 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名を追加する
+        ///     Add a unit name
         /// </summary>
-        /// <param name="name">ユニット名</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名の種類</param>
+        /// <param name="name">Unit name</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
         private static void AddName(string name, Country country, UnitNameType type)
         {
-            // 未登録の場合は項目を作成する
+            // Create an item if not registered
             if (!ExistsCountry(country))
             {
                 Items.Add(country, new Dictionary<UnitNameType, List<string>>());
@@ -836,19 +836,19 @@ namespace HoI2Editor.Models
                 Items[country].Add(type, new List<string>());
             }
 
-            // ユニット名を追加する
+            // Add a unit name
             Items[country][type].Add(name);
         }
 
         /// <summary>
-        ///     ユニット名リストを設定する
+        ///     Set the unit name list
         /// </summary>
-        /// <param name="names">ユニット名リスト</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名の種類</param>
+        /// <param name="names">Unit name list</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
         public static void SetNames(List<string> names, Country country, UnitNameType type)
         {
-            // 未登録の場合は項目を作成する
+            // Create an item if not registered
             if (!ExistsCountry(country))
             {
                 Items.Add(country, new Dictionary<UnitNameType, List<string>>());
@@ -858,7 +858,7 @@ namespace HoI2Editor.Models
                 Items[country].Add(type, new List<string>());
             }
 
-            // ユニット名リストに変更がなければ戻る
+            // Return if there is no change in the unit name list
             if (names.SequenceEqual(Items[country][type]))
             {
                 return;
@@ -867,21 +867,21 @@ namespace HoI2Editor.Models
             Log.Info("[UnitName] Set: [{0}] <{1}>", Config.GetText(TypeNames[(int) type]),
                 Countries.Strings[(int) country]);
 
-            // ユニット名リストを設定する
+            // Set the unit name list
             Items[country][type] = names;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             SetDirty(country, type);
         }
 
         /// <summary>
-        ///     ユニット名を置換する
+        ///     Replace unit name
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void Replace(string s, string t, Country country, UnitNameType type, bool regex)
         {
             List<string> names =
@@ -890,11 +890,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全てのユニット名を置換する
+        ///     Replace all unit names
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAll(string s, string t, bool regex)
         {
             List<KeyValuePair<Country, UnitNameType>> pairs =
@@ -908,12 +908,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての国のユニット名を置換する
+        ///     Replace unit names in all countries
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="type">ユニット名種類</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="type">Unit name type</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAllCountries(string s, string t, UnitNameType type, bool regex)
         {
             List<Country> countries =
@@ -925,12 +925,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全てのユニット名種類のユニット名を置換する
+        ///     Replace unit names for all unit name types
         /// </summary>
-        /// <param name="s">置換元文字列</param>
-        /// <param name="t">置換先文字列</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="regex">正規表現を使用するか</param>
+        /// <param name="s">Substitution source string</param>
+        /// <param name="t">Replacement destination character string</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="regex">Whether to use regular expressions</param>
         public static void ReplaceAllTypes(string s, string t, Country country, bool regex)
         {
             List<UnitNameType> types = new List<UnitNameType>();
@@ -945,14 +945,14 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名を連番追加する
+        ///     Add unit names serially
         /// </summary>
-        /// <param name="prefix">接頭辞</param>
-        /// <param name="suffix">接尾辞</param>
-        /// <param name="start">開始番号</param>
-        /// <param name="end">終了番号</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
+        /// <param name="prefix">prefix</param>
+        /// <param name="suffix">Suffix</param>
+        /// <param name="start">Starting number</param>
+        /// <param name="end">End number</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
         public static void AddSequential(string prefix, string suffix, int start, int end, Country country,
             UnitNameType type)
         {
@@ -968,10 +968,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ユニット名を連番補間する
+        ///     Sequential number interpolation of unit names
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
         public static void Interpolate(Country country, UnitNameType type)
         {
             List<string> names = new List<string>();
@@ -988,13 +988,13 @@ namespace HoI2Editor.Models
                     {
                         if (!found)
                         {
-                            // 出力パターンを設定する
+                            // Set the output pattern
                             pattern = r.Replace(name, "$1{0}$3");
                             found = true;
                         }
                         else
                         {
-                            // 前の番号と現在の番号の間を補間する
+                            // Interpolate between the previous number and the current number
                             if (prev + 1 < n)
                             {
                                 for (int i = prev + 1; i < n; i++)
@@ -1017,7 +1017,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全てのユニット名を連番補間する
+        ///     Interpolate all unit names sequentially
         /// </summary>
         public static void InterpolateAll()
         {
@@ -1032,9 +1032,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全ての国のユニット名を連番補間する
+        ///     Serial number interpolation for unit names in all countries
         /// </summary>
-        /// <param name="type">ユニット名種類</param>
+        /// <param name="type">Unit name type</param>
         public static void InterpolateAllCountries(UnitNameType type)
         {
             List<Country> countries =
@@ -1046,9 +1046,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     全てのユニット名種類のユニット名を連番補間する
+        ///     Sequential number interpolation of unit names of all unit name types
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         public static void InterpolateAllTypes(Country country)
         {
             List<UnitNameType> types = new List<UnitNameType>();
@@ -1063,12 +1063,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     項目が存在するかを返す
+        ///     Returns whether the item exists
         /// </summary>
-        /// <param name="name">項目名</param>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名の種類</param>
-        /// <returns>項目が存在すればtrueを返す</returns>
+        /// <param name="name">item name</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
+        /// <returns>If the item exists true true return it</returns>
         private static bool Exists(string name, Country country, UnitNameType type)
         {
             if (!ExistsType(country, type))
@@ -1080,21 +1080,21 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指定した国の項目が存在するかを返す
+        ///     Returns whether the item in the specified country exists
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>項目が存在すればtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If the item exists true true return it</returns>
         private static bool ExistsCountry(Country country)
         {
             return Items.ContainsKey(country);
         }
 
         /// <summary>
-        ///     指定したユニット種類の項目が存在するかを返す
+        ///     Returns whether an item of the specified unit type exists
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名の種類</param>
-        /// <returns>項目が存在すればtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
+        /// <returns>If the item exists true true return it</returns>
         private static bool ExistsType(Country country, UnitNameType type)
         {
             if (!ExistsCountry(country))
@@ -1107,43 +1107,43 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Country country)
         {
             return CountryDirtyFlags[(int) country];
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Country country, UnitNameType type)
         {
             return TypeDirtyFlags[(int) country, (int) type];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="type">ユニット名種類</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="type">Unit name type</param>
         private static void SetDirty(Country country, UnitNameType type)
         {
             TypeDirtyFlags[(int) country, (int) type] = true;
@@ -1152,7 +1152,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         private static void ResetDirtyAll()
         {
@@ -1171,150 +1171,150 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     ユニット名種類
+    ///     Unit name type
     /// </summary>
     public enum UnitNameType
     {
-        Hq, // 司令部
-        Infantry, // 歩兵
-        Garrison, // 守備師団
-        Cavalry, // 騎兵
-        Motorized, // 自動車化歩兵
-        Mechanized, // 機械化歩兵
-        LightArmor, // 軽戦車
-        Armor, // 戦車
-        Paratrooper, // 空挺兵
-        Marine, // 海兵
-        Bergsjaeger, // 山岳兵
-        Militia, // 民兵
-        Fighter, // 戦闘機
-        Interceptor, // 迎撃機
-        RocketInterceptor, // ロケット迎撃機
-        EscortFighter, // 護衛戦闘機
-        StrategicBomber, // 戦略爆撃機
-        TacticalBomber, // 戦術爆撃機
-        Cas, // 近接航空支援機
-        NavalBomber, // 海軍爆撃機
-        TransportPlane, // 輸送機
-        FlyingBomb, // 飛行爆弾
-        FlyingRocket, // 戦略ロケット
-        Battleship, // 戦艦
-        BattleCruiser, // 巡洋戦艦
-        Carrier, // 空母
-        EscortCarrier, // 護衛空母
-        LightCarrier, // 軽空母
-        HeavyCruiser, // 重巡洋艦
-        LightCruiser, // 軽巡洋艦
-        Destroyer, // 駆逐艦
-        Submarine, // 潜水艦
-        NuclearSubmarine, // 原子力潜水艦
-        Transport, // 輸送艦
-        ReserveDivision33, // 予備師団33
-        ReserveDivision34, // 予備師団34
-        ReserveDivision35, // 予備師団35
-        ReserveDivision36, // 予備師団36
-        ReserveDivision37, // 予備師団37
-        ReserveDivision38, // 予備師団38
-        ReserveDivision39, // 予備師団39
-        ReserveDivision40, // 予備師団40
-        Division01, // ユーザー定義師団01
-        Division02, // ユーザー定義師団02
-        Division03, // ユーザー定義師団03
-        Division04, // ユーザー定義師団04
-        Division05, // ユーザー定義師団05
-        Division06, // ユーザー定義師団06
-        Division07, // ユーザー定義師団07
-        Division08, // ユーザー定義師団08
-        Division09, // ユーザー定義師団09
-        Division10, // ユーザー定義師団10
-        Division11, // ユーザー定義師団11
-        Division12, // ユーザー定義師団12
-        Division13, // ユーザー定義師団13
-        Division14, // ユーザー定義師団14
-        Division15, // ユーザー定義師団15
-        Division16, // ユーザー定義師団16
-        Division17, // ユーザー定義師団17
-        Division18, // ユーザー定義師団18
-        Division19, // ユーザー定義師団19
-        Division20, // ユーザー定義師団20
-        Division21, // ユーザー定義師団21
-        Division22, // ユーザー定義師団22
-        Division23, // ユーザー定義師団23
-        Division24, // ユーザー定義師団24
-        Division25, // ユーザー定義師団25
-        Division26, // ユーザー定義師団26
-        Division27, // ユーザー定義師団27
-        Division28, // ユーザー定義師団28
-        Division29, // ユーザー定義師団29
-        Division30, // ユーザー定義師団30
-        Division31, // ユーザー定義師団31
-        Division32, // ユーザー定義師団32
-        Division33, // ユーザー定義師団33
-        Division34, // ユーザー定義師団34
-        Division35, // ユーザー定義師団35
-        Division36, // ユーザー定義師団36
-        Division37, // ユーザー定義師団37
-        Division38, // ユーザー定義師団38
-        Division39, // ユーザー定義師団39
-        Division40, // ユーザー定義師団40
-        Division41, // ユーザー定義師団41
-        Division42, // ユーザー定義師団42
-        Division43, // ユーザー定義師団43
-        Division44, // ユーザー定義師団44
-        Division45, // ユーザー定義師団45
-        Division46, // ユーザー定義師団46
-        Division47, // ユーザー定義師団47
-        Division48, // ユーザー定義師団48
-        Division49, // ユーザー定義師団49
-        Division50, // ユーザー定義師団50
-        Division51, // ユーザー定義師団51
-        Division52, // ユーザー定義師団52
-        Division53, // ユーザー定義師団53
-        Division54, // ユーザー定義師団54
-        Division55, // ユーザー定義師団55
-        Division56, // ユーザー定義師団56
-        Division57, // ユーザー定義師団57
-        Division58, // ユーザー定義師団58
-        Division59, // ユーザー定義師団59
-        Division60, // ユーザー定義師団60
-        Division61, // ユーザー定義師団61
-        Division62, // ユーザー定義師団62
-        Division63, // ユーザー定義師団63
-        Division64, // ユーザー定義師団64
-        Division65, // ユーザー定義師団65
-        Division66, // ユーザー定義師団66
-        Division67, // ユーザー定義師団67
-        Division68, // ユーザー定義師団68
-        Division69, // ユーザー定義師団69
-        Division70, // ユーザー定義師団70
-        Division71, // ユーザー定義師団71
-        Division72, // ユーザー定義師団72
-        Division73, // ユーザー定義師団73
-        Division74, // ユーザー定義師団74
-        Division75, // ユーザー定義師団75
-        Division76, // ユーザー定義師団76
-        Division77, // ユーザー定義師団77
-        Division78, // ユーザー定義師団78
-        Division79, // ユーザー定義師団79
-        Division80, // ユーザー定義師団80
-        Division81, // ユーザー定義師団81
-        Division82, // ユーザー定義師団82
-        Division83, // ユーザー定義師団83
-        Division84, // ユーザー定義師団84
-        Division85, // ユーザー定義師団85
-        Division86, // ユーザー定義師団86
-        Division87, // ユーザー定義師団87
-        Division88, // ユーザー定義師団88
-        Division89, // ユーザー定義師団89
-        Division90, // ユーザー定義師団90
-        Division91, // ユーザー定義師団91
-        Division92, // ユーザー定義師団92
-        Division93, // ユーザー定義師団93
-        Division94, // ユーザー定義師団94
-        Division95, // ユーザー定義師団95
-        Division96, // ユーザー定義師団96
-        Division97, // ユーザー定義師団97
-        Division98, // ユーザー定義師団98
-        Division99 // ユーザー定義師団99
+        Hq, // Headquarters
+        Infantry, // infantry
+        Garrison, // Defensive division
+        Cavalry, // cavalry
+        Motorized, // Motorized infantry
+        Mechanized, // Mechanized infantry
+        LightArmor, // Light tank
+        Armor, // tank
+        Paratrooper, // Airborne soldiers
+        Marine, // Marines
+        Bergsjaeger, // Mountain soldier
+        Militia, // militia
+        Fighter, // Fighter
+        Interceptor, // Interceptor
+        RocketInterceptor, // Rocket interceptor
+        EscortFighter, // Escort fighter
+        StrategicBomber, // Strategic bomber
+        TacticalBomber, // Tactical bomber
+        Cas, // Close air support
+        NavalBomber, // Navy bomber
+        TransportPlane, // Transport machine
+        FlyingBomb, // Flying bomb
+        FlyingRocket, // Strategic rocket
+        Battleship, // Battleship
+        BattleCruiser, // Cruise battleship
+        Carrier, // aircraft carrier
+        EscortCarrier, // Escort carrier
+        LightCarrier, // Light aircraft carrier
+        HeavyCruiser, // Heavy cruiser
+        LightCruiser, // Light cruiser
+        Destroyer, // Destroyer
+        Submarine, // submarine
+        NuclearSubmarine, // Nuclear submarine
+        Transport, // Transport ship
+        ReserveDivision33, // Reserve Division 33 33
+        ReserveDivision34, // Reserve Division 34
+        ReserveDivision35, // Reserve Division 35
+        ReserveDivision36, // Reserve division 36
+        ReserveDivision37, // Reserve division 37 37
+        ReserveDivision38, // Reserve division 38
+        ReserveDivision39, // Reserve division 39 39
+        ReserveDivision40, // Reserve Division 40
+        Division01, // User-defined division 01 01
+        Division02, // User-defined division 02 02
+        Division03, // User-defined division 03 03
+        Division04, // User-defined division 04 04
+        Division05, // User-defined division 05 05
+        Division06, // User-defined division 06 06
+        Division07, // User-defined division 07 07
+        Division08, // User-defined division 08 08
+        Division09, // User-defined division 09 09
+        Division10, // User-defined division Ten
+        Division11, // User-defined division 11 11
+        Division12, // User-defined division 12
+        Division13, // User-defined division 13
+        Division14, // User-defined division 14
+        Division15, // User-defined division 15
+        Division16, // User-defined division 16 16
+        Division17, // User-defined division 17 17
+        Division18, // User-defined division 18 18
+        Division19, // User-defined division 19 19
+        Division20, // User-defined division 20
+        Division21, // User-defined division twenty one
+        Division22, // User-defined division twenty two
+        Division23, // User-defined division twenty three
+        Division24, // User-defined division twenty four
+        Division25, // User-defined division twenty five
+        Division26, // User-defined division 26
+        Division27, // User-defined division 27
+        Division28, // User-defined division 28 28
+        Division29, // User-defined division 29
+        Division30, // User-defined division 30
+        Division31, // User-defined division 31
+        Division32, // User-defined division 32
+        Division33, // User-defined division 33 33
+        Division34, // User-defined division 34
+        Division35, // User-defined division 35
+        Division36, // User-defined division 36
+        Division37, // User-defined division 37 37
+        Division38, // User-defined division 38
+        Division39, // User-defined division 39 39
+        Division40, // User-defined division 40
+        Division41, // User-defined division 41 41
+        Division42, // User-defined division 42
+        Division43, // User-defined division 43
+        Division44, // User-defined division 44
+        Division45, // User-defined division 45 45
+        Division46, // User-defined division 46
+        Division47, // User-defined division 47 47
+        Division48, // User-defined division 48
+        Division49, // User-defined division 49
+        Division50, // User-defined division 50
+        Division51, // User-defined division 51
+        Division52, // User-defined division 52 52
+        Division53, // User-defined division 53
+        Division54, // User-defined division 54
+        Division55, // User-defined division 55 55
+        Division56, // User-defined division 56
+        Division57, // User-defined division 57 57
+        Division58, // User-defined division 58
+        Division59, // User-defined division 59
+        Division60, // User-defined division 60
+        Division61, // User-defined division 61
+        Division62, // User-defined division 62
+        Division63, // User-defined division 63 63
+        Division64, // User-defined division 64
+        Division65, // User-defined division 65 65
+        Division66, // User-defined division 66 66
+        Division67, // User-defined division 67 67
+        Division68, // User-defined division 68 68
+        Division69, // User-defined division 69
+        Division70, // User-defined division 70
+        Division71, // User-defined division 71 71
+        Division72, // User-defined division 72
+        Division73, // User-defined division 73
+        Division74, // User-defined division 74 74
+        Division75, // User-defined division 75
+        Division76, // User-defined division 76 76
+        Division77, // User-defined division 77 77
+        Division78, // User-defined division 78 78
+        Division79, // User-defined division 79 79
+        Division80, // User-defined division 80
+        Division81, // User-defined division 81
+        Division82, // User-defined division 82
+        Division83, // User-defined division 83
+        Division84, // User-defined division 84 84
+        Division85, // User-defined division 85
+        Division86, // User-defined division 86
+        Division87, // User-defined division 87
+        Division88, // User-defined division 88
+        Division89, // User-defined division 89
+        Division90, // User-defined division 90
+        Division91, // User-defined division 91
+        Division92, // User-defined division 92
+        Division93, // User-defined division 93
+        Division94, // User-defined division 94
+        Division95, // User-defined division 95
+        Division96, // User-defined division 96
+        Division97, // User-defined division 97
+        Division98, // User-defined division 98
+        Division99 // User-defined division 99
     }
 }

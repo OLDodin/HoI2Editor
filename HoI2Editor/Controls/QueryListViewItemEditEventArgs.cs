@@ -4,61 +4,61 @@ using System.Collections.Generic;
 namespace HoI2Editor.Controls
 {
     /// <summary>
-    ///     リストビューの項目編集前イベントのパラメータ
+    ///     List view item Pre-edit event parameters
     /// </summary>
     public class QueryListViewItemEditEventArgs : EventArgs
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     リストビュー項目の行インデックス
+        ///     Row index of list view item
         /// </summary>
         public int Row { get; private set; }
 
         /// <summary>
-        ///     リストビュー項目の列インデックス
+        ///     Column index of list view item
         /// </summary>
         public int Column { get; private set; }
 
         /// <summary>
-        ///     項目編集の種類
+        ///     Item edit type
         /// </summary>
         public ItemEditType Type { get; set; }
 
         /// <summary>
-        ///     初期真偽値
+        ///     Initial truth value
         /// </summary>
         public bool Flag { get; set; }
 
         /// <summary>
-        ///     初期文字列
+        ///     Initial character string
         /// </summary>
         public string Text { get; set; }
 
         /// <summary>
-        ///     初期インデックス
+        ///     Initial index
         /// </summary>
         public int Index { get; set; }
 
         /// <summary>
-        ///     リスト選択用項目リスト
+        ///     List selection item list
         /// </summary>
         public IEnumerable<string> Items { get; set; }
 
         /// <summary>
-        ///     ドロップダウンリストの幅
+        ///     Drop-down list width
         /// </summary>
         public int DropDownWidth { get; set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="row">リストビュー項目の行インデックス</param>
-        /// <param name="column">リストビュー項目の列インデックス</param>
+        /// <param name="row">Row index of list view items</param>
+        /// <param name="column">Column index of list view item</param>
         public QueryListViewItemEditEventArgs(int row, int column)
         {
             Row = row;
@@ -69,13 +69,13 @@ namespace HoI2Editor.Controls
     }
 
     /// <summary>
-    ///     項目編集の種類
+    ///     Item edit type
     /// </summary>
     public enum ItemEditType
     {
-        None, // 編集なし
-        Bool, // 真偽値
-        Text, // 文字列編集
-        List // リスト選択
+        None, // No edit
+        Bool, // Boolean value
+        Text, // String editing
+        List // List selection
     }
 }

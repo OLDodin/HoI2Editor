@@ -12,90 +12,90 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     技術ツリーエディタのフォーム
+    ///     Technical tree editor form
     /// </summary>
     public partial class TechEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     技術ツリーパネルのコントローラ
+        ///     Technical tree panel controller
         /// </summary>
         private TechTreePanelController _techTreePanelController;
 
         #endregion
 
-        #region 公開定数
+        #region Public number
 
         /// <summary>
-        ///     必要技術リストビューの列の数
+        ///     Number of columns in required technology list views
         /// </summary>
         public const int RequiredListColumnCount = 2;
 
         /// <summary>
-        ///     小研究リストビューの列の数
+        ///     Number of columns in small research list views
         /// </summary>
         public const int ComponentListColumnCount = 5;
 
         /// <summary>
-        ///     技術効果リストビューの列の数
+        ///     Number of columns of technical effect list views
         /// </summary>
         public const int EffectListColumnCount = 5;
 
         /// <summary>
-        ///     座標リストビューの列の数
+        ///     Number of columns of coordinates list views
         /// </summary>
         public const int PositionListColumnCount = 2;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public TechEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Initialization of the form
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 技術タブの編集項目を初期化する
+            // Initialize the editing items of the technical tab
             InitTechItems();
 
-            // 小研究タブの編集項目を初期化する
+            // Initialize editing items for small research tabs
             InitComponentItems();
 
-            // 技術効果タブの編集項目を初期化する
+            // Initialize editing items on the technical effect tab
             InitEffectItems();
 
-            // 必要技術タブの技術リストを更新する
+            // Update the technical list of the required technology tab
             UpdateRequiredTechListItems();
 
-            // 技術イベントタブの技術リストを更新する
+            // Update the technical list of technical event tabs
             UpdateEventTechListItems();
 
-            // カテゴリリストボックスを初期化する
+            // Initialize the category list box
             InitCategoryList();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data saving
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display because the edited flag is cleared
             categoryListBox.Refresh();
             techListBox.Refresh();
             UpdateCategoryItems();
@@ -103,82 +103,82 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Editing project ID</param>
         public void OnItemChanged(EditorItemId id)
         {
-            // 何もしない
+            // do nothing
         }
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Initialization of the form
         /// </summary>
         private void InitForm()
         {
-            // 技術カテゴリリストボックス
+            // Technical category list box
             categoryListBox.ItemHeight = DeviceCaps.GetScaledHeight(categoryListBox.ItemHeight);
 
-            // 技術項目リストボックス
+            // Technical item list box
             techListBox.ItemHeight = DeviceCaps.GetScaledHeight(techListBox.ItemHeight);
 
-            // 技術座標リストビュー
+            // Technical coordinates list view
             techXColumnHeader.Width = HoI2EditorController.Settings.TechEditor.TechPositionListColumnWidth[0];
             techYColumnHeader.Width = HoI2EditorController.Settings.TechEditor.TechPositionListColumnWidth[1];
 
-            // AND条件必要技術リストビュー
+            // AND Conditions required Technology List View
             andIdColumnHeader.Width = HoI2EditorController.Settings.TechEditor.AndRequiredListColumnWidth[0];
             andNameColumnHeader.Width = HoI2EditorController.Settings.TechEditor.AndRequiredListColumnWidth[1];
 
-            // OR条件必要技術リストビュー
+            // OR Conditions required Technical Wrist View
             orIdColumnHeader.Width = HoI2EditorController.Settings.TechEditor.OrRequiredListColumnWidth[0];
             orNameColumnHeader.Width = HoI2EditorController.Settings.TechEditor.OrRequiredListColumnWidth[1];
 
-            // 小研究リストビュー
+            // List of small research
             componentIdColumnHeader.Width = HoI2EditorController.Settings.TechEditor.ComponentListColumnWidth[0];
             componentNameColumnHeader.Width = HoI2EditorController.Settings.TechEditor.ComponentListColumnWidth[1];
             componentSpecialityColumnHeader.Width = HoI2EditorController.Settings.TechEditor.ComponentListColumnWidth[2];
             componentDifficultyColumnHeader.Width = HoI2EditorController.Settings.TechEditor.ComponentListColumnWidth[3];
             componentDoubleTimeColumnHeader.Width = HoI2EditorController.Settings.TechEditor.ComponentListColumnWidth[4];
 
-            // 小研究特性コンボボックス
+            // Small research characteristic combo box
             componentSpecialityComboBox.ItemHeight = DeviceCaps.GetScaledHeight(componentSpecialityComboBox.ItemHeight);
 
-            // 技術効果リストビュー
+            // Technical effect wrist view
             commandTypeColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EffectListColumnWidth[0];
             commandWhichColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EffectListColumnWidth[1];
             commandValueColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EffectListColumnWidth[2];
             commandWhenColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EffectListColumnWidth[3];
             commandWhereColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EffectListColumnWidth[4];
 
-            // ラベル座標リストビュー
+            // Label coordinates list view
             labelXColumnHeader.Width = HoI2EditorController.Settings.TechEditor.LabelPositionListColumnWidth[0];
             labelYColumnHeader.Width = HoI2EditorController.Settings.TechEditor.LabelPositionListColumnWidth[1];
 
-            // 発明イベント座標リストビュー
+            // Invention event coordinates list view
             eventXColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EventPositionListColumnWidth[0];
             eventYColumnHeader.Width = HoI2EditorController.Settings.TechEditor.EventPositionListColumnWidth[1];
 
-            // 技術ツリーパネル
+            // Technical tree panel
             _techTreePanelController = new TechTreePanelController(treePictureBox) { AllowDragDrop = true };
             _techTreePanelController.ItemMouseDown += OnTechTreeLabelMouseDown;
             _techTreePanelController.ItemDragDrop += OnTreePictureBoxDragDrop;
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.TechEditor.Location;
             Size = HoI2EditorController.Settings.TechEditor.Size;
         }
 
         /// <summary>
-        ///     技術ツリー画像サイズに合わせてフォームのサイズを変更する
+        ///     Change the size of the form according to the technology tree image size
         /// </summary>
         private void UpdateFormSize()
         {
-            // デスクトップのサイズを取得する
+            // Get the size of the desktop
             Rectangle screenRect = Screen.GetWorkingArea(new Point(200, 200));
 
             int height = Height + (treePictureBox.Image.Height - treePanel.Height);
@@ -187,45 +187,45 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when reading form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 研究特性を初期化する
+            // Initialize research characteristics
             Techs.InitSpecialities();
 
-            // ゲーム設定ファイルを読み込む
+            // Read the game configuration file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 技術定義ファイルを読み込む
+            // Read the technical definition file
             Techs.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
 
-            // 技術ツリー画像サイズに合わせてフォームのサイズを変更する
+            // Change the size of the form according to the technology tree image size
             UpdateFormSize();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing for form closing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close the form if it is not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Inquiries whether to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -243,7 +243,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after form closing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -253,7 +253,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -266,7 +266,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing for form resization
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -279,13 +279,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Treatment when pressing the re -loading button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // If you have edited, ask whether to save
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -304,7 +304,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when pressing the storage button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -314,7 +314,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when pressing the closing button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -325,10 +325,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region カテゴリリスト
+        #region Category Category
 
         /// <summary>
-        ///     カテゴリリストボックスを初期化する
+        ///     Initialize the category list box
         /// </summary>
         private void InitCategoryList()
         {
@@ -338,7 +338,7 @@ namespace HoI2Editor.Forms
                 categoryListBox.Items.Add(grp);
             }
 
-            // 選択中のカテゴリを反映する
+            // Reflect the selected category
             int index = HoI2EditorController.Settings.TechEditor.Category;
             if ((index < 0) || (index >= categoryListBox.Items.Count))
             {
@@ -348,23 +348,23 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     カテゴリリストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the category list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCategoryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 項目リストを更新する
+            // Update the item list
             UpdateItemList();
 
-            // 技術ツリーパネルを更新する
+            // Update the technical tree panel
             _techTreePanelController.Category = (TechCategory) categoryListBox.SelectedIndex;
             _techTreePanelController.Update();
 
-            // カテゴリタブの項目を更新する
+            // Update the category tab item
             UpdateCategoryItems();
 
-            // 技術項目編集タブを無効化する
+            // Disable technical items editing tabs
             DisableTechTab();
             DisableRequiredTab();
             DisableComponentTab();
@@ -372,7 +372,7 @@ namespace HoI2Editor.Forms
             DisableLabelTab();
             DisableEventTab();
 
-            // カテゴリタブを選択する
+            // Select a category tab
             editTabControl.SelectedIndex = (int) TechEditorTab.Category;
 
             cloneButton.Enabled = false;
@@ -382,31 +382,31 @@ namespace HoI2Editor.Forms
             downButton.Enabled = false;
             bottomButton.Enabled = false;
 
-            // 選択中のカテゴリを保存する
+            // Save the selected category
             HoI2EditorController.Settings.TechEditor.Category = categoryListBox.SelectedIndex;
         }
 
         /// <summary>
-        ///     カテゴリリストボックスの項目描画処理
+        ///     Category list box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCategoryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // If there are no items, do nothing
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw the character string of the item
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // For items with changes, change the character color
                 TechGroup grp = Techs.Groups[e.Index];
                 brush = grp.IsDirty() ? new SolidBrush(Color.Red) : new SolidBrush(categoryListBox.ForeColor);
             }
@@ -417,14 +417,14 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(categoryListBox.Items[e.Index].ToString(), e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     選択中の技術グループを取得する
+        ///     Get the selected technical group
         /// </summary>
-        /// <returns>選択中の技術グループ</returns>
+        /// <returns>Selected technology group</returns>
         private TechGroup GetSelectedGroup()
         {
             return Techs.Groups[categoryListBox.SelectedIndex];
@@ -432,10 +432,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 技術項目リスト
+        #region Technical item list
 
         /// <summary>
-        ///     技術項目リストの表示を更新する
+        ///     Update the display of the technical item list
         /// </summary>
         private void UpdateItemList()
         {
@@ -454,24 +454,24 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術項目リストボックスの選択項目変更時の処理
+        ///     Technical item List box selection item processing when changing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 編集項目を更新する
+            // Update edit items
             UpdateEditableItems();
         }
 
         /// <summary>
-        ///     技術項目リストビューの項目入れ替え時の処理
+        ///     Technical item list viewing items when replacing items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechListBoxItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 自前で項目を入れ替えるのでキャンセル扱いにする
+            // Swap the items on your own, so treat it as a cancellation
             e.Cancel = true;
 
             int srcIndex = e.OldDisplayIndices[0];
@@ -489,27 +489,27 @@ namespace HoI2Editor.Forms
             }
 
 
-            // 技術項目リストの項目を移動する
+            // Move the item in the technical item list
             TechGroup grp = GetSelectedGroup();
             grp.MoveItem(src, dest);
 
-            // 項目リストビューの項目を移動する
+            // Move the item list view item
             MoveTechListItem(srcIndex, destIndex);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
         }
 
         /// <summary>
-        ///     編集項目を更新する
+        ///     Update edit items
         /// </summary>
         private void UpdateEditableItems()
         {
-            // 選択項目がない場合
+            // If there is no selection item
             ITechItem item = GetSelectedItem();
             if (item == null)
             {
-                // 技術/必要技術/小研究/技術効果/技術ラベル/技術イベントタブを無効化する
+                // Disable technology / necessary technology / small research / technical effect / technical label / technical event tab
                 DisableTechTab();
                 DisableRequiredTab();
                 DisableComponentTab();
@@ -517,7 +517,7 @@ namespace HoI2Editor.Forms
                 DisableLabelTab();
                 DisableEventTab();
 
-                // カテゴリタブを選択する
+                // Select a category tab
                 editTabControl.SelectedIndex = (int) TechEditorTab.Category;
 
                 return;
@@ -525,24 +525,24 @@ namespace HoI2Editor.Forms
 
             if (item is TechItem)
             {
-                // 編集項目を更新する
+                // Update edit items
                 TechItem applicationItem = item as TechItem;
                 UpdateTechItems(applicationItem);
                 UpdateRequiredItems(applicationItem);
                 UpdateComponentItems(applicationItem);
                 UpdateEffectItems(applicationItem);
 
-                // 技術/必要技術/小研究/技術効果タブを有効化する
+                // Enable technology / necessary technology / small research / technical effect tab
                 EnableTechTab();
                 EnableRequiredTab();
                 EnableComponentTab();
                 EnableEffectTab();
 
-                // 技術ラベル/技術イベントタブを無効化する
+                // Disable technical label / technical event tab
                 DisableLabelTab();
                 DisableEventTab();
 
-                // 技術/必要技術/小研究/技術効果タブ以外を選択していれば技術タブを選択する
+                // Select a technical tab if you select anything other than technology / necessary technology / small research / technical effect tab
                 if (editTabControl.SelectedIndex != (int) TechEditorTab.Tech &&
                     editTabControl.SelectedIndex != (int) TechEditorTab.Required &&
                     editTabControl.SelectedIndex != (int) TechEditorTab.Component &&
@@ -553,38 +553,38 @@ namespace HoI2Editor.Forms
             }
             else if (item is TechLabel)
             {
-                // 編集項目を更新する
+                // Update edit items
                 UpdateLabelItems(item as TechLabel);
 
-                // 技術ラベルタブを有効化する
+                // Enable the technical label tab
                 EnableLabelTab();
 
-                // 技術/必要技術/小研究/技術効果/技術イベントタブを無効化する
+                // Disable technology / necessary technology / small research / technical effect / technical event tab
                 DisableTechTab();
                 DisableRequiredTab();
                 DisableComponentTab();
                 DisableEffectTab();
                 DisableEventTab();
 
-                // 技術ラベルタブを選択する
+                // Select a technical label tab
                 editTabControl.SelectedIndex = (int) TechEditorTab.Label;
             }
             else if (item is TechEvent)
             {
-                // 編集項目を更新する
+                // Update edit items
                 UpdateEventItems(item as TechEvent);
 
-                // 技術イベントタブを有効化する
+                // Enable the technical event tab
                 EnableEventTab();
 
-                // 技術/必要技術/小研究/技術効果/技術ラベルタブを無効化する
+                // Disable technology / necessary technology / small research / technical effect / technical label tab
                 DisableTechTab();
                 DisableRequiredTab();
                 DisableComponentTab();
                 DisableEffectTab();
                 DisableLabelTab();
 
-                // 技術イベントタブを選択する
+                // Select a technical event tab
                 editTabControl.SelectedIndex = (int) TechEditorTab.Event;
             }
 
@@ -597,22 +597,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術項目リストボックスの項目描画処理
+        ///     Technical item list box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // If there are no items, do nothing
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 背景色を変更する
+            // Change the background color
             if ((e.State & DrawItemState.Selected) == 0)
             {
                 if (techListBox.Items[e.Index] is TechLabel)
@@ -627,11 +627,11 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 項目の文字列を描画する
+            // Draw the character string of the item
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // For items with changes, change the character color
                 ITechItem item = techListBox.Items[e.Index] as ITechItem;
                 brush = item != null && item.IsDirty()
                     ? new SolidBrush(Color.Red)
@@ -644,12 +644,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(techListBox.Items[e.Index].ToString(), e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     技術項目リストの新規技術ボタン押下時の処理
+        ///     Processing when pressing the new technology button in the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -657,7 +657,7 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 項目を作成する
+            // Create an item
             TechItem item = new TechItem
             {
                 Name = Config.GetTempKey(),
@@ -669,76 +669,76 @@ namespace HoI2Editor.Forms
             Config.SetText(item.ShortName, "", Game.TechTextFileName);
             Config.SetText(item.Desc, "", Game.TechTextFileName);
 
-            // 重複文字列リストに登録する
+            // Register in the duplicate character string list
             Techs.AddDuplicatedListItem(item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
             item.SetDirtyAll();
 
             ITechItem selected = techListBox.SelectedItem as ITechItem;
             if (selected != null)
             {
-                // 選択項目の先頭座標を引き継ぐ
+                // Take over the top coordinates of the selection item
                 item.Positions.Add(new TechPosition { X = selected.Positions[0].X, Y = selected.Positions[0].Y });
 
                 if (selected is TechItem)
                 {
-                    // 選択項目が技術アプリケーションならばIDを10増やす
+                    // If the selection item is a technical application, increase the ID by 10
                     TechItem selectedApplication = selected as TechItem;
                     item.Id = Techs.GetNewId(selectedApplication.Id + 10);
                 }
                 else
                 {
-                    // 未使用の技術IDを1010以降で検索する
+                    // Search for unused technical IDs with 1010 or later
                     item.Id = Techs.GetNewId(1010);
                 }
 
-                // 空の小研究を追加する
+                // Add an empty research
                 item.CreateNewComponents();
 
-                // 技術項目リストに項目を挿入する
+                // Insert the item in the technical item list
                 grp.InsertItem(item, selected);
 
-                // 項目リストビューに項目を挿入する
+                // Insert the item in the list view
                 InsertTechListItem(item, techListBox.SelectedIndex + 1);
             }
             else
             {
-                // 仮の座標を登録する
+                // Register the provisional coordinates
                 item.Positions.Add(new TechPosition());
 
-                // 未使用の技術IDを1010以降で検索する
+                // Search for unused technical IDs with 1010 or later
                 item.Id = Techs.GetNewId(1010);
 
-                // 空の小研究を追加する
+                // Add an empty research
                 item.CreateNewComponents();
 
-                // 技術項目リストに項目を追加する
+                // Add items to the technical item list
                 grp.AddItem(item);
 
-                // 項目リストビューに項目を追加する
+                // Add the item to the item list view
                 AddTechListItem(item);
             }
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the technical tree
             _techTreePanelController.AddItem(item);
 
-            // 技術項目とIDの対応付けを更新する
+            // Update technical items and ID correspondence
             Techs.UpdateTechIdMap();
-            // 必要技術コンボボックスの項目を更新する
+            // Update the required technology combo box
             UpdateRequiredTechListItems();
-            // 技術イベントの技術IDコンボボックスの項目を更新する
+            // Update the technical event technology ID combo box item
             UpdateEventTechListItems();
 
-            // 技術項目リストの更新を通知する
+            // Notify the update of the technical item list
             HoI2EditorController.OnItemChanged(EditorItemId.TechItemList, this);
 
             Log.Info("[Tech] Added new tech: {0}", item.Id);
         }
 
         /// <summary>
-        ///     技術項目リストの新規ラベルボタン押下時の処理
+        ///     Processing when pressing a new label button in the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -746,49 +746,49 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 項目を作成する
+            // Create an item
             TechLabel item = new TechLabel { Name = Config.GetTempKey() };
             Config.SetText(item.Name, "", Game.TechTextFileName);
 
-            // 重複文字列リストに登録する
+            // Register in the duplicate character string list
             Techs.AddDuplicatedListItem(item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
             item.SetDirtyAll();
 
             ITechItem selected = techListBox.SelectedItem as ITechItem;
             if (selected != null)
             {
-                // 選択項目の先頭座標を引き継ぐ
+                // Take over the top coordinates of the selection item
                 item.Positions.Add(new TechPosition { X = selected.Positions[0].X, Y = selected.Positions[0].Y });
 
-                // 技術項目リストに項目を挿入する
+                // Insert the item in the technical item list
                 grp.InsertItem(item, selected);
 
-                // 項目リストビューに項目を挿入する
+                // Insert the item in the list view
                 InsertTechListItem(item, techListBox.SelectedIndex + 1);
             }
             else
             {
-                // 仮の座標を登録する
+                // Register the provisional coordinates
                 item.Positions.Add(new TechPosition());
 
-                // 技術項目リストに項目を追加する
+                // Add items to the technical item list
                 grp.AddItem(item);
 
-                // 項目リストビューに項目を追加する
+                // Add the item to the item list view
                 AddTechListItem(item);
             }
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the technical tree
             _techTreePanelController.AddItem(item);
 
             Log.Info("[Tech] Added new label");
         }
 
         /// <summary>
-        ///     技術項目リストの新規イベントボタン押下時の処理
+        ///     Processing when pressing a new event button in the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -796,52 +796,52 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 項目を作成する
+            // Create an item
             TechEvent item = new TechEvent();
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
             item.SetDirtyAll();
 
             ITechItem selected = techListBox.SelectedItem as ITechItem;
             if (selected != null)
             {
-                // 選択項目の先頭座標を引き継ぐ
+                // Take over the top coordinates of the selection item
                 item.Positions.Add(new TechPosition { X = selected.Positions[0].X, Y = selected.Positions[0].Y });
 
-                // 選択項目が技術イベントならばIDを10増やす
+                // If the selection item is a technical event, increase the ID by 10
                 if (selected is TechEvent)
                 {
                     TechEvent selectedEvent = selected as TechEvent;
                     item.Id = selectedEvent.Id + 10;
                 }
 
-                // 技術項目リストに項目を挿入する
+                // Insert the item in the technical item list
                 grp.InsertItem(item, selected);
 
-                // 項目リストビューに項目を挿入する
+                // Insert the item in the list view
                 InsertTechListItem(item, techListBox.SelectedIndex + 1);
             }
             else
             {
-                // 仮の座標を登録する
+                // Register the provisional coordinates
                 item.Positions.Add(new TechPosition());
 
-                // 技術項目リストに項目を追加する
+                // Add items to the technical item list
                 grp.AddItem(item);
 
-                // 項目リストビューに項目を追加する
+                // Add the item to the item list view
                 AddTechListItem(item);
             }
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the technical tree
             _techTreePanelController.AddItem(item);
 
             Log.Info("[Tech] Added new event: {0}", item.Id);
         }
 
         /// <summary>
-        ///     技術項目リストの複製ボタン押下時の処理
+        ///     Processing when pressing the duplicate button on the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -849,45 +849,45 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             ITechItem selected = GetSelectedItem();
             if (selected == null)
             {
                 return;
             }
 
-            // 項目を複製する
+            // Duplicate the item
             ITechItem item = selected.Clone();
 
-            // 重複文字列リストに登録する
+            // Register in the duplicate character string list
             Techs.AddDuplicatedListItem(item);
 
-            // 技術項目リストに項目を挿入する
+            // Insert the item in the technical item list
             grp.InsertItem(item, selected);
 
             if (item is TechItem)
             {
-                // 技術項目とIDの対応付けを更新する
+                // Update technical items and ID correspondence
                 Techs.UpdateTechIdMap();
-                // 必要技術コンボボックスの項目を更新する
+                // Update the required technology combo box
                 UpdateRequiredTechListItems();
-                // 技術イベントの技術IDコンボボックスの項目を更新する
+                // Update the technical event technology ID combo box item
                 UpdateEventTechListItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
             item.SetDirtyAll();
 
-            // 項目リストビューに項目を挿入する
+            // Insert the item in the list view
             InsertTechListItem(item, techListBox.SelectedIndex + 1);
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the technical tree
             _techTreePanelController.AddItem(item);
 
             if (item is TechItem)
             {
-                // 技術項目リストの更新を通知する
+                // Notify the update of the technical item list
                 HoI2EditorController.OnItemChanged(EditorItemId.TechItemList, this);
 
                 TechItem techItem = item as TechItem;
@@ -905,7 +905,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術項目リストの削除ボタン押下時の処理
+        ///     Technical item list deletion button processing when pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -913,34 +913,34 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             ITechItem selected = GetSelectedItem();
             if (selected == null)
             {
                 return;
             }
 
-            // 技術項目リストから項目を削除する
+            // Delete items from the technical item list
             grp.RemoveItem(selected);
 
-            // 項目リストビューから項目を削除する
+            // Delete the item from the item list view
             RemoveTechListItem(techListBox.SelectedIndex);
 
-            // 技術ツリーからラベルを削除する
+            // Delete the label from the technical tree
             _techTreePanelController.RemoveItem(selected);
 
             if (selected is TechItem)
             {
-                // 必要技術コンボボックスの項目を更新する
+                // Update the required technology combo box
                 UpdateRequiredTechListItems();
-                // 技術イベントの技術IDコンボボックスの項目を更新する
+                // Update the technical event technology ID combo box item
                 UpdateEventTechListItems();
             }
 
-            // 項目がなくなれば編集項目を無効化する
+            // If the items are gone, disable edited items
             if (techListBox.Items.Count == 0)
             {
-                // 技術/必要技術/小研究/技術効果/技術ラベル/技術イベントタブを無効化する
+                // Disable technology / necessary technology / small research / technical effect / technical label / technical event tab
                 DisableTechTab();
                 DisableRequiredTab();
                 DisableComponentTab();
@@ -948,16 +948,16 @@ namespace HoI2Editor.Forms
                 DisableLabelTab();
                 DisableEventTab();
 
-                // カテゴリタブを選択する
+                // Select a category tab
                 editTabControl.SelectedIndex = (int) TechEditorTab.Category;
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
 
             if (selected is TechItem)
             {
-                // 技術項目リストの更新を通知する
+                // Notify the update of the technical item list
                 HoI2EditorController.OnItemChanged(EditorItemId.TechItemList, this);
 
                 TechItem techItem = selected as TechItem;
@@ -976,20 +976,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術項目リストの先頭へボタン押下時の処理
+        ///     Processing when pressing button to the beginning of the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTopButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             ITechItem selected = GetSelectedItem();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの先頭ならば何もしない
+            // If the selection item is the top of the list, do nothing
             int index = techListBox.SelectedIndex;
             if (index == 0)
             {
@@ -1003,39 +1003,39 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 技術項目リストの項目を移動する
+            // Move the item in the technical item list
             grp.MoveItem(selected, top);
 
-            // 項目リストビューの項目を移動する
+            // Move the item list view item
             MoveTechListItem(index, 0);
 
             if (selected is TechItem)
             {
-                // 必要技術コンボボックスの項目を更新する
+                // Update the required technology combo box
                 UpdateRequiredTechListItems();
-                // 技術イベントの技術IDコンボボックスの項目を更新する
+                // Update the technical event technology ID combo box item
                 UpdateEventTechListItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
         }
 
         /// <summary>
-        ///     技術項目リストの上へボタン押下時の処理
+        ///     Processing when pressing button on top of the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUpButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             ITechItem selected = GetSelectedItem();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの先頭ならば何もしない
+            // If the selection item is the top of the list, do nothing
             int index = techListBox.SelectedIndex;
             if (index == 0)
             {
@@ -1045,39 +1045,39 @@ namespace HoI2Editor.Forms
             TechGroup grp = GetSelectedGroup();
             ITechItem upper = grp.Items[index - 1];
 
-            // 技術項目リストの項目を移動する
+            // Move the item in the technical item list
             grp.MoveItem(selected, upper);
 
-            // 項目リストビューの項目を移動する
+            // Move the item list view item
             MoveTechListItem(index, index - 1);
 
             if (selected is TechItem)
             {
-                // 必要技術コンボボックスの項目を更新する
+                // Update the required technology combo box
                 UpdateRequiredTechListItems();
-                // 技術イベントの技術IDコンボボックスの項目を更新する
+                // Update the technical event technology ID combo box item
                 UpdateEventTechListItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
         }
 
         /// <summary>
-        ///     技術項目リストの下へボタン押下時の処理
+        ///     Processing when pressing button under the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDownButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             ITechItem selected = GetSelectedItem();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの末尾ならば何もしない
+            // If the selection item is the end of the list, do nothing
             int index = techListBox.SelectedIndex;
             if (index == techListBox.Items.Count - 1)
             {
@@ -1087,39 +1087,39 @@ namespace HoI2Editor.Forms
             TechGroup grp = GetSelectedGroup();
             ITechItem lower = grp.Items[index + 1];
 
-            // 技術項目リストの項目を移動する
+            // Move the item in the technical item list
             grp.MoveItem(selected, lower);
 
-            // 項目リストビューの項目を移動する
+            // Move the item list view item
             MoveTechListItem(index, index + 1);
 
             if (selected is TechItem)
             {
-                // 必要技術コンボボックスの項目を更新する
+                // Update the required technology combo box
                 UpdateRequiredTechListItems();
-                // 技術イベントの技術IDコンボボックスの項目を更新する
+                // Update the technical event technology ID combo box item
                 UpdateEventTechListItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
         }
 
         /// <summary>
-        ///     技術項目リストの末尾へボタン押下時の処理
+        ///     Processing when pressing button to the end of the technical item list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBottomButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             ITechItem selected = GetSelectedItem();
             if (selected == null)
             {
                 return;
             }
 
-            // 選択項目がリストの末尾ならば何もしない
+            // If the selection item is the end of the list, do nothing
             int index = techListBox.SelectedIndex;
             if (index == techListBox.Items.Count - 1)
             {
@@ -1129,77 +1129,77 @@ namespace HoI2Editor.Forms
             TechGroup grp = GetSelectedGroup();
             ITechItem bottom = grp.Items[techListBox.Items.Count - 1];
 
-            // 技術項目リストの項目を移動する
+            // Move the item in the technical item list
             grp.MoveItem(selected, bottom);
 
-            // 項目リストビューの項目を移動する
+            // Move the item list view item
             MoveTechListItem(index, techListBox.Items.Count - 1);
 
             if (selected is TechItem)
             {
-                // 必要技術コンボボックスの項目を更新する
+                // Update the required technology combo box
                 UpdateRequiredTechListItems();
-                // 技術イベントの技術IDコンボボックスの項目を更新する
+                // Update the technical event technology ID combo box item
                 UpdateEventTechListItems();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty();
         }
 
         /// <summary>
-        ///     項目リストビューに項目を追加する
+        ///     Add the item to the item list view
         /// </summary>
-        /// <param name="item">追加対象の項目</param>
+        /// <param name="item">Additional items</param>
         private void AddTechListItem(ITechItem item)
         {
-            // 項目リストビューに項目を追加する
+            // Add the item to the item list view
             techListBox.Items.Add(item);
 
-            // 追加した項目を選択する
+            // Select the added item
             techListBox.SelectedIndex = techListBox.Items.Count - 1;
         }
 
         /// <summary>
-        ///     項目リストビューに項目を挿入する
+        ///     Insert the item in the list view
         /// </summary>
-        /// <param name="item">挿入対象の項目</param>
-        /// <param name="index">挿入先の位置</param>
+        /// <param name="item">Items to be inserted</param>
+        /// <param name="index">Position of insertion destination</param>
         private void InsertTechListItem(object item, int index)
         {
-            // 項目リストビューに項目を挿入する
+            // Insert the item in the list view
             techListBox.Items.Insert(index, item);
 
-            // 挿入した項目を選択する
+            // Select the inserted item
             techListBox.SelectedIndex = index;
         }
 
         /// <summary>
-        ///     項目リストビューの項目を削除する
+        ///     Delete item list view items
         /// </summary>
-        /// <param name="index">削除対象の位置</param>
+        /// <param name="index">Position to be deleted</param>
         private void RemoveTechListItem(int index)
         {
-            // 項目リストビューから項目を削除する
+            // Delete the item from the item list view
             techListBox.Items.RemoveAt(index);
 
             if (index < techListBox.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the following items in the deleted item
                 techListBox.SelectedIndex = index;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば、削除した項目の前の項目を選択する
+                // At the end of the list, select the item in front of the deleted item.
                 techListBox.SelectedIndex = index - 1;
             }
         }
 
         /// <summary>
-        ///     項目リストビューの項目を移動する
+        ///     Move the item list view item
         /// </summary>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="src">Location of the source</param>
+        /// <param name="dest">Position of destination</param>
         private void MoveTechListItem(int src, int dest)
         {
             ITechItem item = techListBox.Items[src] as ITechItem;
@@ -1210,25 +1210,25 @@ namespace HoI2Editor.Forms
 
             if (src > dest)
             {
-                // 上へ移動する場合
+                // When moving up
                 techListBox.Items.Insert(dest, item);
                 techListBox.Items.RemoveAt(src + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 techListBox.Items.Insert(dest + 1, item);
                 techListBox.Items.RemoveAt(src);
             }
 
-            // 移動先の項目を選択する
+            // Select the destination item
             techListBox.SelectedIndex = dest;
         }
 
         /// <summary>
-        ///     選択中の技術項目を取得する
+        ///     Get the selected technical items
         /// </summary>
-        /// <returns>選択中の技術項目</returns>
+        /// <returns>Selected technical items</returns>
         private ITechItem GetSelectedItem()
         {
             return techListBox.SelectedItem as ITechItem;
@@ -1236,27 +1236,27 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 技術ツリー
+        #region Technical tree
 
         /// <summary>
-        ///     技術ツリーラベルのマウスダウン時の処理
+        ///     Technical tree label mouse processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechTreeLabelMouseDown(object sender, TechTreePanelController.ItemMouseEventArgs e)
         {
-            // 技術項目リストの項目を選択する
+            // Select the technical item list item
             techListBox.SelectedItem = e.Item;
         }
 
         /// <summary>
-        ///     技術ツリーピクチャーボックスにドロップした時の処理
+        ///     Processing when dropped into a technical tree picture box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTreePictureBoxDragDrop(object sender, TechTreePanelController.ItemDragEventArgs e)
         {
-            // 座標リストビューの項目を更新する
+            // Update the items in the coordinates list view
             for (int i = 0; i < e.Item.Positions.Count; i++)
             {
                 if (e.Item.Positions[i] == e.Position)
@@ -1291,7 +1291,7 @@ namespace HoI2Editor.Forms
                     break;
                 }
             }
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             e.Item.SetDirty();
@@ -1300,25 +1300,25 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region カテゴリタブ
+        #region Category tab
 
         /// <summary>
-        ///     カテゴリタブの項目を更新する
+        ///     Update the category tab item
         /// </summary>
         private void UpdateCategoryItems()
         {
-            // 編集項目の値を更新する
+            // Update the value of edit items
             TechGroup grp = GetSelectedGroup();
             categoryNameTextBox.Text = grp.ToString();
             categoryDescTextBox.Text = grp.GetDesc();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             categoryNameTextBox.ForeColor = grp.IsDirty(TechGroupItemId.Name) ? Color.Red : SystemColors.WindowText;
             categoryDescTextBox.ForeColor = grp.IsDirty(TechGroupItemId.Desc) ? Color.Red : SystemColors.WindowText;
         }
 
         /// <summary>
-        ///     技術グループ名変更時の処理
+        ///     Processing when the technology group name is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1326,7 +1326,7 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             string name = categoryNameTextBox.Text;
             if (name.Equals(grp.ToString()))
             {
@@ -1335,24 +1335,24 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed category name: {0} -> {1} <{2}>", grp, name, grp.Name);
 
-            // 値を更新する
+            // Update the value
             Config.SetText(grp.Name, name, Game.TechTextFileName);
 
-            // カテゴリリストボックスの項目を再設定することで表示更新している
-            // この時再選択によりフォーカスが外れるので、イベントハンドラを一時的に無効化する
+            // The display is updated by resetting the category list box item
+            // At this time, the focus is removed by the re -selection, so the event handler is temporarily disabled.
             categoryListBox.SelectedIndexChanged -= OnCategoryListBoxSelectedIndexChanged;
             categoryListBox.Items[(int) grp.Category] = name;
             categoryListBox.SelectedIndexChanged += OnCategoryListBoxSelectedIndexChanged;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty(TechGroupItemId.Name);
 
-            // 文字色を変更する
+            // Change the character color
             categoryNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     技術グループ説明変更時の処理
+        ///     Technical group explanation processing when changing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1360,7 +1360,7 @@ namespace HoI2Editor.Forms
         {
             TechGroup grp = GetSelectedGroup();
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             string desc = categoryDescTextBox.Text;
             if (desc.Equals(grp.GetDesc()))
             {
@@ -1369,26 +1369,26 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed category description: {0} -> {1} <{2}>", grp.GetDesc(), desc, grp.Desc);
 
-            // 値を更新する
+            // Update the value
             Config.SetText(grp.Desc, desc, Game.TechTextFileName);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             grp.SetDirty(TechGroupItemId.Desc);
 
-            // 文字色を変更する
+            // Change the character color
             categoryDescTextBox.ForeColor = Color.Red;
         }
 
         #endregion
 
-        #region 技術タブ
+        #region Technical tab
 
         /// <summary>
-        ///     技術タブの項目を初期化する
+        ///     Initialize the technical tab item
         /// </summary>
         private void InitTechItems()
         {
-            // 画像ファイル名
+            // Image file name
             bool flag = Game.Type == GameType.DarkestHour;
             techPictureNameLabel.Enabled = flag;
             techPictureNameTextBox.Enabled = flag;
@@ -1396,12 +1396,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術タブの項目を更新する
+        ///     Update the technical tab item
         /// </summary>
-        /// <param name="item">技術アプリケーション</param>
+        /// <param name="item">Technical application</param>
         private void UpdateTechItems(TechItem item)
         {
-            // 編集項目の値を更新する
+            // Update the value of edit items
             techNameTextBox.Text = item.ToString();
             techShortNameTextBox.Text = item.GetShortName();
             techIdNumericUpDown.Value = item.Id;
@@ -1409,7 +1409,7 @@ namespace HoI2Editor.Forms
             UpdateTechPositionList(item);
             UpdateTechPicture(item);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             techNameTextBox.ForeColor = item.IsDirty(TechItemId.Name) ? Color.Red : SystemColors.WindowText;
             techShortNameTextBox.ForeColor = item.IsDirty(TechItemId.ShortName) ? Color.Red : SystemColors.WindowText;
             techIdNumericUpDown.ForeColor = item.IsDirty(TechItemId.Id) ? Color.Red : SystemColors.WindowText;
@@ -1420,27 +1420,27 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術タブを有効化する
+        ///     Enable the technical tab
         /// </summary>
         private void EnableTechTab()
         {
-            // タブを有効化する
+            // Enable the tab
             editTabControl.TabPages[(int) TechEditorTab.Tech].Enabled = true;
 
-            // 無効化時にクリアした値を再設定する
+            // Reset the clear value when disabling
             techIdNumericUpDown.Text = IntHelper.ToString((int) techIdNumericUpDown.Value);
             techYearNumericUpDown.Text = IntHelper.ToString((int) techYearNumericUpDown.Value);
         }
 
         /// <summary>
-        ///     技術タブを無効化する
+        ///     Disable the technical tab
         /// </summary>
         private void DisableTechTab()
         {
-            // タブを無効化する
+            // Disable the tab
             editTabControl.TabPages[(int) TechEditorTab.Tech].Enabled = false;
 
-            // 編集項目の値をクリアする
+            // Clear the value of edit items
             techNameTextBox.ResetText();
             techShortNameTextBox.ResetText();
             techIdNumericUpDown.ResetText();
@@ -1454,9 +1454,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術座標リストを更新する
+        ///     Update the technical coordinates
         /// </summary>
-        /// <param name="item">技術</param>
+        /// <param name="item">technology</param>
         private void UpdateTechPositionList(TechItem item)
         {
             techPositionListView.BeginUpdate();
@@ -1471,16 +1471,16 @@ namespace HoI2Editor.Forms
 
             if (techPositionListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 techPositionListView.Items[0].Focused = true;
                 techPositionListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable editing items
                 EnableTechPositionItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableTechPositionItems();
             }
 
@@ -1488,15 +1488,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術座標の編集項目を有効化する
+        ///     Enable the editing item of technical coordinates
         /// </summary>
         private void EnableTechPositionItems()
         {
-            // 無効化時にクリアした値を再設定する
+            // Reset the clear value when disabling
             techXNumericUpDown.Text = IntHelper.ToString((int) techXNumericUpDown.Value);
             techYNumericUpDown.Text = IntHelper.ToString((int) techYNumericUpDown.Value);
 
-            // 編集項目を有効化する
+            // Enable editing items
             techXNumericUpDown.Enabled = true;
             techYNumericUpDown.Enabled = true;
 
@@ -1504,15 +1504,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術座標の編集項目を無効化する
+        ///     Disable editing items of technical coordinates
         /// </summary>
         private void DisableTechPositionItems()
         {
-            // 編集項目の値をクリアする
+            // Clear the value of edit items
             techXNumericUpDown.ResetText();
             techYNumericUpDown.ResetText();
 
-            // 編集項目を無効化する
+            // Disable edit items
             techXNumericUpDown.Enabled = false;
             techYNumericUpDown.Enabled = false;
 
@@ -1520,27 +1520,27 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術名変更時の処理
+        ///     Processing at the time of technical name change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             string name = techNameTextBox.Text;
             if (name.Equals(item.ToString()))
             {
                 return;
             }
 
-            // 重複文字列ならば定義名を再設定する
+            // If it is a duplicated character string, reset the definition name
             if (Techs.IsDuplicatedName(item.Name))
             {
                 Techs.DecrementDuplicatedListCount(item.Name);
@@ -1550,17 +1550,17 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech name: {0} -> {1} <{2}>", item, name, item.Name);
 
-            // 値を更新する
+            // Update the value
             Config.SetText(item.Name, name, Game.TechTextFileName);
 
-            // 項目リストボックスの項目を再設定することで表示更新している
-            // この時再選択によりフォーカスが外れるので、イベントハンドラを一時的に無効化する
+            // The display is updated by resetting the item list box item
+            // At this time, the focus is removed by the re -selection, so the event handler is temporarily disabled.
             techListBox.SelectedIndexChanged -= OnTechListBoxSelectedIndexChanged;
             techListBox.Items[techListBox.SelectedIndex] = item;
             techListBox.SelectedIndexChanged += OnTechListBoxSelectedIndexChanged;
 
-            // 技術コンボボックスの項目を再設定することで表示更新している
-            // この時再選択によりフォーカスが外れるので、イベントハンドラを一時的に無効化する
+            // The display is updated by resetting the technical combo box item
+            // At this time, the focus is removed by the re -selection, so the event handler is temporarily disabled.
             andTechComboBox.SelectedIndexChanged -= OnAndTechComboBoxSelectedIndexChanged;
             orTechComboBox.SelectedIndexChanged -= OnOrTechComboBoxSelectedIndexChanged;
             eventTechComboBox.SelectedIndexChanged -= OnEventTechComboBoxSelectedIndexChanged;
@@ -1577,38 +1577,38 @@ namespace HoI2Editor.Forms
             orTechComboBox.SelectedIndexChanged += OnOrTechComboBoxSelectedIndexChanged;
             eventTechComboBox.SelectedIndexChanged += OnEventTechComboBoxSelectedIndexChanged;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             item.SetDirty(TechItemId.Name);
 
-            // 文字色を変更する
+            // Change the character color
             techNameTextBox.ForeColor = Color.Red;
 
-            // 技術項目名の更新を通知する
+            // Notify the update of the technical item name
             HoI2EditorController.OnItemChanged(EditorItemId.TechItemName, this);
         }
 
         /// <summary>
-        ///     技術短縮名変更時の処理
+        ///     Processing at the time of technology shortening name change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechShortNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             string shortName = techShortNameTextBox.Text;
             if (shortName.Equals(item.GetShortName()))
             {
                 return;
             }
 
-            // 重複文字列ならば定義名を再設定する
+            // If it is a duplicated character string, reset the definition name
             if (Techs.IsDuplicatedName(item.ShortName))
             {
                 Techs.DecrementDuplicatedListCount(item.ShortName);
@@ -1618,34 +1618,34 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech short name: {0} -> {1} <{2}>", item.GetShortName(), shortName, item.ShortName);
 
-            // 値を更新する
+            // Update the value
             Config.SetText(item.ShortName, shortName, Game.TechTextFileName);
 
-            // 技術ツリー上のラベル名を更新する
+            // Update the label name on the technical tree
             _techTreePanelController.UpdateItem(item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             item.SetDirty(TechItemId.ShortName);
 
-            // 文字色を変更する
+            // Change the character color
             techShortNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     技術ID変更時の処理
+        ///     Processing when changing technical ID
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             int id = (int) techIdNumericUpDown.Value;
             if (id == item.Id)
             {
@@ -1654,36 +1654,36 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech id: {0} -> {1} [{2}]", item.Id, id, item.Name);
 
-            // 値を更新する
+            // Update the value
             Techs.ModifyTechId(item, id);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty(TechItemId.Id);
 
-            // 文字色を変更する
+            // Change the character color
             techIdNumericUpDown.ForeColor = Color.Red;
 
-            // 技術項目IDの更新を通知する
+            // Notify the update of the technical item ID
             HoI2EditorController.OnItemChanged(EditorItemId.TechItemId, this);
         }
 
         /// <summary>
-        ///     史実年度変更時の処理
+        ///     Processing at the time of historical year change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechYearNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             int year = (int) techYearNumericUpDown.Value;
             if (year == item.Year)
             {
@@ -1692,57 +1692,57 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech year: {0} -> {1} [{2}]", item.Year, year, item);
 
-            // 値を更新する
+            // Update the value
             item.Year = year;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty(TechItemId.Year);
 
-            // 文字色を変更する
+            // Change the character color
             techYearNumericUpDown.ForeColor = Color.Red;
 
-            // 技術項目の史実年度の更新を通知する
+            // Notify the renewal of the historical year of technical items
             HoI2EditorController.OnItemChanged(EditorItemId.TechItemYear, this);
         }
 
         /// <summary>
-        ///     技術座標リストビューの選択項目変更時の処理
+        ///     Technical coordinates list view selection items processing when changing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechPositionListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術座標リストの選択項目がなければ編集項目を無効化する
+            // If there is no selection item in the technical coordinates list, disable edited items
             if (techPositionListView.SelectedIndices.Count == 0)
             {
                 DisableTechPositionItems();
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             TechPosition position = item.Positions[techPositionListView.SelectedIndices[0]];
             techXNumericUpDown.Value = position.X;
             techYNumericUpDown.Value = position.Y;
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             techXNumericUpDown.ForeColor = position.IsDirty(TechPositionItemId.X) ? Color.Red : SystemColors.WindowText;
             techYNumericUpDown.ForeColor = position.IsDirty(TechPositionItemId.Y) ? Color.Red : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable editing items
             EnableTechPositionItems();
         }
 
         /// <summary>
-        ///     技術座標リストビューの列の幅変更時の処理
+        ///     Technical coordinates list viewing of columns when changing width
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1756,7 +1756,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術座標リストビューの項目編集前の処理
+        ///     Technical coordinates list views Pre -editing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1777,7 +1777,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術座標リストビューの項目編集後の処理
+        ///     Technical coordinates list viewing post -editing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1794,18 +1794,18 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // We will update the list view items on our own, so we will treat them as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     技術座標リストビューの項目入れ替え時の処理
+        ///     Technical coordinates list viewing items when replacing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechPositionListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -1815,7 +1815,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 技術座標を移動する
+            // Move technical coordinates
             TechPosition position = item.Positions[srcIndex];
             item.Positions.Insert(destIndex, position);
             if (srcIndex < destIndex)
@@ -1830,20 +1830,20 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Move tech position: {0} -> {1} ({2}, {3}) [{4}]", srcIndex, destIndex, position.X,
                 position.Y, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     技術X座標変更時の処理
+        ///     Technical X processing when coordinates change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -1858,7 +1858,7 @@ namespace HoI2Editor.Forms
             int index = techPositionListView.SelectedIndices[0];
             TechPosition position = item.Positions[index];
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             int x = (int) techXNumericUpDown.Value;
             if (x == position.X)
             {
@@ -1867,33 +1867,33 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech position: ({0},{1}) -> ({2},{1}) [{3}]", position.X, position.Y, x, item);
 
-            // 値を更新する
+            // Update the value
             position.X = x;
 
-            // 座標リストビューの表示を更新する
+            // Update the display of coordinates list views
             techPositionListView.Items[index].Text = IntHelper.ToString(x);
 
-            // ラベルの位置を更新する
+            // Update the position of the label
             _techTreePanelController.UpdateItem(item, position);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirty(TechPositionItemId.X);
 
-            // 文字色を変更する
+            // Change the character color
             techXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     技術Y座標変更時の処理
+        ///     Technical Y coordinates processing when changing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -1907,7 +1907,7 @@ namespace HoI2Editor.Forms
             int index = techPositionListView.SelectedIndices[0];
             TechPosition position = item.Positions[techPositionListView.SelectedIndices[0]];
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             int y = (int) techYNumericUpDown.Value;
             if (y == position.Y)
             {
@@ -1916,76 +1916,76 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech position: ({0},{1}) -> ({0},{2}) [{3}]", position.X, position.Y, y, item);
 
-            // 値を更新する
+            // Update the value
             position.Y = y;
 
-            // 座標リストビューの表示を更新する
+            // Update the display of coordinates list views
             techPositionListView.Items[index].SubItems[1].Text = IntHelper.ToString(y);
 
-            // ラベルの位置を更新する
+            // Update the position of the label
             _techTreePanelController.UpdateItem(item, position);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirty(TechPositionItemId.Y);
 
-            // 文字色を変更する
+            // Change the character color
             techYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     技術座標追加ボタン押下時の処理
+        ///     Technical coordinates additional button processing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechPositionAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 座標をリストに追加する
+            // Add coordinates to the list
             TechPosition position = new TechPosition { X = 0, Y = 0 };
             item.Positions.Add(position);
 
             Log.Info("[Tech] Added tech position: ({0}, {1}) [{2}]", position.X, position.Y, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirtyAll();
 
-            // 座標リストビューの項目を追加する
+            // Add the coordinates list view items
             ListViewItem li = new ListViewItem { Text = IntHelper.ToString(position.X) };
             li.SubItems.Add(IntHelper.ToString(position.Y));
             techPositionListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             techPositionListView.Items[techPositionListView.Items.Count - 1].Focused = true;
             techPositionListView.Items[techPositionListView.Items.Count - 1].Selected = true;
             techPositionListView.EnsureVisible(techPositionListView.Items.Count - 1);
 
-            // 編集項目を有効化する
+            // Enable editing items
             EnableTechPositionItems();
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the technical tree
             _techTreePanelController.AddItem(item, position);
         }
 
         /// <summary>
-        ///     技術座標削除ボタン押下時の処理
+        ///     Technical coordinates removal button processing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechPositionRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2001,52 +2001,52 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed tech position: ({0}, {1}) [{2}]", position.X, position.Y, item);
 
-            // 座標をリストから削除する
+            // Delete the coordinates from the list
             item.Positions.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // 座標リストビューの項目を削除する
+            // Delete the items in the coordinates list view
             techPositionListView.Items.RemoveAt(index);
 
             if (index < techPositionListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the following items in the deleted item
                 techPositionListView.Items[index].Focused = true;
                 techPositionListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば、削除した項目の前の項目を選択する
+                // At the end of the list, select the item in front of the deleted item.
                 techPositionListView.Items[techPositionListView.Items.Count - 1].Focused = true;
                 techPositionListView.Items[techPositionListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // If the items are gone, disable edited items
                 DisableTechPositionItems();
             }
 
-            // 技術ツリーからラベルを削除する
+            // Delete the label from the technical tree
             _techTreePanelController.RemoveItem(item, position);
         }
 
         /// <summary>
-        ///     技術画像を更新する
+        ///     Update technical images
         /// </summary>
-        /// <param name="item">技術アプリケーション</param>
+        /// <param name="item">Technical application</param>
         private void UpdateTechPicture(TechItem item)
         {
-            // 画像ファイル名テキストボックスの値を更新する
+            // Image File Name Update the value of the text box
             if (Game.Type == GameType.DarkestHour)
             {
                 techPictureNameTextBox.Text = item.PictureName ?? "";
             }
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             techPictureNameTextBox.ForeColor = item.IsDirty(TechItemId.PictureName)
                 ? Color.Red
                 : SystemColors.WindowText;
@@ -2059,7 +2059,7 @@ namespace HoI2Editor.Forms
             string fileName = Game.GetReadFileName(Game.TechPicturePathName, $"{name}.bmp");
             if (File.Exists(fileName))
             {
-                // 技術画像を更新する
+                // Update technical images
                 Bitmap bitmap = new Bitmap(fileName);
                 bitmap.MakeTransparent();
                 techPictureBox.Image = bitmap;
@@ -2072,20 +2072,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     画像ファイル名変更時の処理
+        ///     Processing when changing the image file name
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechPictureNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // If there is no change in the value, do nothing
             string pictureName = techPictureNameTextBox.Text;
             if (pictureName.Equals(item.PictureName))
             {
@@ -2094,29 +2094,29 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech picture: {0} -> {1} [{2}]", item.PictureName, pictureName, item);
 
-            // 値を更新する
+            // Update the value
             item.PictureName = pictureName;
 
-            // 技術画像を更新する
+            // Update technical images
             UpdateTechPicture(item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty(TechItemId.PictureName);
 
-            // 文字色を変更する
+            // Change the character color
             techPictureNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     画像ファイル名参照ボタン押下時の処理
+        ///     Image file name Referral processing when pressing button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechPictureNameBrowseButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2131,19 +2131,19 @@ namespace HoI2Editor.Forms
             };
             if (dialog.ShowDialog() == DialogResult.OK)
             {
-                // 画像ファイル名テキストボックスの値を更新する
+                // Image File Name Update the value of the text box
                 techPictureNameTextBox.Text = Path.GetFileNameWithoutExtension(dialog.FileName);
             }
         }
 
         #endregion
 
-        #region 必要技術タブ
+        #region Required technology tab
 
         /// <summary>
-        ///     必要技術タブの項目を更新する
+        ///     Update the required technical tab items
         /// </summary>
-        /// <param name="item">技術アプリケーション</param>
+        /// <param name="item">Technical application</param>
         private void UpdateRequiredItems(TechItem item)
         {
             UpdateAndRequiredList(item);
@@ -2151,33 +2151,33 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     必要技術タブを有効化する
+        ///     Enable the required technology tab
         /// </summary>
         private void EnableRequiredTab()
         {
-            // タブを有効化する
+            // Enable the tab
             editTabControl.TabPages[(int) TechEditorTab.Required].Enabled = true;
         }
 
         /// <summary>
-        ///     必要技術タブを無効化する
+        ///     Disable the required technology tab
         /// </summary>
         private void DisableRequiredTab()
         {
-            // タブを無効化する
+            // Disable the tab
             editTabControl.TabPages[(int) TechEditorTab.Required].Enabled = false;
 
-            // 必要技術リストをクリアする
+            // Clear the required technical list
             andRequiredListView.Items.Clear();
             orRequiredListView.Items.Clear();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableAndRequiredItems();
             DisableOrRequiredItems();
         }
 
         /// <summary>
-        ///     必要技術タブの技術リストを更新する
+        ///     Update the technical list of the required technology tab
         /// </summary>
         private void UpdateRequiredTechListItems()
         {
@@ -2207,9 +2207,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術リストを更新する
+        ///     Update the required technical list
         /// </summary>
-        /// <param name="item">技術アプリケーション</param>
+        /// <param name="item">Technical application</param>
         private void UpdateAndRequiredList(TechItem item)
         {
             andRequiredListView.BeginUpdate();
@@ -2227,16 +2227,16 @@ namespace HoI2Editor.Forms
 
             if (andRequiredListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 andRequiredListView.Items[0].Focused = true;
                 andRequiredListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable editing items
                 EnableAndRequiredItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableAndRequiredItems();
             }
 
@@ -2245,9 +2245,9 @@ namespace HoI2Editor.Forms
 
 
         /// <summary>
-        ///     OR条件必要技術リストを更新する
+        ///     OR Condition Update the Technical List
         /// </summary>
-        /// <param name="item">技術アプリケーション</param>
+        /// <param name="item">Technical application</param>
         private void UpdateOrRequiredList(TechItem item)
         {
             orRequiredListView.BeginUpdate();
@@ -2265,16 +2265,16 @@ namespace HoI2Editor.Forms
 
             if (orRequiredListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 orRequiredListView.Items[0].Focused = true;
                 orRequiredListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable editing items
                 EnableOrRequiredItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableOrRequiredItems();
             }
 
@@ -2282,14 +2282,14 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術の編集項目を有効化する
+        ///     Enable editing items for and requirements for and conditions
         /// </summary>
         private void EnableAndRequiredItems()
         {
-            // 無効化時にクリアした値を再設定する
+            // Reset the clear value when disabling
             andIdNumericUpDown.Text = IntHelper.ToString((int) andIdNumericUpDown.Value);
 
-            // 編集項目を有効化する
+            // Enable editing items
             andIdNumericUpDown.Enabled = true;
             andTechComboBox.Enabled = true;
 
@@ -2297,16 +2297,16 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術の編集項目を無効化する
+        ///     Disable editing items for and requirements for and conditions
         /// </summary>
         private void DisableAndRequiredItems()
         {
-            // 編集項目の値をクリアする
+            // Clear the value of edit items
             andIdNumericUpDown.ResetText();
             andTechComboBox.SelectedIndex = -1;
             andTechComboBox.ResetText();
 
-            // 編集項目を無効化する
+            // Disable edit items
             andIdNumericUpDown.Enabled = false;
             andTechComboBox.Enabled = false;
 
@@ -2314,14 +2314,14 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     OR条件必要技術の編集項目を有効化する
+        ///     OR Conditions Enable editing items for technology
         /// </summary>
         private void EnableOrRequiredItems()
         {
-            // 無効化時にクリアした値を再設定する
+            // Reset the clear value when disabling
             orIdNumericUpDown.Text = IntHelper.ToString((int) orIdNumericUpDown.Value);
 
-            // 編集項目を有効化する
+            // Enable editing items
             orIdNumericUpDown.Enabled = true;
             orTechComboBox.Enabled = true;
 
@@ -2329,16 +2329,16 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     OR条件必要技術の編集項目を無効化する
+        ///     Orcare the editing items of requirements for conditions are disabled
         /// </summary>
         private void DisableOrRequiredItems()
         {
-            // 編集項目の値をクリアする
+            // Clear the value of edit items
             orIdNumericUpDown.ResetText();
             orTechComboBox.SelectedIndex = -1;
             orTechComboBox.ResetText();
 
-            // 編集項目を無効化する
+            // Disable edit items
             orIdNumericUpDown.Enabled = false;
             orTechComboBox.Enabled = false;
 
@@ -2346,22 +2346,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術コンボボックスの項目描画処理
+        ///     AND Conditions required Technology Combo Box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndTechComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // If there are no items, do nothing
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw the character string of the item
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && andRequiredListView.SelectedIndices.Count > 0)
             {
@@ -2380,27 +2380,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     OR条件必要技術コンボボックスの項目描画処理
+        ///     OR Conditions required Technical Combo Box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrTechComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // If there are no items, do nothing
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw the character string of the item
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && orRequiredListView.SelectedIndices.Count > 0)
             {
@@ -2419,43 +2419,43 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     AND条件必要技術リストの選択項目変更時の処理
+        ///     AND Conditions required Technical List Selection item processing when changing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndRequiredListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 技術項目リストの選択項目がなければ何もしない
+            // If there is no selection item in the technical item list, do nothing
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 必要技術リストの選択項目がなければ編集項目を無効化する
+            // If there is no selection item in the required technical list, disable edited items
             if (andRequiredListView.SelectedIndices.Count == 0)
             {
                 DisableAndRequiredItems();
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             RequiredTech tech = item.AndRequiredTechs[andRequiredListView.SelectedIndices[0]];
             int id = tech.Id;
             andIdNumericUpDown.Value = id;
 
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             andTechComboBox.Refresh();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             andIdNumericUpDown.ForeColor = tech.IsDirty() ? Color.Red : SystemColors.WindowText;
 
-            // AND条件必要技術コンボボックスの選択項目を更新する
+            // Update the selection item of the AND condition required technology combo box
             if (Techs.TechIds.Contains(id))
             {
                 andTechComboBox.SelectedIndex = Techs.TechIds.IndexOf(id);
@@ -2466,43 +2466,43 @@ namespace HoI2Editor.Forms
                 andTechComboBox.ResetText();
             }
 
-            // 編集項目を有効化する
+            // Enable editing items
             EnableAndRequiredItems();
         }
 
         /// <summary>
-        ///     OR条件必要技術リストの選択項目変更時の処理
+        ///     OR Conditional requirement Technical list processing when changing items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrRequiredListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 技術項目リストの選択項目がなければ何もしない
+            // If there is no selection item in the technical item list, do nothing
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 必要技術リストの選択項目がなければ編集項目を無効化する
+            // If there is no selection item in the required technical list, disable edited items
             if (orRequiredListView.SelectedIndices.Count == 0)
             {
                 DisableOrRequiredItems();
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             RequiredTech tech = item.OrRequiredTechs[orRequiredListView.SelectedIndices[0]];
             int id = tech.Id;
             orIdNumericUpDown.Value = id;
 
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             orTechComboBox.Refresh();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             orIdNumericUpDown.ForeColor = tech.IsDirty() ? Color.Red : SystemColors.WindowText;
 
-            // OR条件必要技術コンボボックスの選択項目を更新する
+            // OR Conditions The selection item of the technical combo box is updated
             if (Techs.TechIds.Contains(id))
             {
                 orTechComboBox.SelectedIndex = Techs.TechIds.IndexOf(id);
@@ -2513,12 +2513,12 @@ namespace HoI2Editor.Forms
                 orTechComboBox.ResetText();
             }
 
-            // 編集項目を有効化する
+            // Enable editing items
             EnableOrRequiredItems();
         }
 
         /// <summary>
-        ///     AND条件必要技術リストの列の幅変更時の処理
+        ///     AND Conditions required Technical list processing when changing width
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2532,7 +2532,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     OR条件必要技術リストの列の幅変更時の処理
+        ///     OR Conditional requirements Technical list processing when changing width
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2546,7 +2546,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術リストビューの項目編集前の処理
+        ///     AND Conditions required Technical List View Item Pre-editing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2559,7 +2559,7 @@ namespace HoI2Editor.Forms
                     e.Text = andIdNumericUpDown.Text;
                     break;
 
-                case 1: // 名前
+                case 1: // name
                     e.Type = ItemEditType.List;
                     e.Items = andTechComboBox.Items.Cast<string>();
                     e.Index = andTechComboBox.SelectedIndex;
@@ -2569,7 +2569,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術リストビューの項目編集後の処理
+        ///     AND Conditions required Technical List View Items after editing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2581,17 +2581,17 @@ namespace HoI2Editor.Forms
                     andIdNumericUpDown.Text = e.Text;
                     break;
 
-                case 1: // 名前
+                case 1: // name
                     andTechComboBox.SelectedIndex = e.Index;
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // We will update the list view items on our own, so we will treat them as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     OR条件必要技術リストビューの項目編集前の処理
+        ///     OR Conditions Need Technical List View Item Pre-editing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2604,7 +2604,7 @@ namespace HoI2Editor.Forms
                     e.Text = orIdNumericUpDown.Text;
                     break;
 
-                case 1: // 名前
+                case 1: // name
                     e.Type = ItemEditType.List;
                     e.Items = orTechComboBox.Items.Cast<string>();
                     e.Index = orTechComboBox.SelectedIndex;
@@ -2614,7 +2614,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     OR条件必要技術リストビューの項目編集後の処理
+        ///     OR Conditions required Technical List View Items after editing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2626,23 +2626,23 @@ namespace HoI2Editor.Forms
                     orIdNumericUpDown.Text = e.Text;
                     break;
 
-                case 1: // 名前
+                case 1: // name
                     orTechComboBox.SelectedIndex = e.Index;
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // We will update the list view items on our own, so we will treat them as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     AND条件必要技術リストビューの項目入れ替え時の処理
+        ///     AND Conditions required Technical List of Technical Listing Items when replacing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndRequiredListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2652,7 +2652,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 必要技術を移動する
+            // Move necessary technology
             RequiredTech tech = item.AndRequiredTechs[srcIndex];
             item.AndRequiredTechs.Insert(destIndex, tech);
             if (srcIndex < destIndex)
@@ -2666,7 +2666,7 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Move and required tech: {0} -> {1} {2} [{3}]", srcIndex, destIndex, tech.Id, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
@@ -2674,13 +2674,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     OR条件必要技術リストビューの項目入れ替え時の処理
+        ///     OR Conditional requirement Technical List of Technical List View Processing when replacing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrRequiredListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2690,7 +2690,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 必要技術を移動する
+            // Move necessary technology
             RequiredTech tech = item.OrRequiredTechs[srcIndex];
             item.OrRequiredTechs.Insert(destIndex, tech);
             if (srcIndex < destIndex)
@@ -2704,7 +2704,7 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Move or required tech: {0} -> {1} {2} [{3}]", srcIndex, destIndex, tech.Id, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
@@ -2712,73 +2712,73 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術追加ボタン押下時の処理
+        ///     AND condition requirement Technology Additional button processing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // AND条件必要技術リストに項目を追加する
+            // Add item to AND conditions required technical list
             RequiredTech tech = new RequiredTech();
             item.AndRequiredTechs.Add(tech);
 
             Log.Info("[Tech] Added and required tech: {0} [{1}]", tech.Id, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             tech.SetDirty();
 
-            // AND条件必要技術リストビューに項目を追加する
+            // Added items to AND conditions required technology list views
             AddAndRequiredListItem(0);
         }
 
         /// <summary>
-        ///     OR条件必要技術追加ボタン押下時の処理
+        ///     OR Conditional requirement Technology Additional button processing when pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // OR条件必要技術リストに項目を追加する
+            // Or Conditional requirements Add item to the technical list
             RequiredTech tech = new RequiredTech();
             item.OrRequiredTechs.Add(tech);
 
             Log.Info("[Tech] Added or required tech: {0} [{1}]", tech.Id, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             tech.SetDirty();
 
-            // OR条件必要技術リストビューに項目を追加する
+            // OR Conditions Necessary Technical Technology Add Items to Wrist View
             AddOrRequiredListItem(0);
         }
 
         /// <summary>
-        ///     AND条件必要技術削除ボタン押下時の処理
+        ///     AND Conditions required Technology Deletion Treatment when pressing button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2793,26 +2793,26 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed and required tech: {0} [{1}]", item.AndRequiredTechs[index].Id, item);
 
-            // AND条件必要技術リストから項目を削除する
+            // Delete items from the required technical list
             RemoveAndRequiredListItem(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // AND条件必要技術リストビューから項目を削除する
+            // AND Conditions Delete items from the Technical List View
             item.AndRequiredTechs.RemoveAt(index);
         }
 
         /// <summary>
-        ///     OR条件必要技術削除ボタン押下時の処理
+        ///     OR Conditional requirement Technical deletion processing when pressing button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // If you don't have a selection item, you won't do anything
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2827,26 +2827,26 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed or required tech: {0} [{1}]", item.OrRequiredTechs[index].Id, item);
 
-            // OR条件必要技術リストから項目を削除する
+            // OR Conditions Delete items from the Technical List
             RemoveOrRequiredListItem(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // OR条件必要技術リストビューから項目を削除する
+            // OR Conditions Delete items from the Technical List View
             item.OrRequiredTechs.RemoveAt(index);
         }
 
         /// <summary>
-        ///     AND条件必要技術ID変更時の処理
+        ///     AND Conditions required Technical Technology ID
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2859,7 +2859,7 @@ namespace HoI2Editor.Forms
             }
             int index = andRequiredListView.SelectedIndices[0];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             RequiredTech tech = item.AndRequiredTechs[index];
             int id = (int) andIdNumericUpDown.Value;
             if (id == tech.Id)
@@ -2869,10 +2869,10 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed and required tech: {0} -> {1} [{2}]", tech.Id, id, item);
 
-            // 値を更新する
+            // Update value
             tech.Id = id;
 
-            // AND条件必要技術コンボボックスの選択項目を更新する
+            // AND AND Condition Required technology Update the selection items in the combo box
             if (Techs.TechIds.Contains(id))
             {
                 andTechComboBox.SelectedIndex = Techs.TechIds.IndexOf(id);
@@ -2883,30 +2883,30 @@ namespace HoI2Editor.Forms
                 andTechComboBox.ResetText();
             }
 
-            // AND条件必要技術リストの項目を更新する
+            // AND AND Update the items in the condition required technology list
             ModifyAndRequiredListItem(id, index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             tech.SetDirty();
 
-            // 文字色を変更する
+            // Change the font color
             andIdNumericUpDown.ForeColor = Color.Red;
 
-            // AND条件必要技術コンボボックスの項目色を変更するため描画更新する
+            // AND ANDCondition Required technology Update drawing to change the item color of the combo box
             andTechComboBox.Refresh();
         }
 
         /// <summary>
-        ///     OR条件必要技術ID変更時の処理
+        ///     OR Condition Required technology ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2919,7 +2919,7 @@ namespace HoI2Editor.Forms
             }
             int index = orRequiredListView.SelectedIndices[0];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             RequiredTech tech = item.OrRequiredTechs[index];
             int id = (int) orIdNumericUpDown.Value;
             if (id == tech.Id)
@@ -2929,10 +2929,10 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed or required tech: {0} -> {1} [{2}]", tech.Id, id, item);
 
-            // 値を更新する
+            // Update value
             tech.Id = id;
 
-            // OR条件必要技術コンボボックスの選択項目を更新する
+            // OR Condition Required technology Update the selection items in the combo box
             orTechComboBox.SelectedIndex = -1;
             if (Techs.TechIds.Contains(id))
             {
@@ -2944,30 +2944,30 @@ namespace HoI2Editor.Forms
                 orTechComboBox.ResetText();
             }
 
-            // OR条件必要技術リストの項目を更新する
+            // OR Update the items in the condition required technology list
             ModifyOrRequiredListItem(id, index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             tech.SetDirty();
 
-            // 文字色を変更する
+            // Change the font color
             orIdNumericUpDown.ForeColor = Color.Red;
 
-            // OR条件必要技術コンボボックスの項目色を変更するため描画更新する
+            // OR Condition Required Technique Update drawing to change the item color of the combo box
             orTechComboBox.Refresh();
         }
 
         /// <summary>
-        ///     AND条件必要技術変更時の処理
+        ///     AND AND Processing when condition required technology change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAndTechComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -2979,7 +2979,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int index = andRequiredListView.SelectedIndices[0];
             if (index == -1)
             {
@@ -2996,18 +2996,18 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // AND条件必要技術IDの値を更新する
+            // AND AND Condition required technology ID Update the value of
             andIdNumericUpDown.Value = id;
         }
 
         /// <summary>
-        ///     OR条件必要技術変更時の処理
+        ///     OR Processing when condition required technology change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOrTechComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -3019,7 +3019,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int index = orRequiredListView.SelectedIndices[0];
             if (index == -1)
             {
@@ -3036,17 +3036,17 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // OR条件必要技術IDの値を更新する
+            // OR Condition required technology ID Update the value of
             orIdNumericUpDown.Value = id;
         }
 
         /// <summary>
-        ///     AND条件必要技術リストビューに項目を追加する
+        ///     AND AND Condition Required technology Add an item to the list view
         /// </summary>
-        /// <param name="id">必要技術ID</param>
+        /// <param name="id">Required technology ID</param>
         private void AddAndRequiredListItem(int id)
         {
-            // リストに項目を追加する
+            // Add an item to the list
             ListViewItem li = new ListViewItem { Text = IntHelper.ToString(id) };
             if (Techs.TechIdMap.ContainsKey(id))
             {
@@ -3054,23 +3054,23 @@ namespace HoI2Editor.Forms
             }
             andRequiredListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             int index = andRequiredListView.Items.Count - 1;
             andRequiredListView.Items[index].Focused = true;
             andRequiredListView.Items[index].Selected = true;
             andRequiredListView.EnsureVisible(index);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableAndRequiredItems();
         }
 
         /// <summary>
-        ///     OR条件必要技術リストビューに項目を追加する
+        ///     OR Condition Required technology Add an item to the list view
         /// </summary>
-        /// <param name="id">必要技術ID</param>
+        /// <param name="id">Required technology ID</param>
         private void AddOrRequiredListItem(int id)
         {
-            // リストに項目を追加する
+            // Add an item to the list
             ListViewItem li = new ListViewItem { Text = IntHelper.ToString(id) };
             if (Techs.TechIdMap.ContainsKey(id))
             {
@@ -3078,21 +3078,21 @@ namespace HoI2Editor.Forms
             }
             orRequiredListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             int index = orRequiredListView.Items.Count - 1;
             orRequiredListView.Items[index].Focused = true;
             orRequiredListView.Items[index].Selected = true;
             orRequiredListView.EnsureVisible(index);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableOrRequiredItems();
         }
 
         /// <summary>
-        ///     AND条件必要技術リストの項目を変更する
+        ///     AND AND Change the items in the condition required technology list
         /// </summary>
-        /// <param name="id">必要技術ID</param>
-        /// <param name="index">変更対象の項目インデックス</param>
+        /// <param name="id">Required technology ID</param>
+        /// <param name="index">Item index to be changed</param>
         private void ModifyAndRequiredListItem(int id, int index)
         {
             andRequiredListView.Items[index].SubItems.Clear();
@@ -3104,10 +3104,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     OR条件必要技術リストの項目を変更する
+        ///     OR Change the items in the condition required technology list
         /// </summary>
-        /// <param name="id">必要技術ID</param>
-        /// <param name="index">変更対象の項目インデックス</param>
+        /// <param name="id">Required technology ID</param>
+        /// <param name="index">Item index to be changed</param>
         private void ModifyOrRequiredListItem(int id, int index)
         {
             orRequiredListView.Items[index].SubItems.Clear();
@@ -3119,71 +3119,71 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AND条件必要技術リストの項目を削除する
+        ///     AND AND Delete the item of the condition required technology list
         /// </summary>
-        /// <param name="index">削除対象の項目インデックス</param>
+        /// <param name="index">Item index to be deleted</param>
         private void RemoveAndRequiredListItem(int index)
         {
-            // リストから項目を削除する
+            // Remove an item from the list
             andRequiredListView.Items[index].Remove();
 
             if (index < andRequiredListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the next item after the deleted item
                 andRequiredListView.Items[index].Focused = true;
                 andRequiredListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 andRequiredListView.Items[andRequiredListView.Items.Count - 1].Focused = true;
                 andRequiredListView.Items[andRequiredListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableAndRequiredItems();
             }
         }
 
         /// <summary>
-        ///     OR条件必要技術リストの項目を削除する
+        ///     OR Delete the item in the condition required technology list
         /// </summary>
-        /// <param name="index">削除対象の項目インデックス</param>
+        /// <param name="index">Item index to be deleted</param>
         private void RemoveOrRequiredListItem(int index)
         {
-            // リストから項目を削除する
+            // Remove an item from the list
             orRequiredListView.Items[index].Remove();
 
             if (index < orRequiredListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the next item after the deleted item
                 orRequiredListView.Items[index].Focused = true;
                 orRequiredListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 orRequiredListView.Items[orRequiredListView.Items.Count - 1].Focused = true;
                 orRequiredListView.Items[orRequiredListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableOrRequiredItems();
             }
         }
 
         #endregion
 
-        #region 小研究タブ
+        #region Small study tab
 
         /// <summary>
-        ///     小研究タブの項目を初期化する
+        ///     Initialize the items on the scholarship tab
         /// </summary>
         private void InitComponentItems()
         {
-            // 小研究特性
+            // Small research characteristics
             componentSpecialityComboBox.BeginUpdate();
             componentSpecialityComboBox.Items.Clear();
             Graphics g = Graphics.FromHwnd(componentSpecialityComboBox.Handle);
@@ -3202,9 +3202,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究タブの項目を更新する
+        ///     Update the items on the scholarship tab
         /// </summary>
-        /// <param name="item">技術</param>
+        /// <param name="item">Technology</param>
         private void UpdateComponentItems(TechItem item)
         {
             componentListView.BeginUpdate();
@@ -3219,16 +3219,16 @@ namespace HoI2Editor.Forms
 
             if (componentListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 componentListView.Items[0].Focused = true;
                 componentListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableComponentItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableComponentItems();
             }
 
@@ -3236,39 +3236,39 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究タブを有効化する
+        ///     Enable the scholarship tab
         /// </summary>
         private void EnableComponentTab()
         {
-            // タブを有効化する
+            // Enable tabs
             editTabControl.TabPages[(int) TechEditorTab.Component].Enabled = true;
         }
 
         /// <summary>
-        ///     小研究タブを無効化する
+        ///     Disable the scholarship tab
         /// </summary>
         private void DisableComponentTab()
         {
-            // タブを無効化する
+            // Disable tabs
             editTabControl.TabPages[(int) TechEditorTab.Component].Enabled = false;
 
-            // 小研究リストの項目をクリアする
+            // Clear the items in the scholarship list
             componentListView.Items.Clear();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableComponentItems();
         }
 
         /// <summary>
-        ///     小研究タブの編集項目を有効化する
+        ///     Enable edit items on the scholarship tab
         /// </summary>
         private void EnableComponentItems()
         {
-            // 無効化時にクリアした値を再設定する
+            // Reset the value cleared at the time of invalidation
             componentIdNumericUpDown.Text = IntHelper.ToString((int) componentIdNumericUpDown.Value);
             componentDifficultyNumericUpDown.Text = IntHelper.ToString((int) componentDifficultyNumericUpDown.Value);
 
-            // 編集項目を有効化する
+            // Enable edit items
             componentIdNumericUpDown.Enabled = true;
             componentNameTextBox.Enabled = true;
             componentSpecialityComboBox.Enabled = true;
@@ -3280,11 +3280,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究タブの編集項目を無効化する
+        ///     Disable edit items on the scholarship tab
         /// </summary>
         private void DisableComponentItems()
         {
-            // 編集項目の値をクリアする
+            // Clear the value of the edit item
             componentIdNumericUpDown.ResetText();
             componentNameTextBox.ResetText();
             componentSpecialityComboBox.SelectedIndex = -1;
@@ -3292,7 +3292,7 @@ namespace HoI2Editor.Forms
             componentDifficultyNumericUpDown.ResetText();
             componentDoubleTimeCheckBox.Checked = false;
 
-            // 編集項目を無効化する
+            // Disable edit items
             componentIdNumericUpDown.Enabled = false;
             componentNameTextBox.Enabled = false;
             componentSpecialityComboBox.Enabled = false;
@@ -3306,20 +3306,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the essay list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selection items in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 DisableComponentItems();
@@ -3333,17 +3333,17 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             componentIdNumericUpDown.Value = component.Id;
             componentNameTextBox.Text = component.ToString();
             componentSpecialityComboBox.SelectedIndex = Array.IndexOf(Techs.Specialities, component.Speciality) - 1;
             componentDifficultyNumericUpDown.Value = component.Difficulty;
             componentDoubleTimeCheckBox.Checked = component.DoubleTime;
 
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             componentSpecialityComboBox.Refresh();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             componentIdNumericUpDown.ForeColor = component.IsDirty(TechComponentItemId.Id)
                 ? Color.Red
                 : SystemColors.WindowText;
@@ -3357,7 +3357,7 @@ namespace HoI2Editor.Forms
                 ? Color.Red
                 : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableComponentItems();
 
             componentUpButton.Enabled = index != 0;
@@ -3365,7 +3365,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the scholarship list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3379,7 +3379,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究リストビューの項目編集前の処理
+        ///     Processing before editing items in the scholarship list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3392,24 +3392,24 @@ namespace HoI2Editor.Forms
                     e.Text = componentIdNumericUpDown.Text;
                     break;
 
-                case 1: // 小研究名
+                case 1: // Small research name
                     e.Type = ItemEditType.Text;
                     e.Text = componentNameTextBox.Text;
                     break;
 
-                case 2: // 研究特性
+                case 2: // Research characteristics
                     e.Type = ItemEditType.List;
                     e.Items = componentSpecialityComboBox.Items.Cast<string>();
                     e.Index = componentSpecialityComboBox.SelectedIndex;
                     e.DropDownWidth = componentSpecialityComboBox.DropDownWidth;
                     break;
 
-                case 3: // 難易度
+                case 3: // difficulty
                     e.Type = ItemEditType.Text;
                     e.Text = componentDifficultyNumericUpDown.Text;
                     break;
 
-                case 4: // 2倍
+                case 4: // 2 Double
                     e.Type = ItemEditType.Bool;
                     e.Flag = componentDoubleTimeCheckBox.Checked;
                     break;
@@ -3417,7 +3417,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究リストビューの項目編集後の処理
+        ///     Processing after editing items in the scholarship list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3429,35 +3429,35 @@ namespace HoI2Editor.Forms
                     componentIdNumericUpDown.Text = e.Text;
                     break;
 
-                case 1: // 小研究名
+                case 1: // Small research name
                     componentNameTextBox.Text = e.Text;
                     break;
 
-                case 2: // 研究特性
+                case 2: // Research characteristics
                     componentSpecialityComboBox.SelectedIndex = e.Index;
                     break;
 
-                case 3: // 難易度
+                case 3: // difficulty
                     componentDifficultyNumericUpDown.Text = e.Text;
                     break;
 
-                case 4: // 2倍
+                case 4: // 2 Double
                     componentDoubleTimeCheckBox.Checked = e.Flag;
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     小研究リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the scholarship list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -3467,7 +3467,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 小研究を移動する
+            // Move essays
             TechComponent component = item.Components[srcIndex];
             item.Components.Insert(destIndex, component);
             if (srcIndex < destIndex)
@@ -3481,33 +3481,33 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Move component: {0} -> {1} {2} [{3}]", srcIndex, destIndex, component.Id, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             component.SetDirty();
 
-            // 小研究リストの更新を通知する
+            // Notify the update of the essay list
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentList, this);
         }
 
         /// <summary>
-        ///     小研究特性コンボボックスの項目描画処理
+        ///     Item drawing process of the small research characteristic combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentSpecialityComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 研究特性アイコンを描画する
+            // Draw a research characteristic icon
             int iconWidth = DeviceCaps.GetScaledWidth(16);
             int iconHeight = DeviceCaps.GetScaledHeight(16);
             if (e.Index < Techs.SpecialityImages.Images.Count &&
@@ -3517,7 +3517,7 @@ namespace HoI2Editor.Forms
                     new Rectangle(e.Bounds.X + 1, e.Bounds.Y + 1, iconWidth, iconHeight));
             }
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && componentListView.SelectedIndices.Count > 0)
             {
@@ -3539,18 +3539,18 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     小研究の新規ボタン押下時の処理
+        ///     Processing when a new button is pressed in a small study
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentNewButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -3559,10 +3559,10 @@ namespace HoI2Editor.Forms
 
             TechComponent component = TechComponent.Create();
 
-            // 重複文字列リストに登録する
+            // Register in the duplicate character string list
             Techs.IncrementDuplicatedListCount(component.Name);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
@@ -3574,44 +3574,44 @@ namespace HoI2Editor.Forms
                 TechComponent selected = item.Components[index];
                 component.Id = item.GetNewComponentId(selected.Id + 1);
 
-                // 項目をリストに挿入する
+                // Insert an item into a list
                 item.InsertComponent(component, index + 1);
 
-                // 小研究リストビューに項目を挿入する
+                // Insert an item in the scholarship list view
                 InsertComponentListItem(component, index + 1);
             }
             else
             {
                 component.Id = item.GetNewComponentId(item.Id + 1);
 
-                // 項目をリストに追加する
+                // Add an item to the list
                 item.AddComponent(component);
 
-                // 小研究リストビューに項目を追加する
+                // Add an item to the scholarship list view
                 AddComponentListItem(component);
             }
 
-            // 小研究リストの更新を通知する
+            // Notify the update of the essay list
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentList, this);
 
             Log.Info("[Tech] Added new tech component: {0} [{1}]", component.Id, item);
         }
 
         /// <summary>
-        ///     小研究の複製ボタン押下時の処理
+        ///     Processing when the duplicate button of the essay is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentCloneButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3624,40 +3624,40 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Added new tech component: {0} [{1}]", component.Id, item);
 
-            // 重複文字列リストに登録する
+            // Register in the duplicate character string list
             Techs.IncrementDuplicatedListCount(component.Name);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             component.SetDirtyAll();
 
-            // 項目をリストに挿入する
+            // Insert an item into a list
             item.InsertComponent(component, index + 1);
 
-            // 小研究リストビューに項目を挿入する
+            // Insert an item in the scholarship list view
             InsertComponentListItem(component, index + 1);
 
-            // 小研究リストの更新を通知する
+            // Notify the update of the essay list
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentList, this);
         }
 
         /// <summary>
-        ///     小研究の削除ボタン押下時の処理
+        ///     Processing when the delete button of the essay is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentRemoveButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3666,110 +3666,110 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed new tech component: {0} [{1}]", item.Components[index], item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // 項目をリストから削除する
+            // Remove an item from the list
             item.RemoveComponent(index);
 
-            // 小研究リストビューから項目を削除する
+            // Remove an item from the scholarship list view
             RemoveComponentListItem(index);
 
-            // 小研究リストの更新を通知する
+            // Notify the update of the essay list
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentList, this);
         }
 
         /// <summary>
-        ///     小研究の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the top of the essay
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentUpButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = componentListView.SelectedIndices[0];
 
-            // リストの先頭ならば何もしない
+            // Do nothing at the top of the list
             if (index == 0)
             {
                 return;
             }
 
-            // 項目を移動する
+            // Move items
             item.MoveComponent(index, index - 1);
             MoveComponentListItem(index, index - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     小研究の下へボタン押下時の処理
+        ///     Processing when the button is pressed under the essay
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentDownButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = componentListView.SelectedIndices[0];
 
-            // リストの末尾ならば何もしない
+            // Do nothing at the end of the list
             if (index == componentListView.Items.Count - 1)
             {
                 return;
             }
 
-            // 項目を移動する
+            // Move items
             item.MoveComponent(index, index + 1);
             MoveComponentListItem(index, index + 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     小研究ID変更時の処理
+        ///     Small study ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3782,7 +3782,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int id = (int) componentIdNumericUpDown.Value;
             if (id == component.Id)
             {
@@ -3791,37 +3791,37 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech component id: {0} -> {1} [{2}]", component.Id, id, component);
 
-            // 値を更新する
+            // Update value
             component.Id = id;
 
-            // 小研究リストビューの項目を更新する
+            // Update items in the scholarship list view
             componentListView.Items[index].Text = IntHelper.ToString(id);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             component.SetDirty(TechComponentItemId.Id);
 
-            // 文字色を変更する
+            // Change the font color
             componentIdNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     小研究名変更時の処理
+        ///     Processing when changing the name of a small research
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3834,14 +3834,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string name = componentNameTextBox.Text;
             if (name.Equals(component.ToString()))
             {
                 return;
             }
 
-            // 重複文字列ならば定義名を再設定する
+            // If it is a duplicate character string, reset the definition name
             if (Techs.IsDuplicatedName(component.Name))
             {
                 Techs.DecrementDuplicatedListCount(component.Name);
@@ -3851,35 +3851,35 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed tech component name: {0} -> {1} <{2}>", component, name, component.Name);
 
-            // 値を更新する
+            // Update value
             Config.SetText(component.Name, name, Game.TechTextFileName);
 
-            // 小研究リストビューの項目を更新する
+            // Update items in the scholarship list view
             componentListView.Items[index].SubItems[1].Text = name;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             item.SetDirty();
             component.SetDirty(TechComponentItemId.Name);
 
-            // 文字色を変更する
+            // Change the font color
             componentNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     小研究特性変更時の処理
+        ///     Processing when changing the characteristics of a small study
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentSpecialityComboBoxSelectionChangeCommitted(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3892,7 +3892,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             TechSpeciality speciality = Techs.Specialities[componentSpecialityComboBox.SelectedIndex + 1];
             if (speciality == component.Speciality)
             {
@@ -3902,40 +3902,40 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Changed tech component speciality: {0} -> {1} [{2}]",
                 Techs.GetSpecialityName(component.Speciality), Techs.GetSpecialityName(speciality), component);
 
-            // 値を更新する
+            // Update value
             component.Speciality = speciality;
 
-            // 小研究リストビューの項目を更新する
+            // Update items in the scholarship list view
             componentListView.Items[index].SubItems[2].Text = Techs.GetSpecialityName(speciality);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             component.SetDirty(TechComponentItemId.Specilaity);
 
-            // 小研究特性コンボボックスの項目色を変更するため描画更新する
+            // Update drawing to change the item color of the essay characteristic combo box
             componentSpecialityComboBox.Refresh();
 
-            // 小研究の特性の更新を通知する
+            // Notify updates of scholarship characteristics
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentSpeciality, this);
         }
 
         /// <summary>
-        ///     小研究難易度変更時の処理
+        ///     Processing when changing the difficulty level of a small study
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentDifficultyNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -3948,7 +3948,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int difficulty = (int) componentDifficultyNumericUpDown.Value;
             if (difficulty == component.Difficulty)
             {
@@ -3958,40 +3958,40 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Changed tech component difficulty: {0} -> {1} [{2}]", component.Difficulty, difficulty,
                 component);
 
-            // 値を更新する
+            // Update value
             component.Difficulty = difficulty;
 
-            // 小研究リストビューの項目を更新する
+            // Update items in the scholarship list view
             componentListView.Items[index].SubItems[3].Text = IntHelper.ToString(difficulty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             component.SetDirty(TechComponentItemId.Difficulty);
 
-            // 文字色を変更する
+            // Change the font color
             componentDifficultyNumericUpDown.ForeColor = Color.Red;
 
-            // 小研究の難易度の更新を通知する
+            // Notify the update of the difficulty level of the essay
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentDifficulty, this);
         }
 
         /// <summary>
-        ///     小研究2倍時間設定変更時の処理
+        ///     Small study 2 Processing when changing the double time setting
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnComponentDoubleTimeCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 小研究リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scholarship list
             if (componentListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4004,7 +4004,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool doubleTime = componentDoubleTimeCheckBox.Checked;
             if (doubleTime == component.DoubleTime)
             {
@@ -4014,30 +4014,30 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Changed tech component double time: {0} -> {1} [{2}]", component.DoubleTime, doubleTime,
                 component);
 
-            // 値を更新する
+            // Update value
             component.DoubleTime = doubleTime;
 
-            // 小研究リストビューの項目を更新する
+            // Update items in the scholarship list view
             componentListView.Items[index].SubItems[4].Text = doubleTime ? Resources.Yes : Resources.No;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             component.SetDirty(TechComponentItemId.DoubleTime);
 
-            // 文字色を変更する
+            // Change the font color
             componentDoubleTimeCheckBox.ForeColor = Color.Red;
 
-            // 小研究の難易度の更新を通知する
+            // Notify the update of the difficulty level of the essay
             HoI2EditorController.OnItemChanged(EditorItemId.TechComponentDoubleTime, this);
         }
 
         /// <summary>
-        ///     小研究リストの項目を作成する
+        ///     Create an item in the scholarship list
         /// </summary>
-        /// <param name="component">小研究</param>
-        /// <returns>小研究リストの項目</returns>
+        /// <param name="component">Small study</param>
+        /// <returns>Items on the essay list</returns>
         private static ListViewItem CreateComponentListItem(TechComponent component)
         {
             ListViewItem li = new ListViewItem { Text = IntHelper.ToString(component.Id) };
@@ -4050,47 +4050,47 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     小研究リストの項目を追加する
+        ///     Add an item in the scholarship list
         /// </summary>
-        /// <param name="component">追加対象の小研究</param>
+        /// <param name="component">Small study to be added</param>
         private void AddComponentListItem(TechComponent component)
         {
-            // リストに項目を追加する
+            // Add an item to the list
             ListViewItem li = CreateComponentListItem(component);
             componentListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             int index = componentListView.Items.Count - 1;
             componentListView.Items[index].Focused = true;
             componentListView.Items[index].Selected = true;
             componentListView.EnsureVisible(index);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableComponentItems();
         }
 
         /// <summary>
-        ///     小研究リストに項目を挿入する
+        ///     Insert an item in the scholarship list
         /// </summary>
-        /// <param name="component">挿入対象の小研究</param>
-        /// <param name="index">挿入する位置</param>
+        /// <param name="component">Small study to be inserted</param>
+        /// <param name="index">Position to insert</param>
         private void InsertComponentListItem(TechComponent component, int index)
         {
-            // リストに項目を追加する
+            // Add an item to the list
             ListViewItem li = CreateComponentListItem(component);
             componentListView.Items.Insert(index, li);
 
-            // 挿入した項目を選択する
+            // Select the inserted item
             componentListView.Items[index].Focused = true;
             componentListView.Items[index].Selected = true;
             componentListView.EnsureVisible(index);
         }
 
         /// <summary>
-        ///     小研究リストの項目を移動する
+        ///     Move items in the scholarship list
         /// </summary>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="src">Source position</param>
+        /// <param name="dest">Destination position</param>
         private void MoveComponentListItem(int src, int dest)
         {
             ListViewItem li = componentListView.Items[src].Clone() as ListViewItem;
@@ -4101,63 +4101,63 @@ namespace HoI2Editor.Forms
 
             if (src > dest)
             {
-                // 上へ移動する場合
+                // When moving up
                 componentListView.Items.Insert(dest, li);
                 componentListView.Items.RemoveAt(src + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 componentListView.Items.Insert(dest + 1, li);
                 componentListView.Items.RemoveAt(src);
             }
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             componentListView.Items[dest].Focused = true;
             componentListView.Items[dest].Selected = true;
             componentListView.EnsureVisible(dest);
         }
 
         /// <summary>
-        ///     小研究リストから項目を削除する
+        ///     Remove an item from the scholarship list
         /// </summary>
-        /// <param name="index">削除する項目の位置</param>
+        /// <param name="index">Position of the item to be deleted</param>
         private void RemoveComponentListItem(int index)
         {
             componentListView.Items.RemoveAt(index);
 
             if (index < componentListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the next item after the deleted item
                 componentListView.Items[index].Focused = true;
                 componentListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 componentListView.Items[componentListView.Items.Count - 1].Focused = true;
                 componentListView.Items[componentListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableComponentItems();
             }
         }
 
         #endregion
 
-        #region 技術効果タブ
+        #region Technique effect tab
 
         /// <summary>
-        ///     技術効果タブの編集項目を初期化する
+        ///     Initialize the edit items on the technical effect tab
         /// </summary>
         private void InitEffectItems()
         {
             Graphics g = Graphics.FromHwnd(Handle);
             int margin = DeviceCaps.GetScaledWidth(2) + 1;
 
-            // 技術効果の種類
+            // Types of technical effects
             commandTypeComboBox.BeginUpdate();
             commandTypeComboBox.Items.Clear();
             int width = commandTypeComboBox.Width;
@@ -4173,15 +4173,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果タブの項目を更新する
+        ///     Update the items on the Technical Effects tab
         /// </summary>
-        /// <param name="item">技術</param>
+        /// <param name="item">Technology</param>
         private void UpdateEffectItems(TechItem item)
         {
             effectListView.BeginUpdate();
             effectListView.Items.Clear();
 
-            // 項目を順に追加する
+            // Add items in order
             foreach (Command command in item.Effects)
             {
                 ListViewItem listItem = CreateEffectListItem(command);
@@ -4191,16 +4191,16 @@ namespace HoI2Editor.Forms
 
             if (effectListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 effectListView.Items[0].Focused = true;
                 effectListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEffectItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableEffectItems();
             }
 
@@ -4208,35 +4208,35 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果タブを有効化する
+        ///     Activate the Tech Effects tab
         /// </summary>
         private void EnableEffectTab()
         {
-            // タブを有効化する
+            // Enable tabs
             editTabControl.TabPages[(int) TechEditorTab.Effect].Enabled = true;
         }
 
         /// <summary>
-        ///     技術効果タブを無効化する
+        ///     Disable the technical effects tab
         /// </summary>
         private void DisableEffectTab()
         {
-            // タブを無効化する
+            // Disable tabs
             editTabControl.TabPages[(int) TechEditorTab.Effect].Enabled = false;
 
-            // 技術効果リストの項目をクリアする
+            // Clear the items in the technical effect list
             effectListView.Items.Clear();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableEffectItems();
         }
 
         /// <summary>
-        ///     技術効果タブの編集項目を有効化する
+        ///     Enable edit items on the Technical Effects tab
         /// </summary>
         private void EnableEffectItems()
         {
-            // 編集項目を有効化する
+            // Enable edit items
             commandTypeComboBox.Enabled = true;
             commandWhichComboBox.Enabled = true;
             commandValueComboBox.Enabled = true;
@@ -4248,11 +4248,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果タブの編集項目を無効化する
+        ///     Disable edit items on the technical effects tab
         /// </summary>
         private void DisableEffectItems()
         {
-            // 編集項目の値をクリアする
+            // Clear the value of the edit item
             commandTypeComboBox.SelectedIndex = -1;
             commandTypeComboBox.ResetText();
             commandWhichComboBox.SelectedIndex = -1;
@@ -4264,7 +4264,7 @@ namespace HoI2Editor.Forms
             commandWhereComboBox.SelectedIndex = -1;
             commandWhereComboBox.ResetText();
 
-            // 編集項目を無効化する
+            // Disable edit items
             commandTypeComboBox.Enabled = false;
             commandWhichComboBox.Enabled = false;
             commandValueComboBox.Enabled = false;
@@ -4278,22 +4278,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果種類コンボボックスの項目描画処理
+        ///     Item drawing process of technical effect type combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandTypeComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && effectListView.SelectedIndices.Count > 0)
             {
@@ -4312,27 +4312,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     技術効果whichパラメータコンボボックスの項目描画処理
+        ///     Technical effect which which Item drawing process of parameter combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandWhichComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && effectListView.SelectedIndices.Count > 0)
             {
@@ -4345,27 +4345,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     技術効果valueパラメータコンボボックスの項目描画処理
+        ///     Technical effect value value Item drawing process of parameter combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandValueComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && effectListView.SelectedIndices.Count > 0)
             {
@@ -4378,27 +4378,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     技術効果whenパラメータコンボボックスの項目描画処理
+        ///     Technical effect when Item drawing process of parameter combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandWhenComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && effectListView.SelectedIndices.Count > 0)
             {
@@ -4411,27 +4411,27 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     技術効果whereパラメータコンボボックスの項目描画処理
+        ///     Technical effect where Item drawing process of parameter combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandWhereComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechItem item = GetSelectedItem() as TechItem;
             if (item != null && effectListView.SelectedIndices.Count > 0)
             {
@@ -4444,25 +4444,25 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     技術効果リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the technical effect list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selection items in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 DisableEffectItems();
@@ -4476,7 +4476,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             if (command.Type != CommandType.None)
             {
                 commandTypeComboBox.SelectedIndex = Commands.Types.IndexOf(command.Type);
@@ -4491,7 +4491,7 @@ namespace HoI2Editor.Forms
             commandWhenComboBox.Text = ObjectHelper.ToString(command.When);
             commandWhereComboBox.Text = ObjectHelper.ToString(command.Where);
 
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             commandTypeComboBox.Refresh();
             commandWhichComboBox.Refresh();
             commandValueComboBox.Refresh();
@@ -4502,7 +4502,7 @@ namespace HoI2Editor.Forms
             commandWhenComboBox.ForeColor = command.IsDirty(CommandItemId.When) ? Color.Red : SystemColors.WindowText;
             commandWhereComboBox.ForeColor = command.IsDirty(CommandItemId.Where) ? Color.Red : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEffectItems();
 
             effectUpButton.Enabled = index != 0;
@@ -4510,7 +4510,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果リストビューの列の幅変更時の処理
+        ///     What to do when changing the width of a column in the technical effect list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -4524,7 +4524,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果リストビューの項目編集前の処理
+        ///     Processing before editing items in the technical effect list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -4532,7 +4532,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 種類
+                case 0: // type
                     e.Type = ItemEditType.List;
                     e.Items = commandTypeComboBox.Items.Cast<string>();
                     e.Index = commandTypeComboBox.SelectedIndex;
@@ -4544,7 +4544,7 @@ namespace HoI2Editor.Forms
                     e.Text = commandWhichComboBox.Text;
                     break;
 
-                case 2: // Value
+                case 2: // Value Value.
                     e.Type = ItemEditType.Text;
                     e.Text = commandValueComboBox.Text;
                     break;
@@ -4562,7 +4562,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果リストビューの項目編集後の処理
+        ///     Processing after editing items in the technical effect list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -4570,7 +4570,7 @@ namespace HoI2Editor.Forms
         {
             switch (e.Column)
             {
-                case 0: // 種類
+                case 0: // type
                     commandTypeComboBox.SelectedIndex = e.Index;
                     break;
 
@@ -4578,7 +4578,7 @@ namespace HoI2Editor.Forms
                     commandWhichComboBox.Text = e.Text;
                     break;
 
-                case 2: // Value
+                case 2: // Value Value.
                     commandValueComboBox.Text = e.Text;
                     break;
 
@@ -4591,18 +4591,18 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     技術効果リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the technical effect list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -4612,7 +4612,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // 技術効果を移動する
+            // Move technology effects
             Command command = item.Effects[srcIndex];
             item.Effects.Insert(destIndex, command);
             if (srcIndex < destIndex)
@@ -4627,7 +4627,7 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Move effect: {0} -> {1} {2} [{3}]", srcIndex, destIndex,
                 Commands.Strings[(int) command.Type], item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
@@ -4635,13 +4635,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果の新規ボタン押下時の処理
+        ///     Processing when a new button is pressed for a technical effect
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectNewButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
@@ -4650,7 +4650,7 @@ namespace HoI2Editor.Forms
 
             Command command = new Command();
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
@@ -4658,19 +4658,19 @@ namespace HoI2Editor.Forms
 
             if (effectListView.SelectedIndices.Count > 0)
             {
-                // リストに項目を挿入する
+                // Insert an item in the list
                 int index = effectListView.SelectedIndices[0];
                 item.InsertCommand(command, index + 1);
 
-                // 技術効果リストビューに項目を挿入する
+                // Insert an item in the technical effect list view
                 InsertEffectListItem(command, index + 1);
             }
             else
             {
-                // リストに項目を追加する
+                // Add an item to the list
                 item.AddCommand(command);
 
-                // 技術効果リストビューに項目を追加する
+                // Add an item to the technical effect list view
                 AddEffectListItem(command);
             }
 
@@ -4678,20 +4678,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果の複製ボタン押下時の処理
+        ///     Processing when the duplicate button of the technical effect is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectCloneButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4702,34 +4702,34 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Added new effect: {0} [{1}]", Commands.Strings[(int) command.Type], item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             command.SetDirtyAll();
 
-            // リストに項目を挿入する
+            // Insert an item in the list
             item.InsertCommand(command, index + 1);
 
-            // 技術効果リストビューに項目を挿入する
+            // Insert an item in the technical effect list view
             InsertEffectListItem(command, index + 1);
         }
 
         /// <summary>
-        ///     技術効果の削除ボタン押下時の処理
+        ///     Processing when the delete button of the technical effect is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectRemoveButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4738,114 +4738,114 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed effect: {0} [{1}]", Commands.Strings[(int) item.Effects[index].Type], item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // リストから項目を削除する
+            // Remove an item from the list
             item.RemoveCommand(index);
 
-            // 技術効果リストビューから項目を削除する
+            // Remove an item from the technical effect list view
             RemoveEffectListItem(index);
         }
 
         /// <summary>
-        ///     技術効果の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the technical effect
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectUpButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = effectListView.SelectedIndices[0];
 
-            // リストの先頭ならば何もしない
+            // Do nothing at the top of the list
             if (index == 0)
             {
                 return;
             }
 
-            // 項目を移動する
+            // Move items
             item.MoveCommand(index, index - 1);
             MoveEffectListItem(index, index - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     技術効果の下へボタン押下時の処理
+        ///     Processing when the button is pressed under the technical effect
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEffectDownButtonClick(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = effectListView.SelectedIndices[0];
 
-            // リストの末尾ならば何もしない
+            // Do nothing at the end of the list
             if (index == effectListView.Items.Count - 1)
             {
                 return;
             }
 
-            // 項目を移動する
+            // Move items
             item.MoveCommand(index, index + 1);
             MoveEffectListItem(index, index + 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     技術効果種類変更時の処理
+        ///     Processing when changing the type of technical effect
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandTypeComboBoxSelectionChangeCommitted(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
             }
             int index = effectListView.SelectedIndices[0];
 
-            // コマンドリストの選択項目がなければ何もしない
+            // Do nothing if there is no command list selection
             if (commandTypeComboBox.SelectedIndex == -1)
             {
                 return;
@@ -4857,7 +4857,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             CommandType type = Commands.Types[commandTypeComboBox.SelectedIndex];
             if (type == command.Type)
             {
@@ -4867,37 +4867,37 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Changed tech effect type: {0} -> {1} [{2}]", Commands.Strings[(int) command.Type],
                 Commands.Strings[(int) type], item);
 
-            // 値を更新する
+            // Update value
             command.Type = type;
 
-            // 技術効果リストビューの表示を更新する
+            // Update the display of the technical effect list view
             effectListView.Items[index].Text = Commands.Strings[(int) type];
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             command.SetDirty(CommandItemId.Type);
 
-            // 技術効果種類コンボボックスの項目色を変更するため描画更新する
+            // Technology effect type Update drawing to change the item color of the combo box
             commandTypeComboBox.Refresh();
         }
 
         /// <summary>
-        ///     技術効果whichパラメータ変更時の処理
+        ///     Technical effect which which Processing when changing parameters
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandWhichComboBoxTextUpdate(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4913,7 +4913,7 @@ namespace HoI2Editor.Forms
             double val;
             if (DoubleHelper.TryParse(commandWhichComboBox.Text, out val))
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 if (ObjectHelper.IsEqual(val, command.Which))
                 {
                     return;
@@ -4922,12 +4922,12 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect which: {0} -> {1} [{2}]", ObjectHelper.ToString(command.Which),
                     DoubleHelper.ToString(val), item);
 
-                // 値を更新する
+                // Update value
                 command.Which = val;
             }
             else
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 string text = commandWhichComboBox.Text;
                 if (ObjectHelper.IsEqual(text, command.Which))
                 {
@@ -4937,41 +4937,41 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect which: {0} -> {1} [{2}]", ObjectHelper.ToString(command.Which),
                     text, item);
 
-                // 値を更新する
+                // Update value
                 command.Which = text;
             }
 
-            // 技術効果リストビューの表示を更新する
+            // Update the display of the technical effect list view
             effectListView.Items[index].SubItems[1].Text = ObjectHelper.ToString(command.Which);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             command.SetDirty(CommandItemId.Which);
 
-            // 文字色を変更する
+            // Change the font color
             commandWhichComboBox.ForeColor = Color.Red;
 
-            // 技術効果whichパラメータコンボボックスの項目色を変更するため描画更新する
+            // Technical effect which which Update drawing to change the item color of the parameter combo box
             commandWhichComboBox.Refresh();
         }
 
         /// <summary>
-        ///     技術効果valueパラメータ変更時の処理
+        ///     Technical effect value value Processing when changing parameters
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandValueComboBoxTextUpdate(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -4987,7 +4987,7 @@ namespace HoI2Editor.Forms
             double val;
             if (DoubleHelper.TryParse(commandValueComboBox.Text, out val))
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 if (ObjectHelper.IsEqual(val, command.Value))
                 {
                     return;
@@ -4996,12 +4996,12 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect value: {0} -> {1} [{2}]", ObjectHelper.ToString(command.Value),
                     DoubleHelper.ToString(val), item);
 
-                // 値を更新する
+                // Update value
                 command.Value = val;
             }
             else
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 string text = commandValueComboBox.Text;
                 if (ObjectHelper.IsEqual(text, command.Value))
                 {
@@ -5011,41 +5011,41 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect value: {0} -> {1} [{2}]", ObjectHelper.ToString(command.Value),
                     text, item);
 
-                // 値を更新する
+                // Update value
                 command.Value = text;
             }
 
-            // 技術効果リストビューの表示を更新する
+            // Update the display of the technical effect list view
             effectListView.Items[index].SubItems[2].Text = ObjectHelper.ToString(command.Value);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             command.SetDirty(CommandItemId.Value);
 
-            // 文字色を変更する
+            // Change the font color
             commandValueComboBox.ForeColor = Color.Red;
 
-            // 技術効果valueパラメータコンボボックスの項目色を変更するため描画更新する
+            // Technical effect value value Update drawing to change the item color of the parameter combo box
             commandValueComboBox.Refresh();
         }
 
         /// <summary>
-        ///     技術効果whenパラメータ変更時の処理
+        ///     Technical effect when Processing when changing parameters
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandWhenComboBoxTextUpdate(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5061,7 +5061,7 @@ namespace HoI2Editor.Forms
             double val;
             if (DoubleHelper.TryParse(commandWhenComboBox.Text, out val))
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 if (ObjectHelper.IsEqual(val, command.When))
                 {
                     return;
@@ -5070,12 +5070,12 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect when: {0} -> {1} [{2}]", ObjectHelper.ToString(command.When),
                     DoubleHelper.ToString(val), item);
 
-                // 値を更新する
+                // Update value
                 command.When = val;
             }
             else
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 string text = commandWhenComboBox.Text;
                 if (ObjectHelper.IsEqual(text, command.When))
                 {
@@ -5085,41 +5085,41 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect when: {0} -> {1} [{2}]", ObjectHelper.ToString(command.When), text,
                     item);
 
-                // 値を更新する
+                // Update value
                 command.When = text;
             }
 
-            // 技術効果リストビューの表示を更新する
+            // Update the display of the technical effect list view
             effectListView.Items[index].SubItems[3].Text = ObjectHelper.ToString(command.When);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             command.SetDirty(CommandItemId.When);
 
-            // 文字色を変更する
+            // Change the font color
             commandWhenComboBox.ForeColor = Color.Red;
 
-            // 技術効果whenパラメータコンボボックスの項目色を変更するため描画更新する
+            // Technical effect when Update drawing to change the item color of the parameter combo box
             commandWhenComboBox.Refresh();
         }
 
         /// <summary>
-        ///     技術効果whereパラメータ変更時の処理
+        ///     Technical effect where Processing when changing parameters
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCommandWhereComboBoxTextUpdate(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechItem item = GetSelectedItem() as TechItem;
             if (item == null)
             {
                 return;
             }
 
-            // 技術効果リストの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the technical effect list
             if (effectListView.SelectedIndices.Count == 0)
             {
                 return;
@@ -5135,7 +5135,7 @@ namespace HoI2Editor.Forms
             double val;
             if (DoubleHelper.TryParse(commandWhereComboBox.Text, out val))
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 if (ObjectHelper.IsEqual(val, command.Where))
                 {
                     return;
@@ -5144,12 +5144,12 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect where: {0} -> {1} [{2}]", ObjectHelper.ToString(command.Where),
                     DoubleHelper.ToString(val), item);
 
-                // 値を更新する
+                // Update value
                 command.Where = val;
             }
             else
             {
-                // 値に変化がなければ何もしない
+                // Do nothing if the value does not change
                 string text = commandWhereComboBox.Text;
                 if (ObjectHelper.IsEqual(text, command.Where))
                 {
@@ -5159,31 +5159,31 @@ namespace HoI2Editor.Forms
                 Log.Info("[Tech] Changed tech effect where: {0} -> {1} [{2}]", ObjectHelper.ToString(command.Where),
                     text, item);
 
-                // 値を更新する
+                // Update value
                 command.Where = text;
             }
 
-            // 技術効果リストビューの表示を更新する
+            // Update the display of the technical effect list view
             effectListView.Items[index].SubItems[4].Text = ObjectHelper.ToString(command.Where);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             command.SetDirty(CommandItemId.Where);
 
-            // 文字色を変更する
+            // Change the font color
             commandWhereComboBox.ForeColor = Color.Red;
 
-            // 技術効果whereパラメータコンボボックスの項目色を変更するため描画更新する
+            // Technical effect where Update drawing to change the item color of the parameter combo box
             commandWhereComboBox.Refresh();
         }
 
         /// <summary>
-        ///     技術効果リストの項目を作成する
+        ///     Create an item in the technical effect list
         /// </summary>
-        /// <param name="command">技術効果</param>
-        /// <returns>技術効果リストの項目</returns>
+        /// <param name="command">Technical effect</param>
+        /// <returns>Items in the technical effect list</returns>
         private static ListViewItem CreateEffectListItem(Command command)
         {
             ListViewItem li = new ListViewItem { Text = Commands.Strings[(int) command.Type] };
@@ -5196,47 +5196,47 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術効果リストの項目を追加する
+        ///     Add an item in the technical effect list
         /// </summary>
-        /// <param name="command">追加対象の技術効果</param>
+        /// <param name="command">Technical effect to be added</param>
         private void AddEffectListItem(Command command)
         {
-            // リストに項目を追加する
+            // Add an item to the list
             ListViewItem li = CreateEffectListItem(command);
             effectListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             int index = effectListView.Items.Count - 1;
             effectListView.Items[index].Focused = true;
             effectListView.Items[index].Selected = true;
             effectListView.EnsureVisible(index);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEffectItems();
         }
 
         /// <summary>
-        ///     技術効果リストに項目を挿入する
+        ///     Insert an item in the technical effect list
         /// </summary>
-        /// <param name="command">挿入対象の技術効果</param>
-        /// <param name="index">挿入する位置</param>
+        /// <param name="command">Technical effect of insertion target</param>
+        /// <param name="index">Position to insert</param>
         private void InsertEffectListItem(Command command, int index)
         {
-            // リストに項目を挿入する
+            // Insert an item in the list
             ListViewItem li = CreateEffectListItem(command);
             effectListView.Items.Insert(index, li);
 
-            // 挿入した項目を選択する
+            // Select the inserted item
             effectListView.Items[index].Focused = true;
             effectListView.Items[index].Selected = true;
             effectListView.EnsureVisible(index);
         }
 
         /// <summary>
-        ///     技術効果リストの項目を移動する
+        ///     Move items in the technical effect list
         /// </summary>
-        /// <param name="src">移動元の位置</param>
-        /// <param name="dest">移動先の位置</param>
+        /// <param name="src">Source position</param>
+        /// <param name="dest">Destination position</param>
         private void MoveEffectListItem(int src, int dest)
         {
             ListViewItem li = effectListView.Items[src].Clone() as ListViewItem;
@@ -5247,91 +5247,91 @@ namespace HoI2Editor.Forms
 
             if (src > dest)
             {
-                // 上へ移動する場合
+                // When moving up
                 effectListView.Items.Insert(dest, li);
                 effectListView.Items.RemoveAt(src + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 effectListView.Items.Insert(dest + 1, li);
                 effectListView.Items.RemoveAt(src);
             }
 
-            // 移動先の項目を選択する
+            // Select the item to move to
             effectListView.Items[dest].Focused = true;
             effectListView.Items[dest].Selected = true;
             effectListView.EnsureVisible(dest);
         }
 
         /// <summary>
-        ///     技術効果リストから項目を削除する
+        ///     Remove an item from the Tech Effects list
         /// </summary>
-        /// <param name="index">削除する項目の位置</param>
+        /// <param name="index">Position of the item to be deleted</param>
         private void RemoveEffectListItem(int index)
         {
-            // リストから項目を削除する
+            // Remove an item from the list
             effectListView.Items.RemoveAt(index);
 
             if (index < effectListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the next item after the deleted item
                 effectListView.Items[index].Focused = true;
                 effectListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 effectListView.Items[effectListView.Items.Count - 1].Focused = true;
                 effectListView.Items[effectListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableEffectItems();
             }
         }
 
         #endregion
 
-        #region ラベルタブ
+        #region Label tab
 
         /// <summary>
-        ///     ラベルタブの項目を更新する
+        ///     Update items on the Label tab
         /// </summary>
-        /// <param name="item">技術ラベル</param>
+        /// <param name="item">Tech label</param>
         private void UpdateLabelItems(TechLabel item)
         {
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             labelNameTextBox.Text = item.ToString();
             UpdateLabelPositionList(item);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             labelNameTextBox.ForeColor = item.IsDirty(TechItemId.Name) ? Color.Red : SystemColors.WindowText;
         }
 
         /// <summary>
-        ///     ラベルタブを有効化する
+        ///     Enable Label Tab
         /// </summary>
         private void EnableLabelTab()
         {
-            // タブを有効化する
+            // Enable tabs
             editTabControl.TabPages[5].Enabled = true;
 
-            // 無効化時にクリアした値を再設定する
+            // Reset the value cleared at the time of invalidation
             labelXNumericUpDown.Text = IntHelper.ToString((int) labelXNumericUpDown.Value);
             labelYNumericUpDown.Text = IntHelper.ToString((int) labelYNumericUpDown.Value);
         }
 
         /// <summary>
-        ///     ラベルタブを無効化する
+        ///     Disable the label tab
         /// </summary>
         private void DisableLabelTab()
         {
-            // タブを無効化する
+            // Disable tabs
             editTabControl.TabPages[5].Enabled = false;
 
-            // 編集項目の値をクリアする
+            // Clear the value of the edit item
             labelNameTextBox.ResetText();
             labelPositionListView.Items.Clear();
             labelXNumericUpDown.ResetText();
@@ -5339,15 +5339,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術ラベル座標の編集項目を有効化する
+        ///     Enable edit items for technical label coordinates
         /// </summary>
         private void EnableLabelPositionItems()
         {
-            // 無効化時にクリアした値を再設定する
+            // Reset the value cleared at the time of invalidation
             labelXNumericUpDown.Text = IntHelper.ToString((int) labelXNumericUpDown.Value);
             labelYNumericUpDown.Text = IntHelper.ToString((int) labelYNumericUpDown.Value);
 
-            // 編集項目を有効化する
+            // Enable edit items
             labelXNumericUpDown.Enabled = true;
             labelYNumericUpDown.Enabled = true;
 
@@ -5355,15 +5355,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術ラベル座標の編集項目を無効化する
+        ///     Disable edit items for technical label coordinates
         /// </summary>
         private void DisableLabelPositionItems()
         {
-            // 編集項目の値をクリアする
+            // Clear the value of the edit item
             labelXNumericUpDown.ResetText();
             labelYNumericUpDown.ResetText();
 
-            // 編集項目を無効化する
+            // Disable edit items
             labelXNumericUpDown.Enabled = false;
             labelYNumericUpDown.Enabled = false;
 
@@ -5371,9 +5371,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術ラベル座標リストを更新する
+        ///     Update tech label coordinate list
         /// </summary>
-        /// <param name="item">技術ラベル</param>
+        /// <param name="item">Tech label</param>
         private void UpdateLabelPositionList(TechLabel item)
         {
             labelPositionListView.BeginUpdate();
@@ -5388,16 +5388,16 @@ namespace HoI2Editor.Forms
 
             if (labelPositionListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 labelPositionListView.Items[0].Focused = true;
                 labelPositionListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableLabelPositionItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableLabelPositionItems();
             }
 
@@ -5405,27 +5405,27 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ラベル名変更時の処理
+        ///     Processing when changing the label name
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelNameTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string text = labelNameTextBox.Text;
             if (text.Equals(item.ToString()))
             {
                 return;
             }
 
-            // 重複文字列ならば定義名を再設定する
+            // If it is a duplicate character string, reset the definition name
             if (Techs.IsDuplicatedName(item.Name))
             {
                 Techs.DecrementDuplicatedListCount(item.Name);
@@ -5435,61 +5435,61 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed label name: {0} -> {1} <{2}>", item, text, item.Name);
 
-            // 値を更新する
+            // Update value
             Config.SetText(item.Name, text, Game.TechTextFileName);
 
-            // 項目リストボックスの項目を再設定することで表示更新している
-            // この時再選択によりフォーカスが外れるので、イベントハンドラを一時的に無効化する
+            // The display is updated by resetting the items in the item list box.
+            // At this time, the focus will be lost due to reselection, so the event handler will be temporarily disabled.
             techListBox.SelectedIndexChanged -= OnTechListBoxSelectedIndexChanged;
             techListBox.Items[techListBox.SelectedIndex] = item;
             techListBox.SelectedIndexChanged += OnTechListBoxSelectedIndexChanged;
 
-            // 技術ツリー上のラベル名を更新する
+            // Update the label name on the tech tree
             _techTreePanelController.UpdateItem(item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             item.SetDirty(TechItemId.Name);
 
-            // 文字色を変更する
+            // Change the font color
             labelNameTextBox.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     ラベル座標リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the label coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelPositionListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 項目リストの選択項目がなければ何もしない
+            // Do nothing if there are no selections in the item list
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
                 return;
             }
 
-            // ラベル座標リストの選択項目がなければ編集項目を無効化する
+            // Disable edit items if there is no selection in the label coordinate list
             if (labelPositionListView.SelectedIndices.Count == 0)
             {
                 DisableLabelPositionItems();
                 return;
             }
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             TechPosition position = item.Positions[labelPositionListView.SelectedIndices[0]];
             labelXNumericUpDown.Value = position.X;
             labelYNumericUpDown.Value = position.Y;
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             labelXNumericUpDown.ForeColor = position.IsDirty(TechPositionItemId.X) ? Color.Red : SystemColors.WindowText;
             labelYNumericUpDown.ForeColor = position.IsDirty(TechPositionItemId.Y) ? Color.Red : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableLabelPositionItems();
         }
 
         /// <summary>
-        ///     ラベル座標リストビューの列の幅変更時の処理
+        ///     Processing when changing the width of columns in the label coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5503,7 +5503,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ラベル座標リストビューの項目編集前の処理
+        ///     Processing before editing items in the label coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5524,7 +5524,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ラベル座標リストビューの項目編集後の処理
+        ///     Processing after editing items in the label coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5541,18 +5541,18 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     ラベル座標リストビューの項目入れ替え時の処理
+        ///     Processing when replacing items in the label coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelPositionListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
@@ -5562,7 +5562,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // ラベル座標を移動する
+            // Move label coordinates
             TechPosition position = item.Positions[srcIndex];
             item.Positions.Insert(destIndex, position);
             if (srcIndex < destIndex)
@@ -5577,20 +5577,20 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Move label position: {0} -> {1} ({2}, {3}) [{4}]", srcIndex, destIndex, position.X,
                 position.Y, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     ラベルX座標変更時の処理
+        ///     label X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
@@ -5605,7 +5605,7 @@ namespace HoI2Editor.Forms
 
             TechPosition position = item.Positions[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) labelXNumericUpDown.Value;
             if (x == position.X)
             {
@@ -5614,33 +5614,33 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed label position: ({0},{1}) -> ({2},{1}) [{3}]", position.X, position.Y, x, item);
 
-            // 値を更新する
+            // Update value
             position.X = x;
 
-            // ラベル座標リストビューの項目を更新する
+            // Update items in the label coordinate list view
             labelPositionListView.Items[index].Text = IntHelper.ToString(x);
 
-            // 技術ツリー上のラベルを移動する
+            // Move labels on the tech tree
             _techTreePanelController.UpdateItem(item, position);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirty(TechPositionItemId.X);
 
-            // 文字色を変更する
+            // Change the font color
             labelXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     ラベルY座標変更時の処理
+        ///     label Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
@@ -5655,7 +5655,7 @@ namespace HoI2Editor.Forms
 
             TechPosition position = item.Positions[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) labelYNumericUpDown.Value;
             if (y == position.Y)
             {
@@ -5664,75 +5664,75 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed label position: ({0},{1}) -> ({0},{2}) [{3}]", position.X, position.Y, y, item);
 
-            // 値を更新する
+            // Update value
             position.Y = y;
 
-            // ラベル座標リストビューの項目を更新する
+            // Update items in the label coordinate list view
             labelPositionListView.Items[index].SubItems[1].Text = IntHelper.ToString(y);
 
-            // 技術ツリー上のラベルを移動する
+            // Move labels on the tech tree
             _techTreePanelController.UpdateItem(item, position);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirty(TechPositionItemId.Y);
 
-            // 文字色を変更する
+            // Change the font color
             labelYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     ラベル座標追加ボタン押下時の処理
+        ///     Processing when the label coordinate addition button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelPositionAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
                 return;
             }
 
-            // ラベル座標リストに項目を追加する
+            // Add an item to the label coordinate list
             TechPosition position = new TechPosition { X = 0, Y = 0 };
             item.Positions.Add(position);
 
             Log.Info("[Tech] Added label position: ({0},{1}) [{2}]", position.X, position.Y, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirtyAll();
 
-            // ラベル座標リストビューの項目を追加する
+            // Add an item in the label coordinate list view
             ListViewItem li = new ListViewItem { Text = IntHelper.ToString(position.X) };
             li.SubItems.Add(IntHelper.ToString(position.Y));
             labelPositionListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             labelPositionListView.Items[labelPositionListView.Items.Count - 1].Focused = true;
             labelPositionListView.Items[labelPositionListView.Items.Count - 1].Selected = true;
 
-            // ラベル座標の編集項目を有効化する
+            // Enable edit items for label coordinates
             EnableLabelPositionItems();
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the tech tree
             _techTreePanelController.AddItem(item, position);
         }
 
         /// <summary>
-        ///     ラベル座標削除ボタン押下時の処理
+        ///     Processing when the label coordinate delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLabelPositionRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechLabel item = GetSelectedItem() as TechLabel;
             if (item == null)
             {
@@ -5748,50 +5748,50 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed label position: ({0},{1}) [{2}]", position.X, position.Y, item);
 
-            // ラベル座標リストから項目を削除する
+            // Remove an item from the label coordinate list
             item.Positions.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // ラベル座標リストビューから項目を削除する
+            // Remove an item from the label coordinate list view
             labelPositionListView.Items.RemoveAt(index);
 
             if (index < labelPositionListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the next item after the deleted item
                 labelPositionListView.Items[index].Focused = true;
                 labelPositionListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 labelPositionListView.Items[labelPositionListView.Items.Count - 1].Focused = true;
                 labelPositionListView.Items[labelPositionListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableLabelPositionItems();
             }
 
-            // 技術ツリーからラベルを削除する
+            // Remove the label from the tech tree
             _techTreePanelController.RemoveItem(item, position);
         }
 
         #endregion
 
-        #region 発明イベントタブ
+        #region Invention event tab
 
         /// <summary>
-        ///     発明イベントタブの項目を更新する
+        ///     Update the item on the invention event tab
         /// </summary>
-        /// <param name="item">技術イベント</param>
+        /// <param name="item">Technical event</param>
         private void UpdateEventItems(TechEvent item)
         {
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             eventIdNumericUpDown.Value = item.Id;
             eventTechNumericUpDown.Value = item.TechId;
             if (Techs.TechIds.Contains(item.TechId))
@@ -5805,16 +5805,16 @@ namespace HoI2Editor.Forms
             }
             UpdateEventPositionList(item);
 
-            // コンボボックスの色を更新する
+            // Update the color of the combo box
             eventTechComboBox.Refresh();
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             eventIdNumericUpDown.ForeColor = item.IsDirty(TechItemId.Id) ? Color.Red : SystemColors.WindowText;
             eventTechNumericUpDown.ForeColor = item.IsDirty(TechItemId.TechId) ? Color.Red : SystemColors.WindowText;
         }
 
         /// <summary>
-        ///     発明イベントタブの技術リストを更新する
+        ///     Update the technology list on the Invention Events tab
         /// </summary>
         private void UpdateEventTechListItems()
         {
@@ -5838,14 +5838,14 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベントタブを有効化する
+        ///     Enable the Invention Events tab
         /// </summary>
         private void EnableEventTab()
         {
-            // タブを有効化する
+            // Enable tabs
             editTabControl.TabPages[6].Enabled = true;
 
-            // 無効化時にクリアした値を再設定する
+            // Reset the value cleared at the time of invalidation
             eventIdNumericUpDown.Text = IntHelper.ToString((int) eventIdNumericUpDown.Value);
             eventTechNumericUpDown.Text = IntHelper.ToString((int) eventTechNumericUpDown.Value);
             eventXNumericUpDown.Text = IntHelper.ToString((int) eventXNumericUpDown.Value);
@@ -5853,14 +5853,14 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベントタブを無効化する
+        ///     Disable the Invention Event tab
         /// </summary>
         private void DisableEventTab()
         {
-            // タブを無効化する
+            // Disable tabs
             editTabControl.TabPages[6].Enabled = false;
 
-            // 編集項目の値をクリアする
+            // Clear the value of the edit item
             eventIdNumericUpDown.ResetText();
             eventTechNumericUpDown.ResetText();
             eventTechComboBox.SelectedIndex = -1;
@@ -5871,15 +5871,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベント座標の編集項目を有効化する
+        ///     Enable edit items for invention event coordinates
         /// </summary>
         private void EnableEventPositionItems()
         {
-            // 無効化時にクリアした文字列を再設定する
+            // Reset the character string cleared at the time of invalidation
             eventXNumericUpDown.Text = IntHelper.ToString((int) eventXNumericUpDown.Value);
             eventYNumericUpDown.Text = IntHelper.ToString((int) eventYNumericUpDown.Value);
 
-            // 編集項目を有効化する
+            // Enable edit items
             eventXNumericUpDown.Enabled = true;
             eventYNumericUpDown.Enabled = true;
 
@@ -5887,15 +5887,15 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベント座標の編集項目を無効化する
+        ///     Disable edit items for invention event coordinates
         /// </summary>
         private void DisableEventPositionItems()
         {
-            // 編集項目をクリアする
+            // Clear edit items
             eventXNumericUpDown.ResetText();
             eventYNumericUpDown.ResetText();
 
-            // 編集項目を無効化する
+            // Disable edit items
             eventXNumericUpDown.Enabled = false;
             eventYNumericUpDown.Enabled = false;
 
@@ -5903,9 +5903,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベント座標リストを更新する
+        ///     Update the invention event coordinate list
         /// </summary>
-        /// <param name="item">発明イベント</param>
+        /// <param name="item">Invention event</param>
         private void UpdateEventPositionList(TechEvent item)
         {
             eventPositionListView.BeginUpdate();
@@ -5920,16 +5920,16 @@ namespace HoI2Editor.Forms
 
             if (eventPositionListView.Items.Count > 0)
             {
-                // 先頭の項目を選択する
+                // Select the first item
                 eventPositionListView.Items[0].Focused = true;
                 eventPositionListView.Items[0].Selected = true;
 
-                // 編集項目を有効化する
+                // Enable edit items
                 EnableEventPositionItems();
             }
             else
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableEventPositionItems();
             }
 
@@ -5937,22 +5937,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベント技術コンボボックスの項目描画処理
+        ///     Invention event technology combo box item drawing process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventTechComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item != null)
             {
@@ -5970,25 +5970,25 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     発明イベントID変更時の処理
+        ///     Invention event ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventIdNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int id = (int) eventIdNumericUpDown.Value;
             if (id == item.Id)
             {
@@ -5997,39 +5997,39 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed event id: {0} -> {1}", item.Id, id);
 
-            // 値を更新する
+            // Update value
             item.Id = id;
 
-            // 項目リストボックスの項目を再設定することで表示更新している
-            // この時再選択によりフォーカスが外れるので、イベントハンドラを一時的に無効化する
+            // The display is updated by resetting the items in the item list box.
+            // At this time, the focus will be lost due to reselection, so the event handler will be temporarily disabled.
             techListBox.SelectedIndexChanged -= OnTechListBoxSelectedIndexChanged;
             techListBox.Items[techListBox.SelectedIndex] = item;
             techListBox.SelectedIndexChanged += OnTechListBoxSelectedIndexChanged;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty(TechItemId.Id);
 
-            // 文字色を変更する
+            // Change the font color
             eventIdNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     発明イベント技術ID変更時の処理
+        ///     Invention event technology ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventTechNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int id = (int) eventTechNumericUpDown.Value;
             if (id == item.TechId)
             {
@@ -6038,10 +6038,10 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed event tech id: {0} -> {1}", item.TechId, id);
 
-            // 値を更新する
+            // Update value
             item.TechId = id;
 
-            // 技術コンボボックスの選択項目を更新する
+            // Update technical combo box selections
             if (Techs.TechIds.Contains(id))
             {
                 eventTechComboBox.SelectedIndex = Techs.TechIds.IndexOf(id);
@@ -6052,26 +6052,26 @@ namespace HoI2Editor.Forms
                 eventTechComboBox.ResetText();
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty(TechItemId.TechId);
 
-            // 文字色を変更する
+            // Change the font color
             eventTechNumericUpDown.ForeColor = Color.Red;
 
-            // 発明イベント技術コンボボックスの項目色を変更するため描画更新する
+            // Invention Event Technology Combo box item Color update to change drawing
             eventTechComboBox.Refresh();
         }
 
         /// <summary>
-        ///     発明イベント技術変更時の処理
+        ///     Invention event Processing when technology is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventTechComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
@@ -6083,47 +6083,47 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 発明イベント技術IDの値を更新する
+            // Invention event technology ID Update the value of
             int id = Techs.TechIds[eventTechComboBox.SelectedIndex];
             eventTechNumericUpDown.Value = id;
         }
 
         /// <summary>
-        ///     発明イベント座標リストビューの選択項目変更時の処理
+        ///     Invention Event Coordinate list view processing when changing selection items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventPositionListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 技術リストの選択項目がなければ何もしない
+            // Do nothing if there is no choice in the tech list
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
                 return;
             }
 
-            // 発明イベント座標リストの選択項目がなければ編集項目を無効化する
+            // If there is no selection item in the invention event coordinate list, the edit item is invalidated.
             if (eventPositionListView.SelectedIndices.Count == 0)
             {
                 DisableEventPositionItems();
                 return;
             }
 
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             TechPosition position = item.Positions[eventPositionListView.SelectedIndices[0]];
             eventXNumericUpDown.Value = position.X;
             eventYNumericUpDown.Value = position.Y;
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             eventXNumericUpDown.ForeColor = position.IsDirty(TechPositionItemId.X) ? Color.Red : SystemColors.WindowText;
             eventYNumericUpDown.ForeColor = position.IsDirty(TechPositionItemId.Y) ? Color.Red : SystemColors.WindowText;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEventPositionItems();
         }
 
         /// <summary>
-        ///     発明イベント座標リストビューの列の幅変更時の処理
+        ///     Invention event Processing when changing the width of a column in the coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -6137,7 +6137,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベント座標リストビューの項目編集前の処理
+        ///     Process before editing items in the invention event coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -6158,7 +6158,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベント座標リストビューの項目編集後の処理
+        ///     Processing after editing items in the invention event coordinate list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -6175,18 +6175,18 @@ namespace HoI2Editor.Forms
                     break;
             }
 
-            // 自前でリストビューの項目を更新するのでキャンセル扱いとする
+            // Since the items in the list view will be updated by yourself, it will be treated as canceled.
             e.Cancel = true;
         }
 
         /// <summary>
-        ///     発明イベント座標リストビューの項目入れ替え時の処理
+        ///     Invention Event Coordinate list view processing when replacing items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventPositionListViewItemReordered(object sender, ItemReorderedEventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
@@ -6196,7 +6196,7 @@ namespace HoI2Editor.Forms
             int srcIndex = e.OldDisplayIndices[0];
             int destIndex = e.NewDisplayIndex;
 
-            // ラベル座標を移動する
+            // Move label coordinates
             TechPosition position = item.Positions[srcIndex];
             item.Positions.Insert(destIndex, position);
             if (srcIndex < destIndex)
@@ -6211,20 +6211,20 @@ namespace HoI2Editor.Forms
             Log.Info("[Tech] Move event position: {0} -> {1} ({2}, {3}) [{4}]", srcIndex, destIndex, position.X,
                 position.Y, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
         }
 
         /// <summary>
-        ///     発明イベントX座標変更時の処理
+        ///     Invention event X Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventXNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
@@ -6239,7 +6239,7 @@ namespace HoI2Editor.Forms
 
             TechPosition position = item.Positions[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int x = (int) eventXNumericUpDown.Value;
             if (x == position.X)
             {
@@ -6248,33 +6248,33 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed event position: ({0},{1}) -> ({2},{1}) [{3}]", position.X, position.Y, x, item);
 
-            // 値を更新する
+            // Update value
             position.X = x;
 
-            // 発明イベント座標リストビューの項目を更新する
+            // Update items in the invention event coordinate list view
             eventPositionListView.Items[index].Text = IntHelper.ToString(x);
 
-            // 技術ツリー上のラベルを移動する
+            // Move labels on the tech tree
             _techTreePanelController.UpdateItem(item, position);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirty(TechPositionItemId.X);
 
-            // 文字色を変更する
+            // Change the font color
             eventXNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     発明イベントY座標変更時の処理
+        ///     Invention event Y Processing when changing coordinates
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventYNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
@@ -6289,7 +6289,7 @@ namespace HoI2Editor.Forms
 
             TechPosition position = item.Positions[index];
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int y = (int) eventYNumericUpDown.Value;
             if (y == position.Y)
             {
@@ -6298,75 +6298,75 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Changed event position: ({0},{1}) -> ({0},{2}) [{3}]", position.X, position.Y, y, item);
 
-            // 値を更新する
+            // Update value
             position.Y = y;
 
-            // 発明イベント座標リストビューの項目を更新する
+            // Update items in the invention event coordinate list view
             eventPositionListView.Items[index].SubItems[1].Text = IntHelper.ToString(y);
 
-            // 技術ツリー上のラベルを移動する
+            // Move labels on the tech tree
             _techTreePanelController.UpdateItem(item, position);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirty(TechPositionItemId.Y);
 
-            // 文字色を変更する
+            // Change the font color
             eventYNumericUpDown.ForeColor = Color.Red;
         }
 
         /// <summary>
-        ///     技術イベント座標追加ボタン押下時の処理
+        ///     Processing when the technical event coordinate addition button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventPositionAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
                 return;
             }
 
-            // 発明イベント座標リストに項目を追加する
+            // Add an item to the invention event coordinate list
             TechPosition position = new TechPosition { X = 0, Y = 0 };
             item.Positions.Add(position);
 
             Log.Info("[Tech] Added event position: ({0},{1}) [{2}]", position.X, position.Y, item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
             position.SetDirtyAll();
 
-            // 発明イベント座標リストビューに項目を追加する
+            // Add an item to the invention event coordinate list view
             ListViewItem li = new ListViewItem { Text = IntHelper.ToString(position.X) };
             li.SubItems.Add(IntHelper.ToString(position.Y));
             eventPositionListView.Items.Add(li);
 
-            // 追加した項目を選択する
+            // Select the added item
             eventPositionListView.Items[eventPositionListView.Items.Count - 1].Focused = true;
             eventPositionListView.Items[eventPositionListView.Items.Count - 1].Selected = true;
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableEventPositionItems();
 
-            // 技術ツリーにラベルを追加する
+            // Add a label to the tech tree
             _techTreePanelController.AddItem(item, position);
         }
 
         /// <summary>
-        ///     発明イベント座標削除ボタン押下時の処理
+        ///     Invention Event Coordinate processing when the button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnEventPositionRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             TechEvent item = GetSelectedItem() as TechEvent;
             if (item == null)
             {
@@ -6382,36 +6382,36 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Tech] Removed event position: ({0},{1}) [{2}]", position.X, position.Y, item);
 
-            // 発明イベント座標リストから項目を削除する
+            // Remove an item from the invention event coordinate list
             item.Positions.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             TechGroup grp = GetSelectedGroup();
             grp.SetDirty();
             item.SetDirty();
 
-            // 発明イベント座標リストビューから項目を削除する
+            // Invention event Remove an item from the coordinate list view
             eventPositionListView.Items.RemoveAt(index);
 
             if (index < techPositionListView.Items.Count)
             {
-                // 削除した項目の次の項目を選択する
+                // Select the next item after the deleted item
                 eventPositionListView.Items[index].Focused = true;
                 eventPositionListView.Items[index].Selected = true;
             }
             else if (index > 0)
             {
-                // リストの末尾ならば削除した項目の前の項目を選択する
+                // At the end of the list, select the item before the deleted item
                 eventPositionListView.Items[eventPositionListView.Items.Count - 1].Focused = true;
                 eventPositionListView.Items[eventPositionListView.Items.Count - 1].Selected = true;
             }
             else
             {
-                // 項目がなくなれば編集項目を無効化する
+                // Disable edit items when there are no more items
                 DisableEventPositionItems();
             }
 
-            // 技術ツリーのラベルを削除する
+            // Remove the technical tree label
             _techTreePanelController.RemoveItem(item, position);
         }
 
@@ -6419,16 +6419,16 @@ namespace HoI2Editor.Forms
     }
 
     /// <summary>
-    ///     技術ツリーエディタのタブ
+    ///     Technical tree editor tab
     /// </summary>
     public enum TechEditorTab
     {
-        Category, // カテゴリ
-        Tech, // 技術
-        Required, // 必要技術
-        Component, // 小研究
-        Effect, // 技術効果
-        Label, // 技術ラベル
-        Event // 技術イベント
+        Category, // category
+        Tech, // technology
+        Required, // Necessary technology
+        Component, // Small study
+        Effect, // Technical effect
+        Label, // Technical label
+        Event // Technical event
     }
 }

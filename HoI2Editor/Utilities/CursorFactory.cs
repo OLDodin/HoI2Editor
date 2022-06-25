@@ -6,17 +6,17 @@ using System.Windows.Forms;
 namespace HoI2Editor.Utilities
 {
     /// <summary>
-    ///     カスタムカーソル作成用のヘルパークラス
+    ///     Helper class for creating custom cursors
     /// </summary>
     public static class CursorFactory
     {
         /// <summary>
-        ///     カーソルを作成する
+        ///     Create a cursor
         /// </summary>
-        /// <param name="bitmap">カーソル画像</param>
-        /// <param name="xHotSpot">ホットスポットのX座標</param>
-        /// <param name="yHotSpot">ホットスポットのY座標</param>
-        /// <returns>作成したカーソル</returns>
+        /// <param name="bitmap">Cursor image</param>
+        /// <param name="xHotSpot">Of hot spots X Coordinate</param>
+        /// <param name="yHotSpot">Of hot spots Y Coordinate</param>
+        /// <returns>Created cursor</returns>
         public static Cursor CreateCursor(Bitmap bitmap, int xHotSpot, int yHotSpot)
         {
             Bitmap andMask = new Bitmap(bitmap.Width, bitmap.Height);
@@ -53,13 +53,13 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     カーソルを作成する
+        ///     Create a cursor
         /// </summary>
-        /// <param name="bitmap">カーソル画像</param>
-        /// <param name="andMask">ANDマスク画像</param>
-        /// <param name="xHotSpot">ホットスポットのX座標</param>
-        /// <param name="yHotSpot">ホットスポットのY座標</param>
-        /// <returns>作成したカーソル</returns>
+        /// <param name="bitmap">Cursor image</param>
+        /// <param name="andMask">AND AND Mask image</param>
+        /// <param name="xHotSpot">Of hot spots X Coordinate</param>
+        /// <param name="yHotSpot">Of hot spots Y Coordinate</param>
+        /// <returns>Created cursor</returns>
         public static Cursor CreateCursor(Bitmap bitmap, Bitmap andMask, int xHotSpot, int yHotSpot)
         {
             Bitmap xorMask = new Bitmap(bitmap.Width, bitmap.Height);
@@ -86,7 +86,7 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     P/Invokeメソッド定義用クラス
+        ///     P / Invoke Method definition class
         /// </summary>
         private static class NativeMethods
         {
@@ -117,41 +117,41 @@ namespace HoI2Editor.Utilities
     {
         #region fIcon
 
-        // ReSharper disable InconsistentNaming
+        // ReSharper disable Inconsistent Naming
         public bool fIcon;
-        // ReSharper restore InconsistentNaming
+        // ReSharper restore Inconsistent Naming
 
         #endregion
 
         #region xHotspot
 
-        // ReSharper disable InconsistentNaming
+        // ReSharper disable Inconsistent Naming
         public int xHotspot;
-        // ReSharper restore InconsistentNaming
+        // ReSharper restore Inconsistent Naming
 
         #endregion
 
         #region yHotspot
 
-        // ReSharper disable InconsistentNaming
+        // ReSharper disable Inconsistent Naming
         public int yHotspot;
-        // ReSharper restore InconsistentNaming
+        // ReSharper restore Inconsistent Naming
 
         #endregion
 
         #region hbmMask
 
-        // ReSharper disable InconsistentNaming
+        // ReSharper disable Inconsistent Naming
         public IntPtr hbmMask;
-        // ReSharper restore InconsistentNaming
+        // ReSharper restore Inconsistent Naming
 
         #endregion
 
         #region hbmColor
 
-        // ReSharper disable InconsistentNaming
+        // ReSharper disable Inconsistent Naming
         public IntPtr hbmColor;
-        // ReSharper restore InconsistentNaming
+        // ReSharper restore Inconsistent Naming
 
         #endregion
     }

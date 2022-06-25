@@ -112,19 +112,19 @@
     <value>2.0</value>
   </resheader>
   <resheader name="reader">
-    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceReader, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
   <resheader name="writer">
-    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <assembly alias="System.Drawing" name="System.Drawing, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
+  <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="ministerButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>113, 18</value>
   </data>
   <data name="ministerButton.Size" type="System.Drawing.Size, System.Drawing">
     <value>100, 23</value>
   </data>
-  <assembly alias="mscorlib" name="mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="mscorlib" name="mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="ministerButton.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
   </data>
@@ -135,13 +135,13 @@
     <value>ministerButton</value>
   </data>
   <data name="&gt;&gt;ministerButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;ministerButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;ministerButton.ZOrder" xml:space="preserve">
-    <value>12</value>
+    <value>13</value>
   </data>
   <data name="gameFolderLabel.AutoSize" type="System.Boolean, mscorlib">
     <value>True</value>
@@ -150,7 +150,7 @@
     <value>12, 10</value>
   </data>
   <data name="gameFolderLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>97, 12</value>
+    <value>92, 13</value>
   </data>
   <data name="gameFolderLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -162,7 +162,7 @@
     <value>gameFolderLabel</value>
   </data>
   <data name="&gt;&gt;gameFolderLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;gameFolderLabel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -170,7 +170,7 @@
   <data name="&gt;&gt;gameFolderLabel.ZOrder" xml:space="preserve">
     <value>11</value>
   </data>
-  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
+  <assembly alias="System.Windows.Forms" name="System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089" />
   <data name="gameFolderTextBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Left, Right</value>
   </data>
@@ -178,7 +178,7 @@
     <value>32, 26</value>
   </data>
   <data name="gameFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 19</value>
+    <value>339, 20</value>
   </data>
   <data name="gameFolderTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -187,7 +187,7 @@
     <value>gameFolderTextBox</value>
   </data>
   <data name="&gt;&gt;gameFolderTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;gameFolderTextBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -202,7 +202,7 @@
     <value>12, 50</value>
   </data>
   <data name="modLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>63, 12</value>
+    <value>63, 13</value>
   </data>
   <data name="modLabel.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -214,7 +214,7 @@
     <value>modLabel</value>
   </data>
   <data name="&gt;&gt;modLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;modLabel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -229,7 +229,7 @@
     <value>32, 66</value>
   </data>
   <data name="modTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 19</value>
+    <value>339, 20</value>
   </data>
   <data name="modTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -238,7 +238,7 @@
     <value>modTextBox</value>
   </data>
   <data name="&gt;&gt;modTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;modTextBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -248,6 +248,30 @@
   </data>
   <data name="editGroupBox.Anchor" type="System.Windows.Forms.AnchorStyles, System.Windows.Forms">
     <value>Top, Bottom, Left, Right</value>
+  </data>
+  <data name="button1.Location" type="System.Drawing.Point, System.Drawing">
+    <value>113, 105</value>
+  </data>
+  <data name="button1.Size" type="System.Drawing.Size, System.Drawing">
+    <value>99, 23</value>
+  </data>
+  <data name="button1.TabIndex" type="System.Int32, mscorlib">
+    <value>13</value>
+  </data>
+  <data name="button1.Text" xml:space="preserve">
+    <value>Loc helper</value>
+  </data>
+  <data name="&gt;&gt;button1.Name" xml:space="preserve">
+    <value>button1</value>
+  </data>
+  <data name="&gt;&gt;button1.Type" xml:space="preserve">
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+  </data>
+  <data name="&gt;&gt;button1.Parent" xml:space="preserve">
+    <value>editGroupBox</value>
+  </data>
+  <data name="&gt;&gt;button1.ZOrder" xml:space="preserve">
+    <value>0</value>
   </data>
   <data name="scenarioButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -268,13 +292,13 @@
     <value>scenarioButton</value>
   </data>
   <data name="&gt;&gt;scenarioButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;scenarioButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;scenarioButton.ZOrder" xml:space="preserve">
-    <value>0</value>
+    <value>1</value>
   </data>
   <data name="researchButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -295,13 +319,13 @@
     <value>researchButton</value>
   </data>
   <data name="&gt;&gt;researchButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;researchButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;researchButton.ZOrder" xml:space="preserve">
-    <value>1</value>
+    <value>2</value>
   </data>
   <data name="modelNameButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -322,13 +346,13 @@
     <value>modelNameButton</value>
   </data>
   <data name="&gt;&gt;modelNameButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;modelNameButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;modelNameButton.ZOrder" xml:space="preserve">
-    <value>2</value>
+    <value>3</value>
   </data>
   <data name="randomLeaderButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -349,13 +373,13 @@
     <value>randomLeaderButton</value>
   </data>
   <data name="&gt;&gt;randomLeaderButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;randomLeaderButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;randomLeaderButton.ZOrder" xml:space="preserve">
-    <value>3</value>
+    <value>4</value>
   </data>
   <data name="corpsNameButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -376,13 +400,13 @@
     <value>corpsNameButton</value>
   </data>
   <data name="&gt;&gt;corpsNameButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;corpsNameButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;corpsNameButton.ZOrder" xml:space="preserve">
-    <value>4</value>
+    <value>5</value>
   </data>
   <data name="unitNameButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -403,13 +427,13 @@
     <value>unitNameButton</value>
   </data>
   <data name="&gt;&gt;unitNameButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;unitNameButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;unitNameButton.ZOrder" xml:space="preserve">
-    <value>5</value>
+    <value>6</value>
   </data>
   <data name="miscButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -430,13 +454,13 @@
     <value>miscButton</value>
   </data>
   <data name="&gt;&gt;miscButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;miscButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;miscButton.ZOrder" xml:space="preserve">
-    <value>6</value>
+    <value>7</value>
   </data>
   <data name="provinceButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -457,13 +481,13 @@
     <value>provinceButton</value>
   </data>
   <data name="&gt;&gt;provinceButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;provinceButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;provinceButton.ZOrder" xml:space="preserve">
-    <value>7</value>
+    <value>8</value>
   </data>
   <data name="unitButton.ImeMode" type="System.Windows.Forms.ImeMode, System.Windows.Forms">
     <value>NoControl</value>
@@ -484,13 +508,13 @@
     <value>unitButton</value>
   </data>
   <data name="&gt;&gt;unitButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;unitButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;unitButton.ZOrder" xml:space="preserve">
-    <value>8</value>
+    <value>9</value>
   </data>
   <data name="techButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 47</value>
@@ -508,13 +532,13 @@
     <value>techButton</value>
   </data>
   <data name="&gt;&gt;techButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;techButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;techButton.ZOrder" xml:space="preserve">
-    <value>9</value>
+    <value>10</value>
   </data>
   <data name="leaderButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>7, 18</value>
@@ -532,13 +556,13 @@
     <value>leaderButton</value>
   </data>
   <data name="&gt;&gt;leaderButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;leaderButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;leaderButton.ZOrder" xml:space="preserve">
-    <value>10</value>
+    <value>11</value>
   </data>
   <data name="teamButton.Location" type="System.Drawing.Point, System.Drawing">
     <value>219, 18</value>
@@ -556,13 +580,13 @@
     <value>teamButton</value>
   </data>
   <data name="&gt;&gt;teamButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;teamButton.Parent" xml:space="preserve">
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;teamButton.ZOrder" xml:space="preserve">
-    <value>11</value>
+    <value>12</value>
   </data>
   <data name="editGroupBox.Enabled" type="System.Boolean, mscorlib">
     <value>False</value>
@@ -583,7 +607,7 @@
     <value>editGroupBox</value>
   </data>
   <data name="&gt;&gt;editGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;editGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -610,7 +634,7 @@
     <value>gameFolderBrowseButton</value>
   </data>
   <data name="&gt;&gt;gameFolderBrowseButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;gameFolderBrowseButton.Parent" xml:space="preserve">
     <value>$this</value>
@@ -637,7 +661,7 @@
     <value>exitButton</value>
   </data>
   <data name="&gt;&gt;exitButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;exitButton.Parent" xml:space="preserve">
     <value>$this</value>
@@ -664,7 +688,7 @@
     <value>modFolderBrowseButton</value>
   </data>
   <data name="&gt;&gt;modFolderBrowseButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;modFolderBrowseButton.Parent" xml:space="preserve">
     <value>$this</value>
@@ -679,7 +703,7 @@
     <value>13, 21</value>
   </data>
   <data name="languageLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>53, 12</value>
+    <value>55, 13</value>
   </data>
   <data name="languageLabel.TabIndex" type="System.Int32, mscorlib">
     <value>0</value>
@@ -691,7 +715,7 @@
     <value>languageLabel</value>
   </data>
   <data name="&gt;&gt;languageLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;languageLabel.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -703,7 +727,7 @@
     <value>93, 18</value>
   </data>
   <data name="languageComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
+    <value>121, 21</value>
   </data>
   <data name="languageComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>1</value>
@@ -712,7 +736,7 @@
     <value>languageComboBox</value>
   </data>
   <data name="&gt;&gt;languageComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;languageComboBox.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -730,7 +754,7 @@
     <value>224, 20</value>
   </data>
   <data name="mapLoadCheckBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>106, 16</value>
+    <value>102, 17</value>
   </data>
   <data name="mapLoadCheckBox.TabIndex" type="System.Int32, mscorlib">
     <value>4</value>
@@ -742,7 +766,7 @@
     <value>mapLoadCheckBox</value>
   </data>
   <data name="&gt;&gt;mapLoadCheckBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.CheckBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;mapLoadCheckBox.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -769,7 +793,7 @@
     <value>93, 44</value>
   </data>
   <data name="logLevelComboBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>121, 20</value>
+    <value>121, 21</value>
   </data>
   <data name="logLevelComboBox.TabIndex" type="System.Int32, mscorlib">
     <value>3</value>
@@ -778,7 +802,7 @@
     <value>logLevelComboBox</value>
   </data>
   <data name="&gt;&gt;logLevelComboBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.ComboBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;logLevelComboBox.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -793,7 +817,7 @@
     <value>13, 47</value>
   </data>
   <data name="logLevelLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>54, 12</value>
+    <value>54, 13</value>
   </data>
   <data name="logLevelLabel.TabIndex" type="System.Int32, mscorlib">
     <value>2</value>
@@ -805,7 +829,7 @@
     <value>logLevelLabel</value>
   </data>
   <data name="&gt;&gt;logLevelLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;logLevelLabel.Parent" xml:space="preserve">
     <value>optionGroupBox</value>
@@ -829,7 +853,7 @@
     <value>optionGroupBox</value>
   </data>
   <data name="&gt;&gt;optionGroupBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.GroupBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;optionGroupBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -859,7 +883,7 @@
     <value>exportFolderBrowseButton</value>
   </data>
   <data name="&gt;&gt;exportFolderBrowseButton.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Button, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;exportFolderBrowseButton.Parent" xml:space="preserve">
     <value>$this</value>
@@ -874,7 +898,7 @@
     <value>32, 106</value>
   </data>
   <data name="exportFolderTextBox.Size" type="System.Drawing.Size, System.Drawing">
-    <value>339, 19</value>
+    <value>339, 20</value>
   </data>
   <data name="exportFolderTextBox.TabIndex" type="System.Int32, mscorlib">
     <value>7</value>
@@ -883,7 +907,7 @@
     <value>exportFolderTextBox</value>
   </data>
   <data name="&gt;&gt;exportFolderTextBox.Type" xml:space="preserve">
-    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.TextBox, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;exportFolderTextBox.Parent" xml:space="preserve">
     <value>$this</value>
@@ -901,7 +925,7 @@
     <value>12, 90</value>
   </data>
   <data name="exportFolderLabel.Size" type="System.Drawing.Size, System.Drawing">
-    <value>107, 12</value>
+    <value>100, 13</value>
   </data>
   <data name="exportFolderLabel.TabIndex" type="System.Int32, mscorlib">
     <value>6</value>
@@ -913,7 +937,7 @@
     <value>exportFolderLabel</value>
   </data>
   <data name="&gt;&gt;exportFolderLabel.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Label, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
   <data name="&gt;&gt;exportFolderLabel.Parent" xml:space="preserve">
     <value>$this</value>
@@ -921,7 +945,7 @@
   <data name="&gt;&gt;exportFolderLabel.ZOrder" xml:space="preserve">
     <value>2</value>
   </data>
-  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
+  <metadata name="$this.Localizable" type="System.Boolean, mscorlib, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089">
     <value>True</value>
   </metadata>
   <data name="$this.AutoScaleDimensions" type="System.Drawing.SizeF, System.Drawing">
@@ -943,6 +967,6 @@
     <value>MainForm</value>
   </data>
   <data name="&gt;&gt;$this.Type" xml:space="preserve">
-    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=2.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
+    <value>System.Windows.Forms.Form, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </data>
 </root>

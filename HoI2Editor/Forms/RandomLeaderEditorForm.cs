@@ -10,140 +10,140 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     ランダム指揮官名エディタのフォーム
+    ///     Random Commander Name Editor Form
     /// </summary>
     public partial class RandomLeaderEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     置換元の履歴
+        ///     Replacement source history
         /// </summary>
         private readonly History _toHistory = new History(HistorySize);
 
         /// <summary>
-        ///     置換先の履歴
+        ///     Replacement history
         /// </summary>
         private readonly History _withHistory = new History(HistorySize);
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     履歴の最大数
+        ///     Maximum number of histories
         /// </summary>
         private const int HistorySize = 10;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public RandomLeaderEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // ランダム指揮官名リストの表示を更新する
+            // Update the display of the random commander name list
             UpdateNameList();
 
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 編集済みフラグがクリアされるため表示を更新する
+            // Update the display as the edited flag is cleared
             countryListBox.Refresh();
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
-            // 何もしない
+            // do nothing
         }
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // 国家リストボックス
+            // National list box
             countryListBox.ItemHeight = DeviceCaps.GetScaledHeight(countryListBox.ItemHeight);
 
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.RandomLeaderEditor.Location;
             Size = HoI2EditorController.Settings.RandomLeaderEditor.Size;
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // 国家リストボックスを初期化する
+            // Initialize the national list box
             InitCountryListBox();
 
-            // 履歴を初期化する
+            // Initialize history
             InitHistory();
 
-            // オプション設定を初期化する
+            // Initialize option settings
             InitOption();
 
-            // ランダム指揮官名定義ファイルを読み込む
+            // Read the random commander name definition file
             RandomLeaders.Load();
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -161,7 +161,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -171,7 +171,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -184,7 +184,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -197,13 +197,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -222,7 +222,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -232,7 +232,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -243,10 +243,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家リストボックス
+        #region National list box
 
         /// <summary>
-        ///     国家リストボックスを初期化する
+        ///     Initialize the national list box
         /// </summary>
         private void InitCountryListBox()
         {
@@ -261,7 +261,7 @@ namespace HoI2Editor.Forms
                 countryListBox.Items.Add(s);
             }
 
-            // 選択中の国家を反映する
+            // Reflect the selected nation
             int index = HoI2EditorController.Settings.RandomLeaderEditor.Country;
             if ((index < 0) || (index >= countryListBox.Items.Count))
             {
@@ -273,26 +273,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの項目描画処理
+        ///     Item drawing process of national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Brush brush;
             if ((e.State & DrawItemState.Selected) != DrawItemState.Selected)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 Country country = Countries.Tags[e.Index];
                 brush = RandomLeaders.IsDirty(country)
                     ? new SolidBrush(Color.Red)
@@ -306,43 +306,43 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // ランダム指揮官名リストの表示を更新する
+            // Update the display of the random commander name list
             UpdateNameList();
 
-            // 選択中の国家を保存する
+            // Save the selected nation
             HoI2EditorController.Settings.RandomLeaderEditor.Country = countryListBox.SelectedIndex;
         }
 
         #endregion
 
-        #region ランダム指揮官名リスト
+        #region Random commander name list
 
         /// <summary>
-        ///     ランダム指揮官名リストを更新する
+        ///     Update random commander name list
         /// </summary>
         private void UpdateNameList()
         {
             nameTextBox.Clear();
 
-            // 選択中の国家がなければ戻る
+            // Return if there is no selected nation
             if (countryListBox.SelectedIndex < 0)
             {
                 return;
             }
             Country country = Countries.Tags[countryListBox.SelectedIndex];
 
-            // ランダム指揮官名を順に追加する
+            // Add random commander names in order
             StringBuilder sb = new StringBuilder();
             foreach (string name in RandomLeaders.GetNames(country))
             {
@@ -353,32 +353,32 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ランダム指揮官名リスト変更時の処理
+        ///     Processing when changing the random commander name list
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnNameTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ戻る
+            // Return if there is no selected nation
             if (countryListBox.SelectedIndex < 0)
             {
                 return;
             }
             Country country = Countries.Tags[countryListBox.SelectedIndex];
 
-            // ランダム指揮官名リストを更新する
+            // Update Random Commander Name List
             RandomLeaders.SetNames(nameTextBox.Lines.Where(line => !string.IsNullOrEmpty(line)).ToList(), country);
 
-            // 編集済みフラグが更新されるため表示を更新する
+            // Update the display as the edited flag is updated
             countryListBox.Refresh();
         }
 
         #endregion
 
-        #region 編集機能
+        #region Editing function
 
         /// <summary>
-        ///     元に戻すボタン押下時の処理
+        ///     Processing when the undo button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -388,7 +388,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     切り取りボタン押下時の処理
+        ///     Processing when the cut button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -398,7 +398,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     コピーボタン押下時の処理
+        ///     Processing when the copy button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -408,7 +408,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貼り付けボタン押下時の処理
+        ///     Processing when the paste button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -418,7 +418,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     置換ボタン押下時の処理
+        ///     Processing when the replace button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -431,41 +431,41 @@ namespace HoI2Editor.Forms
 
             if (allCountryCheckBox.Checked)
             {
-                // 全ての国のランダム指揮官名を置換する
+                // Replace random commander names in all countries
                 RandomLeaders.ReplaceAll(to, with, regexCheckBox.Checked);
             }
             else
             {
-                // 国家リストボックスの選択項目がなければ戻る
+                // Return if there is no selection in the national list box
                 if (countryListBox.SelectedIndex < 0)
                 {
                     return;
                 }
                 Country country = Countries.Tags[countryListBox.SelectedIndex];
 
-                // ランダム指揮官名を置換する
+                // Replace random commander name
                 RandomLeaders.Replace(to, with, country, regexCheckBox.Checked);
             }
 
-            // ランダム指揮官名リストの表示を更新する
+            // Update the display of the random commander name list
             UpdateNameList();
 
-            // 編集済みフラグが更新されるため表示を更新する
+            // Update the display as the edited flag is updated
             countryListBox.Refresh();
 
-            // 履歴を更新する
+            // Update history
             _toHistory.Add(to);
             _withHistory.Add(with);
 
             HoI2EditorController.Settings.RandomLeaderEditor.ToHistory = _toHistory.Get().ToList();
             HoI2EditorController.Settings.RandomLeaderEditor.WithHistory = _withHistory.Get().ToList();
 
-            // 履歴コンボボックスを更新する
+            // Update history combo box
             UpdateHistory();
         }
 
         /// <summary>
-        ///     履歴の初期化
+        ///     History initialization
         /// </summary>
         private void InitHistory()
         {
@@ -486,7 +486,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     履歴コンボボックスを更新する
+        ///     Update history combo box
         /// </summary>
         private void UpdateHistory()
         {
@@ -504,7 +504,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     オプション設定を初期化する
+        ///     Initialize option settings
         /// </summary>
         private void InitOption()
         {
@@ -513,7 +513,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     全ての国家に適用チェックボックスのチェック状態変更時の処理
+        ///     Applies to all nations Processing when the check status of the check box changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -523,7 +523,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     正規表現チェックボックスのチェック状態変更時の処理
+        ///     Processing when the check status of the regular expression check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

@@ -12,67 +12,67 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     指揮官データ群
+    ///     Commander data group
     /// </summary>
     public static class Leaders
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マスター指揮官リスト
+        ///     Master commander list
         /// </summary>
         public static List<Leader> Items { get; }
 
         /// <summary>
-        ///     国タグと指揮官ファイル名の対応付け
+        ///     Correspondence between country tag and commander file name
         /// </summary>
         public static Dictionary<Country, string> FileNameMap { get; }
 
         /// <summary>
-        ///     使用済みIDリスト
+        ///     Already used ID list
         /// </summary>
         public static HashSet<int> IdSet { get; }
 
         /// <summary>
-        ///     階級名
+        ///     Class name
         /// </summary>
         public static string[] RankNames { get; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For lazy loading
         /// </summary>
         private static readonly BackgroundWorker Worker = new BackgroundWorker();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     国家ごとの編集済みフラグ
+        ///     Edited flags by nation
         /// </summary>
         private static readonly bool[] DirtyFlags = new bool[Enum.GetValues(typeof (Country)).Length];
 
         /// <summary>
-        ///     指揮官リストファイルの編集済みフラグ
+        ///     Edited flag in commander list file
         /// </summary>
         private static bool _dirtyListFlag;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     指揮官特性値
+        ///     Commander characteristic value
         /// </summary>
         public static readonly uint[] TraitsValues =
         {
@@ -110,7 +110,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     指揮官特性名
+        ///     Commander characteristic name
         /// </summary>
         public static readonly string[] TraitsNames =
         {
@@ -149,32 +149,32 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Leaders()
         {
-            // マスター指揮官リスト
+            // Master Commander List
             Items = new List<Leader>();
 
-            // 国タグと指揮官ファイル名の対応付け
+            // Correspondence between country tag and commander file name
             FileNameMap = new Dictionary<Country, string>();
 
-            // 使用済みIDリスト
+            // Already used ID list
             IdSet = new HashSet<int>();
 
-            // 階級
+            // class
             RankNames = new[] { "", Resources.Rank3, Resources.Rank2, Resources.Rank1, Resources.Rank0 };
         }
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     指揮官ファイルの再読み込みを要求する
+        ///     Request a reload of the commander file
         /// </summary>
         public static void RequestReload()
         {
@@ -182,11 +182,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官ファイル群を再読み込みする
+        ///     Reload commander files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -198,17 +198,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官ファイル群を読み込む
+        ///     Read commander files
         /// </summary>
         public static void Load()
         {
-            // 既に読み込み済みならば何もしない
+            // Do nothing if already loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -219,44 +219,44 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官ファイル群を遅延読み込みする
+        ///     Delayed loading of commander files
         /// </summary>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="handler">Read complete event handler</param>
         public static void LoadAsync(RunWorkerCompletedEventHandler handler)
         {
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // Call the completion event handler if it has already been read
             if (_loaded)
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(null, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the read completion event handler
             if (handler != null)
             {
                 Worker.RunWorkerCompleted += handler;
                 Worker.RunWorkerCompleted += OnWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if loading is in progress
             if (Worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If it has already been read here, the completion event handler has already been called, so return without doing anything.
             if (_loaded)
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start lazy loading
             Worker.DoWork += OnWorkerDoWork;
             Worker.RunWorkerAsync();
         }
 
         /// <summary>
-        ///     読み込み完了まで待機する
+        ///     Wait until loading is complete
         /// </summary>
         public static void WaitLoading()
         {
@@ -267,16 +267,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Determine if lazy loading is in progress
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>If delayed reading is in progress true true return it</returns>
         public static bool IsLoading()
         {
             return Worker.IsBusy;
         }
 
         /// <summary>
-        ///     遅延読み込み処理
+        ///     Delayed read processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -286,18 +286,18 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing when lazy loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing when lazy loading is completed
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     指揮官ファイル群を読み込む
+        ///     Read commander files
         /// </summary>
         private static void LoadFiles()
         {
@@ -323,24 +323,24 @@ namespace HoI2Editor.Models
                     break;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     指揮官ファイル群を読み込む(HoI2/AoD/DH-MOD未使用時)
+        ///     Read commander files (HoI2 / AoD / DH-MOD When not in use )
         /// </summary>
-        /// <returns>読み込みに失敗すればfalseを返す</returns>
+        /// <returns>If reading fails false false return it</returns>
         private static bool LoadHoI2()
         {
             List<string> filelist = new List<string>();
             string folderName;
             bool error = false;
 
-            // 保存フォルダ内の指揮官ファイルを読み込む
+            // Load the commander file in the save folder
             if (Game.IsExportFolderActive)
             {
                 folderName = Game.GetExportFileName(Game.LeaderPathName);
@@ -350,10 +350,10 @@ namespace HoI2Editor.Models
                     {
                         try
                         {
-                            // 指揮官ファイルを読み込む
+                            // Read commander file
                             LoadFile(fileName);
 
-                            // 指揮官ファイル一覧に読み込んだファイル名を登録する
+                            // Register the read file name in the commander file list
                             string name = Path.GetFileName(fileName);
                             if (!string.IsNullOrEmpty(name))
                             {
@@ -375,7 +375,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // MODフォルダ内の指揮官ファイルを読み込む
+            // MOD Read the commander file in the folder
             if (Game.IsModActive)
             {
                 folderName = Game.GetModFileName(Game.LeaderPathName);
@@ -385,10 +385,10 @@ namespace HoI2Editor.Models
                     {
                         try
                         {
-                            // 指揮官ファイルを読み込む
+                            // Read commander file
                             LoadFile(fileName);
 
-                            // 指揮官ファイル一覧に読み込んだファイル名を登録する
+                            // Register the read file name in the commander file list
                             string name = Path.GetFileName(fileName);
                             if (!string.IsNullOrEmpty(name))
                             {
@@ -410,13 +410,13 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // バニラフォルダ内の指揮官ファイルを読み込む
+            // Read the commander file in the vanilla folder
             folderName = Path.Combine(Game.FolderName, Game.LeaderPathName);
             if (Directory.Exists(folderName))
             {
                 foreach (string fileName in Directory.GetFiles(folderName, "*.csv"))
                 {
-                    // MODフォルダ内で読み込んだファイルは無視する
+                    // MOD Ignore files read in folders
                     string name = Path.GetFileName(fileName);
                     if (string.IsNullOrEmpty(name) || filelist.Contains(name.ToLower()))
                     {
@@ -425,7 +425,7 @@ namespace HoI2Editor.Models
 
                     try
                     {
-                        // 指揮官ファイルを読み込む
+                        // Read commander file
                         LoadFile(fileName);
                     }
                     catch (Exception)
@@ -446,19 +446,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官ファイル群を読み込む(DH-MOD使用時)
+        ///     Read commander files (DH-MOD while using it )
         /// </summary>
-        /// <returns>読み込みに失敗すればfalseを返す</returns>
+        /// <returns>If reading fails false false return it</returns>
         private static bool LoadDh()
         {
-            // 指揮官リストファイルが存在しなければ従来通りの読み込み方法を使用する
+            // If the commander list file does not exist, use the conventional loading method.
             string listFileName = Game.GetReadFileName(Game.DhLeaderListPathName);
             if (!File.Exists(listFileName))
             {
                 return LoadHoI2();
             }
 
-            // 指揮官リストファイルを読み込む
+            // Read the commander list file
             IEnumerable<string> fileList;
             try
             {
@@ -477,7 +477,7 @@ namespace HoI2Editor.Models
             {
                 try
                 {
-                    // 指揮官ファイルを読み込む
+                    // Read commander file
                     LoadFile(fileName);
                 }
                 catch (Exception)
@@ -497,7 +497,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官リストファイルを読み込む(DH)
+        ///     Read the commander list file (DH)
         /// </summary>
         private static IEnumerable<string> LoadList(string fileName)
         {
@@ -510,13 +510,13 @@ namespace HoI2Editor.Models
                 {
                     string line = reader.ReadLine();
 
-                    // 空行
+                    // Blank line
                     if (string.IsNullOrEmpty(line))
                     {
                         continue;
                     }
 
-                    // コメント行
+                    // Comment line
                     if (line[0] == '#')
                     {
                         continue;
@@ -529,37 +529,37 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官ファイルを読み込む
+        ///     Read commander file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[Leader] Load: {0}", Path.GetFileName(fileName));
 
             using (CsvLexer lexer = new CsvLexer(fileName))
             {
-                // 空ファイルを読み飛ばす
+                // Skip empty files
                 if (lexer.EndOfStream)
                 {
                     return;
                 }
 
-                // ヘッダ行読み込み
+                // Read header line
                 lexer.SkipLine();
 
-                // ヘッダ行のみのファイルを読み飛ばす
+                // Skip files with only header lines
                 if (lexer.EndOfStream)
                 {
                     return;
                 }
 
-                // 1行ずつ順に読み込む
+                // 1 Read line by line
                 Country country = Country.None;
                 while (!lexer.EndOfStream)
                 {
                     Leader leader = ParseLine(lexer);
 
-                    // 空行を読み飛ばす
+                    // Skip blank lines
                     if (leader == null)
                     {
                         continue;
@@ -582,32 +582,32 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官定義行を解釈する
+        ///     Interpret the commander-defined line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>指揮官データ</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Commander data</returns>
         private static Leader ParseLine(CsvLexer lexer)
         {
             string[] tokens = lexer.GetTokens();
 
-            // 空行を読み飛ばす
+            // Skip blank lines
             if (tokens == null)
             {
                 return null;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length != (Misc.EnableRetirementYearLeaders ? 19 : 18))
             {
                 Log.Warning("[Leader] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName, lexer.LineNo);
-                // 末尾のxがない/余分な項目がある場合は解析を続ける
+                // At the end x x There is no / / Continue analysis if there are extra items
                 if (tokens.Length < (Misc.EnableRetirementYearLeaders ? 18 : 17))
                 {
                     return null;
                 }
             }
 
-            // 名前指定のない行は読み飛ばす
+            // Skip lines without a name
             if (string.IsNullOrEmpty(tokens[0]))
             {
                 return null;
@@ -616,7 +616,7 @@ namespace HoI2Editor.Models
             Leader leader = new Leader();
             int index = 0;
 
-            // 名前
+            // name
             leader.Name = tokens[index];
             index++;
 
@@ -631,7 +631,7 @@ namespace HoI2Editor.Models
             leader.Id = id;
             index++;
 
-            // 国家
+            // Nation
             if (string.IsNullOrEmpty(tokens[index]) || !Countries.StringMap.ContainsKey(tokens[index].ToUpper()))
             {
                 Log.Warning("[Leader] Invalid country: {0} [{1}: {2}] ({3} L{4})", tokens[index], leader.Id, leader.Name,
@@ -641,7 +641,7 @@ namespace HoI2Editor.Models
             leader.Country = Countries.StringMap[tokens[index].ToUpper()];
             index++;
 
-            // 任官年
+            // Year of appointment
             for (int i = 0; i < 4; i++)
             {
                 int rankYear;
@@ -658,7 +658,7 @@ namespace HoI2Editor.Models
                 index++;
             }
 
-            // 理想階級
+            // Ideal class
             int idealRank;
             if (int.TryParse(tokens[index], out idealRank) && 0 <= idealRank && idealRank <= 3)
             {
@@ -672,7 +672,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 最大スキル
+            // Maximum skill
             int maxSkill;
             if (int.TryParse(tokens[index], out maxSkill))
             {
@@ -686,7 +686,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 指揮官特性
+            // Commander characteristics
             uint traits;
             if (uint.TryParse(tokens[index], out traits))
             {
@@ -700,7 +700,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // スキル
+            // skill
             int skill;
             if (int.TryParse(tokens[index], out skill))
             {
@@ -714,7 +714,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 経験値
+            // Experience point
             int experience;
             if (int.TryParse(tokens[index], out experience))
             {
@@ -728,7 +728,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 忠誠度
+            // Loyalty
             int loyalty;
             if (int.TryParse(tokens[index], out loyalty))
             {
@@ -742,7 +742,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 兵科
+            // Army
             int branch;
             if (int.TryParse(tokens[index], out branch))
             {
@@ -756,11 +756,11 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 画像ファイル名
+            // Image file name
             leader.PictureName = tokens[index];
             index++;
 
-            // 開始年
+            // Start year
             int startYear;
             if (int.TryParse(tokens[index], out startYear))
             {
@@ -774,7 +774,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 終了年
+            // End year
             int endYear;
             if (int.TryParse(tokens[index], out endYear))
             {
@@ -788,7 +788,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 引退年
+            // Retirement year
             if (Misc.EnableRetirementYearLeaders)
             {
                 int retirementYear;
@@ -813,27 +813,27 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     指揮官ファイル群を保存する
+        ///     Save commander files
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 編集済みでなければ何もしない
+            // Do nothing if not edited
             if (!IsDirty())
             {
                 return true;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
             }
 
-            // 指揮官リストファイルを保存する
+            // Save the commander list file
             if ((Game.Type == GameType.DarkestHour) && IsDirtyList())
             {
                 try
@@ -856,7 +856,7 @@ namespace HoI2Editor.Models
             {
                 try
                 {
-                    // 指揮官ファイルを保存する
+                    // Save the commander file
                     SaveFile(country);
                 }
                 catch (Exception)
@@ -873,24 +873,24 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 保存に失敗していれば戻る
+            // Return if saving fails
             if (error)
             {
                 return false;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             _dirtyFlag = false;
 
             return true;
         }
 
         /// <summary>
-        ///     指揮官リストファイルを保存する (DH)
+        ///     Save the commander list file (DH)
         /// </summary>
         private static void SaveList()
         {
-            // データベースフォルダが存在しなければ作成する
+            // Create a database folder if it does not exist
             string folderName = Game.GetWriteFileName(Game.DatabasePathName);
             if (!Directory.Exists(folderName))
             {
@@ -900,7 +900,7 @@ namespace HoI2Editor.Models
             string fileName = Game.GetWriteFileName(Game.DhLeaderListPathName);
             Log.Info("[Leader] Save: {0}", Path.GetFileName(fileName));
 
-            // 登録された指揮官ファイル名を順に書き込む
+            // Write the registered commander file names in order
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
                 foreach (string name in FileNameMap.Select(pair => pair.Value))
@@ -909,17 +909,17 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyList();
         }
 
         /// <summary>
-        ///     指揮官ファイルを保存する
+        ///     Save the commander file
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void SaveFile(Country country)
         {
-            // 指揮官フォルダが存在しなければ作成する
+            // Create a commander folder if it does not exist
             string folderName = Game.GetWriteFileName(Game.LeaderPathName);
             if (!Directory.Exists(folderName))
             {
@@ -934,16 +934,16 @@ namespace HoI2Editor.Models
             {
                 int lineNo = 2;
 
-                // ヘッダ行を書き込む
+                // Write header line
                 writer.WriteLine(
                     Misc.EnableRetirementYearLeaders
                         ? "Name;ID;Country;Rank 3 Year;Rank 2 Year;Rank 1 Year;Rank 0 Year;Ideal Rank;Max Skill;Traits;Skill;Experience;Loyalty;Type;Picture;Start Year;End Year;Retirement Year;x"
                         : "Name;ID;Country;Rank 3 Year;Rank 2 Year;Rank 1 Year;Rank 0 Year;Ideal Rank;Max Skill;Traits;Skill;Experience;Loyalty;Type;Picture;Start Year;End Year;x");
 
-                // 指揮官定義行を順に書き込む
+                // Write commander definition lines in order
                 foreach (Leader leader in Items.Where(leader => leader.Country == country))
                 {
-                    // 不正な値が設定されている場合は警告をログに出力する
+                    // If an invalid value is set, a warning will be output to the log.
                     if (leader.Branch == Branch.None)
                     {
                         Log.Warning("[Leader] Invalid branch: {0} {1} ({2} L{3})", leader.Id, leader.Name, name, lineNo);
@@ -954,7 +954,7 @@ namespace HoI2Editor.Models
                             lineNo);
                     }
 
-                    // 指揮官定義行を書き込む
+                    // Write commander definition line
                     if (Misc.EnableRetirementYearLeaders)
                     {
                         writer.WriteLine(
@@ -1001,7 +1001,7 @@ namespace HoI2Editor.Models
                             leader.EndYear);
                     }
 
-                    // 編集済みフラグを解除する
+                    // Clear the edited flag
                     leader.ResetDirtyAll();
 
                     lineNo++;
@@ -1013,12 +1013,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 指揮官リスト操作
+        #region Commander list operation
 
         /// <summary>
-        ///     指揮官リストに項目を追加する
+        ///     Add an item to the commander list
         /// </summary>
-        /// <param name="leader">挿入対象の項目</param>
+        /// <param name="leader">Items to be inserted</param>
         public static void AddItem(Leader leader)
         {
             Log.Info("[Leader] Add leader: ({0}: {1}) <{2}>", leader.Id, leader.Name,
@@ -1028,10 +1028,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官リストに項目を挿入する
+        ///     Insert an item in the commander list
         /// </summary>
-        /// <param name="leader">挿入対象の項目</param>
-        /// <param name="position">挿入先の項目</param>
+        /// <param name="leader">Items to be inserted</param>
+        /// <param name="position">Insert destination item</param>
         public static void InsertItem(Leader leader, Leader position)
         {
             int index = Items.IndexOf(position) + 1;
@@ -1043,9 +1043,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官リストから項目を削除する
+        ///     Remove an item from the commander list
         /// </summary>
-        /// <param name="leader">削除対象の項目</param>
+        /// <param name="leader">Items to be deleted</param>
         public static void RemoveItem(Leader leader)
         {
             Log.Info("[Leader] Remove leader: ({0}: {1}) <{2}>", leader.Id, leader.Name,
@@ -1053,15 +1053,15 @@ namespace HoI2Editor.Models
 
             Items.Remove(leader);
 
-            // 使用済みIDリストから削除する
+            // Already used ID Remove from list
             IdSet.Remove(leader.Id);
         }
 
         /// <summary>
-        ///     指揮官リストの項目を移動する
+        ///     Move items in the commander list
         /// </summary>
-        /// <param name="src">移動元の項目</param>
-        /// <param name="dest">移動先の項目</param>
+        /// <param name="src">Item of move source</param>
+        /// <param name="dest">Item to move to</param>
         public static void MoveItem(Leader src, Leader dest)
         {
             int srcIndex = Items.IndexOf(src);
@@ -1072,13 +1072,13 @@ namespace HoI2Editor.Models
 
             if (srcIndex > destIndex)
             {
-                // 上へ移動する場合
+                // When moving up
                 Items.Insert(destIndex, src);
                 Items.RemoveAt(srcIndex + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 Items.Insert(destIndex + 1, src);
                 Items.RemoveAt(srcIndex);
             }
@@ -1086,12 +1086,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 一括編集
+        #region Bulk editing
 
         /// <summary>
-        ///     一括編集
+        ///     Bulk editing
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         public static void BatchEdit(LeaderBatchEditArgs args)
         {
             LogBatchEdit(args);
@@ -1101,7 +1101,7 @@ namespace HoI2Editor.Models
             switch (args.ActionMode)
             {
                 case BatchActionMode.Modify:
-                    // 指揮官を一括編集する
+                    // Bulk edit commanders
                     foreach (Leader leader in leaders)
                     {
                         BatchEditLeader(leader, args);
@@ -1109,7 +1109,7 @@ namespace HoI2Editor.Models
                     break;
 
                 case BatchActionMode.Copy:
-                    // 指揮官をコピーする
+                    // Copy the commander
                     newCountry = args.Destination;
                     int id = args.Id;
                     foreach (Leader leader in leaders)
@@ -1124,10 +1124,10 @@ namespace HoI2Editor.Models
                         Items.Add(newLeader);
                     }
 
-                    // コピー先の国の編集済みフラグを設定する
+                    // Set the edited flag for the destination country
                     SetDirty(newCountry);
 
-                    // コピー先の国がファイル一覧に存在しなければ追加する
+                    // If the copy destination country does not exist in the file list, add it
                     if (!FileNameMap.ContainsKey(newCountry))
                     {
                         FileNameMap.Add(newCountry, Game.GetLeaderFileName(newCountry));
@@ -1136,21 +1136,21 @@ namespace HoI2Editor.Models
                     break;
 
                 case BatchActionMode.Move:
-                    // 指揮官を移動する
+                    // Move commander
                     newCountry = args.Destination;
                     foreach (Leader leader in leaders)
                     {
-                        // 移動前の国の編集済みフラグを設定する
+                        // Set the edited flag for the country before the move
                         SetDirty(leader.Country);
 
                         leader.Country = newCountry;
                         leader.SetDirty(LeaderItemId.Country);
                     }
 
-                    // 移動先の国の編集済みフラグを設定する
+                    // Set the edited flag for the destination country
                     SetDirty(newCountry);
 
-                    // 移動先の国がファイル一覧に存在しなければ追加する
+                    // If the destination country does not exist in the file list, add it.
                     if (!FileNameMap.ContainsKey(newCountry))
                     {
                         FileNameMap.Add(newCountry, Game.GetLeaderFileName(newCountry));
@@ -1161,13 +1161,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集の個別処理
+        ///     Individual processing of batch editing
         /// </summary>
-        /// <param name="leader">対象指揮官</param>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="leader">Target commander</param>
+        /// <param name="args">Batch editing parameters</param>
         private static void BatchEditLeader(Leader leader, LeaderBatchEditArgs args)
         {
-            // 理想階級
+            // Ideal class
             if (args.Items[(int) LeaderBatchItemId.IdealRank])
             {
                 if (leader.IdealRank != args.IdealRank)
@@ -1178,7 +1178,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // スキル
+            // skill
             if (args.Items[(int) LeaderBatchItemId.Skill])
             {
                 if (leader.Skill != args.Skill)
@@ -1189,7 +1189,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 最大スキル
+            // Maximum skill
             if (args.Items[(int) LeaderBatchItemId.MaxSkill])
             {
                 if (leader.MaxSkill != args.MaxSkill)
@@ -1200,7 +1200,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 経験値
+            // Experience point
             if (args.Items[(int) LeaderBatchItemId.Experience])
             {
                 if (leader.Experience != args.Experience)
@@ -1211,7 +1211,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 忠誠度
+            // Loyalty
             if (args.Items[(int) LeaderBatchItemId.Loyalty])
             {
                 if (leader.Loyalty != args.Loyalty)
@@ -1222,7 +1222,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 開始年
+            // Start year
             if (args.Items[(int) LeaderBatchItemId.StartYear])
             {
                 if (leader.StartYear != args.StartYear)
@@ -1233,7 +1233,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 終了年
+            // End year
             if (args.Items[(int) LeaderBatchItemId.EndYear])
             {
                 if (leader.EndYear != args.EndYear)
@@ -1244,7 +1244,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 引退年
+            // Retirement year
             if (args.Items[(int) LeaderBatchItemId.RetirementYear])
             {
                 if (leader.RetirementYear != args.RetirementYear)
@@ -1255,7 +1255,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 少将任官年
+            // Major General Year
             if (args.Items[(int) LeaderBatchItemId.Rank3Year])
             {
                 if (leader.RankYear[0] != args.RankYear[0])
@@ -1266,7 +1266,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 中将任官年
+            // Year of middle general
             if (args.Items[(int) LeaderBatchItemId.Rank2Year])
             {
                 if (leader.RankYear[1] != args.RankYear[1])
@@ -1277,7 +1277,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 大将任官年
+            // General Year
             if (args.Items[(int) LeaderBatchItemId.Rank1Year])
             {
                 if (leader.RankYear[2] != args.RankYear[2])
@@ -1288,7 +1288,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 元帥任官年
+            // Marshal Year
             if (args.Items[(int) LeaderBatchItemId.Rank0Year])
             {
                 if (leader.RankYear[3] != args.RankYear[3])
@@ -1301,10 +1301,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集対象の指揮官リストを取得する
+        ///     Get a list of commanders for bulk editing
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>一括編集対象の指揮官リスト</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>List of commanders to be edited in bulk</returns>
         private static IEnumerable<Leader> GetBatchEditLeaders(LeaderBatchEditArgs args)
         {
             return args.CountryMode == BatchCountryMode.All
@@ -1324,19 +1324,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集処理のログ出力
+        ///     Batch edit processing log output
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         private static void LogBatchEdit(LeaderBatchEditArgs args)
         {
             Log.Verbose($"[Leader] Batch {GetBatchEditItemLog(args)} ({GetBatchEditModeLog(args)})");
         }
 
         /// <summary>
-        ///     一括編集項目のログ文字列を取得する
+        ///     Get the log string of batch edit items
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>ログ文字列</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>Log string</returns>
         private static string GetBatchEditItemLog(LeaderBatchEditArgs args)
         {
             StringBuilder sb = new StringBuilder();
@@ -1400,15 +1400,15 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     一括編集対象モードのログ文字列を取得する
+        ///     Get the log character string of the batch edit target mode
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
-        /// <returns>ログ文字列</returns>
+        /// <param name="args">Batch editing parameters</param>
+        /// <returns>Log string</returns>
         private static string GetBatchEditModeLog(LeaderBatchEditArgs args)
         {
             StringBuilder sb = new StringBuilder();
 
-            // 一括編集対象国
+            // Countries subject to batch editing
             if (args.CountryMode == BatchCountryMode.All)
             {
                 sb.Append("ALL");
@@ -1425,7 +1425,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 一括編集対象兵科
+            // Collective editing target military department
             if (!args.Army || !args.Navy || !args.Airforce)
             {
                 sb.Append($"|{(args.Army ? 'o' : 'x')}{(args.Navy ? 'o' : 'x')}{(args.Airforce ? 'o' : 'x')}");
@@ -1435,26 +1435,26 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ID操作
+        #region ID operation
 
         /// <summary>
-        ///     未使用の指揮官IDを取得する
+        ///     Unused commander ID To get
         /// </summary>
-        /// <param name="country">対象の国タグ</param>
-        /// <returns>指揮官ID</returns>
+        /// <param name="country">Target country tag</param>
+        /// <returns>Commander ID</returns>
         public static int GetNewId(Country country)
         {
-            // 対象国の指揮官IDの最大値+1から検索を始める
+            // Commander of the target country ID Maximum value of +1 Start searching from
             int id = GetMaxId(country);
-            // 未使用IDが見つかるまでIDを1ずつ増やす
+            // unused ID Until you find ID of 1 Increase by little
             return GetNewId(id);
         }
 
         /// <summary>
-        ///     未使用の指揮官IDを取得する
+        ///     Unused commander ID To get
         /// </summary>
-        /// <param name="id">開始ID</param>
-        /// <returns>指揮官ID</returns>
+        /// <param name="id">start ID</param>
+        /// <returns>Commander ID</returns>
         public static int GetNewId(int id)
         {
             while (IdSet.Contains(id))
@@ -1465,10 +1465,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     対象国の指揮官IDの最大値を取得する
+        ///     Commander of the target country ID Get the maximum value of
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>指揮官ID</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>Commander ID</returns>
         private static int GetMaxId(Country country)
         {
             if (country == Country.None)
@@ -1485,40 +1485,40 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag || _dirtyListFlag;
         }
 
         /// <summary>
-        ///     指揮官リストファイルが編集済みかどうかを取得する
+        ///     Get if the commander list file has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         private static bool IsDirtyList()
         {
             return _dirtyListFlag;
         }
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty(Country country)
         {
             return DirtyFlags[(int) country];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         public static void SetDirty(Country country)
         {
             DirtyFlags[(int) country] = true;
@@ -1526,7 +1526,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官リストファイルの編集済みフラグを設定する
+        ///     Set the edited flag for the commander list file
         /// </summary>
         public static void SetDirtyList()
         {
@@ -1534,16 +1534,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを解除する
+        ///     Clear the edited flag
         /// </summary>
-        /// <param name="country">国タグ</param>
+        /// <param name="country">Country tag</param>
         private static void ResetDirty(Country country)
         {
             DirtyFlags[(int) country] = false;
         }
 
         /// <summary>
-        ///     指揮官リストファイルの編集済みフラグを解除する
+        ///     Clear the edited flag of the commander list file
         /// </summary>
         private static void ResetDirtyList()
         {
@@ -1554,99 +1554,99 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     指揮官一括編集のパラメータ
+    ///     Parameters for commander batch editing
     /// </summary>
     public class LeaderBatchEditArgs
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     一括編集対象国モード
+        ///     Batch edit target country mode
         /// </summary>
         public BatchCountryMode CountryMode { get; set; }
 
         /// <summary>
-        ///     対象国リスト
+        ///     Target country list
         /// </summary>
         public List<Country> TargetCountries { get; } = new List<Country>();
 
         /// <summary>
-        ///     陸軍指揮官を対象とするかどうか
+        ///     Whether to target army commanders
         /// </summary>
         public bool Army { get; set; }
 
         /// <summary>
-        ///     海軍指揮官を対象とするかどうか
+        ///     Whether to target Navy commanders
         /// </summary>
         public bool Navy { get; set; }
 
         /// <summary>
-        ///     空軍指揮官を対象とするかどうか
+        ///     Whether to target air force commanders
         /// </summary>
         public bool Airforce { get; set; }
 
         /// <summary>
-        ///     一括編集動作モード
+        ///     Batch edit operation mode
         /// </summary>
         public BatchActionMode ActionMode { get; set; }
 
         /// <summary>
-        ///     コピー/移動先指定国
+        ///     copy / / Designated country of destination
         /// </summary>
         public Country Destination { get; set; }
 
         /// <summary>
-        ///     開始ID
+        ///     start ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     一括編集項目
+        ///     Bulk edit items
         /// </summary>
         public bool[] Items { get; } = new bool[Enum.GetValues(typeof (LeaderBatchItemId)).Length];
 
         /// <summary>
-        ///     理想階級
+        ///     Ideal class
         /// </summary>
         public LeaderRank IdealRank { get; set; }
 
         /// <summary>
-        ///     スキル
+        ///     skill
         /// </summary>
         public int Skill { get; set; }
 
         /// <summary>
-        ///     最大スキル
+        ///     Maximum skill
         /// </summary>
         public int MaxSkill { get; set; }
 
         /// <summary>
-        ///     経験値
+        ///     Experience point
         /// </summary>
         public int Experience { get; set; }
 
         /// <summary>
-        ///     忠誠度
+        ///     Loyalty
         /// </summary>
         public int Loyalty { get; set; }
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
         /// <summary>
-        ///     引退年
+        ///     Retirement year
         /// </summary>
         public int RetirementYear { get; set; }
 
         /// <summary>
-        ///     任官年
+        ///     Year of appointment
         /// </summary>
         public int[] RankYear { get; } = new int[Leader.RankLength];
 
@@ -1654,41 +1654,41 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     一括編集対象国モード
+    ///     Batch edit target country mode
     /// </summary>
     public enum BatchCountryMode
     {
-        All, // 全て
-        Selected, // 選択国
-        Specified // 指定国
+        All, // all
+        Selected, // Selected country
+        Specified // Designated country
     }
 
     /// <summary>
-    ///     一括編集動作モード
+    ///     Batch edit operation mode
     /// </summary>
     public enum BatchActionMode
     {
-        Modify, // 編集
-        Copy, // コピー
-        Move // 移動
+        Modify, // edit
+        Copy, // copy
+        Move // Move
     }
 
     /// <summary>
-    ///     一括編集項目ID
+    ///     Bulk edit items ID
     /// </summary>
     public enum LeaderBatchItemId
     {
-        IdealRank, // 理想階級
-        Skill, // スキル
-        MaxSkill, // 最大スキル
-        Experience, // 経験値
-        Loyalty, // 忠誠度
-        StartYear, // 開始年
-        EndYear, // 終了年
-        RetirementYear, // 引退年
-        Rank3Year, // 少将任官年
-        Rank2Year, // 中将任官年
-        Rank1Year, // 大将任官年
-        Rank0Year // 元帥任官年
+        IdealRank, // Ideal class
+        Skill, // skill
+        MaxSkill, // Maximum skill
+        Experience, // Experience point
+        Loyalty, // Loyalty
+        StartYear, // Start year
+        EndYear, // End year
+        RetirementYear, // Retirement year
+        Rank3Year, // Major General Year
+        Rank2Year, // Year of middle general
+        Rank1Year, // General Year
+        Rank0Year // Marshal Year
     }
 }

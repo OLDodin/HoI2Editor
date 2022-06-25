@@ -6,28 +6,28 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     miscファイルの構文解析クラス
+    ///     misc File syntax analysis class
     /// </summary>
     public static class MiscParser
     {
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     ログ出力時のカテゴリ名
+        ///     Category name at the time of log output
         /// </summary>
         private const string LogCategory = "Misc";
 
         #endregion
 
-        #region 構文解析
+        #region Parsing
 
         /// <summary>
-        ///     miscファイルを構文解析する
+        ///     misc Parse the file
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         public static void Parse(string fileName)
         {
-            // ゲームの種類を設定する
+            // Set the game type
             MiscGameType type = Misc.GetGameType();
 
             using (TextLexer lexer = new TextLexer(fileName, false))
@@ -36,19 +36,19 @@ namespace HoI2Editor.Parsers
                 {
                     Token token = lexer.GetToken();
 
-                    // ファイルの終端
+                    // End of file
                     if (token == null)
                     {
                         return;
                     }
 
-                    // 空白文字/コメントを読み飛ばす
+                    // Blank character / / Skip comments
                     if (token.Type == TokenType.WhiteSpace || token.Type == TokenType.Comment)
                     {
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     if (token.Type != TokenType.Identifier)
                     {
                         Log.InvalidToken(LogCategory, token, lexer);
@@ -61,7 +61,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // economyセクション
+                    // economy section
                     if (keyword.Equals("economy"))
                     {
                         if (!ParseSection(MiscSectionId.Economy, type, lexer))
@@ -71,7 +71,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // intelligenceセクション
+                    // intelligence section
                     if (keyword.Equals("intelligence"))
                     {
                         if (!ParseSection(MiscSectionId.Intelligence, type, lexer))
@@ -81,7 +81,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // diplomacyセクション
+                    // diplomacy section
                     if (keyword.Equals("diplomacy"))
                     {
                         if (!ParseSection(MiscSectionId.Diplomacy, type, lexer))
@@ -91,7 +91,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // combatセクション
+                    // combat section
                     if (keyword.Equals("combat"))
                     {
                         if (!ParseSection(MiscSectionId.Combat, type, lexer))
@@ -101,7 +101,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // missionセクション
+                    // mission mission section
                     if (keyword.Equals("mission"))
                     {
                         if (!ParseSection(MiscSectionId.Mission, type, lexer))
@@ -111,7 +111,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // countryセクション
+                    // country country section
                     if (keyword.Equals("country"))
                     {
                         if (!ParseSection(MiscSectionId.Country, type, lexer))
@@ -121,7 +121,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // researchセクション
+                    // research section
                     if (keyword.Equals("research"))
                     {
                         if (!ParseSection(MiscSectionId.Research, type, lexer))
@@ -131,7 +131,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // tradeセクション
+                    // trade section
                     if (keyword.Equals("trade"))
                     {
                         if (!ParseSection(MiscSectionId.Trade, type, lexer))
@@ -141,7 +141,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // aiセクション
+                    // ai section
                     if (keyword.Equals("ai"))
                     {
                         if (!ParseSection(MiscSectionId.Ai, type, lexer))
@@ -151,7 +151,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // modセクション
+                    // mod mod section
                     if (keyword.Equals("mod"))
                     {
                         if (!ParseSection(MiscSectionId.Mod, type, lexer))
@@ -161,7 +161,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // mapセクション
+                    // map section
                     if (keyword.Equals("map"))
                     {
                         if (!ParseSection(MiscSectionId.Map, type, lexer))
@@ -171,22 +171,22 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // 無効なトークン
+                    // Invalid token
                     Log.InvalidToken(LogCategory, token, lexer);
                 }
             }
         }
 
         /// <summary>
-        ///     セクションを構文解析する
+        ///     Parse the section
         /// </summary>
-        /// <param name="section">セクションID</param>
-        /// <param name="type">ゲームの種類</param>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>構文解析の成否</returns>
+        /// <param name="section">section ID</param>
+        /// <param name="type">Game type</param>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Success or failure of parsing</returns>
         private static bool ParseSection(MiscSectionId section, MiscGameType type, TextLexer lexer)
         {
-            // 空白文字/コメントを読み飛ばす
+            // Blank character / / Skip comments
             Token token;
             while (true)
             {
@@ -197,14 +197,14 @@ namespace HoI2Editor.Parsers
                 }
             }
 
-            // =
+            // = =
             if (token.Type != TokenType.Equal)
             {
                 Log.InvalidToken(LogCategory, token, lexer);
                 return false;
             }
 
-            // 空白文字/コメントを読み飛ばす
+            // Blank character / / Skip comments
             while (true)
             {
                 token = lexer.GetToken();
@@ -225,7 +225,7 @@ namespace HoI2Editor.Parsers
             foreach (MiscItemId id in Misc.SectionItems[(int) section]
                 .Where(id => Misc.ItemTable[(int) id, (int) type]))
             {
-                // 空白文字/コメントを保存する
+                // White space / / Save comment
                 sb = new StringBuilder();
                 while (true)
                 {
@@ -238,7 +238,7 @@ namespace HoI2Editor.Parsers
                 }
                 Misc.SetComment(id, sb.ToString());
 
-                // 設定値
+                // Set value
                 if (token.Type != TokenType.Number)
                 {
                     Log.InvalidToken(LogCategory, token, lexer);
@@ -292,7 +292,7 @@ namespace HoI2Editor.Parsers
                 }
             }
 
-            // セクション末尾の空白文字/コメントを保存する
+            // White space at the end of the section / / Save comment
             sb = new StringBuilder();
             while (true)
             {
@@ -305,7 +305,7 @@ namespace HoI2Editor.Parsers
             }
             Misc.SetSuffix(section, sb.ToString());
 
-            // } (セクション終端)
+            // } ( Section end )
             if (token.Type != TokenType.CloseBrace)
             {
                 Log.InvalidToken(LogCategory, token, lexer);

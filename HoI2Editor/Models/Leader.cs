@@ -3,19 +3,19 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     指揮官データ
+    ///     Commander data
     /// </summary>
     public class Leader
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     国タグ
+        ///     Country tag
         /// </summary>
         public Country Country { get; set; }
 
         /// <summary>
-        ///     指揮官ID
+        ///     Commander ID
         /// </summary>
         public int Id
         {
@@ -29,113 +29,113 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     名前
+        ///     name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     画像ファイル名
+        ///     Image file name
         /// </summary>
         public string PictureName { get; set; }
 
         /// <summary>
-        ///     初期スキル
+        ///     Initial skills
         /// </summary>
         public int Skill { get; set; }
 
         /// <summary>
-        ///     最大スキル
+        ///     Maximum skill
         /// </summary>
         public int MaxSkill { get; set; }
 
         /// <summary>
-        ///     任官年
+        ///     Year of appointment
         /// </summary>
         public int[] RankYear { get; } = new int[RankLength];
 
         /// <summary>
-        ///     開始年
+        ///     Start year
         /// </summary>
         public int StartYear { get; set; }
 
         /// <summary>
-        ///     終了年
+        ///     End year
         /// </summary>
         public int EndYear { get; set; }
 
         /// <summary>
-        ///     引退年
+        ///     Retirement year
         /// </summary>
         public int RetirementYear { get; set; }
 
         /// <summary>
-        ///     理想階級
+        ///     Ideal class
         /// </summary>
         public LeaderRank IdealRank { get; set; }
 
         /// <summary>
-        ///     指揮官特性
+        ///     Commander characteristics
         /// </summary>
         public uint Traits { get; set; }
 
         /// <summary>
-        ///     経験値
+        ///     Experience point
         /// </summary>
         public int Experience { get; set; }
 
         /// <summary>
-        ///     忠誠度
+        ///     Loyalty
         /// </summary>
         public int Loyalty { get; set; }
 
         /// <summary>
-        ///     兵科
+        ///     Army
         /// </summary>
         public Branch Branch { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (LeaderItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         /// <summary>
-        ///     指揮官ID
+        ///     Commander ID
         /// </summary>
         private int _id;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     階級の数
+        ///     Number of classes
         /// </summary>
         public const int RankLength = 4;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public Leader()
         {
         }
 
         /// <summary>
-        ///     コピーコンストラクタ
+        ///     Copy constructor
         /// </summary>
-        /// <param name="original">複製元の指揮官データ</param>
+        /// <param name="original">Original commander data</param>
         public Leader(Leader original)
         {
             Country = original.Country;
@@ -160,31 +160,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     指揮官データが編集済みかどうかを取得する
+        ///     Get if the commander data has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(LeaderItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(LeaderItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -192,7 +192,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て設定する
+        ///     Set all edited flags
         /// </summary>
         public void SetDirtyAll()
         {
@@ -204,7 +204,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -219,174 +219,174 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     指揮官特性値
+    ///     Commander characteristic value
     /// </summary>
     public static class LeaderTraits
     {
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     特性なし
+        ///     No characteristics
         /// </summary>
         public const uint None = 0x00000000;
 
         /// <summary>
-        ///     兵站管理
+        ///     Station management
         /// </summary>
         public const uint LogisticsWizard = 0x00000001;
 
         /// <summary>
-        ///     防勢ドクトリン
+        ///     Defensive doctrine
         /// </summary>
         public const uint DefensiveDoctrine = 0x00000002;
 
         /// <summary>
-        ///     攻勢ドクトリン
+        ///     Offensive doctrine
         /// </summary>
         public const uint OffensiveDoctrine = 0x00000004;
 
         /// <summary>
-        ///     冬期戦
+        ///     Winter battle
         /// </summary>
         public const uint WinterSpecialist = 0x00000008;
 
         /// <summary>
-        ///     伏撃
+        ///     Assault
         /// </summary>
         public const uint Trickster = 0x00000010;
 
         /// <summary>
-        ///     工兵
+        ///     Engineer
         /// </summary>
         public const uint Engineer = 0x00000020;
 
         /// <summary>
-        ///     要塞攻撃
+        ///     Fortress attack
         /// </summary>
         public const uint FortressBuster = 0x00000040;
 
         /// <summary>
-        ///     機甲戦
+        ///     Armored battle
         /// </summary>
         public const uint PanzerLeader = 0x00000080;
 
         /// <summary>
-        ///     特殊戦
+        ///     Special battle
         /// </summary>
         public const uint Commando = 0x00000100;
 
         /// <summary>
-        ///     古典派
+        ///     Classic school
         /// </summary>
         public const uint OldGuard = 0x00000200;
 
         /// <summary>
-        ///     海狼
+        ///     Sea wolf
         /// </summary>
         public const uint SeaWolf = 0x00000400;
 
         /// <summary>
-        ///     封鎖線突破の達人
+        ///     Master of blocking line breakthrough
         /// </summary>
         public const uint BlockadeRunner = 0x00000800;
 
         /// <summary>
-        ///     卓越した戦術家
+        ///     Outstanding tactician
         /// </summary>
         public const uint SuperiorTactician = 0x00001000;
 
         /// <summary>
-        ///     索敵
+        ///     Searching enemy
         /// </summary>
         public const uint Spotter = 0x00002000;
 
         /// <summary>
-        ///     対戦車攻撃
+        ///     Anti-tank attack
         /// </summary>
         public const uint TankBuster = 0x00004000;
 
         /// <summary>
-        ///     絨毯爆撃
+        ///     Rug bombing
         /// </summary>
         public const uint CarpetBomber = 0x00008000;
 
         /// <summary>
-        ///     夜間航空作戦
+        ///     Night air operations
         /// </summary>
         public const uint NightFlyer = 0x00010000;
 
         /// <summary>
-        ///     対艦攻撃
+        ///     Anti-ship attack
         /// </summary>
         public const uint FleetDestroyer = 0x00020000;
 
         /// <summary>
-        ///     砂漠のキツネ
+        ///     Desert fox
         /// </summary>
         public const uint DesertFox = 0x00040000;
 
         /// <summary>
-        ///     密林のネズミ
+        ///     Mice in the jungle
         /// </summary>
         public const uint JungleRat = 0x00080000;
 
         /// <summary>
-        ///     市街戦
+        ///     City war
         /// </summary>
         public const uint UrbanWarfareSpecialist = 0x00100000;
 
         /// <summary>
-        ///     レンジャー
+        ///     Ranger
         /// </summary>
         public const uint Ranger = 0x00200000;
 
         /// <summary>
-        ///     山岳戦
+        ///     Mountain battle
         /// </summary>
         public const uint Mountaineer = 0x00400000;
 
         /// <summary>
-        ///     高地戦
+        ///     Highland battle
         /// </summary>
         public const uint HillsFighter = 0x00800000;
 
         /// <summary>
-        ///     反撃戦
+        ///     Counterattack
         /// </summary>
         public const uint CounterAttacker = 0x01000000;
 
         /// <summary>
-        ///     突撃戦
+        ///     Assault battle
         /// </summary>
         public const uint Assaulter = 0x02000000;
 
         /// <summary>
-        ///     包囲戦
+        ///     Siege
         /// </summary>
         public const uint Encircler = 0x04000000;
 
         /// <summary>
-        ///     奇襲戦
+        ///     Surprise battle
         /// </summary>
         public const uint Ambusher = 0x08000000;
 
         /// <summary>
-        ///     規律
+        ///     Discipline
         /// </summary>
         public const uint Disciplined = 0x10000000;
 
         /// <summary>
-        ///     戦術的退却
+        ///     Tactical retreat
         /// </summary>
         public const uint ElasticDefenceSpecialist = 0x20000000;
 
         /// <summary>
-        ///     電撃戦
+        ///     Blitzkrieg
         /// </summary>
         public const uint Blitzer = 0x40000000;
 
         /// <summary>
-        ///     陸軍特性
+        ///     Army characteristics
         /// </summary>
         public const uint ArmyTraits =
             LogisticsWizard | DefensiveDoctrine | OffensiveDoctrine | WinterSpecialist | Trickster | Engineer |
@@ -395,12 +395,12 @@ namespace HoI2Editor.Models
             ElasticDefenceSpecialist | Blitzer;
 
         /// <summary>
-        ///     海軍特性
+        ///     Navy characteristics
         /// </summary>
         public const uint NavyTraits = OldGuard | SeaWolf | BlockadeRunner | SuperiorTactician | Spotter | NightFlyer;
 
         /// <summary>
-        ///     空軍特性
+        ///     Air Force characteristics
         /// </summary>
         public const uint AirforceTraits =
             OldGuard | SuperiorTactician | Spotter | TankBuster | CarpetBomber | NightFlyer | FleetDestroyer;
@@ -409,107 +409,107 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     指揮官特性
+    ///     Commander characteristics
     /// </summary>
     public enum LeaderTraitsId
     {
-        LogisticsWizard, // 兵站管理
-        DefensiveDoctrine, // 防勢ドクトリン
-        OffensiveDoctrine, // 攻勢ドクトリン
-        WinterSpecialist, // 冬期戦
-        Trickster, // 伏撃
-        Engineer, // 工兵
-        FortressBuster, // 要塞攻撃
-        PanzerLeader, // 機甲戦
-        Commando, // 特殊戦
-        OldGuard, // 古典派
-        SeaWolf, // 海狼
-        BlockadeRunner, // 封鎖線突破の達人
-        SuperiorTactician, // 卓越した戦術家
-        Spotter, // 索敵
-        TankBuster, // 対戦車攻撃
-        CarpetBomber, // 絨毯爆撃
-        NightFlyer, // 夜間航空作戦
-        FleetDestroyer, // 対艦攻撃
-        DesertFox, // 砂漠のキツネ
-        JungleRat, // 密林のネズミ
-        UrbanWarfareSpecialist, // 市街戦
-        Ranger, // レンジャー
-        Mountaineer, // 山岳戦
-        HillsFighter, // 高地戦
-        CounterAttacker, // 反撃戦
-        Assaulter, // 突撃戦
-        Encircler, // 包囲戦
-        Ambusher, // 奇襲戦
-        Disciplined, // 規律
-        ElasticDefenceSpecialist, // 戦術的退却
-        Blitzer // 電撃戦
+        LogisticsWizard, // Station management
+        DefensiveDoctrine, // Defensive doctrine
+        OffensiveDoctrine, // Offensive doctrine
+        WinterSpecialist, // Winter battle
+        Trickster, // Assault
+        Engineer, // Engineer
+        FortressBuster, // Fortress attack
+        PanzerLeader, // Armored battle
+        Commando, // Special battle
+        OldGuard, // Classic school
+        SeaWolf, // Sea wolf
+        BlockadeRunner, // Master of blocking line breakthrough
+        SuperiorTactician, // Outstanding tactician
+        Spotter, // Searching enemy
+        TankBuster, // Anti-tank attack
+        CarpetBomber, // Rug bombing
+        NightFlyer, // Night air operations
+        FleetDestroyer, // Anti-ship attack
+        DesertFox, // Desert fox
+        JungleRat, // Dense forest rat
+        UrbanWarfareSpecialist, // Urban warfare
+        Ranger, // Ranger
+        Mountaineer, // Mountain warfare
+        HillsFighter, // The Front Line
+        CounterAttacker, // Counterattack
+        Assaulter, // Assault battle
+        Encircler, // Siege
+        Ambusher, // Surprise battle
+        Disciplined, // Discipline
+        ElasticDefenceSpecialist, // Tactical retreat
+        Blitzer // Blitzkrieg
     }
 
     /// <summary>
-    ///     指揮官階級
+    ///     Commander class
     /// </summary>
     public enum LeaderRank
     {
         None,
-        MajorGeneral, // 少将
-        LieutenantGeneral, // 中将
-        General, // 大将
-        Marshal // 元帥
+        MajorGeneral, // Admiral
+        LieutenantGeneral, // Lieutenant General
+        General, // General
+        Marshal // Marshal
     }
 
     /// <summary>
-    ///     指揮官項目ID
+    ///     Commander item ID
     /// </summary>
     public enum LeaderItemId
     {
-        Country, // 国家
+        Country, // Nation
         Id, // ID
-        Name, // 名前
-        Branch, // 兵科
-        IdealRank, // 理想階級
-        Skill, // スキル
-        MaxSkill, // 最大スキル
-        Experience, // 経験値
-        Loyalty, // 忠誠度
-        StartYear, // 開始年
-        EndYear, // 終了年
-        RetirementYear, // 引退年
-        Rank3Year, // 少将任官年
-        Rank2Year, // 中将任官年
-        Rank1Year, // 大将任官年
-        Rank0Year, // 元帥任官年
-        PictureName, // 画像ファイル名
-        LogisticsWizard, // 特性: 兵站管理
-        DefensiveDoctrine, // 特性: 防勢ドクトリン
-        OffensiveDoctrine, // 特性: 攻勢ドクトリン
-        WinterSpecialist, // 特性: 冬期戦
-        Trickster, // 特性: 伏撃
-        Engineer, // 特性: 工兵
-        FortressBuster, // 特性: 要塞攻撃
-        PanzerLeader, // 特性: 機甲戦
-        Commando, // 特性: 特殊戦
-        OldGuard, // 特性: 古典派
-        SeaWolf, // 特性: 海狼
-        BlockadeRunner, // 特性: 封鎖線突破の達人
-        SuperiorTactician, // 特性: 卓越した戦術家
-        Spotter, // 特性: 索敵
-        TankBuster, // 特性: 対戦車攻撃
-        CarpetBomber, // 特性: 絨毯爆撃
-        NightFlyer, // 特性: 夜間航空作戦
-        FleetDestroyer, // 特性: 対艦攻撃
-        DesertFox, // 特性: 砂漠のキツネ
-        JungleRat, // 特性: 密林のネズミ
-        UrbanWarfareSpecialist, // 特性: 市街戦
-        Ranger, // 特性: レンジャー
-        Mountaineer, // 特性: 山岳戦
-        HillsFighter, // 特性: 高地戦
-        CounterAttacker, // 特性: 反撃戦
-        Assaulter, // 特性: 突撃戦
-        Encircler, // 特性: 包囲戦
-        Ambusher, // 特性: 奇襲戦
-        Disciplined, // 特性: 規律
-        ElasticDefenceSpecialist, // 特性: 戦術的退却
-        Blitzer // 特性: 電撃戦
+        Name, // name
+        Branch, // Army
+        IdealRank, // Ideal class
+        Skill, // skill
+        MaxSkill, // Maximum skill
+        Experience, // Experience point
+        Loyalty, // Loyalty
+        StartYear, // Start year
+        EndYear, // End year
+        RetirementYear, // Retirement year
+        Rank3Year, // Major General Year
+        Rank2Year, // Year of middle general
+        Rank1Year, // General Year
+        Rank0Year, // Marshal Year
+        PictureName, // Image file name
+        LogisticsWizard, // Characteristic :: Station management
+        DefensiveDoctrine, // Characteristic :: Defensive doctrine
+        OffensiveDoctrine, // Characteristic :: Offensive doctrine
+        WinterSpecialist, // Characteristic :: Winter battle
+        Trickster, // Characteristic :: Assault
+        Engineer, // Characteristic :: Engineer
+        FortressBuster, // Characteristic :: Fortress attack
+        PanzerLeader, // Characteristic :: Armored warfare
+        Commando, // Characteristic :: Special battle
+        OldGuard, // Characteristic :: Classic school
+        SeaWolf, // Characteristic :: Sea wolf
+        BlockadeRunner, // Characteristic :: Master of blocking line breakthrough
+        SuperiorTactician, // Characteristic :: Outstanding tactician
+        Spotter, // Characteristic :: Searching enemy
+        TankBuster, // Characteristic :: Anti-tank attack
+        CarpetBomber, // Characteristic :: Rug bombing
+        NightFlyer, // Characteristic :: Night aviation operation
+        FleetDestroyer, // Characteristic :: Anti-ship attack
+        DesertFox, // Characteristic :: Desert fox
+        JungleRat, // Characteristic :: Mice in the jungle
+        UrbanWarfareSpecialist, // Characteristic :: City war
+        Ranger, // Characteristic :: Ranger
+        Mountaineer, // Characteristic :: Mountain battle
+        HillsFighter, // Characteristic :: The Front Line
+        CounterAttacker, // Characteristic :: Counterattack
+        Assaulter, // Characteristic :: Assault battle
+        Encircler, // Characteristic :: Siege
+        Ambusher, // Characteristic :: Surprise battle
+        Disciplined, // Characteristic :: Discipline
+        ElasticDefenceSpecialist, // Characteristic :: Tactical retreat
+        Blitzer // Characteristic :: Blitzkrieg
     }
 }

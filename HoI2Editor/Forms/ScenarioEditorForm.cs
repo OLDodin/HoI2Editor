@@ -13,120 +13,120 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     シナリオエディタのフォーム
+    ///     Scenario editor form
     /// </summary>
     public partial class ScenarioEditorForm : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     シナリオエディタのコントローラ
+        ///     Scenario editor controller
         /// </summary>
         private ScenarioEditorController _controller;
 
         /// <summary>
-        ///     タブページ番号
+        ///     Tab page number
         /// </summary>
         private TabPageNo _tabPageNo;
 
         /// <summary>
-        ///     タブページの初期化フラグ
+        ///     Tab page initialization flag
         /// </summary>
         private readonly bool[] _tabPageInitialized = new bool[Enum.GetValues(typeof (TabPageNo)).Length];
 
         /// <summary>
-        ///     編集項目IDとコントロールの関連付け
+        ///     Edit items ID And control association
         /// </summary>
         private readonly Dictionary<ScenarioEditorItemId, Control> _itemControls =
             new Dictionary<ScenarioEditorItemId, Control>();
 
         /// <summary>
-        ///     主要国以外の選択可能国リスト
+        ///     List of selectable countries other than major countries
         /// </summary>
         private List<Country> _majorFreeCountries;
 
         /// <summary>
-        ///     選択可能国以外の国家リスト
+        ///     List of countries other than selectable countries
         /// </summary>
         private List<Country> _selectableFreeCountries;
 
         /// <summary>
-        ///     同盟国以外の国家リスト
+        ///     List of non-allied nations
         /// </summary>
         private List<Country> _allianceFreeCountries;
 
         /// <summary>
-        ///     戦争国以外の国家リスト
+        ///     List of non-war nations
         /// </summary>
         private List<Country> _warFreeCountries;
 
         /// <summary>
-        ///     技術項目リスト
+        ///     Technical item list
         /// </summary>
         private List<TechItem> _techs;
 
         /// <summary>
-        ///     発明イベントリスト
+        ///     Invention event list
         /// </summary>
         private List<TechEvent> _inventions;
 
         /// <summary>
-        ///     技術ツリーパネルのコントローラ
+        ///     Technology tree panel controller
         /// </summary>
         private TechTreePanelController _techTreePanelController;
 
         /// <summary>
-        ///     マップパネルのコントローラ
+        ///     Map panel controller
         /// </summary>
         private MapPanelController _mapPanelController;
 
         /// <summary>
-        ///     マップパネルの初期化フラグ
+        ///     Map panel initialization flag
         /// </summary>
         private bool _mapPanelInitialized;
 
         /// <summary>
-        ///     ユニットツリーのコントローラ
+        ///     Unit tree controller
         /// </summary>
         private UnitTreeController _unitTreeController;
 
         /// <summary>
-        ///     選択中の国家
+        ///     Selected nation
         /// </summary>
         private Country _selectedCountry;
 
         /// <summary>
-        ///     最終のユニットの兵科
+        ///     The last unit's military department
         /// </summary>
         private Branch _lastUnitBranch;
 
         /// <summary>
-        ///     最終の師団の兵科
+        ///     The final division's military department
         /// </summary>
         private Branch _lastDivisionBranch;
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     タブページ番号
+        ///     Tab page number
         /// </summary>
         private enum TabPageNo
         {
-            Main, // メイン
-            Alliance, // 同盟
-            Relation, // 関係
-            Trade, // 貿易
-            Country, // 国家
-            Government, // 政府
-            Technology, // 技術
-            Province, // プロヴィンス
-            Oob // 初期部隊
+            Main, // Main
+            Alliance, // alliance
+            Relation, // relationship
+            Trade, // Trade
+            Country, // Nation
+            Government, // government
+            Technology, // Technology
+            Province, // Providence
+            Oob // Early troops
         }
 
         /// <summary>
-        ///     AIの攻撃性の文字列名
+        ///     AI Aggressive string name
         /// </summary>
         private readonly TextId[] _aiAggressiveNames =
         {
@@ -138,7 +138,7 @@ namespace HoI2Editor.Forms
         };
 
         /// <summary>
-        ///     難易度の文字列名
+        ///     Difficulty string name
         /// </summary>
         private readonly TextId[] _difficultyNames =
         {
@@ -150,7 +150,7 @@ namespace HoI2Editor.Forms
         };
 
         /// <summary>
-        ///     ゲームスピードの文字列名
+        ///     Game speed string name
         /// </summary>
         private readonly TextId[] _gameSpeedNames =
         {
@@ -166,44 +166,44 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public ScenarioEditorForm()
         {
             InitializeComponent();
 
-            // フォームの初期化
+            // Form initialization
             InitForm();
         }
 
         #endregion
 
-        #region データ処理
+        #region Data processing
 
         /// <summary>
-        ///     データ読み込み後の処理
+        ///     Processing after reading data
         /// </summary>
         public void OnFileLoaded()
         {
-            // 読み込み前ならば何もしない
+            // Do nothing before loading
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // シナリオ関連情報を初期化する
+            // Initialize scenario-related information
             Scenarios.Init();
 
-            // 各タブページの初期化済み状態をクリアする
+            // Clear the initialized state of each tab page
             foreach (TabPageNo page in Enum.GetValues(typeof (TabPageNo)))
             {
                 _tabPageInitialized[(int) page] = false;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             OnMainTabPageFileLoad();
             OnAllianceTabPageFileLoad();
             OnRelationTabPageFileLoad();
@@ -216,31 +216,31 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     データ保存後の処理
+        ///     Processing after data storage
         /// </summary>
         public void OnFileSaved()
         {
-            // 各タブページの初期化済み状態をクリアする
+            // Clear the initialized state of each tab page
             foreach (TabPageNo page in Enum.GetValues(typeof (TabPageNo)))
             {
                 _tabPageInitialized[(int) page] = false;
             }
 
-            // 強制的に選択タブの表示を更新する
+            // Forcibly refresh the display of the selection tab
             OnScenarioTabControlSelectedIndexChanged(null, null);
         }
 
         /// <summary>
-        ///     編集項目変更後の処理
+        ///     Processing after changing edit items
         /// </summary>
-        /// <param name="id">編集項目ID</param>
+        /// <param name="id">Edit items ID</param>
         public void OnItemChanged(EditorItemId id)
         {
-            // 何もしない
+            // do nothing
         }
 
         /// <summary>
-        ///     マップ読み込み完了時の処理
+        ///     Processing when map loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -256,88 +256,88 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // プロヴィンスタブ選択中でなければ何もしない
+            // Do nothing unless Providence stub is selected
             if (_tabPageNo != TabPageNo.Province)
             {
                 return;
             }
 
-            // マップパネルを更新する
+            // Update the map panel
             UpdateMapPanel();
         }
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォームの初期化
+        ///     Form initialization
         /// </summary>
         private void InitForm()
         {
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.ScenarioEditor.Location;
             Size = HoI2EditorController.Settings.ScenarioEditor.Size;
 
-            // 技術ツリーパネル
+            // Technology tree panel
             _techTreePanelController = new TechTreePanelController(techTreePictureBox) { ApplyItemStatus = true };
             _techTreePanelController.ItemMouseClick += OnTechTreeItemMouseClick;
             _techTreePanelController.QueryItemStatus += OnQueryTechTreeItemStatus;
 
-            // マップパネル
+            // Map panel
             _mapPanelController = new MapPanelController(provinceMapPanel, provinceMapPictureBox);
 
-            // ユニットツリー
+            // Unit tree
             _unitTreeController = new UnitTreeController(unitTreeView);
 
-            // コントローラ
+            // controller
             _controller = new ScenarioEditorController(this, _mapPanelController, _unitTreeController);
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormLoad(object sender, EventArgs e)
         {
-            // 国家データを初期化する
+            // Initialize national data
             Countries.Init();
 
-            // 閣僚特性を初期化する
+            // Initialize ministerial characteristics
             Ministers.InitPersonality();
 
-            // ユニットデータを初期化する
+            // Initialize unit data
             Units.Init();
 
-            // プロヴィンスデータを初期化する
+            // Initialize province data
             Provinces.Init();
 
-            // ゲーム設定ファイルを読み込む
+            // Load the game settings file
             Misc.Load();
 
-            // 文字列定義ファイルを読み込む
+            // Read the character string definition file
             Config.Load();
 
-            // マップを遅延読み込みする
+            // Delay loading the map
             Maps.LoadAsync(MapLevel.Level2, OnMapFileLoad);
 
-            // 指揮官データを遅延読み込みする
+            // Delay loading commander data
             Leaders.LoadAsync(null);
 
-            // 閣僚データを遅延読込する
+            // Delay reading of ministerial data
             Ministers.LoadAsync(null);
 
-            // 技術データを遅延読み込みする
+            // Delay reading technical data
             Techs.LoadAsync(null);
 
-            // プロヴィンスデータを遅延読み込みする
+            // Delay reading of provision data
             Provinces.LoadAsync(null);
 
-            // ユニットデータを遅延読み込みする
+            // Delay reading unit data
             Units.LoadAsync(null);
 
-            // 表示項目を初期化する
+            // Initialize display items
             OnMainTabPageFormLoad();
             OnAllianceTabPageFormLoad();
             OnRelationTabPageFormLoad();
@@ -348,7 +348,7 @@ namespace HoI2Editor.Forms
             OnProvinceTabPageFormLoad();
             OnOobTabPageFormLoad();
 
-            // シナリオファイル読み込み済みなら編集項目を更新する
+            // Update the edit items if the scenario file has already been read
             if (Scenarios.IsLoaded())
             {
                 OnFileLoaded();
@@ -356,19 +356,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close form if not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -386,7 +386,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ後の処理
+        ///     Processing after closing the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -396,7 +396,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -409,7 +409,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing at the time of form resizing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -422,26 +422,26 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     チェックボタン押下時の処理
+        ///     Processing when the check button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCheckButtonClick(object sender, EventArgs e)
         {
-            // プロヴィンスデータ読み込み完了まで待つ
+            // Wait until the provision data reading is completed
             Provinces.WaitLoading();
 
             DataChecker.CheckScenario();
         }
 
         /// <summary>
-        ///     再読み込みボタン押下時の処理
+        ///     Processing when the reload button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnReloadButtonClick(object sender, EventArgs e)
         {
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -460,7 +460,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存ボタン押下時の処理
+        ///     Processing when the save button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -470,7 +470,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閉じるボタン押下時の処理
+        ///     Processing when the close button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -480,7 +480,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択タブ変更時の処理
+        ///     Processing when changing the selection tab
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -530,12 +530,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region メインタブ
+        #region Main tab
 
-        #region メインタブ - 共通
+        #region Main tab ―――― common
 
         /// <summary>
-        ///     メインタブの編集項目を初期化する
+        ///     Initialize the edit items on the main tab
         /// </summary>
         private void InitMainTab()
         {
@@ -546,32 +546,32 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     メインタブの編集項目を更新する
+        ///     Update the edit items on the main tab
         /// </summary>
         private void UpdateMainTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Main])
             {
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateScenarioInfoItems();
             UpdateScenarioOptionItems();
 
-            // 選択可能国リストを更新する
+            // Update the list of selectable countries
             UpdateSelectableList();
 
-            // メインタブの編集項目を有効化する
+            // Enable edit items on the main tab
             EnableMainItems();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Main] = true;
         }
 
         /// <summary>
-        ///     メインタブの編集項目を有効化する
+        ///     Enable edit items on the main tab
         /// </summary>
         private void EnableMainItems()
         {
@@ -581,54 +581,54 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     メインタブのフォーム読み込み時の処理
+        ///     Processing when loading a form on the main tab
         /// </summary>
         private void OnMainTabPageFormLoad()
         {
-            // メインタブを初期化する
+            // Initialize the main tab
             InitMainTab();
         }
 
         /// <summary>
-        ///     メインタブのファイル読み込み時の処理
+        ///     Processing when reading a file on the main tab
         /// </summary>
         private void OnMainTabPageFileLoad()
         {
-            // メインタブ選択中でなければ何もしない
+            // Do nothing unless the main tab is selected
             if (_tabPageNo != TabPageNo.Main)
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateMainTab();
         }
 
         /// <summary>
-        ///     メインタブ選択時の処理
+        ///     Processing when selecting the main tab
         /// </summary>
         private void OnMainTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateMainTab();
         }
 
         #endregion
 
-        #region メインタブ - シナリオ読み込み
+        #region Main tab ―――― Scenario loading
 
         /// <summary>
-        ///     シナリオリストボックスを初期化する
+        ///     Initialize the scenario list box
         /// </summary>
         private void InitScenarioListBox()
         {
-            // フォルダグループボックスのどれかのラジオボタンを有効にする
+            // Enable any radio button in the folder group box
             vanillaRadioButton.Checked = true;
             if (Game.IsModActive && Directory.Exists(Game.GetModFileName(Game.ScenarioPathName)))
             {
@@ -649,7 +649,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     シナリオリストボックスの表示を更新する
+        ///     Update the display of the scenario list box
         /// </summary>
         private void UpdateScenarioListBox()
         {
@@ -669,13 +669,13 @@ namespace HoI2Editor.Forms
                 folderName = Game.GetVanillaFileName(Game.ScenarioPathName);
             }
 
-            // シナリオフォルダがなければ戻る
+            // Back if there is no scenario folder
             if (!Directory.Exists(folderName))
             {
                 return;
             }
 
-            // eugファイルを順に追加する
+            // eug Add files in order
             string[] fileNames = Directory.GetFiles(folderName, "*.eug");
             foreach (string fileName in fileNames)
             {
@@ -685,7 +685,7 @@ namespace HoI2Editor.Forms
                 }
             }
 
-            // 先頭の項目を選択する
+            // Select the first item
             if (scenarioListBox.Items.Count > 0)
             {
                 scenarioListBox.SelectedIndex = 0;
@@ -693,19 +693,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     読み込みボタン押下時の処理
+        ///     Processing when the load button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLoadButtonClick(object sender, EventArgs e)
         {
-            // シナリオリストボックスの選択項目がなければ何もしない
+            // Do nothing if there is no selection in the scenario list box
             if (scenarioListBox.SelectedIndex < 0)
             {
                 return;
             }
 
-            // 編集済みならば保存するかを問い合わせる
+            // Ask if you want to save it if edited
             if (Scenarios.IsLoaded() && HoI2EditorController.IsDirty())
             {
                 DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
@@ -735,18 +735,18 @@ namespace HoI2Editor.Forms
                 pathName = Game.GetVanillaFileName(Game.ScenarioPathName, fileName);
             }
 
-            // シナリオファイルを読み込む
+            // Read the scenario file
             if (File.Exists(pathName))
             {
                 Scenarios.Load(pathName);
             }
 
-            // データ読み込み後の処理
+            // Processing after reading data
             OnFileLoaded();
         }
 
         /// <summary>
-        ///     フォルダラジオボタンのチェック状態変化時の処理
+        ///     Checking the folder radio button Processing when the status changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -761,10 +761,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region メインタブ - シナリオ情報
+        #region Main tab ―――― Scenario information
 
         /// <summary>
-        ///     シナリオ情報の編集項目を初期化する
+        ///     Initialize the edit items of the scenario information
         /// </summary>
         private void InitScenarioInfoItems()
         {
@@ -790,7 +790,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     シナリオ情報の編集項目を更新する
+        ///     Update the edit items of the scenario information
         /// </summary>
         private void UpdateScenarioInfoItems()
         {
@@ -818,7 +818,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     パネル画像名参照ボタン押下時の処理
+        ///     Processing when the panel image name reference button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -839,7 +839,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     インクルードフォルダ参照ボタン押下時の処理
+        ///     Processing when the include folder browse button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -857,9 +857,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     パネル画像を更新する
+        ///     Update panel image
         /// </summary>
-        /// <param name="fileName">ファイル名</param>
+        /// <param name="fileName">file name</param>
         public void UpdatePanelImage(string fileName)
         {
             Image prev = panelPictureBox.Image;
@@ -887,10 +887,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region メインタブ - オプション
+        #region Main tab ――――option
 
         /// <summary>
-        ///     シナリオオプションの編集項目を初期化する
+        ///     Initialize the edit items of the scenario option
         /// </summary>
         private void InitScenarioOptionItems()
         {
@@ -912,7 +912,7 @@ namespace HoI2Editor.Forms
             difficultyComboBox.Tag = ScenarioEditorItemId.ScenarioDifficulty;
             gameSpeedComboBox.Tag = ScenarioEditorItemId.ScenarioGameSpeed;
 
-            // AIの攻撃性コンボボックス
+            // AI Aggression combo box
             aiAggressiveComboBox.BeginUpdate();
             aiAggressiveComboBox.Items.Clear();
             for (int i = 0; i < ScenarioHeader.AiAggressiveCount; i++)
@@ -921,7 +921,7 @@ namespace HoI2Editor.Forms
             }
             aiAggressiveComboBox.EndUpdate();
 
-            // 難易度コンボボックス
+            // Difficulty combo box
             difficultyComboBox.BeginUpdate();
             difficultyComboBox.Items.Clear();
             for (int i = 0; i < ScenarioHeader.DifficultyCount; i++)
@@ -930,7 +930,7 @@ namespace HoI2Editor.Forms
             }
             difficultyComboBox.EndUpdate();
 
-            // ゲームスピードコンボボックス
+            // Game speed combo box
             gameSpeedComboBox.BeginUpdate();
             gameSpeedComboBox.Items.Clear();
             for (int i = 0; i < ScenarioHeader.GameSpeedCount; i++)
@@ -941,7 +941,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     シナリオオプションの編集項目を更新する
+        ///     Update scenario option edits
         /// </summary>
         private void UpdateScenarioOptionItems()
         {
@@ -970,10 +970,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region メインタブ - 国家選択
+        #region Main tab ―――― National choice
 
         /// <summary>
-        ///     選択可能国リストを更新する
+        ///     Update the list of selectable countries
         /// </summary>
         private void UpdateSelectableList()
         {
@@ -1006,18 +1006,18 @@ namespace HoI2Editor.Forms
             }
             unselectableListBox.EndUpdate();
 
-            // 主要国の操作ボタンを無効化する
+            // Disable operation buttons in major countries
             DisableMajorButtons();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableSelectableItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearSelectableItems();
         }
 
         /// <summary>
-        ///     選択可能国の編集項目を初期化する
+        ///     Initialize edit items for selectable countries
         /// </summary>
         private void InitSelectableItems()
         {
@@ -1037,9 +1037,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択可能国の編集項目を更新する
+        ///     Update selectable country edits
         /// </summary>
-        /// <param name="major">主要国設定</param>
+        /// <param name="major">Major country setting</param>
         private void UpdateSelectableItems(MajorCountrySettings major)
         {
             _controller.UpdateItemValue(majorCountryNameKeyTextBox, major);
@@ -1060,7 +1060,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択可能国の編集項目をクリアする
+        ///     Clear edit items for selectable countries
         /// </summary>
         private void ClearSelectableItems()
         {
@@ -1076,7 +1076,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択可能国の編集項目を有効化する
+        ///     Enable edit items for selectable countries
         /// </summary>
         private void EnableSelectableItems()
         {
@@ -1094,7 +1094,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択可能国の編集項目を無効化する
+        ///     Disable edit items for selectable countries
         /// </summary>
         private void DisableSelectableItems()
         {
@@ -1112,7 +1112,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     主要国の操作ボタンを有効化する
+        ///     Enable operation buttons in major countries
         /// </summary>
         private void EnableMajorButtons()
         {
@@ -1125,7 +1125,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     主要国の操作ボタンを無効化する
+        ///     Disable operation buttons in major countries
         /// </summary>
         private void DisableMajorButtons()
         {
@@ -1135,7 +1135,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択国の操作ボタンを有効化する
+        ///     Enable the operation buttons of the selected country
         /// </summary>
         private void EnableSelectableButtons()
         {
@@ -1144,7 +1144,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択国の操作ボタンを無効化する
+        ///     Disable the operation buttons of the selected country
         /// </summary>
         private void DisableSelectableButtons()
         {
@@ -1153,7 +1153,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     非選択国の操作ボタンを有効化する
+        ///     Enable operation buttons for non-selected countries
         /// </summary>
         private void EnableUnselectableButtons()
         {
@@ -1161,7 +1161,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     非選択国の操作ボタンを無効化する
+        ///     Disable operation buttons for non-selected countries
         /// </summary>
         private void DisableUnselectableButtons()
         {
@@ -1169,13 +1169,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     主要国リストボックスの項目描画処理
+        ///     Item drawing process of major country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMajorListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -1190,14 +1190,14 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<MajorCountrySettings> majors = scenario.Header.MajorCountries;
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = scenario.IsDirtySelectableCountry(majors[e.Index].Country);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -1209,18 +1209,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     選択可能国リストボックスの項目描画処理
+        ///     Item drawing process of selectable country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSelectableListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -1234,14 +1234,14 @@ namespace HoI2Editor.Forms
 
             Scenario scenario = Scenarios.Data;
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = scenario.IsDirtySelectableCountry(_majorFreeCountries[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -1253,18 +1253,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     非選択国リストボックスの項目描画処理
+        ///     Item drawing process of non-selected country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnselectableListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -1278,14 +1278,14 @@ namespace HoI2Editor.Forms
 
             Scenario scenario = Scenarios.Data;
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = scenario.IsDirtySelectableCountry(_selectableFreeCountries[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -1297,45 +1297,45 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     主要国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the major country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMajorListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (majorListBox.SelectedIndex < 0)
             {
-                // 主要国の操作ボタンを無効化する
+                // Disable operation buttons in major countries
                 DisableMajorButtons();
 
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableSelectableItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearSelectableItems();
                 return;
             }
 
             MajorCountrySettings major = GetSelectedMajorCountry();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateSelectableItems(major);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableSelectableItems();
 
-            // 主要国の操作ボタンを有効化する
+            // Enable operation buttons in major countries
             EnableMajorButtons();
         }
 
         /// <summary>
-        ///     選択可能国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the selectable country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1343,17 +1343,17 @@ namespace HoI2Editor.Forms
         {
             if (selectableListBox.SelectedItems.Count == 0)
             {
-                // 選択国の操作ボタンを無効化する
+                // Disable the operation buttons of the selected country
                 DisableSelectableButtons();
                 return;
             }
 
-            // 選択国の操作ボタンを有効化する
+            // Enable the operation buttons of the selected country
             EnableSelectableButtons();
         }
 
         /// <summary>
-        ///     非選択国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selected item in the non-selected country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1361,17 +1361,17 @@ namespace HoI2Editor.Forms
         {
             if (unselectableListBox.SelectedItems.Count == 0)
             {
-                // 非選択国の操作ボタンを無効化する
+                // Disable operation buttons for non-selected countries
                 DisableUnselectableButtons();
                 return;
             }
 
-            // 非選択国の操作ボタンを有効化する
+            // Enable operation buttons for non-selected countries
             EnableUnselectableButtons();
         }
 
         /// <summary>
-        ///     主要国の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the major countries
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1380,26 +1380,26 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<MajorCountrySettings> majors = scenario.Header.MajorCountries;
 
-            // 主要国リストの項目を移動する
+            // Move items in the list of major countries
             int index = majorListBox.SelectedIndex;
             MajorCountrySettings major = majors[index];
             majors.RemoveAt(index);
             majors.Insert(index - 1, major);
 
-            // 主要国リストボックスの項目を移動する
+            // Move items in the major country list box
             majorListBox.SelectedIndexChanged -= OnMajorListBoxSelectedIndexChanged;
             majorListBox.Items.RemoveAt(index);
             majorListBox.Items.Insert(index - 1, Countries.GetTagName(major.Country));
             majorListBox.SelectedIndexChanged += OnMajorListBoxSelectedIndexChanged;
             majorListBox.SelectedIndex = index - 1;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             scenario.SetDirtySelectableCountry(major.Country);
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     主要国の下へボタン押下時の処理
+        ///     Processing when the button is pressed under the major countries
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1408,26 +1408,26 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<MajorCountrySettings> majors = scenario.Header.MajorCountries;
 
-            // 主要国リストの項目を移動する
+            // Move items in the list of major countries
             int index = majorListBox.SelectedIndex;
             MajorCountrySettings major = majors[index];
             majors.RemoveAt(index);
             majors.Insert(index + 1, major);
 
-            // 主要国リストボックスの項目を移動する
+            // Move items in the major country list box
             majorListBox.SelectedIndexChanged -= OnMajorListBoxSelectedIndexChanged;
             majorListBox.Items.RemoveAt(index);
             majorListBox.Items.Insert(index + 1, Countries.GetTagName(major.Country));
             majorListBox.SelectedIndexChanged += OnMajorListBoxSelectedIndexChanged;
             majorListBox.SelectedIndex = index + 1;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             scenario.SetDirtySelectableCountry(major.Country);
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     主要国追加ボタン押下時の処理
+        ///     Processing when the major country addition button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1442,19 +1442,19 @@ namespace HoI2Editor.Forms
             selectableListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 主要国リストボックスに追加する
+                // Add to major country list box
                 majorListBox.Items.Add(Countries.GetTagName(country));
 
-                // 主要国リストに追加する
+                // Add to list of major countries
                 MajorCountrySettings major = new MajorCountrySettings { Country = country };
                 header.MajorCountries.Add(major);
 
-                // 選択可能国リストボックスから削除する
+                // Remove from selectable country list box
                 int index = _majorFreeCountries.IndexOf(country);
                 selectableListBox.Items.RemoveAt(index);
                 _majorFreeCountries.RemoveAt(index);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 scenario.SetDirtySelectableCountry(country);
                 Scenarios.SetDirty();
 
@@ -1463,12 +1463,12 @@ namespace HoI2Editor.Forms
             majorListBox.EndUpdate();
             selectableListBox.EndUpdate();
 
-            // 主要国リストボックスに追加した項目を選択する
+            // Select the item you added to the major country list box
             majorListBox.SelectedIndex = majorListBox.Items.Count - 1;
         }
 
         /// <summary>
-        ///     主要国削除ボタン押下時の処理
+        ///     Processing when the major country delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1479,15 +1479,15 @@ namespace HoI2Editor.Forms
             int index = majorListBox.SelectedIndex;
             Country country = header.MajorCountries[index].Country;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             scenario.SetDirtySelectableCountry(country);
             Scenarios.SetDirty();
 
-            // 主要国リストボックスから削除する
+            // Remove from major country list box
             majorListBox.SelectedIndexChanged -= OnMajorListBoxSelectedIndexChanged;
             majorListBox.Items.RemoveAt(index);
 
-            // 主要国リストボックスの次の項目を選択する
+            // Select the following items in the major country list box
             if (majorListBox.Items.Count > 0)
             {
                 majorListBox.SelectedIndex = index < majorListBox.Items.Count ? index : index - 1;
@@ -1495,13 +1495,13 @@ namespace HoI2Editor.Forms
 
             majorListBox.SelectedIndexChanged += OnMajorListBoxSelectedIndexChanged;
 
-            // 主要国リストから削除する
+            // Remove from major country list
             header.MajorCountries.RemoveAt(index);
 
-            // 選択項目を更新するためにイベントハンドラを呼び出す
+            // Call the event handler to update the selection
             OnMajorListBoxSelectedIndexChanged(sender, e);
 
-            // 選択可能国リストボックスに追加する
+            // Add to selectable country list box
             index = _majorFreeCountries.FindIndex(c => c > country);
             if (index < 0)
             {
@@ -1512,7 +1512,7 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Scenario] major country: -{0}", Countries.Strings[(int) country]);
 
-            // ボタン状態を更新する
+            // Update button status
             if (majorListBox.Items.Count == 0)
             {
                 majorRemoveButton.Enabled = false;
@@ -1520,7 +1520,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択可能国追加ボタン押下時の処理
+        ///     Processing when the selectable country addition button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1535,7 +1535,7 @@ namespace HoI2Editor.Forms
             unselectableListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 選択可能国リストボックスに追加する
+                // Add to selectable country list box
                 int index = _majorFreeCountries.FindIndex(c => c > country);
                 if (index < 0)
                 {
@@ -1544,7 +1544,7 @@ namespace HoI2Editor.Forms
                 selectableListBox.Items.Insert(index, Countries.GetTagName(country));
                 _majorFreeCountries.Insert(index, country);
 
-                // 選択可能国リストに追加する
+                // Add to selectable country list
                 index = header.SelectableCountries.FindIndex(c => c > country);
                 if (index < 0)
                 {
@@ -1552,12 +1552,12 @@ namespace HoI2Editor.Forms
                 }
                 header.SelectableCountries.Insert(index, country);
 
-                // 非選択国リストボックスから削除する
+                // Remove from non-selected country list box
                 index = _selectableFreeCountries.IndexOf(country);
                 unselectableListBox.Items.RemoveAt(index);
                 _selectableFreeCountries.RemoveAt(index);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 scenario.SetDirtySelectableCountry(country);
                 Scenarios.SetDirty();
 
@@ -1568,7 +1568,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択可能国削除ボタン押下時の処理
+        ///     Processing when the selectable country delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1583,7 +1583,7 @@ namespace HoI2Editor.Forms
             unselectableListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 非選択国リストボックスに追加する
+                // Add to non-selected country list box
                 int index = _selectableFreeCountries.FindIndex(c => c > country);
                 if (index < 0)
                 {
@@ -1592,15 +1592,15 @@ namespace HoI2Editor.Forms
                 unselectableListBox.Items.Insert(index, Countries.GetTagName(country));
                 _selectableFreeCountries.Insert(index, country);
 
-                // 選択可能国リストボックスから削除する
+                // Remove from selectable country list box
                 index = _majorFreeCountries.IndexOf(country);
                 selectableListBox.Items.RemoveAt(index);
                 _majorFreeCountries.RemoveAt(index);
 
-                // 選択可能国リストから削除する
+                // Remove from selectable country list
                 header.SelectableCountries.Remove(country);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 scenario.SetDirtySelectableCountry(country);
                 Scenarios.SetDirty();
 
@@ -1611,7 +1611,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロパガンダ画像名参照ボタン押下時の処理
+        ///     Processing when the propaganda image name reference button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1634,9 +1634,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中の主要国設定を取得する
+        ///     Get the selected major country settings
         /// </summary>
-        /// <returns>選択中の主要国設定</returns>
+        /// <returns>Selected major country settings</returns>
         private MajorCountrySettings GetSelectedMajorCountry()
         {
             if (majorListBox.SelectedIndex < 0)
@@ -1647,10 +1647,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロパガンダ画像を更新する
+        ///     Update propaganda images
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="fileName">プロパガンダ画像名</param>
+        /// <param name="country">Country tag</param>
+        /// <param name="fileName">Propaganda image name</param>
         public void UpdatePropagandaImage(Country country, string fileName)
         {
             Image prev = propagandaPictureBox.Image;
@@ -1659,11 +1659,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家のプロパガンダ画像を取得する
+        ///     Get national propaganda images
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <param name="fileName">プロパガンダ画像名</param>
-        /// <returns>プロパガンダ画像</returns>
+        /// <param name="country">Country tag</param>
+        /// <param name="fileName">Propaganda image name</param>
+        /// <returns>Propaganda image</returns>
         private static Image GetPropagandaImage(Country country, string fileName)
         {
             Bitmap bitmap;
@@ -1694,10 +1694,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region メインタブ - 編集項目
+        #region Main tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1710,7 +1710,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -1718,20 +1718,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control);
@@ -1740,24 +1740,24 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1770,7 +1770,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string val = control.Text;
             if (val.Equals((string) _controller.GetItemValue(itemId)))
             {
@@ -1779,30 +1779,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val);
         }
 
         /// <summary>
-        ///     コンボボックスの項目描画処理
+        ///     Item drawing process of combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnScenarioItemComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
@@ -1814,10 +1814,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             int val = (int) _controller.GetItemValue(itemId);
             bool dirty = (e.Index == val) && _controller.IsItemDirty(itemId);
@@ -1826,12 +1826,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1843,14 +1843,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (control.SelectedIndex < 0)
             {
                 return;
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             int val = control.SelectedIndex;
             if (val == (int) _controller.GetItemValue(itemId))
             {
@@ -1859,24 +1859,24 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId);
 
-            // 項目色を変更するため描画更新する
+            // Update drawing to change item color
             control.Refresh();
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -1889,7 +1889,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool val = control.Checked;
             object prev = _controller.GetItemValue(itemId);
             if ((prev != null) && (val == (bool) prev))
@@ -1899,30 +1899,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnSelectableStringItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             MajorCountrySettings major = GetSelectedMajorCountry();
             if (major == null)
             {
@@ -1936,7 +1936,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string val = control.Text;
             if (val.Equals((string) _controller.GetItemValue(itemId, major)))
             {
@@ -1945,19 +1945,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, major);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, major);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, major);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, major);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, major);
         }
 
@@ -1965,12 +1965,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 同盟タブ
+        #region Alliance tab
 
-        #region 同盟タブ - 共通
+        #region Alliance tab ―――― common
 
         /// <summary>
-        ///     同盟タブの編集項目を初期化する
+        ///     Initialize the edit items on the Alliance tab
         /// </summary>
         private void InitAllianceTab()
         {
@@ -1979,77 +1979,77 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟タブの編集項目を更新する
+        ///     Update the edit items on the Alliance tab
         /// </summary>
         private void UpdateAllianceTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Alliance])
             {
                 return;
             }
 
-            // 同盟リストを更新する
+            // Update the alliance list
             UpdateAllianceList();
 
-            // 戦争リストを更新する
+            // Update the war list
             UpdateWarList();
 
-            // 同盟リストを有効化する
+            // Activate the alliance list
             EnableAllianceList();
 
-            // 戦争リストを有効化する
+            // Activate the war list
             EnableWarList();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Alliance] = true;
         }
 
         /// <summary>
-        ///     同盟タブのフォーム読み込み時の処理
+        ///     Processing when loading a form on the Alliance tab
         /// </summary>
         private void OnAllianceTabPageFormLoad()
         {
-            // 同盟タブを初期化する
+            // Initialize the Alliance tab
             InitAllianceTab();
         }
 
         /// <summary>
-        ///     同盟タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the Alliance tab
         /// </summary>
         private void OnAllianceTabPageFileLoad()
         {
-            // 同盟タブ選択中でなければ何もしない
+            // Do nothing unless Alliance tab is selected
             if (_tabPageNo != TabPageNo.Alliance)
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateAllianceTab();
         }
 
         /// <summary>
-        ///     同盟タブ選択時の処理
+        ///     Processing when selecting the Alliance tab
         /// </summary>
         private void OnAllianceTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateAllianceTab();
         }
 
         #endregion
 
-        #region 同盟タブ - 同盟
+        #region Alliance tab ―――― alliance
 
         /// <summary>
-        ///     同盟の編集項目を初期化する
+        ///     Initialize alliance edits
         /// </summary>
         private void InitAllianceItems()
         {
@@ -2063,59 +2063,59 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟の編集項目を更新する
+        ///     Update alliance edits
         /// </summary>
-        /// <param name="alliance">同盟</param>
+        /// <param name="alliance">alliance</param>
         private void UpdateAllianceItems(Alliance alliance)
         {
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             _controller.UpdateItemValue(allianceNameTextBox, alliance);
             _controller.UpdateItemValue(allianceTypeTextBox, alliance);
             _controller.UpdateItemValue(allianceIdTextBox, alliance);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(allianceNameTextBox, alliance);
             _controller.UpdateItemColor(allianceTypeTextBox, alliance);
             _controller.UpdateItemColor(allianceIdTextBox, alliance);
 
-            // 同盟参加国リストを更新する
+            // Update the list of alliance member countries
             UpdateAllianceParticipant(alliance);
         }
 
         /// <summary>
-        ///     同盟の編集項目をクリアする
+        ///     Clear alliance edits
         /// </summary>
         private void ClearAllianceItems()
         {
-            // 編集項目をクリアする
+            // Clear edit items
             allianceNameTextBox.Text = "";
             allianceTypeTextBox.Text = "";
             allianceIdTextBox.Text = "";
 
-            // 同盟参加国リストをクリアする
+            // Clear the list of alliance member countries
             ClearAllianceParticipant();
         }
 
         /// <summary>
-        ///     同盟の編集項目を有効化する
+        ///     Activate alliance edits
         /// </summary>
         private void EnableAllianceItems()
         {
             int index = allianceListView.SelectedIndices[0];
 
-            // 枢軸国/連合国/共産国以外は名前変更できない
+            // Axis powers / / Allied / / Can only be renamed in communal countries
             allianceNameLabel.Enabled = index < 3;
             allianceNameTextBox.Enabled = index < 3;
             allianceIdLabel.Enabled = true;
             allianceTypeTextBox.Enabled = true;
             allianceIdTextBox.Enabled = true;
 
-            // 同盟参加国リストを有効化する
+            // Activate the list of alliance members
             EnableAllianceParticipant();
         }
 
         /// <summary>
-        ///     同盟の編集項目を無効化する
+        ///     Disable alliance edits
         /// </summary>
         private void DisableAllianceItems()
         {
@@ -2125,16 +2125,16 @@ namespace HoI2Editor.Forms
             allianceTypeTextBox.Enabled = false;
             allianceIdTextBox.Enabled = false;
 
-            // 同盟参加国リストを無効化する
+            // Disable the list of alliance members
             DisableAllianceParticipant();
         }
 
         #endregion
 
-        #region 同盟タブ - 同盟リスト
+        #region Alliance tab ―――― Alliance list
 
         /// <summary>
-        ///     同盟リストを更新する
+        ///     Update the alliance list
         /// </summary>
         private void UpdateAllianceList()
         {
@@ -2143,7 +2143,7 @@ namespace HoI2Editor.Forms
             allianceListView.BeginUpdate();
             allianceListView.Items.Clear();
 
-            // 枢軸国
+            // Axis country
             ListViewItem item = new ListViewItem
             {
                 Text = (string) _controller.GetItemValue(ScenarioEditorItemId.AllianceName, data.Axis),
@@ -2152,7 +2152,7 @@ namespace HoI2Editor.Forms
             item.SubItems.Add(data.Axis != null ? Countries.GetNameList(data.Axis.Participant) : "");
             allianceListView.Items.Add(item);
 
-            // 連合国
+            // Allied
             item = new ListViewItem
             {
                 Text = (string) _controller.GetItemValue(ScenarioEditorItemId.AllianceName, data.Allies),
@@ -2161,7 +2161,7 @@ namespace HoI2Editor.Forms
             item.SubItems.Add(data.Allies != null ? Countries.GetNameList(data.Allies.Participant) : "");
             allianceListView.Items.Add(item);
 
-            // 共産国
+            // Communist country
             item = new ListViewItem
             {
                 Text = (string) _controller.GetItemValue(ScenarioEditorItemId.AllianceName, data.Comintern),
@@ -2170,7 +2170,7 @@ namespace HoI2Editor.Forms
             item.SubItems.Add(data.Comintern != null ? Countries.GetNameList(data.Comintern.Participant) : "");
             allianceListView.Items.Add(item);
 
-            // その他の同盟
+            // Other alliances
             foreach (Alliance alliance in data.Alliances)
             {
                 item = new ListViewItem
@@ -2184,21 +2184,21 @@ namespace HoI2Editor.Forms
 
             allianceListView.EndUpdate();
 
-            // 同盟操作ボタンを無効化する
+            // Disable the alliance operation button
             DisableAllianceItemButtons();
 
-            // 同盟参加国操作ボタンを無効化する
+            // Disable alliance member country operation buttons
             DisableAllianceParticipantButtons();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableAllianceItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearAllianceItems();
         }
 
         /// <summary>
-        ///     同盟リストを有効化する
+        ///     Activate the alliance list
         /// </summary>
         private void EnableAllianceList()
         {
@@ -2206,21 +2206,21 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟操作ボタンを有効化する
+        ///     Enable alliance operation buttons
         /// </summary>
         private void EnableAllianceItemButtons()
         {
             int count = allianceListView.Items.Count;
             int index = allianceListView.SelectedIndices[0];
 
-            // 枢軸国/連合国/共産国は順番変更/削除できない
+            // Axis powers / / Allied / / Communist countries change order / / Cannot be deleted
             allianceUpButton.Enabled = index > 3;
             allianceDownButton.Enabled = (index < count - 1) && (index >= 3);
             allianceRemoveButton.Enabled = index >= 3;
         }
 
         /// <summary>
-        ///     同盟操作ボタンを無効化する
+        ///     Disable the alliance operation button
         /// </summary>
         private void DisableAllianceItemButtons()
         {
@@ -2230,43 +2230,43 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the alliance list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 同盟参加国操作ボタンを無効化する
+            // Disable alliance member country operation buttons
             DisableAllianceParticipantButtons();
 
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (allianceListView.SelectedItems.Count == 0)
             {
-                // 同盟操作ボタンを無効化する
+                // Disable the alliance operation button
                 DisableAllianceItemButtons();
 
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableAllianceItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearAllianceItems();
                 return;
             }
 
             Alliance alliance = GetSelectedAlliance();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateAllianceItems(alliance);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableAllianceItems();
 
-            // 同盟操作ボタンを有効化する
+            // Enable alliance operation buttons
             EnableAllianceItemButtons();
         }
 
         /// <summary>
-        ///     同盟の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the alliance
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2275,7 +2275,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Alliance> alliances = scenario.GlobalData.Alliances;
 
-            // 同盟リストビューの項目を移動する
+            // Move items in the Alliance List view
             int index = allianceListView.SelectedIndices[0];
             ListViewItem item = allianceListView.Items[index];
             allianceListView.Items.RemoveAt(index);
@@ -2284,18 +2284,18 @@ namespace HoI2Editor.Forms
             allianceListView.Items[index - 1].Selected = true;
             allianceListView.EnsureVisible(index - 1);
 
-            // 同盟リストの項目を移動する
-            index -= 3; // -3は枢軸国/連合国/共産国の分
+            // Move items in the alliance list
+            index -= 3; // -3 Is a pivotal country / / Allied / / Communist countries
             Alliance alliance = alliances[index];
             alliances.RemoveAt(index);
             alliances.Insert(index - 1, alliance);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     同盟の下へボタン押下時の処理
+        ///     Processing when the button is pressed under the alliance
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2304,7 +2304,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Alliance> alliances = scenario.GlobalData.Alliances;
 
-            // 同盟リストビューの項目を移動する
+            // Move items in the Alliance List view
             int index = allianceListView.SelectedIndices[0];
             ListViewItem item = allianceListView.Items[index];
             allianceListView.Items.RemoveAt(index);
@@ -2313,18 +2313,18 @@ namespace HoI2Editor.Forms
             allianceListView.Items[index + 1].Selected = true;
             allianceListView.EnsureVisible(index + 1);
 
-            // 同盟リストの項目を移動する
-            index -= 3; // -3は枢軸国/連合国/共産国の分
+            // Move items in the alliance list
+            index -= 3; // -3 Is a pivotal country / / Allied / / Communist countries
             Alliance alliance = alliances[index];
             alliances.RemoveAt(index);
             alliances.Insert(index + 1, alliance);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     同盟の新規ボタン押下時の処理
+        ///     Processing when a new button of the alliance is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2333,23 +2333,23 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Alliance> alliances = scenario.GlobalData.Alliances;
 
-            // 同盟リストに項目を追加する
+            // Add an item to the alliance list
             Alliance alliance = new Alliance { Id = Scenarios.GetNewTypeId(Scenarios.DefaultAllianceType, 1) };
             alliances.Add(alliance);
 
-            // 同盟リストビューに項目を追加する
+            // Add an item to the Alliance List view
             ListViewItem item = new ListViewItem { Text = Resources.Alliance, Tag = alliance };
             item.SubItems.Add("");
             allianceListView.Items.Add(item);
 
             Log.Info("[Scenario] alliance added ({0})", allianceListView.Items.Count - 4);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             alliance.SetDirty(Alliance.ItemId.Type);
             alliance.SetDirty(Alliance.ItemId.Id);
             Scenarios.SetDirty();
 
-            // 追加した項目を選択する
+            // Select the added item
             if (allianceListView.SelectedIndices.Count > 0)
             {
                 ListViewItem prev = allianceListView.SelectedItems[0];
@@ -2361,7 +2361,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟の削除ボタン押下時の処理
+        ///     Processing when the delete button of the alliance is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2370,7 +2370,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Alliance> alliances = scenario.GlobalData.Alliances;
 
-            // 枢軸国/連合国/共産国は削除できない
+            // Axis country / / Allied / / Communist countries cannot be deleted
             int index = allianceListView.SelectedIndices[0] - 3;
             if (index < 0)
             {
@@ -2379,21 +2379,21 @@ namespace HoI2Editor.Forms
 
             Alliance alliance = alliances[index];
 
-            // typeとidの組を削除する
+            // type When id idDelete the pair of
             Scenarios.RemoveTypeId(alliance.Id);
 
-            // 同盟リストから項目を削除する
+            // Remove an item from the alliance list
             alliances.RemoveAt(index);
 
-            // 同盟リストビューから項目を削除する
+            // Remove an item from the Alliance List view
             allianceListView.Items.RemoveAt(index + 3);
 
             Log.Info("[Scenario] alliance removed ({0})", index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.SetDirty();
 
-            // 削除した項目の次を選択する
+            // Select next to the deleted item
             index += index < alliances.Count ? 3 : 3 - 1;
             allianceListView.Items[index].Focused = true;
             allianceListView.Items[index].Selected = true;
@@ -2401,19 +2401,19 @@ namespace HoI2Editor.Forms
 
 
         /// <summary>
-        ///     同盟リストビューの項目文字列を設定する
+        ///     Set the item string in the alliance list view
         /// </summary>
-        /// <param name="no">項目番号</param>
-        /// <param name="s">文字列</param>
+        /// <param name="no">Item Number</param>
+        /// <param name="s">Character string</param>
         public void SetAllianceListItemText(int no, string s)
         {
             allianceListView.SelectedItems[0].SubItems[no].Text = s;
         }
 
         /// <summary>
-        ///     選択中の同盟情報を取得する
+        ///     Get information about the selected alliance
         /// </summary>
-        /// <returns>選択中の同盟情報</returns>
+        /// <returns>Selected alliance information</returns>
         private Alliance GetSelectedAlliance()
         {
             return allianceListView.SelectedItems.Count > 0 ? allianceListView.SelectedItems[0].Tag as Alliance : null;
@@ -2421,15 +2421,15 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 同盟タブ - 同盟参加国
+        #region Alliance tab ――――Alliance member countries
 
         /// <summary>
-        ///     同盟参加国リストを更新する
+        ///     Update the list of alliance member countries
         /// </summary>
-        /// <param name="alliance">同盟</param>
+        /// <param name="alliance">alliance</param>
         private void UpdateAllianceParticipant(Alliance alliance)
         {
-            // 同盟参加国
+            // Alliance member countries
             allianceParticipantListBox.BeginUpdate();
             allianceParticipantListBox.Items.Clear();
             foreach (Country country in alliance.Participant)
@@ -2438,7 +2438,7 @@ namespace HoI2Editor.Forms
             }
             allianceParticipantListBox.EndUpdate();
 
-            // 同盟非参加国
+            // Non-participating countries
             _allianceFreeCountries = Countries.Tags.Where(country => !alliance.Participant.Contains(country)).ToList();
             allianceFreeCountryListBox.BeginUpdate();
             allianceFreeCountryListBox.Items.Clear();
@@ -2450,7 +2450,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国リストをクリアする
+        ///     Clear the list of alliance member countries
         /// </summary>
         private void ClearAllianceParticipant()
         {
@@ -2459,7 +2459,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国リストを有効化する
+        ///     Activate the list of alliance members
         /// </summary>
         private void EnableAllianceParticipant()
         {
@@ -2469,7 +2469,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国リストを無効化する
+        ///     Disable the list of alliance members
         /// </summary>
         private void DisableAllianceParticipant()
         {
@@ -2479,7 +2479,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国操作ボタンを無効化する
+        ///     Disable alliance member country operation buttons
         /// </summary>
         private void DisableAllianceParticipantButtons()
         {
@@ -2489,13 +2489,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国リストボックスの項目描画処理
+        ///     Item drawing process of alliance member country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceParticipantListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -2507,21 +2507,21 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = alliance.IsDirtyCountry(alliance.Participant[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -2533,18 +2533,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     同盟非参加国リストボックスの項目描画処理
+        ///     Item drawing process of list box of non-participating countries
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -2556,21 +2556,21 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = alliance.IsDirtyCountry(_allianceFreeCountries[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -2582,12 +2582,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     同盟参加国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the alliance member country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2601,7 +2601,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟非参加国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the list box of non-participating countries
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -2613,13 +2613,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国の追加ボタン押下時の処理
+        ///     Processing when the add button of the alliance member country is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceParticipantAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
@@ -2633,22 +2633,22 @@ namespace HoI2Editor.Forms
             allianceFreeCountryListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 同盟参加国リストボックスに追加する
+                // Add to Alliance Participation List Box
                 allianceParticipantListBox.Items.Add(Countries.GetTagName(country));
 
-                // 同盟参加国リストに追加する
+                // Add to Alliance Participation List
                 alliance.Participant.Add(country);
 
-                // 同盟非参加国リストボックスから削除する
+                // Remove from alliance non-participating country list box
                 int index = _allianceFreeCountries.IndexOf(country);
                 allianceFreeCountryListBox.Items.RemoveAt(index);
                 _allianceFreeCountries.RemoveAt(index);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 alliance.SetDirtyCountry(country);
                 Scenarios.SetDirty();
 
-                // 同盟リストビューの項目を更新する
+                // Update items in Alliance List View
                 allianceListView.SelectedItems[0].SubItems[1].Text = Countries.GetNameList(alliance.Participant);
 
                 Log.Info("[Scenario] alliance participant: +{0} ({1})", Countries.Strings[(int) country],
@@ -2659,13 +2659,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟参加国の削除ボタン押下時の処理
+        ///     Processing when the delete button of the alliance member country is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceParticipantRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
@@ -2679,7 +2679,7 @@ namespace HoI2Editor.Forms
             allianceFreeCountryListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 同盟非参加国リストボックスに追加する
+                // Add to non-alliance country list box
                 int index = _allianceFreeCountries.FindIndex(c => c > country);
                 if (index < 0)
                 {
@@ -2688,18 +2688,18 @@ namespace HoI2Editor.Forms
                 allianceFreeCountryListBox.Items.Insert(index, Countries.GetTagName(country));
                 _allianceFreeCountries.Insert(index, country);
 
-                // 同盟参加国リストボックスから削除する
+                // Remove from Alliance Member List Box
                 index = alliance.Participant.IndexOf(country);
                 allianceParticipantListBox.Items.RemoveAt(index);
 
-                // 同盟参加国リストから削除する
+                // Remove from alliance member list
                 alliance.Participant.Remove(country);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 alliance.SetDirtyCountry(country);
                 Scenarios.SetDirty();
 
-                // 同盟リストビューの項目を更新する
+                // Update items in Alliance List View
                 allianceListView.SelectedItems[0].SubItems[1].Text = Countries.GetNameList(alliance.Participant);
 
                 Log.Info("[Scenario] alliance participant: -{0} ({1})", Countries.Strings[(int) country],
@@ -2710,13 +2710,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     同盟のリーダーに設定ボタン押下時の処理
+        ///     Processing when the setting button is pressed for the leader of the alliance
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceLeaderButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
@@ -2726,21 +2726,21 @@ namespace HoI2Editor.Forms
             int index = allianceParticipantListBox.SelectedIndex;
             Country country = alliance.Participant[index];
 
-            // 同盟参加国リストボックスの先頭に移動する
+            // Move to the top of the Alliance Participation List Box
             allianceParticipantListBox.BeginUpdate();
             allianceParticipantListBox.Items.RemoveAt(index);
             allianceParticipantListBox.Items.Insert(0, Countries.GetTagName(country));
             allianceParticipantListBox.EndUpdate();
 
-            // 同盟参加国リストの先頭に移動する
+            // Move to the top of the list of alliance member countries
             alliance.Participant.RemoveAt(index);
             alliance.Participant.Insert(0, country);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             alliance.SetDirtyCountry(country);
             Scenarios.SetDirty();
 
-            // 同盟リストビューの項目を更新する
+            // Update items in Alliance List View
             allianceListView.SelectedItems[0].SubItems[1].Text = Countries.GetNameList(alliance.Participant);
 
             Log.Info("[Scenario] alliance leader: {0} ({1})", Countries.Strings[(int) country],
@@ -2749,10 +2749,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 同盟タブ - 戦争
+        #region Alliance tab ―――― war
 
         /// <summary>
-        ///     戦争の編集項目を初期化する
+        ///     Initialize the edit items of the war
         /// </summary>
         private void InitWarItems()
         {
@@ -2784,12 +2784,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争の編集項目を更新する
+        ///     Update war edits
         /// </summary>
-        /// <param name="war">戦争</param>
+        /// <param name="war">war</param>
         private void UpdateWarItems(War war)
         {
-            // 編集項目の値を更新する
+            // Update the value of the edit item
             _controller.UpdateItemValue(warStartYearTextBox, war);
             _controller.UpdateItemValue(warStartMonthTextBox, war);
             _controller.UpdateItemValue(warStartDayTextBox, war);
@@ -2803,7 +2803,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(warDefenderTypeTextBox, war);
             _controller.UpdateItemValue(warDefenderIdTextBox, war);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(warStartYearTextBox, war);
             _controller.UpdateItemColor(warStartMonthTextBox, war);
             _controller.UpdateItemColor(warStartDayTextBox, war);
@@ -2817,16 +2817,16 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemColor(warDefenderTypeTextBox, war);
             _controller.UpdateItemColor(warDefenderIdTextBox, war);
 
-            // 戦争参加国リストを更新する
+            // Update the list of participating countries
             UpdateWarParticipant(war);
         }
 
         /// <summary>
-        ///     戦争の編集項目をクリアする
+        ///     Clear war edits
         /// </summary>
         private void ClearWarItems()
         {
-            // 編集項目をクリアする
+            // Clear edit items
             warStartYearTextBox.Text = "";
             warStartMonthTextBox.Text = "";
             warStartDayTextBox.Text = "";
@@ -2840,12 +2840,12 @@ namespace HoI2Editor.Forms
             warDefenderTypeTextBox.Text = "";
             warDefenderIdTextBox.Text = "";
 
-            // 戦争参加国リストをクリアする
+            // Clear the list of countries participating in the war
             ClearWarParticipant();
         }
 
         /// <summary>
-        ///     戦争の編集項目を有効化する
+        ///     Enable war edits
         /// </summary>
         private void EnableWarItems()
         {
@@ -2867,12 +2867,12 @@ namespace HoI2Editor.Forms
             warDefenderTypeTextBox.Enabled = true;
             warDefenderIdTextBox.Enabled = true;
 
-            // 戦争参加国リストを有効化する
+            // Activate the list of participating countries
             EnableWarParticipant();
         }
 
         /// <summary>
-        ///     戦争の編集項目を無効化する
+        ///     Disable war edits
         /// </summary>
         private void DisableWarItems()
         {
@@ -2894,16 +2894,16 @@ namespace HoI2Editor.Forms
             warDefenderTypeTextBox.Enabled = false;
             warDefenderIdTextBox.Enabled = false;
 
-            // 戦争参加国リストを無効化する
+            // Disable the list of participating countries
             DisableWarParticipant();
         }
 
         #endregion
 
-        #region 同盟タブ - 戦争リスト
+        #region Alliance tab ―――― War list
 
         /// <summary>
-        ///     戦争リストビューを更新する
+        ///     Update the war list view
         /// </summary>
         private void UpdateWarList()
         {
@@ -2923,21 +2923,21 @@ namespace HoI2Editor.Forms
             }
             warListView.EndUpdate();
 
-            // 戦争操作ボタンを無効化する
+            // Disable the war operation button
             DisableWarItemButtons();
 
-            // 戦争参加国操作ボタンを無効化する
+            // Disable the operation buttons of the countries participating in the war
             DisableWarParticipantButtons();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableWarItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearWarItems();
         }
 
         /// <summary>
-        ///     戦争リストを有効化する
+        ///     Activate the war list
         /// </summary>
         private void EnableWarList()
         {
@@ -2945,7 +2945,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争操作ボタンを有効化する
+        ///     Enable the war operation button
         /// </summary>
         private void EnableWarItemButtons()
         {
@@ -2958,7 +2958,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争操作ボタンを有効化する
+        ///     Enable the war operation button
         /// </summary>
         private void DisableWarItemButtons()
         {
@@ -2968,43 +2968,43 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the war list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 戦争参加国操作ボタンを無効化する
+            // Disable the operation buttons of the countries participating in the war
             DisableWarParticipantButtons();
 
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (warListView.SelectedItems.Count == 0)
             {
-                // 戦争操作ボタンを無効化する
+                // Disable the war operation button
                 DisableWarItemButtons();
 
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableWarItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearWarItems();
                 return;
             }
 
             War war = GetSelectedWar();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateWarItems(war);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableWarItems();
 
-            // 戦争操作ボタンを有効化する
+            // Enable the war operation button
             EnableWarItemButtons();
         }
 
         /// <summary>
-        ///     戦争の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the top of the war
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3013,7 +3013,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<War> wars = scenario.GlobalData.Wars;
 
-            // 戦争リストビューの項目を移動する
+            // Move items in the war list view
             int index = warListView.SelectedIndices[0];
             ListViewItem item = warListView.Items[index];
             warListView.Items.RemoveAt(index);
@@ -3022,17 +3022,17 @@ namespace HoI2Editor.Forms
             warListView.Items[index - 1].Selected = true;
             warListView.EnsureVisible(index - 1);
 
-            // 戦争リストの項目を移動する
+            // Move items in the war list
             War war = wars[index];
             wars.RemoveAt(index);
             wars.Insert(index - 1, war);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     戦争の下へボタン押下時の処理
+        ///     Processing when the button is pressed under the war
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3041,7 +3041,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<War> wars = scenario.GlobalData.Wars;
 
-            // 戦争リストビューの項目を移動する
+            // Move items in the war list view
             int index = warListView.SelectedIndices[0];
             ListViewItem item = warListView.Items[index];
             warListView.Items.RemoveAt(index);
@@ -3050,17 +3050,17 @@ namespace HoI2Editor.Forms
             warListView.Items[index + 1].Selected = true;
             warListView.EnsureVisible(index + 1);
 
-            // 戦争リストの項目を移動する
+            // Move items in the war list
             War war = wars[index];
             wars.RemoveAt(index);
             wars.Insert(index + 1, war);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     戦争の新規ボタン押下時の処理
+        ///     Processing when a new button of war is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3069,7 +3069,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<War> wars = scenario.GlobalData.Wars;
 
-            // 戦争リストに項目を追加する
+            // Add an item to the war list
             War war = new War
             {
                 StartDate = new GameDate(),
@@ -3080,14 +3080,14 @@ namespace HoI2Editor.Forms
             };
             wars.Add(war);
 
-            // 戦争リストビューに項目を追加する
+            // Add an item to the war list view
             ListViewItem item = new ListViewItem { Tag = war };
             item.SubItems.Add("");
             warListView.Items.Add(item);
 
             Log.Info("[Scenario] war added ({0})", warListView.Items.Count - 1);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             war.SetDirty(War.ItemId.StartYear);
             war.SetDirty(War.ItemId.StartMonth);
             war.SetDirty(War.ItemId.StartDay);
@@ -3102,7 +3102,7 @@ namespace HoI2Editor.Forms
             war.SetDirty(War.ItemId.DefenderId);
             Scenarios.SetDirty();
 
-            // 追加した項目を選択する
+            // Select the added item
             if (warListView.SelectedIndices.Count > 0)
             {
                 ListViewItem prev = warListView.SelectedItems[0];
@@ -3114,7 +3114,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争の削除ボタン押下時の処理
+        ///     Processing when the delete button of the war is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3123,7 +3123,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<War> wars = scenario.GlobalData.Wars;
 
-            // 枢軸国/連合国/共産国は削除できない
+            // Axis country / / Allied / / Communist countries cannot be deleted
             int index = warListView.SelectedIndices[0];
             if (index < 0)
             {
@@ -3134,19 +3134,19 @@ namespace HoI2Editor.Forms
 
             Log.Info("[Scenario] war removed ({0})", index);
 
-            // typeとidの組を削除する
+            // type When id idDelete the pair of
             Scenarios.RemoveTypeId(war.Id);
 
-            // 戦争リストから項目を削除する
+            // Remove an item from the war list
             wars.RemoveAt(index);
 
-            // 戦争リストビューから項目を削除する
+            // Remove an item from the war list view
             warListView.Items.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.SetDirty();
 
-            // 削除した項目の次を選択する
+            // Select next to the deleted item
             if (index >= wars.Count)
             {
                 index --;
@@ -3159,9 +3159,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中の戦争情報を取得する
+        ///     Get the selected war information
         /// </summary>
-        /// <returns>選択中の戦争情報</returns>
+        /// <returns>Selected war information</returns>
         private War GetSelectedWar()
         {
             return warListView.SelectedItems.Count > 0 ? warListView.SelectedItems[0].Tag as War : null;
@@ -3169,17 +3169,17 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 同盟タブ - 戦争参加国
+        #region Alliance tab ―――― War participating countries
 
         /// <summary>
-        ///     戦争参加国リストを更新する
+        ///     Update the list of participating countries
         /// </summary>
         /// <param name="war"></param>
         private void UpdateWarParticipant(War war)
         {
             IEnumerable<Country> countries = Countries.Tags;
 
-            // 攻撃側参加国
+            // Attacking Participating Countries
             warAttackerListBox.BeginUpdate();
             warAttackerListBox.Items.Clear();
             if (war.Attackers?.Participant != null)
@@ -3192,7 +3192,7 @@ namespace HoI2Editor.Forms
             }
             warAttackerListBox.EndUpdate();
 
-            // 防御側参加国
+            // Defender Participating Countries
             warDefenderListBox.BeginUpdate();
             warDefenderListBox.Items.Clear();
             if (war.Defenders?.Participant != null)
@@ -3205,7 +3205,7 @@ namespace HoI2Editor.Forms
             }
             warDefenderListBox.EndUpdate();
 
-            // 戦争非参加国
+            // Non-participating countries
             _warFreeCountries = countries.ToList();
             warFreeCountryListBox.BeginUpdate();
             warFreeCountryListBox.Items.Clear();
@@ -3217,7 +3217,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争参加国リストをクリアする
+        ///     Clear the list of participating countries
         /// </summary>
         private void ClearWarParticipant()
         {
@@ -3227,7 +3227,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争参加国リストを有効化する
+        ///     Activate the list of participating countries
         /// </summary>
         private void EnableWarParticipant()
         {
@@ -3239,7 +3239,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争参加国リストを無効化する
+        ///     Disable the list of participating countries
         /// </summary>
         private void DisableWarParticipant()
         {
@@ -3251,7 +3251,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争参加国操作ボタンを無効化する
+        ///     Disable the operation buttons of the countries participating in the war
         /// </summary>
         private void DisableWarParticipantButtons()
         {
@@ -3264,13 +3264,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争攻撃側参加国リストボックスの項目描画処理
+        ///     Item drawing process of the list box of participating countries on the war attack side
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarAttackerListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -3282,21 +3282,21 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = war.IsDirtyCountry(war.Attackers.Participant[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -3308,18 +3308,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     戦争防御側参加国リストボックスの項目描画処理
+        ///     Item drawing process of the war defender participating country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarDefenderListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -3330,21 +3330,21 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = war.IsDirtyCountry(war.Defenders.Participant[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -3356,18 +3356,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     戦争非参加国リストボックスの項目描画処理
+        ///     Item drawing process of non-war country list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -3379,21 +3379,21 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 bool dirty = war.IsDirtyCountry(_warFreeCountries[e.Index]);
                 brush = new SolidBrush(dirty ? Color.Red : control.ForeColor);
             }
@@ -3405,12 +3405,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     戦争攻撃側参加国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the list box of participating countries on the war attack side
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3424,7 +3424,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争防御側参加国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the list box of participating countries on the war defender side
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3438,7 +3438,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争非参加国リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the list box of non-war countries
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3451,13 +3451,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争攻撃側参加国の追加ボタン押下時の処理
+        ///     Processing when the add button of the participating countries on the war attack side is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarAttackerAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3470,22 +3470,22 @@ namespace HoI2Editor.Forms
             warFreeCountryListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 戦争攻撃側参加国リストボックスに追加する
+                // Add to the list box of participating countries on the war attack side
                 warAttackerListBox.Items.Add(Countries.GetTagName(country));
 
-                // 戦争攻撃側参加国リストに追加する
+                // Add to the list of participating countries on the war attack side
                 war.Attackers.Participant.Add(country);
 
-                // 戦争非参加国リストボックスから削除する
+                // Remove from the list of non-war countries
                 int index = _warFreeCountries.IndexOf(country);
                 warFreeCountryListBox.Items.RemoveAt(index);
                 _warFreeCountries.RemoveAt(index);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 war.SetDirtyCountry(country);
                 Scenarios.SetDirty();
 
-                // 戦争リストビューの項目を更新する
+                // Update items in the war list view
                 warListView.SelectedItems[0].SubItems[0].Text = Countries.GetNameList(war.Attackers.Participant);
 
                 Log.Info("[Scenario] war attacker: +{0} ({1})", Countries.Strings[(int) country],
@@ -3496,13 +3496,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争攻撃側参加国の削除ボタン押下時の処理
+        ///     Processing when the delete button of the participating countries on the war attack side is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarAttackerRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3515,7 +3515,7 @@ namespace HoI2Editor.Forms
             warFreeCountryListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 戦争非参加国リストボックスに追加する
+                // Add to the list box of non-war countries
                 int index = _warFreeCountries.FindIndex(c => c > country);
                 if (index < 0)
                 {
@@ -3524,18 +3524,18 @@ namespace HoI2Editor.Forms
                 warFreeCountryListBox.Items.Insert(index, Countries.GetTagName(country));
                 _warFreeCountries.Insert(index, country);
 
-                // 戦争攻撃側参加国リストボックスから削除する
+                // Remove from the list box of participating countries on the war attack side
                 index = war.Attackers.Participant.IndexOf(country);
                 warAttackerListBox.Items.RemoveAt(index);
 
-                // 戦争攻撃側参加国リストから削除する
+                // Remove from the list of participating countries on the war attack side
                 war.Attackers.Participant.Remove(country);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 war.SetDirtyCountry(country);
                 Scenarios.SetDirty();
 
-                // 戦争リストビューの項目を更新する
+                // Update items in the war list view
                 warListView.SelectedItems[0].SubItems[0].Text = Countries.GetNameList(war.Attackers.Participant);
 
                 Log.Info("[Scenario] war attacker: -{0} ({1})", Countries.Strings[(int) country],
@@ -3546,13 +3546,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争防御側参加国の追加ボタン押下時の処理
+        ///     Processing when the add button of the war defender participating country is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarDefenderAddButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3565,22 +3565,22 @@ namespace HoI2Editor.Forms
             warFreeCountryListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 戦争防御側参加国リストボックスに追加する
+                // Add to War Defender Participating Country List Box
                 warDefenderListBox.Items.Add(Countries.GetTagName(country));
 
-                // 戦争防御側参加国リストに追加する
+                // Add to the list of participating countries of the war defender
                 war.Defenders.Participant.Add(country);
 
-                // 戦争非参加国リストボックスから削除する
+                // Remove from the list of non-war countries
                 int index = _warFreeCountries.IndexOf(country);
                 warFreeCountryListBox.Items.RemoveAt(index);
                 _warFreeCountries.RemoveAt(index);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 war.SetDirtyCountry(country);
                 Scenarios.SetDirty();
 
-                // 戦争リストビューの項目を更新する
+                // Update items in the war list view
                 warListView.SelectedItems[0].SubItems[1].Text = Countries.GetNameList(war.Defenders.Participant);
 
                 Log.Info("[Scenario] war defender: +{0} ({1})", Countries.Strings[(int) country],
@@ -3591,13 +3591,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争防御側参加国の削除ボタン押下時の処理
+        ///     Processing when the delete button of the participating country on the war defender is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarDefenderRemoveButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3610,7 +3610,7 @@ namespace HoI2Editor.Forms
             warFreeCountryListBox.BeginUpdate();
             foreach (Country country in countries)
             {
-                // 戦争非参加国リストボックスに追加する
+                // Add to the list box of non-war countries
                 int index = _warFreeCountries.FindIndex(c => c > country);
                 if (index < 0)
                 {
@@ -3619,18 +3619,18 @@ namespace HoI2Editor.Forms
                 warFreeCountryListBox.Items.Insert(index, Countries.GetTagName(country));
                 _warFreeCountries.Insert(index, country);
 
-                // 戦争防御側参加国リストボックスから削除する
+                // Remove from War Defender Participating Country List Box
                 index = war.Defenders.Participant.IndexOf(country);
                 warDefenderListBox.Items.RemoveAt(index);
 
-                // 戦争防御側参加国リストから削除する
+                // Remove from the list of participating countries on the war defender
                 war.Defenders.Participant.Remove(country);
 
-                // 編集済みフラグを設定する
+                // Set the edited flag
                 war.SetDirtyCountry(country);
                 Scenarios.SetDirty();
 
-                // 戦争リストビューの項目を更新する
+                // Update items in the war list view
                 warListView.SelectedItems[0].SubItems[1].Text = Countries.GetNameList(war.Defenders.Participant);
 
                 Log.Info("[Scenario] war defender: -{0} ({1})", Countries.Strings[(int) country],
@@ -3641,13 +3641,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争攻撃側のリーダーに設定ボタン押下時の処理
+        ///     Processing when the setting button is pressed for the leader on the war attack side
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarAttackerLeaderButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3657,21 +3657,21 @@ namespace HoI2Editor.Forms
             int index = warAttackerListBox.SelectedIndex;
             Country country = war.Attackers.Participant[index];
 
-            // 戦争攻撃側参加国リストボックスの先頭に移動する
+            // Move to the top of the list box of participating countries on the war attack side
             warAttackerListBox.BeginUpdate();
             warAttackerListBox.Items.RemoveAt(index);
             warAttackerListBox.Items.Insert(0, Countries.GetTagName(country));
             warAttackerListBox.EndUpdate();
 
-            // 戦争攻撃側参加国リストの先頭に移動する
+            // Move to the top of the list of participating countries on the war attack side
             war.Attackers.Participant.RemoveAt(index);
             war.Attackers.Participant.Insert(0, country);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             war.SetDirtyCountry(country);
             Scenarios.SetDirty();
 
-            // 戦争リストビューの項目を更新する
+            // Update items in the war list view
             warListView.SelectedItems[0].SubItems[0].Text = Countries.GetNameList(war.Attackers.Participant);
 
             Log.Info("[Scenario] war attacker leader: {0} ({1})", Countries.Strings[(int) country],
@@ -3679,13 +3679,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     戦争防御側のリーダーに設定ボタン押下時の処理
+        ///     Processing when the setting button is pressed for the leader on the war defense side
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarDefenderLeaderButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3695,21 +3695,21 @@ namespace HoI2Editor.Forms
             int index = warDefenderListBox.SelectedIndex;
             Country country = war.Defenders.Participant[index];
 
-            // 戦争防御側参加国リストボックスの先頭に移動する
+            // Move to the top of the War Defender Participating Country List Box
             warDefenderListBox.BeginUpdate();
             warDefenderListBox.Items.RemoveAt(index);
             warDefenderListBox.Items.Insert(0, Countries.GetTagName(country));
             warDefenderListBox.EndUpdate();
 
-            // 戦争防御側参加国リストの先頭に移動する
+            // Move to the top of the list of participating countries on the war defender side
             war.Defenders.Participant.RemoveAt(index);
             war.Defenders.Participant.Insert(0, country);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             war.SetDirtyCountry(country);
             Scenarios.SetDirty();
 
-            // 戦争リストビューの項目を更新する
+            // Update items in the war list view
             warListView.SelectedItems[0].SubItems[1].Text = Countries.GetNameList(war.Defenders.Participant);
 
             Log.Info("[Scenario] war defender leader: {0} ({1})", Countries.Strings[(int) country],
@@ -3718,16 +3718,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 同盟タブ - 編集項目
+        #region Alliance tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
@@ -3741,7 +3741,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -3749,20 +3749,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, alliance);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, alliance);
@@ -3771,30 +3771,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, alliance, allianceListView.SelectedIndices[0]);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, alliance);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, alliance);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, alliance);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, alliance);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnWarIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             War war = GetSelectedWar();
             if (war == null)
             {
@@ -3808,7 +3808,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -3816,20 +3816,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, war);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, war);
@@ -3838,30 +3838,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, war, warListView.SelectedIndices[0]);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, war);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, war);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, war);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, war);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAllianceStringItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Alliance alliance = GetSelectedAlliance();
             if (alliance == null)
             {
@@ -3875,7 +3875,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             string val = control.Text;
             if (val.Equals((string) _controller.GetItemValue(itemId, alliance)))
             {
@@ -3884,19 +3884,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, alliance, allianceListView.SelectedIndices[0]);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, alliance);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, alliance);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, alliance);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, alliance);
         }
 
@@ -3904,12 +3904,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ
+        #region Relationship tab
 
-        #region 関係タブ - 共通
+        #region Relationship tab ―――― common
 
         /// <summary>
-        ///     関係タブを初期化する
+        ///     Initialize the relationship tab
         /// </summary>
         private void InitRelationTab()
         {
@@ -3921,91 +3921,91 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     関係タブを更新する
+        ///     Update the relationship tab
         /// </summary>
         private void UpdateRelationTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Relation])
             {
                 return;
             }
 
-            // 選択国リストを更新する
+            // Update the list of selected countries
             UpdateCountryListBox(relationCountryListBox);
 
-            // 選択国リストを有効化する
+            // Activate the list of selected countries
             EnableRelationCountryList();
 
-            // 国家関係リストをクリアする
+            // Clear the national relations list
             ClearRelationList();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableRelationItems();
             DisableGuaranteedItems();
             DisableNonAggressionItems();
             DisablePeaceItems();
             DisableIntelligenceItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearRelationItems();
             ClearGuaranteedItems();
             ClearNonAggressionItems();
             ClearPeaceItems();
             ClearIntelligenceItems();
 
-            // 国家関係リストを有効化する
+            // Activate the national relations list
             EnableRelationList();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Relation] = true;
         }
 
         /// <summary>
-        ///     関係タブのフォーム読み込み時の処理
+        ///     Processing when loading the form of the relation tab
         /// </summary>
         private void OnRelationTabPageFormLoad()
         {
-            // 関係タブを初期化する
+            // Initialize the relationship tab
             InitRelationTab();
         }
 
         /// <summary>
-        ///     関係タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the relation tab
         /// </summary>
         private void OnRelationTabPageFileLoad()
         {
-            // 関係タブ選択中でなければ何もしない
+            // Do nothing unless the relationship tab is selected
             if (_tabPageNo != TabPageNo.Relation)
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateRelationTab();
         }
 
         /// <summary>
-        ///     関係タブ選択時の処理
+        ///     Processing when the relationship tab is selected
         /// </summary>
         private void OnRelationTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateRelationTab();
         }
 
         #endregion
 
-        #region 国家リスト
+        #region National list
 
         /// <summary>
-        ///     国家リストボックスを有効化する
+        ///     Activate the national list box
         /// </summary>
         private void EnableRelationCountryList()
         {
@@ -4013,28 +4013,28 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ国家関係リストをクリアする
+            // Clear the national relations list if there are no choices
             if (relationCountryListBox.SelectedIndex < 0)
             {
-                // 国家関係リストをクリアする
+                // Clear the national relations list
                 ClearRelationList();
                 return;
             }
 
-            // 国家関係リストを更新する
+            // Update national relations list
             UpdateRelationList();
         }
 
         /// <summary>
-        ///     国家関係の選択国を取得する
+        ///     Acquire a country of choice for national relations
         /// </summary>
-        /// <returns>国家関係の選択国</returns>
+        /// <returns>Country of choice for national relations</returns>
         private Country GetSelectedRelationCountry()
         {
             return relationCountryListBox.SelectedIndex >= 0
@@ -4044,10 +4044,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 国家関係リスト
+        #region Relationship tab ―――― National relations list
 
         /// <summary>
-        ///     国家関係リストを更新する
+        ///     Update national relations list
         /// </summary>
         private void UpdateRelationList()
         {
@@ -4064,7 +4064,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係リストをクリアする
+        ///     Clear the national relations list
         /// </summary>
         private void ClearRelationList()
         {
@@ -4074,7 +4074,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係リストを有効化する
+        ///     Activate the national relations list
         /// </summary>
         private void EnableRelationList()
         {
@@ -4082,23 +4082,23 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the national relations list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (relationListView.SelectedIndices.Count == 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableRelationItems();
                 DisableGuaranteedItems();
                 DisableNonAggressionItems();
                 DisablePeaceItems();
                 DisableIntelligenceItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearRelationItems();
                 ClearGuaranteedItems();
                 ClearNonAggressionItems();
@@ -4115,14 +4115,14 @@ namespace HoI2Editor.Forms
             Treaty peace = Scenarios.GetPeace(selected, target);
             SpySettings spy = Scenarios.GetCountryIntelligence(selected, target);
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateRelationItems(relation, target, settings);
             UpdateGuaranteedItems(relation);
             UpdateNonAggressionItems(nonAggression);
             UpdatePeaceItems(peace);
             UpdateIntelligenceItems(spy);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableRelationItems();
             EnableGuaranteedItems();
             EnableNonAggressionItems();
@@ -4131,33 +4131,33 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易リストビューの項目文字列を設定する
+        ///     Set the item string in the trade list view
         /// </summary>
-        /// <param name="index">項目のインデックス</param>
-        /// <param name="no">項目番号</param>
-        /// <param name="s">文字列</param>
+        /// <param name="index">Item index</param>
+        /// <param name="no">Item Number</param>
+        /// <param name="s">Character string</param>
         public void SetRelationListItemText(int index, int no, string s)
         {
             relationListView.Items[index].SubItems[no].Text = s;
         }
 
         /// <summary>
-        ///     貿易リストビューの選択項目の文字列を設定する
+        ///     Set the character string of the selection item in the trade list view
         /// </summary>
-        /// <param name="no">項目番号</param>
-        /// <param name="s">文字列</param>
+        /// <param name="no">Item Number</param>
+        /// <param name="s">Character string</param>
         public void SetRelationListItemText(int no, string s)
         {
             relationListView.SelectedItems[0].SubItems[no].Text = s;
         }
 
         /// <summary>
-        ///     国家関係リストビューの項目を作成する
+        ///     Create an item in the national relations list view
         /// </summary>
-        /// <param name="selected">選択国</param>
-        /// <param name="target">対象国</param>
-        /// <param name="settings">国家設定</param>
-        /// <returns>国家関係リストビューの項目</returns>
+        /// <param name="selected">Selected country</param>
+        /// <param name="target">Target country</param>
+        /// <param name="settings">National setting</param>
+        /// <returns>Items in the national relations list view</returns>
         private ListViewItem CreateRelationListItem(Country selected, Country target, CountrySettings settings)
         {
             ListViewItem item = new ListViewItem(Countries.GetTagName(target));
@@ -4195,9 +4195,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係の対象国を取得する
+        ///     Acquire the target country of national relations
         /// </summary>
-        /// <returns>国家関係の対象国</returns>
+        /// <returns>Target country of national relations</returns>
         private Country GetTargetRelationCountry()
         {
             return relationListView.SelectedItems.Count > 0
@@ -4207,10 +4207,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 国家関係
+        #region Relationship tab ―――― National relations
 
         /// <summary>
-        ///     国家関係の編集項目を初期化する
+        ///     Initialize national relations edit items
         /// </summary>
         private void InitRelationItems()
         {
@@ -4226,11 +4226,11 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係の編集項目を更新する
+        ///     Update national relations edits
         /// </summary>
-        /// <param name="relation">国家関係</param>
-        /// <param name="target">相手国</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="relation">National relations</param>
+        /// <param name="target">Partner country</param>
+        /// <param name="settings">National setting</param>
         private void UpdateRelationItems(Relation relation, Country target, CountrySettings settings)
         {
             _controller.UpdateItemValue(relationValueTextBox, relation);
@@ -4245,7 +4245,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係の編集項目をクリアする
+        ///     Clear national relations edit items
         /// </summary>
         private void ClearRelationItems()
         {
@@ -4256,7 +4256,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係の編集項目を有効化する
+        ///     Enable national relations edits
         /// </summary>
         private void EnableRelationItems()
         {
@@ -4264,7 +4264,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家関係の編集項目を無効化する
+        ///     Disable national relations edits
         /// </summary>
         private void DisableRelationItems()
         {
@@ -4273,10 +4273,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 独立保障
+        #region Relationship tab ―――― Independence guarantee
 
         /// <summary>
-        ///     独立保障の編集項目を初期化する
+        ///     Initialize the edit items of the independence guarantee
         /// </summary>
         private void InitGuaranteedItems()
         {
@@ -4292,9 +4292,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     独立保障の編集項目を更新する
+        ///     Update independence guarantee edit items
         /// </summary>
-        /// <param name="relation">国家関係</param>
+        /// <param name="relation">National relations</param>
         private void UpdateGuaranteedItems(Relation relation)
         {
             _controller.UpdateItemValue(guaranteedCheckBox, relation);
@@ -4314,7 +4314,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     独立保障の編集項目をクリアする
+        ///     Clear the edit items of the independence guarantee
         /// </summary>
         private void ClearGuaranteedItems()
         {
@@ -4329,7 +4329,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     独立保障の編集項目を有効化する
+        ///     Enable independence guarantee edit items
         /// </summary>
         private void EnableGuaranteedItems()
         {
@@ -4337,7 +4337,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     独立保障の編集項目を無効化する
+        ///     Disable edit items for independence guarantee
         /// </summary>
         private void DisableGuaranteedItems()
         {
@@ -4346,10 +4346,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 不可侵条約
+        #region Relationship tab ―――― Non-aggression treaty
 
         /// <summary>
-        ///     不可侵条約の編集項目を初期化する
+        ///     Initialize the edit items of the non-invasion treaty
         /// </summary>
         private void InitNonAggressionItems()
         {
@@ -4375,9 +4375,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     不可侵条約の編集項目を更新する
+        ///     Update the edit items of the non-invasion treaty
         /// </summary>
-        /// <param name="treaty">協定</param>
+        /// <param name="treaty">Agreement</param>
         private void UpdateNonAggressionItems(Treaty treaty)
         {
             _controller.UpdateItemValue(nonAggressionCheckBox, treaty);
@@ -4415,7 +4415,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     不可侵条約の編集項目をクリアする
+        ///     Clear the edit items of the non-invasion treaty
         /// </summary>
         private void ClearNonAggressionItems()
         {
@@ -4443,7 +4443,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     不可侵条約の編集項目を有効化する
+        ///     Activate the edit items of the non-invasion treaty
         /// </summary>
         private void EnableNonAggressionItems()
         {
@@ -4451,7 +4451,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     不可侵条約の編集項目を無効化する
+        ///     Invalidate the edit items of the non-aggression treaty
         /// </summary>
         private void DisableNonAggressionItems()
         {
@@ -4460,10 +4460,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 講和条約
+        #region Relationship tab ―――― Peace treaty
 
         /// <summary>
-        ///     講和条約の編集項目を初期化する
+        ///     Initialize the edit items of the peace treaty
         /// </summary>
         private void InitPeaceItems()
         {
@@ -4489,9 +4489,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     講和条約の編集項目を更新する
+        ///     Update peace treaty edits
         /// </summary>
-        /// <param name="treaty">協定</param>
+        /// <param name="treaty">Agreement</param>
         private void UpdatePeaceItems(Treaty treaty)
         {
             _controller.UpdateItemValue(peaceCheckBox, treaty);
@@ -4529,7 +4529,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     講和条約の編集項目をクリアする
+        ///     Clear the editing items of the Peace Treaty
         /// </summary>
         private void ClearPeaceItems()
         {
@@ -4557,7 +4557,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     講和条約の編集項目を有効化する
+        ///     Activate the editing items of the Peace Treaty
         /// </summary>
         private void EnablePeaceItems()
         {
@@ -4565,7 +4565,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     講和条約の編集項目を無効化する
+        ///     Invalidate the edit items of the peace treaty
         /// </summary>
         private void DisablePeaceItems()
         {
@@ -4574,10 +4574,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 諜報
+        #region Relationship tab ―――― Intelligence
 
         /// <summary>
-        ///     諜報情報の編集項目を更新する
+        ///     Update intelligence edits
         /// </summary>
         private void InitIntelligenceItems()
         {
@@ -4587,9 +4587,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     諜報情報の編集項目を更新する
+        ///     Update intelligence edits
         /// </summary>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="spy">Intelligence settings</param>
         private void UpdateIntelligenceItems(SpySettings spy)
         {
             _controller.UpdateItemValue(spyNumNumericUpDown, spy);
@@ -4598,7 +4598,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     諜報情報の編集項目をクリアする
+        ///     Clear intelligence edits
         /// </summary>
         private void ClearIntelligenceItems()
         {
@@ -4606,7 +4606,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     諜報情報の編集項目を有効化する
+        ///     Enable intelligence editing items
         /// </summary>
         private void EnableIntelligenceItems()
         {
@@ -4614,7 +4614,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     諜報情報の編集項目を無効化する
+        ///     Disable intelligence edit items
         /// </summary>
         private void DisableIntelligenceItems()
         {
@@ -4623,16 +4623,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 関係タブ - 編集項目
+        #region Relationship tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -4654,7 +4654,7 @@ namespace HoI2Editor.Forms
             CountrySettings settings = Scenarios.GetCountrySettings(selected);
             Relation relation = Scenarios.GetCountryRelation(selected, target);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -4662,20 +4662,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, relation);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, relation);
@@ -4696,27 +4696,27 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, selected, relation);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, relation);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, relation, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, relation);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationDoubleItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -4738,7 +4738,7 @@ namespace HoI2Editor.Forms
             CountrySettings settings = Scenarios.GetCountrySettings(selected);
             Relation relation = Scenarios.GetCountryRelation(selected, target);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             double val;
             if (!DoubleHelper.TryParse(control.Text, out val))
             {
@@ -4746,20 +4746,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, relation);
             if ((prev == null) && DoubleHelper.IsZero(val))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && DoubleHelper.IsEqual(val, (double) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, relation);
@@ -4780,30 +4780,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, selected, relation);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, relation);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, relation);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, relation, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, relation);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationItemCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -4825,7 +4825,7 @@ namespace HoI2Editor.Forms
             CountrySettings settings = Scenarios.GetCountrySettings(selected);
             Relation relation = Scenarios.GetCountryRelation(selected, target);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             bool val = control.Checked;
             object prev = _controller.GetItemValue(itemId, relation);
             if ((prev == null) && !val)
@@ -4833,7 +4833,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (bool) prev))
             {
                 return;
@@ -4853,30 +4853,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, selected, relation);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, relation);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, relation);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, relation, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, relation);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationCountryItemCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -4897,7 +4897,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(selected);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             Country val = control.Checked ? target : Country.None;
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev == null) && (val == Country.None))
@@ -4905,7 +4905,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (Country) prev))
             {
                 return;
@@ -4918,30 +4918,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationNonAggressionItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -4962,7 +4962,7 @@ namespace HoI2Editor.Forms
 
             Treaty treaty = Scenarios.GetNonAggression(selected, target);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -4970,20 +4970,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, treaty);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, treaty);
@@ -4992,30 +4992,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, treaty);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, treaty);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationNonAggressionItemCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -5036,7 +5036,7 @@ namespace HoI2Editor.Forms
 
             Treaty treaty = Scenarios.GetNonAggression(selected, target);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             bool val = control.Checked;
             object prev = _controller.GetItemValue(itemId, treaty);
             if ((prev == null) && !val)
@@ -5044,16 +5044,16 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (bool) prev))
             {
                 return;
             }
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             if (val)
             {
                 treaty = new Treaty
@@ -5076,24 +5076,24 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, !val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, val ? treaty : null);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationPeaceItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -5114,7 +5114,7 @@ namespace HoI2Editor.Forms
 
             Treaty treaty = Scenarios.GetPeace(selected, target);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -5122,52 +5122,52 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, treaty);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, treaty);
                 return;
             }
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, treaty);
 
             _controller.OutputItemValueChangedLog(itemId, val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, treaty);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationPeaceItemCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -5188,7 +5188,7 @@ namespace HoI2Editor.Forms
 
             Treaty treaty = Scenarios.GetPeace(selected, target);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             bool val = control.Checked;
             object prev = _controller.GetItemValue(itemId, treaty);
             if ((prev == null) && !val)
@@ -5196,16 +5196,16 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (bool) prev))
             {
                 return;
             }
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             if (val)
             {
                 treaty = new Treaty
@@ -5228,24 +5228,24 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, !val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, val ? treaty : null);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnRelationIntelligenceItemNumericUpDownValueChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country selected = GetSelectedRelationCountry();
             if (selected == Country.None)
             {
@@ -5267,7 +5267,7 @@ namespace HoI2Editor.Forms
             CountrySettings settings = Scenarios.GetCountrySettings(selected);
             SpySettings spy = Scenarios.GetCountryIntelligence(selected, target);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             int val = (int) control.Value;
             object prev = _controller.GetItemValue(itemId, spy);
             if ((prev == null) && (val == 0))
@@ -5275,13 +5275,13 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val))
             {
                 _controller.UpdateItemValue(control, spy);
@@ -5301,19 +5301,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, selected, spy);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, spy);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, spy);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, spy, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, spy);
         }
 
@@ -5321,12 +5321,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 貿易タブ
+        #region Trade tab
 
-        #region 貿易タブ - 共通
+        #region Trade tab ―――― common
 
         /// <summary>
-        ///     貿易タブの編集項目を初期化する
+        ///     Initialize the edit items on the Trade tab
         /// </summary>
         private void InitTradeTab()
         {
@@ -5335,78 +5335,78 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易タブの編集項目を更新する
+        ///     Update edits on the Trade tab
         /// </summary>
         private void UpdateTradeTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Trade])
             {
                 return;
             }
 
-            // 貿易国コンボボックスを更新する
+            // Update Trading Country Combo Box
             UpdateCountryComboBox(tradeCountryComboBox1, false);
             UpdateCountryComboBox(tradeCountryComboBox2, false);
 
-            // 貿易リストを更新する
+            // Update trade list
             UpdateTradeList();
 
-            // 貿易リストを有効化する
+            // Activate the trade list
             EnableTradeList();
 
-            // 新規ボタンを有効化する
+            // Activate the new button
             EnableTradeNewButton();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Trade] = true;
         }
 
         /// <summary>
-        ///     貿易タブのフォーム読み込み時の処理
+        ///     Processing when loading a form on the trade tab
         /// </summary>
         private void OnTradeTabPageFormLoad()
         {
-            // 貿易タブを初期化する
+            // Initialize the trade tab
             InitTradeTab();
         }
 
         /// <summary>
-        ///     貿易タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the trade tab
         /// </summary>
         private void OnTradeTabPageFileLoad()
         {
-            // 貿易タブ選択中でなければ何もしない
+            // Do nothing unless the trade tab is selected
             if (_tabPageNo != TabPageNo.Trade)
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateTradeTab();
         }
 
         /// <summary>
-        ///     貿易タブ選択時の処理
+        ///     Processing when trade tab is selected
         /// </summary>
         private void OnTradeTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateTradeTab();
         }
 
         #endregion
 
-        #region 貿易タブ - 貿易リスト
+        #region Trade tab ――――Trade list
 
         /// <summary>
-        ///     貿易リストの表示を更新する
+        ///     Update the trade list display
         /// </summary>
         private void UpdateTradeList()
         {
@@ -5419,18 +5419,18 @@ namespace HoI2Editor.Forms
             }
             tradeListView.EndUpdate();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableTradeInfoItems();
             DisableTradeDealsItems();
             DisableTradeButtons();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearTradeInfoItems();
             ClearTradeDealsItems();
         }
 
         /// <summary>
-        ///     貿易リストを有効化する
+        ///     Activate the trade list
         /// </summary>
         private void EnableTradeList()
         {
@@ -5438,7 +5438,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     新規ボタンを有効化する
+        ///     Activate the new button
         /// </summary>
         private void EnableTradeNewButton()
         {
@@ -5446,7 +5446,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     削除/上へ/下へボタンを有効化する
+        ///     delete / / Up / / Enable the down button
         /// </summary>
         private void EnableTradeButtons()
         {
@@ -5458,7 +5458,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     削除/上へ/下へボタンを無効化する
+        ///     delete / / Up / / Disable the down button
         /// </summary>
         private void DisableTradeButtons()
         {
@@ -5468,21 +5468,21 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易リストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the trade list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTradeListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (tradeListView.SelectedIndices.Count == 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableTradeInfoItems();
                 DisableTradeDealsItems();
                 DisableTradeButtons();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearTradeInfoItems();
                 ClearTradeDealsItems();
                 return;
@@ -5490,18 +5490,18 @@ namespace HoI2Editor.Forms
 
             Treaty treaty = GetSelectedTrade();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateTradeInfoItems(treaty);
             UpdateTradeDealsItems(treaty);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableTradeInfoItems();
             EnableTradeDealsItems();
             EnableTradeButtons();
         }
 
         /// <summary>
-        ///     貿易の上へボタン押下時の処理
+        ///     Processing when the button is pressed on the trade
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5510,7 +5510,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Treaty> trades = scenario.GlobalData.Trades;
 
-            // 貿易リストビューの項目を移動する
+            // Move items in the trade list view
             int index = tradeListView.SelectedIndices[0];
             ListViewItem item = tradeListView.Items[index];
             tradeListView.Items.RemoveAt(index);
@@ -5519,18 +5519,18 @@ namespace HoI2Editor.Forms
             tradeListView.Items[index - 1].Selected = true;
             tradeListView.EnsureVisible(index - 1);
 
-            // 貿易リストの項目を移動する
+            // Move items in the trade list
             Treaty trade = trades[index];
             trades.RemoveAt(index);
             trades.Insert(index - 1, trade);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.Data.SetDirty();
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     貿易の下へボタン押下時の処理
+        ///     Processing when the button is pressed under trade
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5539,7 +5539,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Treaty> trades = scenario.GlobalData.Trades;
 
-            // 貿易リストビューの項目を移動する
+            // Move items in the trade list view
             int index = tradeListView.SelectedIndices[0];
             ListViewItem item = tradeListView.Items[index];
             tradeListView.Items.RemoveAt(index);
@@ -5548,18 +5548,18 @@ namespace HoI2Editor.Forms
             tradeListView.Items[index + 1].Selected = true;
             tradeListView.EnsureVisible(index + 1);
 
-            // 貿易リストの項目を移動する
+            // Move items in the trade list
             Treaty trade = trades[index];
             trades.RemoveAt(index);
             trades.Insert(index + 1, trade);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.Data.SetDirty();
             Scenarios.SetDirty();
         }
 
         /// <summary>
-        ///     貿易の新規ボタン押下時の処理
+        ///     Processing when a new trade button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5568,7 +5568,7 @@ namespace HoI2Editor.Forms
             Scenario scenario = Scenarios.Data;
             List<Treaty> trades = scenario.GlobalData.Trades;
 
-            // 貿易リストに項目を追加する
+            // Add an item to the trade list
             Treaty trade = new Treaty
             {
                 StartDate = new GameDate(),
@@ -5577,13 +5577,13 @@ namespace HoI2Editor.Forms
             };
             trades.Add(trade);
 
-            // 貿易リストビューに項目を追加する
+            // Add an item to the trade list view
             ListViewItem item = new ListViewItem { Tag = trade };
             item.SubItems.Add("");
             item.SubItems.Add("");
             tradeListView.Items.Add(item);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             trade.SetDirty(Treaty.ItemId.StartYear);
             trade.SetDirty(Treaty.ItemId.StartMonth);
             trade.SetDirty(Treaty.ItemId.StartDay);
@@ -5596,7 +5596,7 @@ namespace HoI2Editor.Forms
             Scenarios.Data.SetDirty();
             Scenarios.SetDirty();
 
-            // 追加した項目を選択する
+            // Select the added item
             if (tradeListView.SelectedIndices.Count > 0)
             {
                 ListViewItem prev = tradeListView.SelectedItems[0];
@@ -5608,7 +5608,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易の削除ボタン押下時の処理
+        ///     Processing when the delete button of trade is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -5620,20 +5620,20 @@ namespace HoI2Editor.Forms
             int index = tradeListView.SelectedIndices[0];
             Treaty trade = trades[index];
 
-            // typeとidの組を削除する
+            // type When id idDelete the pair of
             Scenarios.RemoveTypeId(trade.Id);
 
-            // 貿易リストから項目を削除する
+            // Remove an item from the trade list
             trades.RemoveAt(index);
 
-            // 貿易リストビューから項目を削除する
+            // Remove an item from the trade list view
             tradeListView.Items.RemoveAt(index);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             Scenarios.Data.SetDirty();
             Scenarios.SetDirty();
 
-            // 削除した項目の次を選択する
+            // Select next to the deleted item
             if (index == trades.Count)
             {
                 index--;
@@ -5646,20 +5646,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易リストビューの選択項目の文字列を設定する
+        ///     Set the character string of the selection item in the trade list view
         /// </summary>
-        /// <param name="no">項目番号</param>
-        /// <param name="s">文字列</param>
+        /// <param name="no">Item Number</param>
+        /// <param name="s">Character string</param>
         public void SetTradeListItemText(int no, string s)
         {
             tradeListView.SelectedItems[0].SubItems[no].Text = s;
         }
 
         /// <summary>
-        ///     貿易リストの項目を作成する
+        ///     Create a trade list item
         /// </summary>
-        /// <param name="treaty">貿易情報</param>
-        /// <returns>貿易リストの項目</returns>
+        /// <param name="treaty">Trade information</param>
+        /// <returns>Trade list items</returns>
         private static ListViewItem CreateTradeListViewItem(Treaty treaty)
         {
             ListViewItem item = new ListViewItem
@@ -5674,9 +5674,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中の貿易情報を取得する
+        ///     Get selected trade information
         /// </summary>
-        /// <returns>選択中の貿易情報</returns>
+        /// <returns>Selected trade information</returns>
         private Treaty GetSelectedTrade()
         {
             return tradeListView.SelectedItems.Count > 0 ? tradeListView.SelectedItems[0].Tag as Treaty : null;
@@ -5684,10 +5684,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 貿易タブ - 貿易情報
+        #region Trade tab ―――― Trade information
 
         /// <summary>
-        ///     貿易情報の編集項目を初期化する
+        ///     Initialize trade information edit items
         /// </summary>
         private void InitTradeInfoItems()
         {
@@ -5713,12 +5713,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易情報の編集項目を更新する
+        ///     Update trade information edits
         /// </summary>
-        /// <param name="treaty">協定</param>
+        /// <param name="treaty">Agreement</param>
         private void UpdateTradeInfoItems(Treaty treaty)
         {
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             _controller.UpdateItemValue(tradeStartYearTextBox, treaty);
             _controller.UpdateItemValue(tradeStartMonthTextBox, treaty);
             _controller.UpdateItemValue(tradeStartDayTextBox, treaty);
@@ -5729,7 +5729,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(tradeIdTextBox, treaty);
             _controller.UpdateItemValue(tradeCancelCheckBox, treaty);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(tradeStartYearTextBox, treaty);
             _controller.UpdateItemColor(tradeStartMonthTextBox, treaty);
             _controller.UpdateItemColor(tradeStartDayTextBox, treaty);
@@ -5742,7 +5742,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易情報の編集項目の表示をクリアする
+        ///     Clear the display of trade information edit items
         /// </summary>
         private void ClearTradeInfoItems()
         {
@@ -5758,7 +5758,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易情報の編集項目を有効化する
+        ///     Enable trade information edits
         /// </summary>
         private void EnableTradeInfoItems()
         {
@@ -5766,7 +5766,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易情報の編集項目を無効化する
+        ///     Disable edit items for trade information
         /// </summary>
         private void DisableTradeInfoItems()
         {
@@ -5775,10 +5775,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 貿易タブ - 貿易内容
+        #region Trade tab ―――― Trade details
 
         /// <summary>
-        ///     貿易内容の編集項目を初期化する
+        ///     Initialize trade content edit items
         /// </summary>
         private void InitTradeDealsItems()
         {
@@ -5812,7 +5812,7 @@ namespace HoI2Editor.Forms
             tradeMoneyTextBox1.Tag = ScenarioEditorItemId.TradeMoney1;
             tradeMoneyTextBox2.Tag = ScenarioEditorItemId.TradeMoney2;
 
-            // 貿易資源ラベル
+            // Trade resource label
             tradeEnergyLabel.Text = Config.GetText(TextId.ResourceEnergy);
             tradeMetalLabel.Text = Config.GetText(TextId.ResourceMetal);
             tradeRareMaterialsLabel.Text = Config.GetText(TextId.ResourceRareMaterials);
@@ -5822,12 +5822,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易内容の編集項目を更新する
+        ///     Update trade content edits
         /// </summary>
-        /// <param name="treaty">協定</param>
+        /// <param name="treaty">Agreement</param>
         private void UpdateTradeDealsItems(Treaty treaty)
         {
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             _controller.UpdateItemValue(tradeCountryComboBox1, treaty);
             _controller.UpdateItemValue(tradeCountryComboBox2, treaty);
             _controller.UpdateItemValue(tradeEnergyTextBox1, treaty);
@@ -5843,7 +5843,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(tradeMoneyTextBox1, treaty);
             _controller.UpdateItemValue(tradeMoneyTextBox2, treaty);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(tradeEnergyTextBox1, treaty);
             _controller.UpdateItemColor(tradeEnergyTextBox2, treaty);
             _controller.UpdateItemColor(tradeMetalTextBox1, treaty);
@@ -5859,7 +5859,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易内容の編集項目の表示をクリアする
+        ///     Clear the display of edit items of trade details
         /// </summary>
         private void ClearTradeDealsItems()
         {
@@ -5880,7 +5880,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易内容の編集項目を有効化する
+        ///     Enable trade content edits
         /// </summary>
         private void EnableTradeDealsItems()
         {
@@ -5888,7 +5888,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易内容の編集項目を無効化する
+        ///     Disable trade content edits
         /// </summary>
         private void DisableTradeDealsItems()
         {
@@ -5896,20 +5896,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     貿易国入れ替えボタン押下時の処理
+        ///     Processing when the trading country replacement button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTradeSwapButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Treaty treaty = GetSelectedTrade();
             if (treaty == null)
             {
                 return;
             }
 
-            // 値を入れ替える
+            // Swap values
             Country country = treaty.Country1;
             treaty.Country1 = treaty.Country2;
             treaty.Country2 = country;
@@ -5921,7 +5921,7 @@ namespace HoI2Editor.Forms
             treaty.Supplies = -treaty.Supplies;
             treaty.Money = -treaty.Money;
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             treaty.SetDirty(Treaty.ItemId.Country1);
             treaty.SetDirty(Treaty.ItemId.Country2);
             treaty.SetDirty(Treaty.ItemId.Energy);
@@ -5932,28 +5932,28 @@ namespace HoI2Editor.Forms
             treaty.SetDirty(Treaty.ItemId.Money);
             Scenarios.SetDirty();
 
-            // 貿易リストビューの項目を更新する
+            // Update items in the trade list view
             ListViewItem item = tradeListView.SelectedItems[0];
             item.Text = Countries.GetName(treaty.Country1);
             item.SubItems[1].Text = Countries.GetName(treaty.Country2);
             item.SubItems[2].Text = treaty.GetTradeString();
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateTradeDealsItems(treaty);
         }
 
         #endregion
 
-        #region 貿易タブ - 編集項目
+        #region Trade tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTradeIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Treaty treaty = GetSelectedTrade();
             if (treaty == null)
             {
@@ -5967,7 +5967,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -5975,20 +5975,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, treaty);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val, treaty))
             {
                 _controller.UpdateItemValue(control, treaty);
@@ -5997,30 +5997,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, treaty);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, treaty);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTradeDoubleItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Treaty treaty = GetSelectedTrade();
             if (treaty == null)
             {
@@ -6034,7 +6034,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             double val;
             if (!DoubleHelper.TryParse(control.Text, out val))
             {
@@ -6042,20 +6042,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, treaty);
             if ((prev == null) && DoubleHelper.IsZero(val))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && DoubleHelper.IsEqual(val, (double) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val, treaty))
             {
                 _controller.UpdateItemValue(control, treaty);
@@ -6064,30 +6064,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, treaty);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, treaty);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTradeItemCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Treaty treaty = GetSelectedTrade();
             if (treaty == null)
             {
@@ -6101,7 +6101,7 @@ namespace HoI2Editor.Forms
             }
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool val = control.Checked;
             if (val == (bool) _controller.GetItemValue(itemId, treaty))
             {
@@ -6110,30 +6110,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, treaty);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, treaty);
         }
 
         /// <summary>
-        ///     コンボボックスの項目描画処理
+        ///     Item drawing process of combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTradeCountryItemComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -6151,10 +6151,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             Country val = (Country) _controller.GetItemValue(itemId, treaty);
             Country sel = (Country) _controller.GetListItemValue(itemId, e.Index);
@@ -6165,12 +6165,12 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -6182,7 +6182,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             if (control.SelectedIndex < 0)
             {
                 return;
@@ -6196,7 +6196,7 @@ namespace HoI2Editor.Forms
 
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             Country val = Countries.Tags[control.SelectedIndex];
             if (val == (Country) _controller.GetItemValue(itemId, treaty))
             {
@@ -6205,19 +6205,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, treaty);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, treaty);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, treaty);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, treaty);
 
-            // 項目色を変更するため描画更新する
+            // Update drawing to change item color
             control.Refresh();
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, treaty);
         }
 
@@ -6225,12 +6225,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家タブ
+        #region National tab
 
-        #region 国家タブ- 共通
+        #region National tab ―――― common
 
         /// <summary>
-        ///     国家タブを初期化する
+        ///     Initialize the national tab
         /// </summary>
         private void InitCountryTab()
         {
@@ -6241,86 +6241,86 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家タブの編集項目を更新する
+        ///     Update the edit items on the national tab
         /// </summary>
         private void UpdateCountryTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Country])
             {
                 return;
             }
 
-            // 兄弟国コンボボックスを更新する
+            // Update Brotherhood Combo Box
             UpdateCountryComboBox(regularIdComboBox, true);
 
-            // 国家リストボックスを更新する
+            // Update national list box
             UpdateCountryListBox(countryListBox);
 
-            // 国家リストボックスを有効化する
+            // Enable national list box
             EnableCountryListBox();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableCountryInfoItems();
             DisableCountryModifierItems();
             DisableCountryResourceItems();
             DisableCountryAiItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearCountryInfoItems();
             ClearCountryModifierItems();
             ClearCountryResourceItems();
             ClearCountryAiItems();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Country] = true;
         }
 
         /// <summary>
-        ///     国家タブのフォーム読み込み時の処理
+        ///     Processing when loading the form of the national tab
         /// </summary>
         private void OnCountryTabPageFormLoad()
         {
-            // 国家タブを初期化する
+            // Initialize the national tab
             InitCountryTab();
         }
 
         /// <summary>
-        ///     国家タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the national tab
         /// </summary>
         private void OnCountryTabPageFileLoad()
         {
-            // 国家タブ選択中でなければ何もしない
+            // Do nothing unless the national tab is selected
             if (_tabPageNo != TabPageNo.Country)
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateCountryTab();
         }
 
         /// <summary>
-        ///     国家タブ選択時の処理
+        ///     Processing when selecting a national tab
         /// </summary>
         private void OnCountryTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateCountryTab();
         }
 
         #endregion
 
-        #region 国家タブ - 国家
+        #region National tab ―――― Nation
 
         /// <summary>
-        ///     国家リストボックスを有効化する
+        ///     Activate the national list box
         /// </summary>
         private void EnableCountryListBox()
         {
@@ -6328,22 +6328,22 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (countryListBox.SelectedIndex < 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableCountryInfoItems();
                 DisableCountryModifierItems();
                 DisableCountryResourceItems();
                 DisableCountryAiItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearCountryInfoItems();
                 ClearCountryModifierItems();
                 ClearCountryResourceItems();
@@ -6354,13 +6354,13 @@ namespace HoI2Editor.Forms
             Country country = GetSelectedCountry();
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateCountryInfoItems(country, settings);
             UpdateCountryModifierItems(settings);
             UpdateCountryResourceItems(settings);
             UpdateCountryAiItems(settings);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableCountryInfoItems();
             EnableCountryModifierItems();
             EnableCountryResourceItems();
@@ -6368,9 +6368,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中の国家を取得する
+        ///     Get the selected nation
         /// </summary>
-        /// <returns>選択中の国家</returns>
+        /// <returns>Selected nation</returns>
         private Country GetSelectedCountry()
         {
             return countryListBox.SelectedIndex >= 0 ? Countries.Tags[countryListBox.SelectedIndex] : Country.None;
@@ -6378,10 +6378,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家タブ - 国家情報
+        #region National tab ―――― National information
 
         /// <summary>
-        ///     国家情報の編集項目を初期化する
+        ///     Initialize the edit items of national information
         /// </summary>
         private void InitCountryInfoItems()
         {
@@ -6411,13 +6411,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家情報の編集項目を更新する
+        ///     Update national information edit items
         /// </summary>
-        /// <param name="country">選択国</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="settings">National setting</param>
         private void UpdateCountryInfoItems(Country country, CountrySettings settings)
         {
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             _controller.UpdateItemValue(countryNameKeyTextBox, settings);
             _controller.UpdateItemValue(countryNameStringTextBox, country, settings);
             _controller.UpdateItemValue(flagExtTextBox, settings);
@@ -6430,7 +6430,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(nukeMonthTextBox, settings);
             _controller.UpdateItemValue(nukeDayTextBox, settings);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(countryNameKeyTextBox, settings);
             _controller.UpdateItemColor(countryNameStringTextBox, country, settings);
             _controller.UpdateItemColor(flagExtTextBox, settings);
@@ -6444,7 +6444,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家情報の編集項目の表示をクリアする
+        ///     Clear the display of edit items of national information
         /// </summary>
         private void ClearCountryInfoItems()
         {
@@ -6462,7 +6462,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家情報の編集項目を有効化する
+        ///     Enable editing items for national information
         /// </summary>
         private void EnableCountryInfoItems()
         {
@@ -6470,7 +6470,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家情報の編集項目を無効化する
+        ///     Disable edit items for national information
         /// </summary>
         private void DisableCountryInfoItems()
         {
@@ -6479,10 +6479,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家タブ - 補正値
+        #region National tab ―――― Correction value
 
         /// <summary>
-        ///     国家補正値の編集項目を初期化する
+        ///     Initialize the edit items of the national correction value
         /// </summary>
         private void InitCountryModifierItems()
         {
@@ -6500,19 +6500,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家補正値の編集項目を更新する
+        ///     Update national correction value edit items
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdateCountryModifierItems(CountrySettings settings)
         {
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             _controller.UpdateItemValue(groundDefEffTextBox, settings);
             _controller.UpdateItemValue(peacetimeIcModifierTextBox, settings);
             _controller.UpdateItemValue(wartimeIcModifierTextBox, settings);
             _controller.UpdateItemValue(industrialModifierTextBox, settings);
             _controller.UpdateItemValue(relativeManpowerTextBox, settings);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(groundDefEffTextBox, settings);
             _controller.UpdateItemColor(peacetimeIcModifierTextBox, settings);
             _controller.UpdateItemColor(wartimeIcModifierTextBox, settings);
@@ -6521,7 +6521,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家補正値の編集項目の表示をクリアする
+        ///     Clear the display of the edit item of the national correction value
         /// </summary>
         private void ClearCountryModifierItems()
         {
@@ -6533,7 +6533,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家補正値の編集項目を有効化する
+        ///     Enable edit items for national correction values
         /// </summary>
         private void EnableCountryModifierItems()
         {
@@ -6541,7 +6541,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家補正値の編集項目を無効化する
+        ///     Disable edit items for national correction values
         /// </summary>
         private void DisableCountryModifierItems()
         {
@@ -6550,10 +6550,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家タブ - 資源情報
+        #region National tab ―――― Resource information
 
         /// <summary>
-        ///     国家資源情報の編集項目を初期化する
+        ///     Initialize the edit items of national resource information
         /// </summary>
         private void InitCountryResourceItems()
         {
@@ -6597,7 +6597,7 @@ namespace HoI2Editor.Forms
             offmapManpowerTextBox.Tag = ScenarioEditorItemId.CountryOffmapManpower;
             offmapIcTextBox.Tag = ScenarioEditorItemId.CountryOffmapIc;
 
-            // 国家資源ラベル
+            // National resource label
             countryEnergyLabel.Text = Config.GetText(TextId.ResourceEnergy);
             countryMetalLabel.Text = Config.GetText(TextId.ResourceMetal);
             countryRareMaterialsLabel.Text = Config.GetText(TextId.ResourceRareMaterials);
@@ -6611,12 +6611,12 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家資源情報の編集項目を更新する
+        ///     Update the edit items of national resource information
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdateCountryResourceItems(CountrySettings settings)
         {
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             _controller.UpdateItemValue(countryEnergyTextBox, settings);
             _controller.UpdateItemValue(countryMetalTextBox, settings);
             _controller.UpdateItemValue(countryRareMaterialsTextBox, settings);
@@ -6637,7 +6637,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(offmapManpowerTextBox, settings);
             _controller.UpdateItemValue(offmapIcTextBox, settings);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(countryEnergyTextBox, settings);
             _controller.UpdateItemColor(countryMetalTextBox, settings);
             _controller.UpdateItemColor(countryRareMaterialsTextBox, settings);
@@ -6660,7 +6660,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家資源情報の編集項目の表示をクリアする
+        ///     Clear the display of edit items of national resource information
         /// </summary>
         private void ClearCountryResourceItems()
         {
@@ -6686,7 +6686,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家資源情報の編集項目を有効化する
+        ///     Enable editing items for national resource information
         /// </summary>
         private void EnableCountryResourceItems()
         {
@@ -6694,7 +6694,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家資源情報の編集項目を無効化する
+        ///     Disable edit items for national resource information
         /// </summary>
         private void DisableCountryResourceItems()
         {
@@ -6703,10 +6703,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家タブ - AI情報
+        #region National tab --AI information
 
         /// <summary>
-        ///     国家AI情報の編集項目を初期化する
+        ///     Nation AI Initialize information edit items
         /// </summary>
         private void InitCountryAiItems()
         {
@@ -6716,20 +6716,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家AI情報の編集項目を更新する
+        ///     Nation AI Update information edit items
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdateCountryAiItems(CountrySettings settings)
         {
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             _controller.UpdateItemValue(aiFileNameTextBox, settings);
 
-            // 編集項目の色を更新する
+            // Update the color of the edit item
             _controller.UpdateItemColor(aiFileNameTextBox, settings);
         }
 
         /// <summary>
-        ///     国家AI情報の編集項目の表示をクリアする
+        ///     Nation AI Clear the display of information edit items
         /// </summary>
         private void ClearCountryAiItems()
         {
@@ -6737,13 +6737,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     AIファイル名参照ボタン押下時の処理
+        ///     AIProcessing when the file name reference button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnAiFileNameBrowseButtonClick(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country country = GetSelectedCountry();
             if (country == Country.None)
             {
@@ -6790,7 +6790,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家AI情報の編集項目を有効化する
+        ///     Nation AI Enable information editing items
         /// </summary>
         private void EnableCountryAiItems()
         {
@@ -6798,7 +6798,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家AI情報の編集項目を無効化する
+        ///     Nation AI Disable information edit items
         /// </summary>
         private void DisableCountryAiItems()
         {
@@ -6807,16 +6807,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 国家タブ - 編集項目
+        #region National tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedCountry();
             if (country == Country.None)
             {
@@ -6832,7 +6832,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -6840,20 +6840,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((settings == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val, settings))
             {
                 _controller.UpdateItemValue(control, settings);
@@ -6867,30 +6867,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryDoubleItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedCountry();
             if (country == Country.None)
             {
@@ -6906,7 +6906,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             double val;
             if (!DoubleHelper.TryParse(control.Text, out val))
             {
@@ -6914,20 +6914,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((settings == null) && DoubleHelper.IsZero(val))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev != null) && DoubleHelper.IsEqual(val, (double) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val, settings))
             {
                 _controller.UpdateItemValue(control, settings);
@@ -6941,30 +6941,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryStringItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedCountry();
             if (country == Country.None)
             {
@@ -6980,7 +6980,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, country, settings);
             string val = control.Text;
             if ((prev == null) && string.IsNullOrEmpty(val))
@@ -6988,7 +6988,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (val.Equals(_controller.GetItemValue(itemId, settings)))
             {
                 return;
@@ -7001,30 +7001,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryNameItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedCountry();
             if (country == Country.None)
             {
@@ -7040,7 +7040,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, country, settings);
             string val = control.Text;
             if ((prev == null) && string.IsNullOrEmpty(val))
@@ -7048,7 +7048,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (val.Equals(_controller.GetItemValue(itemId, country, settings)))
             {
                 return;
@@ -7056,30 +7056,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     コンボボックスの項目描画処理
+        ///     Item drawing process of combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryItemComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -7091,10 +7091,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             if (e.Index > 0)
             {
                 Country country = GetSelectedCountry();
@@ -7111,18 +7111,18 @@ namespace HoI2Editor.Forms
                 brush.Dispose();
             }
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryItemComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Country country = GetSelectedCountry();
             if (country == Country.None)
             {
@@ -7138,13 +7138,13 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((settings == null) && (control.SelectedIndex == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             Country val = control.SelectedIndex > 0 ? Countries.Tags[control.SelectedIndex - 1] : Country.None;
             if ((settings != null) && (val == (Country) _controller.GetItemValue(itemId, settings)))
             {
@@ -7158,13 +7158,13 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // コンボボックスの項目色を変更するために描画更新する
+            // Update drawing to change the item color of the combo box
             control.Refresh();
         }
 
@@ -7172,12 +7172,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 政府タブ
+        #region Government tab
 
-        #region 政府タブ - 共通
+        #region Government tab ―――― common
 
         /// <summary>
-        ///     政府タブを初期化する
+        ///     Initialize the government tab
         /// </summary>
         private void InitGovernmentTab()
         {
@@ -7186,85 +7186,85 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     政府タブの表示を更新する
+        ///     Update the display of the government tab
         /// </summary>
         private void UpdateGovernmentTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Government])
             {
                 return;
             }
 
-            // 国家リストボックスを更新する
+            // Update national list box
             UpdateCountryListBox(governmentCountryListBox);
 
-            // 国家リストボックスを有効化する
+            // Enable national list box
             EnableGovernmentCountryListBox();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisablePoliticalSliderItems();
             DisableCabinetItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearPoliticalSliderItems();
             ClearCabinetItems();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Government] = true;
         }
 
         /// <summary>
-        ///     政府タブのフォーム読み込み時の処理
+        ///     Processing when loading a form on the government tab
         /// </summary>
         private void OnGovernmentTabPageFormLoad()
         {
-            // 政府タブを初期化する
+            // Initialize the government tab
             InitGovernmentTab();
         }
 
         /// <summary>
-        ///     政府タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the Government tab
         /// </summary>
         private void OnGovernmentTabPageFileLoad()
         {
-            // 政府タブ選択中でなければ何もしない
+            // Do nothing unless the government tab is selected
             if (_tabPageNo != TabPageNo.Government)
             {
                 return;
             }
 
-            // 閣僚データの読み込み完了まで待機する
+            // Wait until the reading of ministerial data is completed
             Ministers.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateGovernmentTab();
         }
 
         /// <summary>
-        ///     政府タブ選択時の処理
+        ///     Processing when selecting the government tab
         /// </summary>
         private void OnGovernmentTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 閣僚データの読み込み完了まで待機する
+            // Wait until the reading of ministerial data is completed
             Ministers.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateGovernmentTab();
         }
 
         #endregion
 
-        #region 政府タブ - 国家
+        #region Government tab ―――― Nation
 
         /// <summary>
-        ///     国家リストボックスを有効化する
+        ///     Activate the national list box
         /// </summary>
         private void EnableGovernmentCountryListBox()
         {
@@ -7272,20 +7272,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnGovernmentCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (governmentCountryListBox.SelectedIndex < 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisablePoliticalSliderItems();
                 DisableCabinetItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearPoliticalSliderItems();
                 ClearCabinetItems();
                 return;
@@ -7296,19 +7296,19 @@ namespace HoI2Editor.Forms
             ScenarioHeader header = Scenarios.Data.Header;
             int year = header.StartDate?.Year ?? header.StartYear;
 
-            // 編集項目を更新する
+            // Update edit items
             UpdatePoliticalSliderItems(settings);
             UpdateCabinetItems(country, settings, year);
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnablePoliticalSliderItems();
             EnableCabinetItems();
         }
 
         /// <summary>
-        ///     選択中の国家を取得する
+        ///     Get the selected nation
         /// </summary>
-        /// <returns>選択中の国家</returns>
+        /// <returns>Selected nation</returns>
         private Country GetSelectedGovernmentCountry()
         {
             if (governmentCountryListBox.SelectedIndex < 0)
@@ -7320,10 +7320,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 政府タブ - 政策スライダー
+        #region Government tab ―――― Policy slider
 
         /// <summary>
-        ///     政策スライダーの編集項目を初期化する
+        ///     Initialize the edit items of the policy slider
         /// </summary>
         private void InitPoliticalSliderItems()
         {
@@ -7379,9 +7379,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     政策スライダーの編集項目を更新する
+        ///     Update policy slider edits
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdatePoliticalSliderItems(CountrySettings settings)
         {
             _controller.UpdateItemValue(sliderYearTextBox, settings);
@@ -7402,7 +7402,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     政策スライダーの編集項目の表示をクリアする
+        ///     Clear the display of the edit item of the policy slider
         /// </summary>
         private void ClearPoliticalSliderItems()
         {
@@ -7420,7 +7420,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     政策スライダーの編集項目を有効化する
+        ///     Enable edits in the policy slider
         /// </summary>
         private void EnablePoliticalSliderItems()
         {
@@ -7428,7 +7428,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     政策スライダーの編集項目を無効化する
+        ///     Disable edit items on the policy slider
         /// </summary>
         private void DisablePoliticalSliderItems()
         {
@@ -7437,10 +7437,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 政府タブ - 閣僚
+        #region Government tab ―――― Minister
 
         /// <summary>
-        ///     閣僚の編集項目を初期化する
+        ///     Initialize ministerial edits
         /// </summary>
         private void InitCabinetItems()
         {
@@ -7519,17 +7519,17 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚の編集項目を更新する
+        ///     Update ministerial edits
         /// </summary>
-        /// <param name="country">選択国</param>
-        /// <param name="settings">国家設定</param>
-        /// <param name="year">対象年次</param>
+        /// <param name="country">Selected country</param>
+        /// <param name="settings">National setting</param>
+        /// <param name="year">Target year</param>
         private void UpdateCabinetItems(Country country, CountrySettings settings, int year)
         {
-            // 閣僚候補リストを更新する
+            // Update the list of ministerial candidates
             _controller.UpdateMinisterList(country, year);
 
-            // 閣僚コンボボックスの表示を更新する
+            // Update the display of the ministerial combo box
             _controller.UpdateItemValue(headOfStateComboBox, settings);
             _controller.UpdateItemValue(headOfGovernmentComboBox, settings);
             _controller.UpdateItemValue(foreignMinisterComboBox, settings);
@@ -7541,7 +7541,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(chiefOfNavyComboBox, settings);
             _controller.UpdateItemValue(chiefOfAirComboBox, settings);
 
-            // 閣僚type/idテキストボックスの表示を更新する
+            // Minister type / id Update the display of the text box
             _controller.UpdateItemValue(headOfStateTypeTextBox, settings);
             _controller.UpdateItemValue(headOfStateIdTextBox, settings);
             _controller.UpdateItemValue(headOfGovernmentTypeTextBox, settings);
@@ -7563,7 +7563,7 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemValue(chiefOfAirTypeTextBox, settings);
             _controller.UpdateItemValue(chiefOfAirIdTextBox, settings);
 
-            // 閣僚type/idテキストボックスの色を更新する
+            // Minister type / id Update text box color
             _controller.UpdateItemColor(headOfStateTypeTextBox, settings);
             _controller.UpdateItemColor(headOfStateIdTextBox, settings);
             _controller.UpdateItemColor(headOfGovernmentTypeTextBox, settings);
@@ -7587,7 +7587,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚の編集項目の表示をクリアする
+        ///     Clear the display of ministerial edit items
         /// </summary>
         private void ClearCabinetItems()
         {
@@ -7625,7 +7625,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚の編集項目を有効化する
+        ///     Enable ministerial edits
         /// </summary>
         private void EnableCabinetItems()
         {
@@ -7633,7 +7633,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚の編集項目を無効化する
+        ///     Disable ministerial edits
         /// </summary>
         private void DisableCabinetItems()
         {
@@ -7642,16 +7642,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 政府タブ - 編集項目
+        #region Government tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnGovernmentIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedGovernmentCountry();
             if (country == Country.None)
             {
@@ -7667,7 +7667,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -7675,20 +7675,20 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((settings == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev != null) && (val == (int) prev))
             {
                 return;
             }
 
-            // 無効な値ならば値を戻す
+            // Returns a value if it is invalid
             if (!_controller.IsItemValueValid(itemId, val, settings))
             {
                 _controller.UpdateItemValue(control, settings);
@@ -7702,30 +7702,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     政策スライダースライドバーの値変更時の処理
+        ///     Policy slider Process when changing the value of the slide bar
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPoliticalSliderTrackBarScroll(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedGovernmentCountry();
             if (country == Country.None)
             {
@@ -7737,7 +7737,7 @@ namespace HoI2Editor.Forms
             TrackBar control = (TrackBar) sender;
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             int val = 11 - control.Value;
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev == null) && (val == 5))
@@ -7745,7 +7745,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
@@ -7758,24 +7758,24 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
         }
 
         /// <summary>
-        ///     閣僚コンボボックスの項目描画処理
+        ///     Item drawing process of minister combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCabinetComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
@@ -7787,10 +7787,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             Country country = GetSelectedGovernmentCountry();
             CountrySettings settings = Scenarios.GetCountrySettings(country);
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
@@ -7804,18 +7804,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     閣僚コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the ministerial combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCabinetComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             ComboBox control = (ComboBox) sender;
             int index = control.SelectedIndex;
             if (index < 0)
@@ -7823,7 +7823,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedGovernmentCountry();
             if (country == Country.None)
             {
@@ -7833,14 +7833,14 @@ namespace HoI2Editor.Forms
 
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object val = _controller.GetListItemValue(itemId, index);
             if (val == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev != null) && ((int) val == (int) prev))
             {
@@ -7854,19 +7854,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
@@ -7874,102 +7874,102 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 技術タブ
+        #region Tech tab
 
-        #region 技術タブ - 共通
+        #region Technology tab ―――― common
 
         /// <summary>
-        ///     技術タブを初期化する
+        ///     Initialize the technology tab
         /// </summary>
         private static void InitTechTab()
         {
-            // 何もしない
+            // do nothing
         }
 
         /// <summary>
-        ///     技術タブを更新する
+        ///     Update the technology tab
         /// </summary>
         private void UpdateTechTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Technology])
             {
                 return;
             }
 
-            // 技術カテゴリリストボックスを初期化する
+            // Initialize the technical category list box
             InitTechCategoryListBox();
 
-            // 技術カテゴリリストボックスを有効化する
+            // Enable the technology category list box
             EnableTechCategoryListBox();
 
-            // 国家リストボックスを更新する
+            // Update national list box
             UpdateCountryListBox(techCountryListBox);
 
-            // 国家リストボックスを有効化する
+            // Enable national list box
             EnableTechCountryListBox();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableTechItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearTechItems();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Technology] = true;
         }
 
         /// <summary>
-        ///     技術タブのフォーム読み込み時の処理
+        ///     Processing when loading a form on the Technology tab
         /// </summary>
         private static void OnTechTabPageFormLoad()
         {
-            // 技術タブを初期化する
+            // Initialize the technology tab
             InitTechTab();
         }
 
         /// <summary>
-        ///     技術タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the Technology tab
         /// </summary>
         private void OnTechTabPageFileLoad()
         {
-            // 政府タブ選択中でなければ何もしない
+            // Do nothing unless the government tab is selected
             if (_tabPageNo != TabPageNo.Technology)
             {
                 return;
             }
 
-            // 技術データの読み込み完了まで待機する
+            // Wait until the technical data has been read
             Techs.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateTechTab();
         }
 
         /// <summary>
-        ///     技術タブ選択時の処理
+        ///     Processing when technology tab is selected
         /// </summary>
         private void OnTechTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 技術データの読み込み完了まで待機する
+            // Wait until the technical data has been read
             Techs.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateTechTab();
         }
 
         #endregion
 
-        #region 技術タブ - 技術カテゴリ
+        #region Technology tab ―――― Technology category
 
         /// <summary>
-        ///     技術カテゴリリストボックスを初期化する
+        ///     Initialize the technical category list box
         /// </summary>
         private void InitTechCategoryListBox()
         {
@@ -7984,7 +7984,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術カテゴリリストボックスを有効化する
+        ///     Enable the technology category list box
         /// </summary>
         private void EnableTechCategoryListBox()
         {
@@ -7992,35 +7992,35 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術カテゴリリストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item in the technical category list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechCategoryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択中の国家がなければ編集項目を無効化する
+            // Disable edits if no nation is selected
             Country country = GetSelectedTechCountry();
             if (country == Country.None)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableTechItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearTechItems();
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateTechItems();
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableTechItems();
         }
 
         /// <summary>
-        ///     選択中の技術グループを取得する
+        ///     Get the selected technology group
         /// </summary>
-        /// <returns>選択中の技術グループ</returns>
+        /// <returns>Selected technology group</returns>
         private TechGroup GetSelectedTechGroup()
         {
             if (techCategoryListBox.SelectedIndex < 0)
@@ -8032,10 +8032,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 技術タブ - 国家
+        #region Technology tab ―――― Nation
 
         /// <summary>
-        ///     国家リストボックスを有効化する
+        ///     Activate the national list box
         /// </summary>
         private void EnableTechCountryListBox()
         {
@@ -8043,34 +8043,34 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (techCountryListBox.SelectedIndex < 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableTechItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearTechItems();
                 return;
             }
 
-            // 編集項目を更新する
+            // Update edit items
             UpdateTechItems();
 
-            // 編集項目を有効化する
+            // Enable edit items
             EnableTechItems();
         }
 
         /// <summary>
-        ///     選択中の国家を取得する
+        ///     Get the selected nation
         /// </summary>
-        /// <returns>選択中の国家</returns>
+        /// <returns>Selected nation</returns>
         private Country GetSelectedTechCountry()
         {
             if (techCountryListBox.SelectedIndex < 0)
@@ -8082,10 +8082,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 技術タブ - 編集項目
+        #region Technology tab ―――― Edit items
 
         /// <summary>
-        ///     技術の編集項目を更新する
+        ///     Update technical edits
         /// </summary>
         private void UpdateTechItems()
         {
@@ -8093,38 +8093,38 @@ namespace HoI2Editor.Forms
             CountrySettings settings = Scenarios.GetCountrySettings(country);
             TechGroup grp = GetSelectedTechGroup();
 
-            // 保有技術リスト
+            // List of owned technologies
             _techs = grp.Items.OfType<TechItem>().ToList();
             UpdateOwnedTechList(settings);
 
-            // 青写真リスト
+            // Blueprint list
             UpdateBlueprintList(settings);
 
-            // 発明イベントリスト
+            // Invention event list
             _inventions = Techs.Groups.SelectMany(g => g.Items.OfType<TechEvent>()).ToList();
             UpdateInventionList(settings);
 
-            // 技術ツリーを更新する
+            // Update the tech tree
             _techTreePanelController.Category = grp.Category;
             _techTreePanelController.Update();
         }
 
         /// <summary>
-        ///     技術の編集項目の表示をクリアする
+        ///     Clear the display of technical edit items
         /// </summary>
         private void ClearTechItems()
         {
-            // 技術ツリーをクリアする
+            // Clear the technology tree
             _techTreePanelController.Clear();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ownedTechsListView.Items.Clear();
             blueprintsListView.Items.Clear();
             inventionsListView.Items.Clear();
         }
 
         /// <summary>
-        ///     技術の編集項目を有効化する
+        ///     Enable technical edits
         /// </summary>
         private void EnableTechItems()
         {
@@ -8137,7 +8137,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術の編集項目を無効化する
+        ///     Disable technical edits
         /// </summary>
         private void DisableTechItems()
         {
@@ -8150,9 +8150,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保有技術リストの表示を更新する
+        ///     Update the display of the possessed technology list
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdateOwnedTechList(CountrySettings settings)
         {
             ownedTechsListView.ItemChecked -= OnOwnedTechsListViewItemChecked;
@@ -8185,9 +8185,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     青写真リストの表示を更新する
+        ///     Update the display of the blue photo list
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdateBlueprintList(CountrySettings settings)
         {
             blueprintsListView.ItemChecked -= OnBlueprintsListViewItemChecked;
@@ -8220,9 +8220,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベントリストの表示を更新する
+        ///     Update the display of the invention event list
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private void UpdateInventionList(CountrySettings settings)
         {
             inventionsListView.ItemChecked -= OnInveitionsListViewItemChecked;
@@ -8253,13 +8253,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保有技術リストビューのチェック状態変更時の処理
+        ///     Processing when the check status of the possessed technology list view is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOwnedTechsListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedTechCountry();
             if (country == Country.None)
             {
@@ -8273,7 +8273,7 @@ namespace HoI2Editor.Forms
             }
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool val = e.Item.Checked;
             if ((settings != null) && (val == settings.TechApps.Contains(item.Id)))
             {
@@ -8287,7 +8287,7 @@ namespace HoI2Editor.Forms
                 settings = Scenarios.CreateCountrySettings(country);
             }
 
-            // 値を更新する
+            // Update value
             if (val)
             {
                 settings.TechApps.Add(item.Id);
@@ -8297,25 +8297,25 @@ namespace HoI2Editor.Forms
                 settings.TechApps.Remove(item.Id);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             settings.SetDirtyOwnedTech(item.Id);
             Scenarios.SetDirty();
 
-            // 文字色を変更する
+            // Change the font color
             e.Item.ForeColor = Color.Red;
 
-            // 技術ツリーの項目ラベルを更新する
+            // Update item labels in the tech tree
             _techTreePanelController.UpdateItem(item);
         }
 
         /// <summary>
-        ///     青写真リストビューのチェック状態変更時の処理
+        ///     Process when changing the check status of the blue photo list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnBlueprintsListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedTechCountry();
             if (country == Country.None)
             {
@@ -8329,7 +8329,7 @@ namespace HoI2Editor.Forms
             }
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool val = e.Item.Checked;
             if ((settings != null) && (val == settings.BluePrints.Contains(item.Id)))
             {
@@ -8343,7 +8343,7 @@ namespace HoI2Editor.Forms
                 settings = Scenarios.CreateCountrySettings(country);
             }
 
-            // 値を更新する
+            // Update value
             if (val)
             {
                 settings.BluePrints.Add(item.Id);
@@ -8353,25 +8353,25 @@ namespace HoI2Editor.Forms
                 settings.BluePrints.Remove(item.Id);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             settings.SetDirtyBlueprint(item.Id);
             Scenarios.SetDirty();
 
-            // 文字色を変更する
+            // Change the font color
             e.Item.ForeColor = Color.Red;
 
-            // 技術ツリーの項目ラベルを更新する
+            // Update item labels in the tech tree
             _techTreePanelController.UpdateItem(item);
         }
 
         /// <summary>
-        ///     発明イベントリストビューのチェック状態変更時の処理
+        ///     Processing when the check status of the invention event list view is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnInveitionsListViewItemChecked(object sender, ItemCheckedEventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedTechCountry();
             if (country == Country.None)
             {
@@ -8385,7 +8385,7 @@ namespace HoI2Editor.Forms
             }
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             bool val = e.Item.Checked;
             if ((settings != null) && (val == settings.Inventions.Contains(ev.Id)))
             {
@@ -8399,7 +8399,7 @@ namespace HoI2Editor.Forms
                 settings = Scenarios.CreateCountrySettings(country);
             }
 
-            // 値を更新する
+            // Update value
             if (val)
             {
                 settings.Inventions.Add(ev.Id);
@@ -8409,29 +8409,29 @@ namespace HoI2Editor.Forms
                 settings.Inventions.Remove(ev.Id);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             settings.SetDirtyInvention(ev.Id);
             Scenarios.SetDirty();
 
-            // 文字色を変更する
+            // Change the font color
             e.Item.ForeColor = Color.Red;
 
-            // 技術ツリーの項目ラベルを更新する
+            // Update item labels in the tech tree
             _techTreePanelController.UpdateItem(ev);
         }
 
         #endregion
 
-        #region 技術タブ - 技術ツリー
+        #region Tech tab ―――― Technology tree
 
         /// <summary>
-        ///     項目ラベルマウスクリック時の処理
+        ///     Processing when clicking the item label mouse
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnTechTreeItemMouseClick(object sender, TechTreePanelController.ItemMouseEventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedTechCountry();
             if (country == Country.None)
             {
@@ -8441,12 +8441,12 @@ namespace HoI2Editor.Forms
             TechItem tech = e.Item as TechItem;
             if (tech != null)
             {
-                // 左クリックで保有技術の有無を切り替える
+                // Left-click to switch the presence or absence of possessed technology
                 if (e.Button == MouseButtons.Left)
                 {
                     ToggleOwnedTech(tech, country);
                 }
-                // 右クリックで青写真の有無を切り替える
+                // Right-click to switch between blueprints
                 else if (e.Button == MouseButtons.Right)
                 {
                     ToggleBlueprint(tech, country);
@@ -8457,7 +8457,7 @@ namespace HoI2Editor.Forms
             TechEvent ev = e.Item as TechEvent;
             if (ev != null)
             {
-                // 左クリックで保有技術の有無を切り替える
+                // Left-click to switch the presence or absence of possessed technology
                 if (e.Button == MouseButtons.Left)
                 {
                     ToggleInvention(ev, country);
@@ -8466,10 +8466,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保有技術の有無を切り替える
+        ///     Switch the presence or absence of possessed technology
         /// </summary>
-        /// <param name="item">対象技術</param>
-        /// <param name="country">対象国</param>
+        /// <param name="item">Target technology</param>
+        /// <param name="country">Target country</param>
         private void ToggleOwnedTech(TechItem item, Country country)
         {
             CountrySettings settings = Scenarios.GetCountrySettings(country);
@@ -8482,7 +8482,7 @@ namespace HoI2Editor.Forms
                 settings = Scenarios.CreateCountrySettings(country);
             }
 
-            // 値を更新する
+            // Update value
             if (val)
             {
                 settings.TechApps.Add(item.Id);
@@ -8492,14 +8492,14 @@ namespace HoI2Editor.Forms
                 settings.TechApps.Remove(item.Id);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             settings.SetDirtyOwnedTech(item.Id);
             Scenarios.SetDirty();
 
-            // 技術ツリーの項目ラベルを更新する
+            // Update item labels in the tech tree
             _techTreePanelController.UpdateItem(item);
 
-            // 保有技術リストビューの表示を更新する
+            // Update the display of the owned technology list view
             int index = _techs.IndexOf(item);
             if (index >= 0)
             {
@@ -8511,10 +8511,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保有技術の有無を切り替える
+        ///     Switch the presence or absence of possessed technology
         /// </summary>
-        /// <param name="item">対象技術</param>
-        /// <param name="country">対象国</param>
+        /// <param name="item">Target technology</param>
+        /// <param name="country">Target country</param>
         private void ToggleBlueprint(TechItem item, Country country)
         {
             CountrySettings settings = Scenarios.GetCountrySettings(country);
@@ -8536,14 +8536,14 @@ namespace HoI2Editor.Forms
                 settings.BluePrints.Remove(item.Id);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             settings.SetDirtyBlueprint(item.Id);
             Scenarios.SetDirty();
 
-            // 技術ツリーの項目ラベルを更新する
+            // Update item labels in the tech tree
             _techTreePanelController.UpdateItem(item);
 
-            // 保有技術リストビューの表示を更新する
+            // Update the display of the owned technology list view
             int index = _techs.IndexOf(item);
             if (index >= 0)
             {
@@ -8555,10 +8555,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     発明イベントの有無を切り替える
+        ///     Switch the presence or absence of an invention event
         /// </summary>
-        /// <param name="item">対象発明イベント</param>
-        /// <param name="country">対象国</param>
+        /// <param name="item">Target invention event</param>
+        /// <param name="country">Target country</param>
         private void ToggleInvention(TechEvent item, Country country)
         {
             CountrySettings settings = Scenarios.GetCountrySettings(country);
@@ -8580,14 +8580,14 @@ namespace HoI2Editor.Forms
                 settings.Inventions.Remove(item.Id);
             }
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             settings.SetDirtyInvention(item.Id);
             Scenarios.SetDirty();
 
-            // 技術ツリーの項目ラベルを更新する
+            // Update item labels in the tech tree
             _techTreePanelController.UpdateItem(item);
 
-            // 保有技術リストビューの表示を更新する
+            // Update the display of the owned technology list view
             int index = _inventions.IndexOf(item);
             if (index >= 0)
             {
@@ -8599,13 +8599,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術項目の状態を返す
+        ///     Returns the status of a technical item
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnQueryTechTreeItemStatus(object sender, TechTreePanelController.QueryItemStatusEventArgs e)
         {
-            // 選択中の国家がなければ何もしない
+            // Do nothing if there is no selected nation
             Country country = GetSelectedTechCountry();
             if (country == Country.None)
             {
@@ -8637,12 +8637,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ
+        #region Providence stub
 
-        #region プロヴィンスタブ - 共通
+        #region Providence stub ―――― common
 
         /// <summary>
-        ///     プロヴィンスタブを初期化する
+        ///     Initialize the province stub
         /// </summary>
         private void InitProvinceTab()
         {
@@ -8655,130 +8655,130 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスタブの表示を更新する
+        ///     Update the display of the Providence stub
         /// </summary>
         private void UpdateProvinceTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Province])
             {
                 return;
             }
 
-            // 陸地プロヴィンスリストを初期化する
+            // Initialize the land province list
             _controller.InitProvinceList();
 
-            // プロヴィンスリストを初期化する
+            // Initialize the provision list
             InitProvinceList();
 
-            // 国家フィルターを更新する
+            // Update national filter
             UpdateProvinceCountryFilter();
 
-            // プロヴィンスリストを有効化する
+            // Activate the provision list
             EnableProvinceList();
 
-            // 国家フィルターを有効化する
+            // Enable national filter
             EnableProvinceCountryFilter();
 
-            // IDテキストボックスを有効化する
+            // ID Enable text box
             EnableProvinceIdTextBox();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableProvinceCountryItems();
             DisableProvinceInfoItems();
             DisableProvinceResourceItems();
             DisableProvinceBuildingItems();
 
-            // 編集項目の表示をクリアする
+            // Clear the display of edit items
             ClearProvinceCountryItems();
             ClearProvinceInfoItems();
             ClearProvinceResourceItems();
             ClearProvinceBuildingItems();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Province] = true;
         }
 
         /// <summary>
-        ///     プロヴィンスタブのフォーム読み込み時の処理
+        ///     Processing when loading a form of Providence stub
         /// </summary>
         private void OnProvinceTabPageFormLoad()
         {
-            // プロヴィンスタブを初期化する
+            // Initialize the province stub
             InitProvinceTab();
         }
 
         /// <summary>
-        ///     プロヴィンスタブのファイル読み込み時の処理
+        ///     Processing when reading a file of Providence stub
         /// </summary>
         private void OnProvinceTabPageFileLoad()
         {
-            // プロヴィンスタブ選択中でなければ何もしない
+            // Do nothing unless Providence stub is selected
             if (_tabPageNo != TabPageNo.Province)
             {
                 return;
             }
 
-            // プロヴィンスデータの読み込み完了まで待機する
+            // Wait until the provision data has been read
             Provinces.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateProvinceTab();
         }
 
         /// <summary>
-        ///     プロヴィンスタブ選択時の処理
+        ///     Processing when Provins stub is selected
         /// </summary>
         private void OnProvinceTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // プロヴィンスデータの読み込み完了まで待機する
+            // Wait until the provision data has been read
             Provinces.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateProvinceTab();
 
-            // 読み込み済みで未初期化ならばマップパネルを更新する
+            // Update the map panel if loaded and uninitialized
             UpdateMapPanel();
         }
 
         #endregion
 
-        #region プロヴィンスタブ - マップ
+        #region Providence stub ―――― map
 
         /// <summary>
-        ///     マップパネルを更新する
+        ///     Update the map panel
         /// </summary>
         private void UpdateMapPanel()
         {
-            // マップ読み込み前ならば何もしない
+            // Do nothing before loading the map
             if (!Maps.IsLoaded[(int) MapLevel.Level2])
             {
                 return;
             }
 
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_mapPanelInitialized)
             {
                 return;
             }
 
-            // 初期化済みフラグを設定する
+            // Set the initialized flag
             _mapPanelInitialized = true;
 
-            // マップパネルを有効化する
+            // Enable the map panel
             _mapPanelController.ProvinceMouseClick += OnMapPanelMouseClick;
             _mapPanelController.Show();
 
-            // マップフィルターを有効化する
+            // Enable map filter
             EnableMapFilter();
 
-            // 選択プロヴィンスが表示されるようにスクロールする
+            // Scroll to see the selection provisions
             Province province = GetSelectedProvince();
             if (province != null)
             {
@@ -8787,28 +8787,28 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     マップパネルのマウスクリック時の処理
+        ///     What to do when you click the mouse on the map panel
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMapPanelMouseClick(object sender, MapPanelController.ProvinceEventArgs e)
         {
-            // 左クリック以外では何もしない
+            // Do nothing except left click
             if (e.Button != MouseButtons.Left)
             {
                 return;
             }
 
-            // 陸地プロヴィンスでなければ何もしない
+            // Do nothing unless it is a land provision
             if (_controller.GetLandProvinceIndex(e.Id) < 0)
             {
                 return;
             }
 
-            // 選択中のプロヴィンスIDを更新する
+            // Selected province ID To update
             provinceIdTextBox.Text = IntHelper.ToString(e.Id);
 
-            // プロヴィンスを選択する
+            // Select Providence
             SelectProvince(e.Id);
 
             Country country = GetSelectedProvinceCountry();
@@ -8853,10 +8853,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - マップフィルター
+        #region Province tab ―――― Map filter
 
         /// <summary>
-        ///     マップフィルターを初期化する
+        ///     Initialize the map filter
         /// </summary>
         private void InitMapFilter()
         {
@@ -8868,7 +8868,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     マップフィルターを有効化する
+        ///     Enable map filter
         /// </summary>
         private void EnableMapFilter()
         {
@@ -8876,7 +8876,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     マップフィルターラジオボタンのチェック状態変更時の処理
+        ///     Process when changing the check status of the map filter radio button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -8888,22 +8888,22 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // チェックなしの時には他の項目にチェックがついているので処理しない
+            // When there is no check, other items are checked and will not be processed.
             if (!radioButton.Checked)
             {
                 return;
             }
 
-            // フィルターモードを更新する
+            // Update filter mode
             _mapPanelController.FilterMode = (MapPanelController.MapFilterMode) radioButton.Tag;
         }
 
         #endregion
 
-        #region プロヴィンスタブ - 国家フィルター
+        #region Province tab ―――― National filter
 
         /// <summary>
-        ///     国家フィルターを更新する
+        ///     Update national filter
         /// </summary>
         private void UpdateProvinceCountryFilter()
         {
@@ -8918,7 +8918,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家フィルターを有効化する
+        ///     Enable national filter
         /// </summary>
         private void EnableProvinceCountryFilter()
         {
@@ -8927,7 +8927,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家フィルターの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national filter
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -8935,13 +8935,13 @@ namespace HoI2Editor.Forms
         {
             Country country = GetSelectedProvinceCountry();
 
-            // プロヴィンスリストを更新する
+            // Update the province list
             UpdateProvinceList(country);
 
-            // マップフィルターを更新する
+            // Update map filter
             _mapPanelController.SelectedCountry = country;
 
-            // プロヴィンス国家グループボックスの編集項目を更新する
+            // Update Provins National Group Box edits
             Province province = GetSelectedProvince();
             if ((country != Country.None) && (province != null))
             {
@@ -8957,9 +8957,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択国を取得する
+        ///     Get the country of choice
         /// </summary>
-        /// <returns>選択国</returns>
+        /// <returns>Selected country</returns>
         private Country GetSelectedProvinceCountry()
         {
             if (provinceCountryFilterComboBox.SelectedIndex <= 0)
@@ -8971,10 +8971,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - プロヴィンスID
+        #region Providence stub ―――― Province ID
 
         /// <summary>
-        ///     プロヴィンスIDテキストボックスを初期化する
+        ///     Province ID Initialize the text box
         /// </summary>
         private void InitProvinceIdTextBox()
         {
@@ -8984,7 +8984,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスIDテキストボックスを有効化する
+        ///     Providence ID Enable text box
         /// </summary>
         private void EnableProvinceIdTextBox()
         {
@@ -8993,7 +8993,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスIDテキストボックスのID変更時の処理
+        ///     Providence ID Of the text box ID Processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -9001,7 +9001,7 @@ namespace HoI2Editor.Forms
         {
             Province province = GetSelectedProvince();
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(provinceIdTextBox.Text, out val))
             {
@@ -9012,29 +9012,29 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((province == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((province != null) && (val == province.Id))
             {
                 return;
             }
 
-            // プロヴィンスを選択する
+            // Select Providence
             SelectProvince(val);
         }
 
         /// <summary>
-        ///     プロヴィンスを選択する
+        ///     Select Providence
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         private void SelectProvince(int id)
         {
-            // プロヴィンスリストビューの選択項目を変更する
+            // Change the selections in the province list view
             int index = _controller.GetLandProvinceIndex(id);
             if (index >= 0)
             {
@@ -9047,10 +9047,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - プロヴィンスリスト
+        #region Providence stub ―――― Provincial list
 
         /// <summary>
-        ///     陸地プロヴィンスリストを初期化する
+        ///     Initialize the land provision list
         /// </summary>
         private void InitProvinceList()
         {
@@ -9065,9 +9065,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストを更新する
+        ///     Update the province list
         /// </summary>
-        /// <param name="country">選択国</param>
+        /// <param name="country">Selected country</param>
         private void UpdateProvinceList(Country country)
         {
             CountrySettings settings = Scenarios.GetCountrySettings(country);
@@ -9100,7 +9100,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストを有効化する
+        ///     Activate the province list
         /// </summary>
         private void EnableProvinceList()
         {
@@ -9108,21 +9108,21 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの項目文字列を設定する
+        ///     Set the item string in the province list view
         /// </summary>
-        /// <param name="index">プロヴィンスリストビューのインデックス</param>
-        /// <param name="no">項目番号</param>
-        /// <param name="s">文字列</param>
+        /// <param name="index">Provincial list view index</param>
+        /// <param name="no">Item Number</param>
+        /// <param name="s">Character string</param>
         public void SetProvinceListItemText(int index, int no, string s)
         {
             provinceListView.Items[index].SubItems[no].Text = s;
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの項目を作成する
+        ///     Create an item in the Providence list view
         /// </summary>
-        /// <param name="province">プロヴィンスデータ</param>
-        /// <returns>プロヴィンスリストビューの項目</returns>
+        /// <param name="province">Providence data</param>
+        /// <returns>Province list view items</returns>
         private static ListViewItem CreateProvinceListItem(Province province)
         {
             ProvinceSettings settings = Scenarios.GetProvinceSettings(province.Id);
@@ -9139,7 +9139,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     選択中のプロヴィンスを取得する
+        ///     Get the selected province
         /// </summary>
         /// <returns></returns>
         private Province GetSelectedProvince()
@@ -9152,23 +9152,23 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスリストビューの選択項目変更時の処理
+        ///     Processing when changing the selection item in the province list view
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProvinceListViewSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             Province province = GetSelectedProvince();
             if (province == null)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableProvinceCountryItems();
                 DisableProvinceInfoItems();
                 DisableProvinceResourceItems();
                 DisableProvinceBuildingItems();
 
-                // 編集項目の表示をクリアする
+                // Clear the display of edit items
                 ClearProvinceCountryItems();
                 ClearProvinceInfoItems();
                 ClearProvinceResourceItems();
@@ -9180,13 +9180,13 @@ namespace HoI2Editor.Forms
             Country country = GetSelectedProvinceCountry();
             CountrySettings countrySettings = Scenarios.GetCountrySettings(country);
 
-            // 編集項目の表示を更新する
+            // Update the display of edit items
             UpdateProvinceCountryItems(province, countrySettings);
             UpdateProvinceInfoItems(province, settings);
             UpdateProvinceResourceItems(settings);
             UpdateProvinceBuildingItems(settings);
 
-            // 編集項目を有効化する
+            // Enable edit items
             if (country != Country.None)
             {
                 EnableProvinceCountryItems();
@@ -9195,16 +9195,16 @@ namespace HoI2Editor.Forms
             EnableProvinceResourceItems();
             EnableProvinceBuildingItems();
 
-            // マップをスクロールさせる
+            // Scroll the map
             _mapPanelController.ScrollToProvince(province.Id);
         }
 
         #endregion
 
-        #region プロヴィンスタブ - 国家情報
+        #region Providence stub ―――― National information
 
         /// <summary>
-        ///     プロヴィンス国家情報の編集項目を初期化する
+        ///     Initialize the edit items of the province national information
         /// </summary>
         private void InitProvinceCountryItems()
         {
@@ -9222,10 +9222,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス国家情報の編集項目を更新する
+        ///     Update the edit items of Providence National Information
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">National setting</param>
         private void UpdateProvinceCountryItems(Province province, CountrySettings settings)
         {
             _controller.UpdateItemValue(capitalCheckBox, province, settings);
@@ -9242,7 +9242,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス国家情報の編集項目の表示をクリアする
+        ///     Clear the display of edit items of Providence national information
         /// </summary>
         private void ClearProvinceCountryItems()
         {
@@ -9254,7 +9254,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス国家情報の編集項目を有効化する
+        ///     Enable edit items for Providence national information
         /// </summary>
         private void EnableProvinceCountryItems()
         {
@@ -9262,7 +9262,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス国家情報の編集項目を無効化する
+        ///     Disable edit items for province national information
         /// </summary>
         private void DisableProvinceCountryItems()
         {
@@ -9271,10 +9271,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - プロヴィンス情報
+        #region Province tab ―――― Providence information
 
         /// <summary>
-        ///     プロヴィンス情報の編集項目を初期化する
+        ///     Initialize the edit items of the provision information
         /// </summary>
         private void InitProvinceInfoItems()
         {
@@ -9290,10 +9290,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス情報の編集項目を更新する
+        ///     Update the edit items of the province information
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
         private void UpdateProvinceInfoItems(Province province, ProvinceSettings settings)
         {
             _controller.UpdateItemValue(provinceIdTextBox, province);
@@ -9309,7 +9309,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス情報の編集項目の表示をクリアする
+        ///     Clear the display of edit items in province information
         /// </summary>
         private void ClearProvinceInfoItems()
         {
@@ -9321,7 +9321,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス情報の編集項目を有効化する
+        ///     Enable edit items for provision information
         /// </summary>
         private void EnableProvinceInfoItems()
         {
@@ -9330,7 +9330,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス情報の編集項目を無効化する
+        ///     Disable edit items in province information
         /// </summary>
         private void DisableProvinceInfoItems()
         {
@@ -9339,14 +9339,14 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - 資源情報
+        #region Province tab ―――― Resource information
 
         /// <summary>
-        ///     プロヴィンス資源情報の編集項目を初期化する
+        ///     Initialize edit items of Providence resource information
         /// </summary>
         private void InitProvinceResourceItems()
         {
-            // 資源名ラベル
+            // Resource name label
             provinceManpowerLabel.Text = Config.GetText(TextId.ResourceManpower);
             provinceEnergyLabel.Text = Config.GetText(TextId.ResourceEnergy);
             provinceMetalLabel.Text = Config.GetText(TextId.ResourceMetal);
@@ -9354,7 +9354,7 @@ namespace HoI2Editor.Forms
             provinceOilLabel.Text = Config.GetText(TextId.ResourceOil);
             provinceSuppliesLabel.Text = Config.GetText(TextId.ResourceSupplies);
 
-            // 編集項目
+            // Edit items
             _itemControls.Add(ScenarioEditorItemId.ProvinceManpowerCurrent, manpowerCurrentTextBox);
             _itemControls.Add(ScenarioEditorItemId.ProvinceManpowerMax, manpowerMaxTextBox);
             _itemControls.Add(ScenarioEditorItemId.ProvinceEnergyPool, energyPoolTextBox);
@@ -9389,9 +9389,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス資源情報の編集項目を更新する
+        ///     Update the edit items of Providence resource information
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="settings">Providence settings</param>
         private void UpdateProvinceResourceItems(ProvinceSettings settings)
         {
             _controller.UpdateItemValue(manpowerCurrentTextBox, settings);
@@ -9428,7 +9428,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス資源情報の編集項目の表示をクリアする
+        ///     Clear the display of edit items of province resource information
         /// </summary>
         private void ClearProvinceResourceItems()
         {
@@ -9450,7 +9450,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス資源情報の編集項目を有効化する
+        ///     Enable edit items for province resource information
         /// </summary>
         private void EnableProvinceResourceItems()
         {
@@ -9458,7 +9458,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス資源情報の編集項目を無効化する
+        ///     Disable edit items for Providence resource information
         /// </summary>
         private void DisableProvinceResourceItems()
         {
@@ -9467,10 +9467,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - 建物情報
+        #region Providence stub ―――― Building information
 
         /// <summary>
-        ///     プロヴィンス建物情報の編集項目を初期化する
+        ///     Initialize the edit items of the province building information
         /// </summary>
         private void InitProvinceBuildingItems()
         {
@@ -9556,9 +9556,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス建物情報の編集項目を更新する
+        ///     Update the edit items of the Providence building information
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="settings">Providence settings</param>
         private void UpdateProvinceBuildingItems(ProvinceSettings settings)
         {
             _controller.UpdateItemValue(icCurrentTextBox, settings);
@@ -9643,7 +9643,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス建物情報の編集項目の表示をクリアする
+        ///     Clear the display of edit items of Providence building information
         /// </summary>
         private void ClearProvinceBuildingItems()
         {
@@ -9689,7 +9689,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス建物情報の編集項目を有効化する
+        ///     Enable edit items for Providence building information
         /// </summary>
         private void EnableProvinceBuildingItems()
         {
@@ -9711,7 +9711,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンス建物情報の編集項目を無効化する
+        ///     Disable edit items for Providence building information
         /// </summary>
         private void DisableProvinceBuildingItems()
         {
@@ -9720,16 +9720,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region プロヴィンスタブ - 編集項目
+        #region Providence stub ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProvinceIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
@@ -9745,7 +9745,7 @@ namespace HoI2Editor.Forms
 
             ProvinceSettings settings = Scenarios.GetProvinceSettings(province.Id);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -9753,13 +9753,13 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((settings == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev != null) && (val == (int) prev))
             {
@@ -9774,27 +9774,27 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProvinceDoubleItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
@@ -9810,7 +9810,7 @@ namespace HoI2Editor.Forms
 
             ProvinceSettings settings = Scenarios.GetProvinceSettings(province.Id);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             double val;
             if (!DoubleHelper.TryParse(control.Text, out val))
             {
@@ -9818,13 +9818,13 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             if ((settings == null) && DoubleHelper.IsZero(val))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev != null) && DoubleHelper.IsEqual(val, (double) prev))
             {
@@ -9839,30 +9839,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, settings);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProvinceStringItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
@@ -9878,7 +9878,7 @@ namespace HoI2Editor.Forms
 
             ProvinceSettings settings = Scenarios.GetProvinceSettings(province.Id);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, province, settings);
             string val = control.Text;
             if ((prev == null) && string.IsNullOrEmpty(val))
@@ -9886,7 +9886,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (val.Equals(prev))
             {
                 return;
@@ -9900,30 +9900,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, province, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, province, settings);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnProvinceCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Province province = GetSelectedProvince();
             if (province == null)
             {
@@ -9944,14 +9944,14 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(country);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             bool val = control.Checked;
             if ((settings == null) && !val)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, province, settings);
             if ((prev != null) && (val == (bool) prev))
             {
@@ -9965,19 +9965,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, province, settings);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, province, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, province, settings);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, province, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, val, province, settings);
         }
 
@@ -9985,12 +9985,12 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 初期部隊タブ
+        #region Initial unit tab
 
-        #region 初期部隊タブ - 共通
+        #region Initial unit tab ―――― common
 
         /// <summary>
-        ///     初期部隊タブを初期化する
+        ///     Initialize the initial unit tab
         /// </summary>
         private void InitOobTab()
         {
@@ -10000,109 +10000,109 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     初期部隊タブの表示を更新する
+        ///     Update the display of the initial unit tab
         /// </summary>
         private void UpdateOobTab()
         {
-            // 初期化済みであれば何もしない
+            // Do nothing if initialized
             if (_tabPageInitialized[(int) TabPageNo.Oob])
             {
                 return;
             }
 
-            // プロヴィンスリストを初期化する
+            // Initialize the provision list
             _controller.InitProvinceList();
 
-            // ユニット種類リストを初期化する
+            // Initialize the unit type list
             _controller.InitUnitTypeList();
 
-            // ユニットツリーコントローラの選択国を解除する
+            // Deselect a country from the unit tree controller
             _unitTreeController.Country = Country.None;
 
-            // 国家リストボックスを更新する
+            // Update national list box
             UpdateCountryListBox(oobCountryListBox);
 
-            // 国家リストボックスを有効化する
+            // Enable national list box
             EnableOobCountryListBox();
 
-            // ユニットツリーを有効化する
+            // Enable the unit tree
             EnableUnitTree();
 
-            // 編集項目を無効化する
+            // Disable edit items
             DisableOobUnitItems();
             DisableOobDivisionItems();
 
-            // 編集項目をクリアする
+            // Clear edit items
             ClearOobUnitItems();
             ClearOobDivisionItems();
 
-            // 初期化済みフラグをセットする
+            // Set the initialized flag
             _tabPageInitialized[(int) TabPageNo.Oob] = true;
         }
 
         /// <summary>
-        ///     初期部隊タブのフォーム読み込み時の処理
+        ///     Processing when loading the form of the initial unit tab
         /// </summary>
         private void OnOobTabPageFormLoad()
         {
-            // 初期部隊タブを初期化する
+            // Initialize the initial unit tab
             InitOobTab();
         }
 
         /// <summary>
-        ///     初期部隊タブのファイル読み込み時の処理
+        ///     Processing when reading a file on the initial unit tab
         /// </summary>
         private void OnOobTabPageFileLoad()
         {
-            // 初期部隊タブ選択中でなければ何もしない
+            // Do nothing unless the initial unit tab is selected
             if (_tabPageNo != TabPageNo.Oob)
             {
                 return;
             }
 
-            // 指揮官データの読み込み完了まで待機する
+            // Wait until the commander data has been read
             Leaders.WaitLoading();
 
-            // プロヴィンスデータの読み込み完了まで待機する
+            // Wait until the provision data has been read
             Provinces.WaitLoading();
 
-            // ユニットデータの読み込み完了まで待機する
+            // Wait until the unit data reading is completed
             Units.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateOobTab();
         }
 
         /// <summary>
-        ///     初期部隊タブ選択時の処理
+        ///     Processing when initial unit tab is selected
         /// </summary>
         private void OnOobTabPageSelected()
         {
-            // シナリオ未読み込みならば何もしない
+            // Do nothing if scenario not loaded
             if (!Scenarios.IsLoaded())
             {
                 return;
             }
 
-            // 指揮官データの読み込み完了まで待機する
+            // Wait until the commander data has been read
             Leaders.WaitLoading();
 
-            // プロヴィンスデータの読み込み完了まで待機する
+            // Wait until the provision data has been read
             Provinces.WaitLoading();
 
-            // ユニットデータの読み込み完了まで待機する
+            // Wait until the unit data reading is completed
             Units.WaitLoading();
 
-            // 初回遷移時には表示を更新する
+            // Update the display at the first transition
             UpdateOobTab();
         }
 
         #endregion
 
-        #region 初期部隊タブ - 国家
+        #region Initial unit tab ―――― Nation
 
         /// <summary>
-        ///     国家リストボックスを有効化する
+        ///     Activate the national list box
         /// </summary>
         private void EnableOobCountryListBox()
         {
@@ -10110,20 +10110,20 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOobCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ編集項目を無効化する
+            // Disable edit items if there are no selections
             if (oobCountryListBox.SelectedIndex < 0)
             {
-                // 編集項目を無効化する
+                // Disable edit items
                 DisableOobUnitItems();
                 DisableOobDivisionItems();
 
-                // 編集項目をクリアする
+                // Clear edit items
                 ClearOobUnitItems();
                 ClearOobDivisionItems();
                 return;
@@ -10131,21 +10131,21 @@ namespace HoI2Editor.Forms
 
             _selectedCountry = Countries.Tags[oobCountryListBox.SelectedIndex];
 
-            // 指揮官リストを初期化する
+            // Initialize the commander list
             ScenarioHeader header = Scenarios.Data.Header;
             int year = header.StartDate?.Year ?? header.StartYear;
             _controller.UpdateLeaderList(_selectedCountry, year);
 
-            // ユニットツリーを更新する
+            // Update the unit tree
             _unitTreeController.Country = _selectedCountry;
         }
 
         #endregion
 
-        #region 初期部隊タブ - ユニットツリー
+        #region Initial unit tab ―――― Unit tree
 
         /// <summary>
-        ///     ユニットツリーを初期化する
+        ///     Initialize the unit tree
         /// </summary>
         private void InitUnitTree()
         {
@@ -10153,13 +10153,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットツリーを有効化する
+        ///     Enable the unit tree
         /// </summary>
         private void EnableUnitTree()
         {
             unitTreeView.Enabled = true;
 
-            // ツリー操作ボタンを無効化する
+            // Disable tree operation buttons
             oobAddUnitButton.Enabled = false;
             oobAddDivisionButton.Enabled = false;
             oobCloneButton.Enabled = false;
@@ -10171,13 +10171,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットツリーのノード選択時の処理
+        ///     Processing when selecting a node in the unit tree
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnitTreeAfterSelect(object sender, UnitTreeController.UnitTreeViewEventArgs e)
         {
-            // ボタンの状態を更新する
+            // Update button status
             oobAddUnitButton.Enabled = e.CanAddUnit;
             oobAddDivisionButton.Enabled = e.CanAddDivision;
             bool selected = (e.Unit != null) || (e.Division != null);
@@ -10225,7 +10225,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     先頭へボタン押下時の処理
+        ///     Processing when the button is pressed to the beginning
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10235,7 +10235,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     上へボタン押下時の処理
+        ///     Processing when pressing the up button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10245,7 +10245,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     下へボタン押下時の処理
+        ///     Processing when the down button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10255,7 +10255,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     末尾へボタン押下時の処理
+        ///     Processing when the button is pressed to the end
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10265,7 +10265,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     新規ユニットボタン押下時の処理
+        ///     Processing when a new unit button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10275,7 +10275,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     新規師団ボタン押下時の処理
+        ///     Processing when the new division button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10285,7 +10285,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     複製ボタン押下時の処理
+        ///     Processing when the duplicate button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10295,7 +10295,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     削除ボタン押下時の処理
+        ///     Processing when the delete button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -10306,10 +10306,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 初期部隊タブ - ユニット情報
+        #region Initial unit tab ―――― Unit information
 
         /// <summary>
-        ///     ユニット情報の編集項目を初期化する
+        ///     Initialize the edit item of unit information
         /// </summary>
         private void InitOobUnitItems()
         {
@@ -10339,9 +10339,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット情報の編集項目を更新する
+        ///     Update the edit item of unit information
         /// </summary>
-        /// <param name="unit">ユニット</param>
+        /// <param name="unit">unit</param>
         private void UpdateOobUnitItems(Unit unit)
         {
             _controller.UpdateItemValue(unitTypeTextBox, unit);
@@ -10362,17 +10362,17 @@ namespace HoI2Editor.Forms
             _controller.UpdateItemColor(unitMoraleTextBox, unit);
             _controller.UpdateItemColor(digInTextBox, unit);
 
-            // ユニットの兵科が変更された場合
+            // If the unit's line is changed
             if (unit.Branch != _lastUnitBranch)
             {
                 _lastUnitBranch = unit.Branch;
 
-                // リストの選択肢を変更する
+                // Change list choices
                 _controller.UpdateListItems(locationComboBox, unit);
                 _controller.UpdateListItems(baseComboBox, unit);
                 _controller.UpdateListItems(leaderComboBox, unit);
 
-                // 兵科による編集制限
+                // Editing restrictions by military department
                 switch (unit.Branch)
                 {
                     case Branch.Army:
@@ -10404,7 +10404,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット情報の編集項目をクリアする
+        ///     Clear the edit item of unit information
         /// </summary>
         private void ClearOobUnitItems()
         {
@@ -10422,7 +10422,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット情報の編集項目を有効化する
+        ///     Enable edit items for unit information
         /// </summary>
         private void EnableOobUnitItems()
         {
@@ -10430,7 +10430,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット情報の編集項目を無効化する
+        ///     Disable edit items for unit information
         /// </summary>
         private void DisableOobUnitItems()
         {
@@ -10439,10 +10439,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 初期部隊タブ - 師団情報
+        #region Initial unit tab ―――― Division information
 
         /// <summary>
-        ///     師団情報の編集項目を初期化する
+        ///     Initialize the edit items of the division information
         /// </summary>
         private void InitOobDivisionItems()
         {
@@ -10496,9 +10496,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     師団情報の編集項目を更新する
+        ///     Update the edit items of the division information
         /// </summary>
-        /// <param name="division">師団</param>
+        /// <param name="division">Division</param>
         private void UpdateOobDivisionItems(Division division)
         {
             _controller.UpdateItemValue(divisionTypeTextBox, division);
@@ -10527,7 +10527,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 師団の兵科が変更された場合、リストの選択肢も変更する
+            // If the division's military department changes, so does the list choices
             if (division.Branch != _lastDivisionBranch)
             {
                 _lastDivisionBranch = division.Branch;
@@ -10574,7 +10574,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     師団情報の編集項目をクリアする
+        ///     Clear the edit items of the division information
         /// </summary>
         private void ClearOobDivisionItems()
         {
@@ -10604,7 +10604,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     師団情報の編集項目を有効化する
+        ///     Enable edit items for division information
         /// </summary>
         private void EnableOobDivisionItems()
         {
@@ -10612,7 +10612,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     師団情報の編集項目を無効化する
+        ///     Disable edit items for division information
         /// </summary>
         private void DisableOobDivisionItems()
         {
@@ -10621,16 +10621,16 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 初期部隊タブ - 編集項目
+        #region Initial unit tab ―――― Edit items
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnitIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Unit unit = _unitTreeController.GetSelectedUnit();
             if (unit == null)
             {
@@ -10646,7 +10646,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -10654,14 +10654,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, unit);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
@@ -10669,30 +10669,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, unit);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, unit);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, unit);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, unit, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, unit);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnitDoubleItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Unit unit = _unitTreeController.GetSelectedUnit();
             if (unit == null)
             {
@@ -10708,7 +10708,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             double val;
             if (!DoubleHelper.TryParse(control.Text, out val))
             {
@@ -10716,14 +10716,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, settings);
             if ((prev == null) && DoubleHelper.IsZero(val))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && DoubleHelper.IsEqual(val, (double) prev))
             {
                 return;
@@ -10731,30 +10731,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, unit);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, unit);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, unit);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, unit, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, unit);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnitStringItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Unit unit = _unitTreeController.GetSelectedUnit();
             if (unit == null)
             {
@@ -10770,7 +10770,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, unit);
             string val = control.Text;
             if ((prev == null) && string.IsNullOrEmpty(val))
@@ -10778,7 +10778,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (val.Equals(prev))
             {
                 return;
@@ -10786,30 +10786,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, unit);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, unit);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, unit);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, unit, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, unit);
         }
 
         /// <summary>
-        ///     コンボボックスの項目描画処理
+        ///     Item drawing process of combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnitComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
@@ -10827,10 +10827,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             object val = _controller.GetItemValue(itemId, unit);
             object sel = _controller.GetListItemValue(itemId, e.Index, unit);
@@ -10841,18 +10841,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnUnitComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             ComboBox control = (ComboBox) sender;
             int index = control.SelectedIndex;
             if (index < 0)
@@ -10869,14 +10869,14 @@ namespace HoI2Editor.Forms
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object val = _controller.GetListItemValue(itemId, index, unit);
             if (val == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, unit);
             if ((prev != null) && ((int) val == (int) prev))
             {
@@ -10885,30 +10885,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, unit);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, unit, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, unit);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, unit, settings);
 
-            // 文字色変更のため描画更新する
+            // Update drawing to change text color
             control.Refresh();
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, unit);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionIntItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Division division = _unitTreeController.GetSelectedDivision();
             if (division == null)
             {
@@ -10924,7 +10924,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -10932,14 +10932,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, division);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
@@ -10947,30 +10947,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, division);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, division);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, division);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, division, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, division, settings);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionDoubleItemTextBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Division division = _unitTreeController.GetSelectedDivision();
             if (division == null)
             {
@@ -10986,7 +10986,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             double val;
             if (!DoubleHelper.TryParse(control.Text, out val))
             {
@@ -10994,14 +10994,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, division);
             if ((prev == null) && DoubleHelper.IsZero(val))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && DoubleHelper.IsEqual(val, (double) prev))
             {
                 return;
@@ -11009,30 +11009,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, division);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, division);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, division);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, division, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, division, settings);
         }
 
         /// <summary>
-        ///     テキストボックスの値変更時の処理
+        ///     Processing when changing the value of a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionStringItemTextBoxTextChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Division division = _unitTreeController.GetSelectedDivision();
             if (division == null)
             {
@@ -11048,7 +11048,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, division);
             string val = control.Text;
             if ((prev == null) && string.IsNullOrEmpty(val))
@@ -11056,7 +11056,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if (val.Equals(prev))
             {
                 return;
@@ -11064,30 +11064,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, division);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, division);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, division);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, division, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, division, settings);
         }
 
         /// <summary>
-        ///     コンボボックスの項目描画処理
+        ///     Item drawing process of combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionComboBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index == -1)
             {
                 return;
@@ -11105,10 +11105,10 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目の文字列を描画する
+            // Draw a string of items
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             object val = _controller.GetItemValue(itemId, division);
             object sel = _controller.GetListItemValue(itemId, e.Index, division);
@@ -11119,18 +11119,18 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         /// <summary>
-        ///     コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             ComboBox control = (ComboBox) sender;
             int index = control.SelectedIndex;
             if (index < 0)
@@ -11147,14 +11147,14 @@ namespace HoI2Editor.Forms
             ScenarioEditorItemId itemId = (ScenarioEditorItemId) control.Tag;
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object val = _controller.GetListItemValue(itemId, index, division);
             if (val == null)
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             object prev = _controller.GetItemValue(itemId, division);
             if ((prev != null) && ((int) val == (int) prev))
             {
@@ -11163,30 +11163,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, division);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, division, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, division);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, division, settings);
 
-            // 文字色変更のため描画更新する
+            // Update drawing to change text color
             control.Refresh();
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, division, settings);
         }
 
         /// <summary>
-        ///     テキストボックスのフォーカス移動後の処理
+        ///     Processing after moving the focus of the text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionComboBoxValidated(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Division division = _unitTreeController.GetSelectedDivision();
             if (division == null)
             {
@@ -11202,7 +11202,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 文字列を数値に変換できなければ値を戻す
+            // Returns the value if the string cannot be converted to a number
             int val;
             if (!IntHelper.TryParse(control.Text, out val))
             {
@@ -11210,14 +11210,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             object prev = _controller.GetItemValue(itemId, division);
             if ((prev == null) && (val == 0))
             {
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (int) prev))
             {
                 return;
@@ -11225,30 +11225,30 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, division);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, division);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, division);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, division, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, division, settings);
         }
 
         /// <summary>
-        ///     チェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of a check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnDivisionCheckBoxCheckedChanged(object sender, EventArgs e)
         {
-            // 選択項目がなければ何もしない
+            // Do nothing if there is no selection
             Division division = _unitTreeController.GetSelectedDivision();
             if (division == null)
             {
@@ -11264,7 +11264,7 @@ namespace HoI2Editor.Forms
 
             CountrySettings settings = Scenarios.GetCountrySettings(_selectedCountry);
 
-            // 初期値から変更されていなければ何もしない
+            // Do nothing if it has not changed from the initial value
             bool val = control.Checked;
             object prev = _controller.GetItemValue(itemId, division);
             if ((prev == null) && !val)
@@ -11272,7 +11272,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 値に変化がなければ何もしない
+            // Do nothing if the value does not change
             if ((prev != null) && (val == (bool) prev))
             {
                 return;
@@ -11280,19 +11280,19 @@ namespace HoI2Editor.Forms
 
             _controller.OutputItemValueChangedLog(itemId, val, division);
 
-            // 項目値変更前の処理
+            // Processing before changing item values
             _controller.PreItemChanged(itemId, val, division, settings);
 
-            // 値を更新する
+            // Update value
             _controller.SetItemValue(itemId, val, division);
 
-            // 編集済みフラグを設定する
+            // Set the edited flag
             _controller.SetItemDirty(itemId, division, settings);
 
-            // 文字色を変更する
+            // Change the font color
             control.ForeColor = Color.Red;
 
-            // 項目値変更後の処理
+            // Processing after changing the item value
             _controller.PostItemChanged(itemId, division, settings);
         }
 
@@ -11300,14 +11300,14 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 共通
+        #region common
 
-        #region 共通 - 国家
+        #region common ―――― Nation
 
         /// <summary>
-        ///     国家リストボックスを更新する
+        ///     Update national list box
         /// </summary>
-        /// <param name="control">コントロール</param>
+        /// <param name="control">Control</param>
         private static void UpdateCountryListBox(ListBox control)
         {
             control.BeginUpdate();
@@ -11320,10 +11320,10 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家コンボボックスを更新する
+        ///     Update national combo box
         /// </summary>
-        /// <param name="control">コントロール</param>
-        /// <param name="allowEmpty">空項目を許可するかどうか</param>
+        /// <param name="control">Control</param>
+        /// <param name="allowEmpty">Whether to allow empty items</param>
         private void UpdateCountryComboBox(ComboBox control, bool allowEmpty)
         {
             Graphics g = Graphics.FromHwnd(Handle);
@@ -11348,13 +11348,13 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     国家リストボックスの項目描画処理
+        ///     Item drawing process of national list box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnCountryListBoxDrawItem(object sender, DrawItemEventArgs e)
         {
-            // 項目がなければ何もしない
+            // Do nothing if there is no item
             if (e.Index < 0)
             {
                 return;
@@ -11366,14 +11366,14 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            // 背景を描画する
+            // Draw the background
             e.DrawBackground();
 
-            // 項目を描画する
+            // Draw an item
             Brush brush;
             if ((e.State & DrawItemState.Selected) == 0)
             {
-                // 変更ありの項目は文字色を変更する
+                // Change the text color for items that have changed
                 CountrySettings settings = Scenarios.GetCountrySettings(Countries.Tags[e.Index]);
                 brush = new SolidBrush(settings != null
                     ? (settings.IsDirty() ? Color.Red : control.ForeColor)
@@ -11387,16 +11387,16 @@ namespace HoI2Editor.Forms
             e.Graphics.DrawString(s, e.Font, brush, e.Bounds);
             brush.Dispose();
 
-            // フォーカスを描画する
+            // Draw focus
             e.DrawFocusRectangle();
         }
 
         #endregion
 
-        #region 共通 - 編集項目
+        #region common ―――― Edit items
 
         /// <summary>
-        ///     編集項目IDに関連付けられたコントロールを取得する
+        ///     Edit items ID Get the control associated with
         /// </summary>
         /// <param name="itemId"></param>
         /// <returns></returns>

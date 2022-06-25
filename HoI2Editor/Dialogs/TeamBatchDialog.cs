@@ -8,30 +8,30 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Dialogs
 {
     /// <summary>
-    ///     研究機関一括編集ダイアログ
+    ///     Research institution batch edit dialog
     /// </summary>
     public partial class TeamBatchDialog : Form
     {
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     一括編集のパラメータ
+        ///     Batch editing parameters
         /// </summary>
         private readonly TeamBatchEditArgs _args;
 
         /// <summary>
-        ///     開始IDが変更されたかどうか
+        ///     start ID Has changed
         /// </summary>
         private bool _idChanged;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="args">一括編集のパラメータ</param>
+        /// <param name="args">Batch editing parameters</param>
         public TeamBatchDialog(TeamBatchEditArgs args)
         {
             InitializeComponent();
@@ -41,10 +41,10 @@ namespace HoI2Editor.Dialogs
 
         #endregion
 
-        #region フォーム
+        #region Form
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///     Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -53,7 +53,7 @@ namespace HoI2Editor.Dialogs
             Graphics g = Graphics.FromHwnd(Handle);
             int margin = DeviceCaps.GetScaledWidth(2) + 1;
 
-            // 選択国コンボボックス
+            // Selected country combo box
             srcComboBox.BeginUpdate();
             srcComboBox.Items.Clear();
             int width = srcComboBox.Width;
@@ -76,7 +76,7 @@ namespace HoI2Editor.Dialogs
             }
             srcComboBox.SelectedIndexChanged += OnSrcComboBoxSelectedIndexChanged;
 
-            // コピー/移動先コンボボックス
+            // copy / /Destination combo box
             destComboBox.BeginUpdate();
             destComboBox.Items.Clear();
             width = destComboBox.Width;
@@ -100,7 +100,7 @@ namespace HoI2Editor.Dialogs
             }
             destComboBox.SelectedIndexChanged += OnDestComboBoxSelectedIndexChanged;
 
-            // 開始ID
+            // start ID
             if (_args.TargetCountries.Count > 0)
             {
                 idNumericUpDown.Value = Teams.GetNewId(_args.TargetCountries[0]);
@@ -109,13 +109,13 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     OKキー押下時の処理
+        ///     OK Processing when a key is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnOkButtonClick(object sender, EventArgs e)
         {
-            // 対象国モード
+            // Target country mode
             if (allRadioButton.Checked)
             {
                 _args.CountryMode = BatchCountryMode.All;
@@ -131,7 +131,7 @@ namespace HoI2Editor.Dialogs
                 _args.TargetCountries.Add(Countries.Tags[srcComboBox.SelectedIndex]);
             }
 
-            // 動作モード
+            // action mode
             if (copyRadioButton.Checked)
             {
                 _args.ActionMode = BatchActionMode.Copy;
@@ -148,7 +148,7 @@ namespace HoI2Editor.Dialogs
             _args.Destination = Countries.Tags[destComboBox.SelectedIndex];
             _args.Id = (int) idNumericUpDown.Value;
 
-            // 編集項目
+            // Edit items
             _args.Items[(int) TeamBatchItemId.Skill] = skillCheckBox.Checked;
             _args.Items[(int) TeamBatchItemId.StartYear] = startYearCheckBox.Checked;
             _args.Items[(int) TeamBatchItemId.EndYear] = endYearCheckBox.Checked;
@@ -160,10 +160,10 @@ namespace HoI2Editor.Dialogs
 
         #endregion
 
-        #region 編集項目
+        #region Edit items
 
         /// <summary>
-        ///     対象国コンボボックスの選択項目変更時の処理
+        ///     Processing when changing the selection item of the target country combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -178,7 +178,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     コピーラジオボタンのチェック状態変更時の処理
+        ///     Process when changing the check status of the copy radio button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -195,7 +195,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     移動ラジオボタンのチェック状態変更時の処理
+        ///     Processing when changing the check status of the move radio button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -212,7 +212,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     コピー/移動先コンボボックスの選択項目変更時の処理
+        ///     copy / / Processing when changing the selection item of the destination combo box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -228,7 +228,7 @@ namespace HoI2Editor.Dialogs
                 copyRadioButton.Checked = true;
             }
 
-            // 開始ID数値アップダウンの数値が変更されていなければ変更する
+            // start ID If the numerical value of numerical up / down has not been changed, change it.
             if (!_idChanged)
             {
                 idNumericUpDown.ValueChanged -= OnIdNumericUpDownValueChanged;
@@ -238,7 +238,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     開始ID数値アップダウンの値変更時の処理
+        ///     start ID Processing when changing the value of numerical up / down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -253,7 +253,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     スキルチェックボックスのチェック状態変更時の処理
+        ///     Processing when changing the check status of the skill check box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -266,7 +266,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     開始年チェックボックスのチェック状態変更時の処理
+        ///     Processing when the check status of the start year check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -279,7 +279,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     終了年チェックボックスのチェック状態変更時の処理
+        ///     Processing when the check status of the end year check box is changed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -292,7 +292,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     スキル数値アップダウンの値変更時の処理
+        ///     Processing when changing the value of skill value up / down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -302,7 +302,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     開始年数値アップダウンの値変更時の処理
+        ///     Processing when changing the value of the start year value up / down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -312,7 +312,7 @@ namespace HoI2Editor.Dialogs
         }
 
         /// <summary>
-        ///     終了年数値アップダウンの値変更時の処理
+        ///     Processing when changing the value of the end year numerical value up / down
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

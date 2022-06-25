@@ -7,15 +7,15 @@ using System.Windows.Forms;
 namespace HoI2Editor.Controls
 {
     /// <summary>
-    ///     項目編集用コンボボックス
+    ///     Item editing combo box
     /// </summary>
     [ToolboxItem(false)]
     public partial class InlineComboBox : ComboBox
     {
-        #region 公開イベント
+        #region Public event
 
         /// <summary>
-        ///     項目編集完了時の処理
+        ///     Processing when item editing is completed
         /// </summary>
         [Category("動作")]
         [Description("項目の編集を完了したときに発生します。")]
@@ -23,17 +23,17 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="items">項目リスト</param>
-        /// <param name="index">初期インデックス</param>
-        /// <param name="location">座標</param>
-        /// <param name="size">サイズ</param>
-        /// <param name="parent">親コントロール</param>
-        /// <param name="dropDownWidth">ドロップダウンリストの幅</param>
+        /// <param name="items">Item list</param>
+        /// <param name="index">Initial index</param>
+        /// <param name="location">Coordinate</param>
+        /// <param name="size">size</param>
+        /// <param name="parent">Parent control</param>
+        /// <param name="dropDownWidth">Drop-down list width</param>
         public InlineComboBox(IEnumerable<string> items, int index, Point location, Size size, int dropDownWidth,
             Control parent)
         {
@@ -43,14 +43,14 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     初期化処理
+        ///     Initialization process
         /// </summary>
-        /// <param name="items">項目リスト</param>
-        /// <param name="index">初期インデックス</param>
-        /// <param name="location">座標</param>
-        /// <param name="size">サイズ</param>
-        /// <param name="parent">親コントロール</param>
-        /// <param name="dropDownWidth">ドロップダウンリストの幅</param>
+        /// <param name="items">Item list</param>
+        /// <param name="index">Initial index</param>
+        /// <param name="location">Coordinate</param>
+        /// <param name="size">size</param>
+        /// <param name="parent">Parent control</param>
+        /// <param name="dropDownWidth">Drop-down list width</param>
         private void Init(IEnumerable<string> items, int index, Point location, Size size, int dropDownWidth,
             Control parent)
         {
@@ -65,16 +65,16 @@ namespace HoI2Editor.Controls
             DropDownStyle = ComboBoxStyle.DropDownList;
             DropDownWidth = dropDownWidth > size.Width ? dropDownWidth : size.Width;
 
-            // ドロップダウンリストを開く
+            // Open drop-down list
             DroppedDown = true;
         }
 
         #endregion
 
-        #region イベントハンドラ
+        #region Event handler
 
         /// <summary>
-        ///     キー押下時の処理
+        ///     Processing when a key is pressed
         /// </summary>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -86,7 +86,7 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     フォーカス解除時の処理
+        ///     Processing when defocusing
         /// </summary>
         protected override void OnLostFocus(EventArgs e)
         {
@@ -95,7 +95,7 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     選択項目変更時の処理
+        ///     Processing when changing selection items
         /// </summary>
         protected override void OnSelectedIndexChanged(EventArgs e)
         {
@@ -104,19 +104,19 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     ドロップダウンリストが閉じられた時の処理
+        ///     What to do when the drop-down list is closed
         /// </summary>
         /// <param name="e"></param>
         protected override void OnDropDownClosed(EventArgs e)
         {
             base.OnDropDownClosed(e);
 
-            // 領域外クリックと項目選択を区別する方法が思いつかないので常に更新ありと見なす
+            // I can't think of a way to distinguish between out-of-area clicks and item selection, so I always consider it updated.
             Finish(false);
         }
 
         /// <summary>
-        ///     描画更新時の処理
+        ///     Processing when updating drawing
         /// </summary>
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -125,12 +125,12 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 内部メソッド
+        #region Internal method
 
         /// <summary>
-        ///     編集完了時の処理
+        ///     Processing when editing is completed
         /// </summary>
-        /// <param name="cancel">キャンセルされたかどうか</param>
+        /// <param name="cancel">Whether it was canceled</param>
         private void Finish(bool cancel)
         {
             CancelEventArgs e = new CancelEventArgs(cancel);

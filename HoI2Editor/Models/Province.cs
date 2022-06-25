@@ -3,294 +3,294 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     プロヴィンスデータ
+    ///     Providence data
     /// </summary>
     public class Province
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     プロヴィンスID
+        ///     Providence ID
         /// </summary>
         public int Id { get; set; }
 
         /// <summary>
-        ///     プロヴィンス名
+        ///     Providence name
         /// </summary>
         public string Name { get; set; }
 
         /// <summary>
-        ///     地域ID
+        ///     area ID
         /// </summary>
         public AreaId Area { get; set; }
 
         /// <summary>
-        ///     地方ID
+        ///     Local ID
         /// </summary>
         public RegionId Region { get; set; }
 
         /// <summary>
-        ///     大陸ID
+        ///     Continent ID
         /// </summary>
         public ContinentId Continent { get; set; }
 
         /// <summary>
-        ///     気候ID
+        ///     climate ID
         /// </summary>
         public ClimateId Climate { get; set; }
 
         /// <summary>
-        ///     地形ID
+        ///     terrain ID
         /// </summary>
         public TerrainId Terrain { get; set; }
 
         /// <summary>
-        ///     サイズ補正(不明)
+        ///     Size correction (( not clear )
         /// </summary>
         public int SizeModifier { get; set; }
 
         /// <summary>
-        ///     航空機許容量(不明)
+        ///     Aircraft capacity (( not clear )
         /// </summary>
         public int AirCapacity { get; set; }
 
         /// <summary>
-        ///     インフラ
+        ///     infrastructure
         /// </summary>
         public double Infrastructure { get; set; }
 
         /// <summary>
-        ///     都市(不明)
+        ///     City (( not clear )
         /// </summary>
         public int City { get; set; }
 
         /// <summary>
-        ///     砂浜の有無
+        ///     Presence or absence of sandy beach
         /// </summary>
         public bool Beaches { get; set; }
 
         /// <summary>
-        ///     港の有無
+        ///     Presence or absence of a port
         /// </summary>
         public bool PortAllowed { get; set; }
 
         /// <summary>
-        ///     港の海域
+        ///     Sea area of the harbor
         /// </summary>
         public int PortSeaZone { get; set; }
 
         /// <summary>
-        ///     IC
+        ///     I C
         /// </summary>
         public double Ic { get; set; }
 
         /// <summary>
-        ///     労働力
+        ///     Labor force
         /// </summary>
         public double Manpower { get; set; }
 
         /// <summary>
-        ///     石油
+        ///     oil
         /// </summary>
         public double Oil { get; set; }
 
         /// <summary>
-        ///     金属
+        ///     metal
         /// </summary>
         public double Metal { get; set; }
 
         /// <summary>
-        ///     エネルギー
+        ///     energy
         /// </summary>
         public double Energy { get; set; }
 
         /// <summary>
-        ///     希少資源
+        ///     Rare resources
         /// </summary>
         public double RareMaterials { get; set; }
 
         /// <summary>
-        ///     都市のX座標
+        ///     Of city X Coordinate
         /// </summary>
         public int CityXPos { get; set; }
 
         /// <summary>
-        ///     都市のY座標
+        ///     Of city Y Coordinate
         /// </summary>
         public int CityYPos { get; set; }
 
         /// <summary>
-        ///     軍隊のX座標
+        ///     Of the army X Coordinate
         /// </summary>
         public int ArmyXPos { get; set; }
 
         /// <summary>
-        ///     軍隊のY座標
+        ///     Of the army Y Coordinate
         /// </summary>
         public int ArmyYPos { get; set; }
 
         /// <summary>
-        ///     港のX座標
+        ///     Of the harbor X Coordinate
         /// </summary>
         public int PortXPos { get; set; }
 
         /// <summary>
-        ///     港のY座標
+        ///     Of the harbor Y Coordinate
         /// </summary>
         public int PortYPos { get; set; }
 
         /// <summary>
-        ///     砂浜のX座標
+        ///     On the sandy beach X Coordinate
         /// </summary>
         public int BeachXPos { get; set; }
 
         /// <summary>
-        ///     砂浜のY座標
+        ///     On the sandy beach Y Coordinate
         /// </summary>
         public int BeachYPos { get; set; }
 
         /// <summary>
-        ///     砂浜のアイコン
+        ///     Sandy beach icon
         /// </summary>
         public int BeachIcon { get; set; }
 
         /// <summary>
-        ///     要塞のX座標
+        ///     Of the fortress X Coordinate
         /// </summary>
         public int FortXPos { get; set; }
 
         /// <summary>
-        ///     要塞のY座標
+        ///     Fortress Y Coordinate
         /// </summary>
         public int FortYPos { get; set; }
 
         /// <summary>
-        ///     対空砲のX座標
+        ///     Anti-aircraft gun X Coordinate
         /// </summary>
         public int AaXPos { get; set; }
 
         /// <summary>
-        ///     対空砲のY座標
+        ///     Anti-aircraft gun Y Coordinate
         /// </summary>
         public int AaYPos { get; set; }
 
         /// <summary>
-        ///     カウンターのX座標
+        ///     Of the counter X Coordinate
         /// </summary>
         public int CounterXPos { get; set; }
 
         /// <summary>
-        ///     カウンターのY座標
+        ///     Of the counter Y Coordinate
         /// </summary>
         public int CounterYPos { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainVariant1 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainXPos1 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainYPos1 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainVariant2 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainXPos2 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainYPos2 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainVariant3 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainXPos3 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainYPos3 { get; set; }
 
         /// <summary>
-        ///     不明
+        ///     not clear
         /// </summary>
         public int TerrainVariant4 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしX座標1
+        ///     fill X Coordinate 1
         /// </summary>
         public int FillCoordX1 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしY座標1
+        ///     fill Y Coordinate 1
         /// </summary>
         public int FillCoordY1 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしX座標2
+        ///     fill X Coordinate 2
         /// </summary>
         public int FillCoordX2 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしY座標2
+        ///     fill Y Coordinate 2
         /// </summary>
         public int FillCoordY2 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしX座標3
+        ///     fill X Coordinate 3
         /// </summary>
         public int FillCoordX3 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしY座標3
+        ///     fill Y Coordinate 3
         /// </summary>
         public int FillCoordY3 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしX座標4
+        ///     fill X Coordinate Four
         /// </summary>
         public int FillCoordX4 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしY座標4
+        ///     fill Y Coordinate Four
         /// </summary>
         public int FillCoordY4 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしX座標5
+        ///     fill X Coordinate Five
         /// </summary>
         public int FillCoordX5 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしY座標5
+        ///     fill Y Coordinate Five
         /// </summary>
         public int FillCoordY5 { get; set; }
 
         /// <summary>
-        ///     塗りつぶしX座標6
+        ///     fill X Coordinate 6
         /// </summary>
         public int FillCoordX6 { get; set; }
 
         /// <summary>
-        ///     陸地プロヴィンスかどうか
+        ///     Whether it is land provision
         /// </summary>
         public bool IsLand
         {
@@ -316,7 +316,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     海洋プロヴィンスかどうか
+        ///     Whether it is a marine provision
         /// </summary>
         public bool IsSea
         {
@@ -335,7 +335,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     無効プロヴィンスかどうか
+        ///     Whether it is invalid provision
         /// </summary>
         public bool IsInvalid
         {
@@ -355,35 +355,35 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     項目の編集済みフラグ
+        ///     Edited flag for item
         /// </summary>
         private readonly bool[] _dirtyFlags = new bool[Enum.GetValues(typeof (ProvinceItemId)).Length];
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private bool _dirtyFlag;
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     プロヴィンス名を取得する
+        ///     Get the Providence name
         /// </summary>
-        /// <returns>プロヴィンス名</returns>
+        /// <returns>Providence name</returns>
         public string GetName()
         {
             return Config.GetText(Name);
         }
 
         /// <summary>
-        ///     プロヴィンス名を設定する
+        ///     Set the province name
         /// </summary>
-        /// <param name="s">プロヴィンス名</param>
+        /// <param name="s">Providence name</param>
         public void SetName(string s)
         {
             Config.SetText(Name, s, Game.ProvinceTextFileName);
@@ -391,31 +391,31 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     プロヴィンスデータが編集済みかどうかを取得する
+        ///     Get if the provision data has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     項目が編集済みかどうかを取得する
+        ///     Get if the item has been edited
         /// </summary>
-        /// <param name="id">項目ID</param>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <param name="id">item ID</param>
+        /// <returns>If editedtrue true return it</returns>
         public bool IsDirty(ProvinceItemId id)
         {
             return _dirtyFlags[(int) id];
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
-        /// <param name="id">項目ID</param>
+        /// <param name="id">item ID</param>
         public void SetDirty(ProvinceItemId id)
         {
             _dirtyFlags[(int) id] = true;
@@ -423,7 +423,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         public void ResetDirtyAll()
         {
@@ -438,13 +438,13 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     地域ID
+    ///     area ID
     /// </summary>
     public enum AreaId
     {
         None,
 
-        // 陸地用
+        // For land
         Adelaide,
         Afghanistan,
         Agats,
@@ -477,7 +477,7 @@ namespace HoI2Editor.Models
         BadenWurttemberg,
         BahamasIslands,
         Baleares,
-        Belgorod, // DHのみ
+        Belgorod, // DH only
         Bavaria,
         Bechuanaland,
         Bengal,
@@ -547,7 +547,7 @@ namespace HoI2Editor.Models
         EasternGhat,
         EasternHungary,
         Eire,
-        Engels, // DHのみ
+        Engels, // DH only
         ElAlamein,
         ElRif,
         EspirtuSanto,
@@ -566,7 +566,7 @@ namespace HoI2Editor.Models
         GoldCoast,
         GreekIsland,
         Grodno,
-        Groznyi, // DHのみ
+        Groznyi, // DH only
         Guadalcanal,
         Guangdong,
         Guangxi,
@@ -616,7 +616,7 @@ namespace HoI2Editor.Models
         KirgizSteppe,
         Kirgizistan,
         Kirov,
-        Kola, // DHのみ
+        Kola, // DH only
         KongoleseJungle,
         Kostroma,
         Krakow,
@@ -682,9 +682,9 @@ namespace HoI2Editor.Models
         Montana,
         Morocco,
         Moscow,
-        Mozyr, // DHのみ
+        Mozyr, // DH only
         Nagpur,
-        Nalchik, // DHのみ
+        Nalchik, // DH only
         Nambia,
         Nauru,
         Nebraska,
@@ -735,7 +735,7 @@ namespace HoI2Editor.Models
         Ontario,
         Oran,
         Oregon,
-        Orenburg, // DHのみ
+        Orenburg, // DH only
         Orissa,
         Pakistan,
         PalawanMindoro,
@@ -748,10 +748,10 @@ namespace HoI2Editor.Models
         Perm,
         PersianGulfCoast,
         Perth,
-        Petrozavodsk, // DHのみ
+        Petrozavodsk, // DH only
         Phoenix,
         Polotsk,
-        Poltava, // DHのみ
+        Poltava, // DH only
         Polynesia,
         PortMoresby,
         Portugal,
@@ -769,7 +769,7 @@ namespace HoI2Editor.Models
         RedSeaCoast,
         Rehe,
         ReservoireRybinsk,
-        Rhineland, // DHのみ
+        Rhineland, // DH only
         RioDeJaneiro,
         RioDeOro,
         Rogachev,
@@ -793,7 +793,7 @@ namespace HoI2Editor.Models
         Sichuan,
         SicilianGap,
         SidiBarrani,
-        Silesia, // DHのみ
+        Silesia, // DH only
         Sirte,
         SlaveCoast,
         Slovakia,
@@ -861,7 +861,7 @@ namespace HoI2Editor.Models
         VelikiyeLuki,
         VeraCruz,
         Vermont,
-        Vorkuta, // DHのみ
+        Vorkuta, // DH only
         WestAndalucia,
         WestAtlas,
         WestEngland,
@@ -898,7 +898,7 @@ namespace HoI2Editor.Models
         Tripoli,
         Greenland,
 
-        // 海洋用
+        // For the ocean
         Lake,
         AdriaticSea,
         AegeanSea,
@@ -1051,17 +1051,17 @@ namespace HoI2Editor.Models
         PernambucoPlain,
         AscensionFractureZone,
         EastNorthSea,
-        CaspianSea // DHのみ
+        CaspianSea // DH only
     }
 
     /// <summary>
-    ///     地方ID
+    ///     Local ID
     /// </summary>
     public enum RegionId
     {
         None,
 
-        // 陸地用
+        // For land
         Afghanistan,
         Alaska,
         Algeria,
@@ -1160,7 +1160,7 @@ namespace HoI2Editor.Models
         WesternRussia,
         NorthernCanada,
 
-        // 海洋用
+        // For the ocean
         Lake,
         BlackSea,
         BalticSea,
@@ -1218,7 +1218,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     大陸ID
+    ///     Continent ID
     /// </summary>
     public enum ContinentId
     {
@@ -1236,7 +1236,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     気候ID
+    ///     climate ID
     /// </summary>
     public enum ClimateId
     {
@@ -1252,7 +1252,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     地形ID
+    ///     terrain ID
     /// </summary>
     public enum TerrainId
     {
@@ -1272,45 +1272,45 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     プロヴィンス項目ID
+    ///     Province item ID
     /// </summary>
     public enum ProvinceItemId
     {
-        Id, // プロヴィンスID
-        Name, // プロヴィンス名
-        Area, // 地域
-        Region, // 地方
-        Continent, // 大陸
-        Climate, // 気候
-        Terrain, // 地形
-        SizeModifier, // サイズ補正
-        AirCapacity, // 航空機許容量
-        Infrastructure, // インフラ
-        City, // 都市
-        Beaches, // 砂浜の有無
-        PortAllowed, // 港の有無
-        PortSeaZone, // 港の海域
-        Ic, // IC
-        Manpower, // 労働力
-        Oil, // 石油
-        Metal, // 金属
-        Energy, // エネルギー
-        RareMaterials, // 希少資源
-        CityXPos, // 都市のX座標
-        CityYPos, // 都市のY座標
-        ArmyXPos, // 軍隊のX座標
-        ArmyYPos, // 軍隊のY座標
-        PortXPos, // 港のX座標
-        PortYPos, // 港のY座標
-        BeachXPos, // 砂浜のX座標
-        BeachYPos, // 砂浜のY座標
-        BeachIcon, // 砂浜のアイコン
-        FortXPos, // 要塞のX座標
-        FortYPos, // 要塞のY座標
-        AaXPos, // 対空砲のX座標
-        AaYPos, // 対空砲のY座標
-        CounterXPos, // カウンターのX座標
-        CounterYPos, // カウンターのY座標
+        Id, // Providence ID
+        Name, // Province name
+        Area, // area
+        Region, // Local
+        Continent, // Continent
+        Climate, // climate
+        Terrain, // terrain
+        SizeModifier, // Size correction
+        AirCapacity, // Aircraft capacity
+        Infrastructure, // infrastructure
+        City, // City
+        Beaches, // Presence or absence of sandy beach
+        PortAllowed, // Presence or absence of a port
+        PortSeaZone, // Sea area of the harbor
+        Ic, // I C
+        Manpower, // Labor force
+        Oil, // oil
+        Metal, // metal
+        Energy, // energy
+        RareMaterials, // Rare resources
+        CityXPos, // Of city X Coordinate
+        CityYPos, // Of city Y Coordinate
+        ArmyXPos, // Of the armyX Coordinate
+        ArmyYPos, // Of the army Y Coordinate
+        PortXPos, // Of the harbor X Coordinate
+        PortYPos, // Of the harbor Y Coordinate
+        BeachXPos, // On the sandy beach X Coordinate
+        BeachYPos, // On the sandy beach Y Coordinate
+        BeachIcon, // Sandy beach icon
+        FortXPos, // Fortress X Coordinate
+        FortYPos, // Fortress Y Coordinate
+        AaXPos, // Anti-aircraft gun X Coordinate
+        AaYPos, // Anti-aircraft gun Y Coordinate
+        CounterXPos, // Of the counter X Coordinate
+        CounterYPos, // Of the counter Y Coordinate
         TerrainVariant1,
         TerrainXPos1,
         TerrainYPos1,
@@ -1321,16 +1321,16 @@ namespace HoI2Editor.Models
         TerrainXPos3,
         TerrainYPos3,
         TerrainVariant4,
-        FillCoordX1, // 塗りつぶしX座標1
-        FillCoordY1, // 塗りつぶしY座標1
-        FillCoordX2, // 塗りつぶしX座標2
-        FillCoordY2, // 塗りつぶしY座標2
-        FillCoordX3, // 塗りつぶしX座標3
-        FillCoordY3, // 塗りつぶしY座標3
-        FillCoordX4, // 塗りつぶしX座標4
-        FillCoordY4, // 塗りつぶしY座標4
-        FillCoordX5, // 塗りつぶしX座標5
-        FillCoordY5, // 塗りつぶしY座標5
-        FillCoordX6 // 塗りつぶしX座標6
+        FillCoordX1, // fill X Coordinate 1
+        FillCoordY1, // fill Y Coordinate 1
+        FillCoordX2, // fill X Coordinate 2
+        FillCoordY2, // fill Y Coordinate 2
+        FillCoordX3, // fill X Coordinate 3
+        FillCoordY3, // fill Y Coordinate 3
+        FillCoordX4, // fill X Coordinate Four
+        FillCoordY4, // fill Y Coordinate Four
+        FillCoordX5, // fill X Coordinate Five
+        FillCoordY5, // fill Y Coordinate Five
+        FillCoordX6 // fillX Coordinate 6
     }
 }

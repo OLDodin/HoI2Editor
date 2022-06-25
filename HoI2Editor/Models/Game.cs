@@ -7,14 +7,14 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     ゲーム関連データ
+    ///     Game -related data
     /// </summary>
     public static class Game
     {
-        #region 公開プロパティ
+        #region Public property
 
         /// <summary>
-        ///     ゲームの種類
+        ///     Kind of game
         /// </summary>
         public static GameType Type
         {
@@ -27,7 +27,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ゲームバージョン
+        ///     Game version
         /// </summary>
         public static int Version
         {
@@ -40,7 +40,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ファイル読み書き時のコードページ
+        ///     Code page when writing files
         /// </summary>
         public static int CodePage
         {
@@ -50,13 +50,13 @@ namespace HoI2Editor.Models
                 _codePage = value;
                 Log.Verbose("CodePage: {0}", _codePage);
 
-                // ファイルの再読み込みを要求する
+                // Request a file reload
                 HoI2EditorController.RequestReload();
             }
         }
 
         /// <summary>
-        ///     ゲームフォルダ名
+        ///     Game folder name
         /// </summary>
         public static string FolderName
         {
@@ -71,33 +71,33 @@ namespace HoI2Editor.Models
                 _folderName = value;
                 Log.Error("Game Folder: {0}", _folderName);
 
-                // ゲームの種類を判別する
+                // Determine the type of game
                 DistinguishGameType();
 
-                // ゲームのバージョンを判別する
+                // Determine the game version
                 DistinguishGameVersion();
 
-                // 言語モードを判別する
+                // Determination of language mode
                 DistinguishLanguageMode();
 
-                // MODフォルダ名を更新する
+                // Update the mod folder name
                 UpdateModFolderName();
 
-                // 保存フォルダ名を更新する
+                // Update the saved folder name
                 UpdateExportFolderName();
 
-                // ファイルの再読み込みを要求する
+                // Request a file reload
                 HoI2EditorController.RequestReload();
             }
         }
 
         /// <summary>
-        ///     ゲームフォルダが有効かどうか
+        ///     Whether the game folder is effective
         /// </summary>
         public static bool IsGameFolderActive => Type != GameType.None;
 
         /// <summary>
-        ///     MOD名
+        ///     MOD name
         /// </summary>
         public static string ModName
         {
@@ -112,31 +112,31 @@ namespace HoI2Editor.Models
                 _modName = value;
                 Log.Error("MOD Name: {0}", _modName);
 
-                // MODフォルダ名を更新する
+                // Update the mod folder name
                 UpdateModFolderName();
 
-                // ファイルの再読み込みを要求する
+                // Request a file reload
                 HoI2EditorController.RequestReload();
             }
         }
 
         /// <summary>
-        ///     MODが有効かどうか
+        ///     Whether mod is effective
         /// </summary>
         public static bool IsModActive { get; private set; }
 
         /// <summary>
-        ///     MODフォルダ名
+        ///     MOD folder name
         /// </summary>
         public static string ModFolderName { get; private set; }
 
         /// <summary>
-        ///     保存フォルダ名が有効かどうか
+        ///     Whether the storage folder name is valid
         /// </summary>
         public static bool IsExportFolderActive { get; private set; }
 
         /// <summary>
-        ///     保存フォルダ名
+        ///     Save folder name
         /// </summary>
         public static string ExportName
         {
@@ -151,353 +151,358 @@ namespace HoI2Editor.Models
                 _exportName = value;
                 Log.Error("Export Name: {0}", _exportName);
 
-                // 保存フォルダ名を更新する
+                // Update the saved folder name
                 UpdateExportFolderName();
 
-                // ファイルの再読み込みを要求する
+                // Request a file reload
                 HoI2EditorController.RequestReload();
             }
         }
 
         /// <summary>
-        ///     保存フォルダ名
+        ///     Save folder name
         /// </summary>
         public static string ExportFolderName => _exportFolderName;
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     ゲームの種類
+        ///     Kind of game
         /// </summary>
         private static GameType _type;
 
         /// <summary>
-        ///     ゲームバージョン
+        ///     Game version
         /// </summary>
         private static int _version;
 
         /// <summary>
-        ///     ゲームフォルダ名
+        ///     Game folder name
         /// </summary>
         private static string _folderName;
 
         /// <summary>
-        ///     MOD名
+        ///     MOD name
         /// </summary>
         private static string _modName;
 
         /// <summary>
-        ///     保存フォルダ名 (MOD名)
+        ///     Save folder name (MOD name)
         /// </summary>
         private static string _exportName;
 
         /// <summary>
-        ///     保存フォルダ名 (フルパス)
+        ///     Save folder name (full path)
         /// </summary>
         private static string _exportFolderName;
 
         /// <summary>
-        ///     実行ファイル名
+        ///     Executive file name
         /// </summary>
         private static string _exeFileName;
 
         /// <summary>
-        ///     ファイル読み書き時のコードページ
+        ///     Code page when writing files
         /// </summary>
         private static int _codePage;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     AIフォルダ
+        ///     AI folder
         /// </summary>
         public const string AiPathName = "ai";
 
         /// <summary>
-        ///     文字列定義フォルダ
+        ///     String definition folder
         /// </summary>
         public const string ConfigPathName = "config";
 
         /// <summary>
-        ///     追加文字列定義フォルダ(AoD)
+        ///     Additional string definition folder (Ao D)
         /// </summary>
         public const string ConfigAdditionalPathName = "config\\Additional";
 
         /// <summary>
-        ///     データベースフォルダ
+        ///     Database folder
         /// </summary>
         public const string DatabasePathName = "db";
 
         /// <summary>
-        ///     指揮官フォルダ
+        ///     Commander folder
         /// </summary>
         public const string LeaderPathName = "db\\leaders";
 
         /// <summary>
-        ///     閣僚フォルダ
+        ///     Ministerial folder
         /// </summary>
         public const string MinisterPathName = "db\\ministers";
 
         /// <summary>
-        ///     研究機関フォルダ
+        ///     Research institution folder
         /// </summary>
         public const string TeamPathName = "db\\tech\\teams";
 
         /// <summary>
-        ///     技術フォルダ
+        ///     Technical folder
         /// </summary>
         public const string TechPathName = "db\\tech";
 
         /// <summary>
-        ///     ユニットフォルダ
+        ///     Unit folder
         /// </summary>
         public const string UnitPathName = "db\\units";
 
         /// <summary>
-        ///     師団ユニットフォルダ
+        ///     Division unit folder
         /// </summary>
         public const string DivisionPathName = "db\\units\\divisions";
 
         /// <summary>
-        ///     旅団ユニットフォルダ
+        ///     Brigade unit folder
         /// </summary>
         public const string BrigadePathName = "db\\units\\brigades";
 
         /// <summary>
-        ///     一般画像フォルダ
+        ///     General image folder
         /// </summary>
         public const string PicturePathName = "gfx\\interface";
 
         /// <summary>
-        ///     指揮官/閣僚/研究機関画像フォルダ
+        ///     Advocacy / Ministerial / Research Institute Image Folder
         /// </summary>
         public const string PersonPicturePathName = "gfx\\interface\\pics";
 
         /// <summary>
-        ///     技術画像フォルダ
+        ///     Technical image folder
         /// </summary>
         public const string TechPicturePathName = "gfx\\interface\\tech";
 
         /// <summary>
-        ///     ユニットモデル画像フォルダ
+        ///     Unit model image folder
         /// </summary>
         public const string ModelPicturePathName = "gfx\\interface\\models";
 
         /// <summary>
-        ///     マップフォルダ名
+        ///     Map folder name
         /// </summary>
         public const string MapPathName = "map";
 
         /// <summary>
-        ///     マップフォルダ内の画像フォルダ名
+        ///     Image folder name in the map folder
         /// </summary>
         public const string MapImagePathName = "gfx";
 
         /// <summary>
-        ///     MODフォルダ名(DH)
+        ///     MOD folder name (DH)
         /// </summary>
         public const string ModPathNameDh = "Mods";
 
         /// <summary>
-        ///     シナリオフォルダ
+        ///     Scenario -offer
         /// </summary>
         public const string ScenarioPathName = "scenarios";
 
         /// <summary>
-        ///     シナリオデータフォルダ
+        ///     Scenario data folder
         /// </summary>
         public const string ScenarioDataPathName = "scenarios\\data";
 
         /// <summary>
-        ///     miscファイル名
+        ///     Misc file name
         /// </summary>
         public const string MiscPathName = "db\\misc.txt";
 
         /// <summary>
-        ///     閣僚特性ファイル名(AoD)
+        ///     Ministerial characteristics file name (Ao D)
         /// </summary>
         public const string MinisterPersonalityPathNameAoD = "db\\ministers\\minister_modifiers.txt";
 
         /// <summary>
-        ///     閣僚特性ファイル名(DH)
+        ///     Ministerial characteristic file name (DH)
         /// </summary>
         public const string MinisterPersonalityPathNameDh = "db\\ministers\\minister_personalities.txt";
 
         /// <summary>
-        ///     指揮官一覧ファイル名(DH)
+        ///     Advocacy list file name (DH)
         /// </summary>
         public const string DhLeaderListPathName = "db\\leaders.txt";
 
         /// <summary>
-        ///     閣僚一覧ファイル名(DH)
+        ///     Ministerial list file name (DH)
         /// </summary>
         public const string DhMinisterListPathName = "db\\ministers.txt";
 
         /// <summary>
-        ///     研究機関一覧ファイル名(DH)
+        ///     Research institution list file name (DH)
         /// </summary>
         public const string DhTeamListPathName = "db\\teams.txt";
 
         /// <summary>
-        ///     プロヴィンス定義ファイル名
+        ///     Events data folder
+        /// </summary>
+        public const string EventsPathName = "db\\events";
+
+        /// <summary>
+        ///     Province definition file name
         /// </summary>
         public const string ProvinceFileName = "province.csv";
 
         /// <summary>
-        ///     師団ユニットクラス定義ファイル名(DH)
+        ///     Division unit class definition file name (DH)
         /// </summary>
         public const string DhDivisionTypePathName = "db\\units\\division_types.txt";
 
         /// <summary>
-        ///     旅団ユニットクラス定義ファイル名(DH)
+        ///     Brigade unit class definition file name (DH)
         /// </summary>
         public const string DhBrigadeTypePathName = "db\\units\\brigade_types.txt";
 
         /// <summary>
-        ///     研究特性アイコンのファイル名
+        ///     File name of research characteristic icon
         /// </summary>
         public const string TechIconPathName = "gfx\\interface\\tc_icons.bmp";
 
         /// <summary>
-        ///     研究特性オーバーレイアイコンのファイル名
+        ///     Research characteristic overlay icon file name
         /// </summary>
         public const string TechIconOverlayPathName = "gfx\\interface\\tc_icon_overlay.bmp";
 
         /// <summary>
-        ///     技術ラベルのファイル名
+        ///     Technical label file name
         /// </summary>
         public const string TechLabelPathName = "gfx\\interface\\button_tech_normal.bmp";
 
         /// <summary>
-        ///     完了技術ラベルのファイル名
+        ///     Completed technology label file name
         /// </summary>
         public const string DoneTechLabelPathName = "gfx\\interface\\button_tech_done.bmp";
 
         /// <summary>
-        ///     イベントラベルのファイル名
+        ///     Event label file name
         /// </summary>
         public const string SecretLabelPathName = "gfx\\interface\\button_tech_secret.bmp";
 
         /// <summary>
-        ///     青写真アイコンのファイル名
+        ///     Blue photo icon file name
         /// </summary>
         public const string BlueprintIconPathName = "gfx\\interface\\icon_blueprints.bmp";
 
         /// <summary>
-        ///     技術文字列定義のファイル名
+        ///     File name of technical character string definition
         /// </summary>
         public const string TechTextFileName = "tech_names.csv";
 
         /// <summary>
-        ///     ユニット文字列定義のファイル名
+        ///     Unit character string definition file name
         /// </summary>
         public const string UnitTextFileName = "unit_names.csv";
 
         /// <summary>
-        ///     国別モデル文字列定義のファイル名
+        ///     File name of the model string definition by country
         /// </summary>
         public const string ModelTextFileName = "models.csv";
 
         /// <summary>
-        ///     プロヴィンス名定義ファイル名
+        ///     Province Definition file name
         /// </summary>
         public const string ProvinceTextFileName = "province_names.csv";
 
         /// <summary>
-        ///     地名定義ファイル名
+        ///     Place definition file name
         /// </summary>
         public const string WorldTextFileName = "world_names.csv";
 
         /// <summary>
-        ///     シナリオ文字列定義のファイル名
+        ///     Scenario character string definition file name
         /// </summary>
         public const string ScenarioTextFileName = "scenario_text.csv";
 
         /// <summary>
-        ///     マップデータのファイル名 (936x360)
+        ///     Map data file name (936x360)
         /// </summary>
         public const string LightMap1FileName = "lightmap1.tbl";
 
         /// <summary>
-        ///     マップデータのファイル名 (468x180)
+        ///     Map data file name (468x180)
         /// </summary>
         public const string LightMap2FileName = "lightmap2.tbl";
 
         /// <summary>
-        ///     マップデータのファイル名 (234x90)
+        ///     Map data file name (234x90)
         /// </summary>
         public const string LightMap3FileName = "lightmap3.tbl";
 
         /// <summary>
-        ///     マップデータのファイル名 (117x45)
+        ///     Map data file name (117x45)
         /// </summary>
         public const string LightMap4FileName = "lightmap4.tbl";
 
         /// <summary>
-        ///     プロヴィンス境界定義ファイル名
+        ///     Province boundary definition file name
         /// </summary>
         public const string BoundBoxFileName = "boundbox.tbl";
 
         /// <summary>
-        ///     カラースケールテーブルのファイル名
+        ///     Color scale table file name
         /// </summary>
         public const string ColorScalesFileName = "colorscales.csv";
 
         /// <summary>
-        ///     ユニット名定義ファイル名
+        ///     Unit name definition file name
         /// </summary>
         public const string UnitNamesPathName = "db\\unitnames.csv";
 
         /// <summary>
-        ///     陸軍軍団名定義ファイル名
+        ///     Army Corps name definition file name
         /// </summary>
         public const string ArmyNamesPathName = "db\\armynames.csv";
 
         /// <summary>
-        ///     海軍軍団名定義ファイル名
+        ///     Navy Corps name definition file name
         /// </summary>
         public const string NavyNamesPathName = "db\\navynames.csv";
 
         /// <summary>
-        ///     空軍軍団名定義ファイル名
+        ///     Air Force Corps name definition file name
         /// </summary>
         public const string AirNamesPathName = "db\\airnames.csv";
 
         /// <summary>
-        ///     ランダム指揮官名定義ファイル
+        ///     Random commander's name definition file
         /// </summary>
         public const string RandomLeadersPathName = "db\\randomleaders.csv";
 
         /// <summary>
-        ///     基地定義ファイル名
+        ///     Standard definition file name
         /// </summary>
         public const string BasesIncFileName = "bases.inc";
 
         /// <summary>
-        ///     基地定義ファイル名 (DH Full 33年シナリオ)
+        ///     Base definition file name (DH Full 33 year scenario)
         /// </summary>
         public const string BasesIncDodFileName = "bases_DOD.inc";
 
         /// <summary>
-        ///     資源備蓄定義ファイル名
+        ///     Resources storage definition file name
         /// </summary>
         public const string DepotsIncFileName = "depots.inc";
 
         /// <summary>
-        ///     VP定義ファイル名
+        ///     VP definition file name
         /// </summary>
         public const string VpIncFileName = "vp.inc";
 
         #endregion
 
-        #region 内部定数
+        #region Internal fixed number
 
         /// <summary>
-        ///     ゲーム種類の文字列
+        ///     Game type string
         /// </summary>
         private static readonly string[] GameTypeStrings =
         {
@@ -509,24 +514,24 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region パス操作
+        #region Path operation
 
         /// <summary>
-        ///     バニラフォルダのファイル名を取得する
+        ///     Get the file name of the vanilla folder
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>file name</returns>
         public static string GetVanillaFileName(string pathName)
         {
             return Path.Combine(FolderName, pathName);
         }
 
         /// <summary>
-        ///     バニラフォルダのファイル名を取得する
+        ///     Get the file name of the vanilla folder
         /// </summary>
-        /// <param name="folderName">フォルダ名</param>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="folderName">Folder name</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>file name</returns>
         public static string GetVanillaFileName(string folderName, string fileName)
         {
             string pathName = Path.Combine(folderName, fileName);
@@ -534,21 +539,21 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     MODフォルダのファイル名を取得する
+        ///     Get the file name of the mod folder
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>file name</returns>
         public static string GetModFileName(string pathName)
         {
             return Path.Combine(ModFolderName, pathName);
         }
 
         /// <summary>
-        ///     MODフォルダのファイル名を取得する
+        ///     Get the file name of the mod folder
         /// </summary>
-        /// <param name="folderName">フォルダ名</param>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="folderName">Folder name</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>file name</returns>
         public static string GetModFileName(string folderName, string fileName)
         {
             string pathName = Path.Combine(folderName, fileName);
@@ -556,21 +561,21 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     保存フォルダのファイル名を取得する
+        ///     Get the file name of the saved folder
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>file name</returns>
         public static string GetExportFileName(string pathName)
         {
             return Path.Combine(ExportFolderName, pathName);
         }
 
         /// <summary>
-        ///     保存フォルダのファイル名を取得する
+        ///     Get the file name of the saved folder
         /// </summary>
-        /// <param name="folderName">フォルダ名</param>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="folderName">Folder name</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>file name</returns>
         public static string GetExportFileName(string folderName, string fileName)
         {
             string pathName = Path.Combine(folderName, fileName);
@@ -578,10 +583,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     MODフォルダ/保存フォルダを考慮して読み込み用のファイル名を取得する
+        ///     Get a file name for reading in consideration of MOD folder / saved folder
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>file name</returns>
         public static string GetReadFileName(string pathName)
         {
             if (IsExportFolderActive)
@@ -604,11 +609,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     MODフォルダ/保存フォルダを考慮して読み込み用のファイル名を取得する
+        ///     Get a file name for reading in consideration of MOD folder / saved folder
         /// </summary>
-        /// <param name="folderName">フォルダ名</param>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="folderName">Folder name</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>file name</returns>
         public static string GetReadFileName(string folderName, string fileName)
         {
             string pathName = Path.Combine(folderName, fileName);
@@ -616,10 +621,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     MODフォルダ/保存フォルダを考慮して書き込み用のファイル名を取得する
+        ///     Get a file name for writing in consideration of MOD folder / saved folder
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>file name</returns>
         public static string GetWriteFileName(string pathName)
         {
             if (IsExportFolderActive)
@@ -634,11 +639,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     MODフォルダ/保存フォルダを考慮して書き込み用のファイル名を取得する
+        ///     Get a file name for writing in consideration of MOD folder / saved folder
         /// </summary>
-        /// <param name="folderName">フォルダ名</param>
-        /// <param name="fileName">ファイル名</param>
-        /// <returns>ファイル名</returns>
+        /// <param name="folderName">Folder name</param>
+        /// <param name="fileName">file name</param>
+        /// <returns>file name</returns>
         public static string GetWriteFileName(string folderName, string fileName)
         {
             string pathName = Path.Combine(folderName, fileName);
@@ -646,10 +651,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     相対パス名を取得する
+        ///     Get the relative path name
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <returns>相対パス名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>Relative path name</returns>
         public static string GetRelativePathName(string pathName)
         {
             string name;
@@ -678,11 +683,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     相対パス名を取得する
+        ///     Get the relative path name
         /// </summary>
-        /// <param name="pathName">パス名</param>
-        /// <param name="folderName">基準フォルダ名</param>
-        /// <returns>相対パス名</returns>
+        /// <param name="pathName">Pass name</param>
+        /// <param name="folderName">Standard folder name</param>
+        /// <returns>Relative path name</returns>
         public static string GetRelativePathName(string pathName, string folderName)
         {
             string name;
@@ -711,10 +716,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     指揮官ファイル名を取得する
+        ///     Get the commander's file name
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>指揮官ファイル名</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>Commander file name</returns>
         public static string GetLeaderFileName(Country country)
         {
             return Leaders.FileNameMap.ContainsKey(country)
@@ -723,10 +728,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     閣僚ファイル名を取得する
+        ///     Get the ministerial file name
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>閣僚ファイル名</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>Ministerial file name</returns>
         public static string GetMinisterFileName(Country country)
         {
             return Ministers.FileNameMap.ContainsKey(country)
@@ -735,10 +740,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     研究機関ファイル名を取得する
+        ///     Get a research institution file name
         /// </summary>
-        /// <param name="country">国タグ</param>
-        /// <returns>研究機関ファイル名</returns>
+        /// <param name="country">Country tag</param>
+        /// <returns>Research institution file name</returns>
         public static string GetTeamFileName(Country country)
         {
             return Teams.FileNameMap.ContainsKey(country)
@@ -747,53 +752,53 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス定義フォルダ名を取得する
+        ///     Get the Province definition folder name
         /// </summary>
-        /// <returns>プロヴィンス定義フォルダ名</returns>
+        /// <returns>Province definition folder name</returns>
         public static string GetProvinceFolderName()
         {
-            // バニラのマップ
+            // Vanilla map
             if (Type != GameType.DarkestHour || Misc.MapNumber == 0)
             {
                 return DatabasePathName;
             }
 
-            // DHのマップ拡張
+            // DH map extension
             return Path.Combine(MapPathName, $"Map_{Misc.MapNumber}");
         }
 
         /// <summary>
-        ///     プロヴィンス名フォルダ名を取得する
+        ///     Get the Province name folder name
         /// </summary>
-        /// <returns>プロヴィンス名フォルダ名</returns>
+        /// <returns>Province name folder name</returns>
         public static string GetProvinceNameFolderName()
         {
-            // バニラのマップ
+            // Vanilla map
             if (Type != GameType.DarkestHour || Misc.MapNumber == 0)
             {
                 return ConfigPathName;
             }
 
-            // DHのマップ拡張
+            // DH map extension
             return Path.Combine(MapPathName, $"Map_{Misc.MapNumber}");
         }
 
         /// <summary>
-        ///     プロヴィンス画像フォルダ名を取得する
+        ///     Get the Province image folder name
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>プロヴィンス画像フォルダ名</returns>
+        /// <param name="id">Provin ID</param>
+        /// <returns>Province image folder name</returns>
         public static string GetProvinceImageFileName(int id)
         {
             string folderName;
             if (Type != GameType.DarkestHour || Misc.MapNumber == 0)
             {
-                // バニラのプロヴィンス画像フォルダ
+                // Vanilla Province Image folder
                 folderName = PicturePathName;
             }
             else
             {
-                // DHのマップ拡張
+                // DH map extension
                 folderName = Path.Combine(MapPathName, $"Map_{Misc.MapNumber}");
                 folderName = Path.Combine(folderName, MapImagePathName);
             }
@@ -802,9 +807,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップフォルダ名を取得する
+        ///     Get the map folder name
         /// </summary>
-        /// <returns>マップフォルダ名</returns>
+        /// <returns>Map folder name</returns>
         public static string GetMapFolderName()
         {
             string folderName;
@@ -820,7 +825,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     MODフォルダ名を更新する
+        ///     Update the mod folder name
         /// </summary>
         private static void UpdateModFolderName()
         {
@@ -850,7 +855,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     保存フォルダ名を更新する
+        ///     Update the saved folder name
         /// </summary>
         private static void UpdateExportFolderName()
         {
@@ -881,19 +886,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ゲームの種類/バージョン
+        #region Game type / version
 
         /// <summary>
-        ///     DH Fullかどうかを取得する
+        ///     Get if DH Full
         /// </summary>
-        /// <returns>DH Fullならばtrueを返す</returns>
+        /// <returns>Returns true if DH Full</returns>
         public static bool IsDhFull()
         {
             return (Type == GameType.DarkestHour) && (Misc.MapNumber > 0);
         }
 
         /// <summary>
-        ///     ゲームの種類を自動判別する
+        ///     Automatically determine the type of game
         /// </summary>
         private static void DistinguishGameType()
         {
@@ -941,7 +946,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ゲームのバージョンを自動判別する
+        ///     Automatically determine the game version
         /// </summary>
         private static void DistinguishGameVersion()
         {
@@ -951,7 +956,7 @@ namespace HoI2Editor.Models
                 return;
             }
 
-            // 実行ファイルのバイナリ列を読み込む
+            // Read the binary column of the executable
             FileInfo info = new FileInfo(_exeFileName);
             long size = info.Length;
             byte[] data = new byte[size];
@@ -960,14 +965,14 @@ namespace HoI2Editor.Models
             s.Read(data, 0, (int) size);
             s.Close();
 
-            // バージョン文字列を検索する
+            // Search for version string
             byte[] pattern;
             List<uint> l;
             uint offset;
             switch (Type)
             {
                 case GameType.HeartsOfIron2:
-                    // Doomsday Armageddon v X.X
+                    // Doomsday Armageddon v XX
                     pattern = new byte[]
                     {
                         0x44, 0x6F, 0x6F, 0x6D, 0x73, 0x64, 0x61, 0x79,
@@ -987,7 +992,7 @@ namespace HoI2Editor.Models
                         l = BinaryScan(data, pattern, 0, (uint) size);
                         if (l.Count == 0)
                         {
-                            // 日本語版の場合バージョン取得不可のため固定で1.2とする
+                            // In the case of a Japanese version, it is fixed to 1.2 because it is not possible to acquire the version.
                             Version = 120;
                             return;
                         }
@@ -1023,7 +1028,7 @@ namespace HoI2Editor.Models
                         l = BinaryScan(data, pattern, 0, (uint) size);
                         if (l.Count == 0)
                         {
-                            // バージョン取得不可の場合固定で1.04とする
+                            // If the version is not possible, fix it to 1.04
                             Version = 104;
                             return;
                         }
@@ -1042,7 +1047,7 @@ namespace HoI2Editor.Models
                     l = BinaryScan(data, pattern, 0, (uint) size);
                     if (l.Count == 0)
                     {
-                        // バージョン取得不可の場合固定で1.02とする
+                        // If the version is not possible, fix it to 1.02
                         Version = 102;
                         return;
                     }
@@ -1051,7 +1056,7 @@ namespace HoI2Editor.Models
                     break;
 
                 default:
-                    // Doomsday Armageddon v X.X
+                    // Doomsday Armageddon v XX
                     pattern = new byte[]
                     {
                         0x44, 0x6F, 0x6F, 0x6D, 0x73, 0x64, 0x61, 0x79,
@@ -1061,7 +1066,7 @@ namespace HoI2Editor.Models
                     l = BinaryScan(data, pattern, 0, (uint) size);
                     if (l.Count == 0)
                     {
-                        // 日本語版の場合バージョン取得不可のため固定で1.2とする
+                        // In the case of a Japanese version, it is fixed to 1.2 because it is not possible to acquire the version.
                         Version = 120;
                         return;
                     }
@@ -1072,13 +1077,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     バイナリ列を探索する
+        ///     Explore binary columns
         /// </summary>
-        /// <param name="target">探索対象のデータ</param>
-        /// <param name="pattern">探索するバイトパターン</param>
-        /// <param name="start">開始位置</param>
-        /// <param name="size">探索するバイトサイズ</param>
-        /// <returns>探索に成功すればtrueを返す</returns>
+        /// <param name="target">Data to be searched</param>
+        /// <param name="pattern">Byte pattern to explore</param>
+        /// <param name="start">Start position</param>
+        /// <param name="size">Byte size to explore</param>
+        /// <returns>If you succeed in searching, return True</returns>
         private static List<uint> BinaryScan(byte[] target, byte[] pattern, uint start, uint size)
         {
             List<uint> result = new List<uint>();
@@ -1093,12 +1098,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     バイナリ列が一致しているかを判定する
+        ///     Judge whether the binary column matches
         /// </summary>
-        /// <param name="target">探索対象のデータ</param>
-        /// <param name="pattern">探索するバイトパターン</param>
-        /// <param name="offset">判定する位置</param>
-        /// <returns>バイナリ列が一致していればtrueを返す</returns>
+        /// <param name="target">Data to be searched</param>
+        /// <param name="pattern">Byte pattern to explore</param>
+        /// <param name="offset">Position to judge</param>
+        /// <returns>If the binary column matches, return True</returns>
         private static bool IsBinaryMatch(byte[] target, byte[] pattern, uint offset)
         {
             int i;
@@ -1111,11 +1116,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ゲームの種類を出力する
+        ///     Output the type of game
         /// </summary>
         public static void OutputGameType()
         {
-            // 種類不明の場合は何も出力しない
+            // If the type is unknown, it will not output anything
             if (_type == GameType.None)
             {
                 return;
@@ -1125,7 +1130,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ゲームのバージョンを出力する
+        ///     Output the game version
         /// </summary>
         public static void OutputGameVersion()
         {
@@ -1142,7 +1147,7 @@ namespace HoI2Editor.Models
                     break;
 
                 default:
-                    // 種類不明の場合は何も出力しない
+                    // If the type is unknown, it will not output anything
                     return;
             }
             Log.Error("Game Version: {0}", s);
@@ -1150,48 +1155,48 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 言語
+        #region language
 
         /// <summary>
-        ///     言語モードを自動判別する
+        ///     Automatically determine the language mode
         /// </summary>
         private static void DistinguishLanguageMode()
         {
-            // ゲームフォルダ名が設定されていなければ判別しない
+            // If the game folder name is not set, it will not be determined
             if (string.IsNullOrEmpty(FolderName))
             {
                 return;
             }
 
-            // ゲームフォルダが存在しなければ判別しない
+            // If there is no game folder, it will not be determined
             if (!Directory.Exists(FolderName))
             {
                 return;
             }
 
-            // ゲームの種類が不明ならば判別しない
+            // If the type of game is unknown, it will not be determined
             if (Type == GameType.None)
             {
                 return;
             }
 
-            // _inmm.dllが存在すれば英語版にパッチを当てた環境
+            // If inmm.dll exists, the environment where the English version is patched
             if (File.Exists(Path.Combine(FolderName, "_inmm.dll")))
             {
                 CultureInfo culture = Thread.CurrentThread.CurrentUICulture;
-                // 英語版日本語化
+                // English version of Japanese language
                 if (culture.Equals(CultureInfo.GetCultureInfo("ja-JP")))
                 {
                     Config.LangMode = LanguageMode.PatchedJapanese;
                     return;
                 }
-                // 英語版韓国語化
+                // English version Korean
                 if (culture.Equals(CultureInfo.GetCultureInfo("ko-KR")))
                 {
                     Config.LangMode = LanguageMode.PatchedKorean;
                     return;
                 }
-                // 英語版繁体字中国語化
+                // English version of traditional Chinese characters in Chinese
                 if (culture.Equals(CultureInfo.GetCultureInfo("zh-TW")) ||
                     culture.Equals(CultureInfo.GetCultureInfo("zh-Hant")) ||
                     culture.Equals(CultureInfo.GetCultureInfo("zh-HK")) ||
@@ -1200,7 +1205,7 @@ namespace HoI2Editor.Models
                     Config.LangMode = LanguageMode.PatchedTraditionalChinese;
                     return;
                 }
-                // 英語版簡体字中国語化
+                // English version Simplified Chinese translation
                 if (culture.Equals(CultureInfo.GetCultureInfo("zh-CN")) ||
                     culture.Equals(CultureInfo.GetCultureInfo("zh-Hans")) ||
                     culture.Equals(CultureInfo.GetCultureInfo("zh-SG")))
@@ -1210,7 +1215,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // DoomsdayJP.exe(HoI2)/cyberfront.url(AoD)が存在すれば日本語版
+            // Japanese version if Doomsday JP.exe (Ho I2) /cyberfront.url (Ao D) exists
             if (File.Exists(Path.Combine(FolderName, "DoomsdayJP.exe")) ||
                 File.Exists(Path.Combine(FolderName, "cyberfront.url")))
             {
@@ -1218,7 +1223,7 @@ namespace HoI2Editor.Models
                 return;
             }
 
-            // それ以外は英語版
+            // Other than that, English version
             Config.LangMode = LanguageMode.English;
         }
 
@@ -1226,7 +1231,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     ゲームの種類
+    ///     Kind of game
     /// </summary>
     public enum GameType
     {

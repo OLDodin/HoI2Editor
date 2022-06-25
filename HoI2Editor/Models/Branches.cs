@@ -3,14 +3,14 @@
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     兵科データ
+    ///     Military data
     /// </summary>
     public static class Branches
     {
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     兵科名
+        ///     Military name
         /// </summary>
         private static readonly TextId[] Names =
         {
@@ -22,22 +22,22 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 公開メソッド
+        #region Public method
 
         /// <summary>
-        ///     兵科名を取得する
+        ///     Get the name of the soldier
         /// </summary>
-        /// <param name="branch">兵科</param>
-        /// <returns>兵科名</returns>
+        /// <param name="branch">Military department</param>
+        /// <returns>Military name</returns>
         public static string GetName(Branch branch)
         {
             return Config.GetText(Names[(int) branch]);
         }
 
         /// <summary>
-        ///     兵科名の集合を取得する
+        ///     Get a set of military names
         /// </summary>
-        /// <returns>兵科名の集合</returns>
+        /// <returns>Set of military names</returns>
         public static string[] GetNames()
         {
             return Names.Where(id => id != TextId.Empty).Select(Config.GetText).ToArray();
@@ -47,13 +47,13 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     兵科
+    ///     Army
     /// </summary>
     public enum Branch
     {
         None,
-        Army, // 陸軍
-        Navy, //海軍
-        Airforce //空軍
+        Army, // Army
+        Navy, //Navy
+        Airforce //Air Force
     }
 }

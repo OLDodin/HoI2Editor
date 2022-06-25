@@ -8,123 +8,123 @@ using System.Runtime.InteropServices;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     マップデータの管理
+    ///     Manage map data
     /// </summary>
     public class Map
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マップ画像
+        ///     Map image
         /// </summary>
         public Bitmap Image { get; private set; }
 
         /// <summary>
-        ///     マップレベル
+        ///     Map level
         /// </summary>
         public MapLevel Level { get; }
 
         /// <summary>
-        ///     プロヴィンスIDの配列
+        ///     Providence ID Array of
         /// </summary>
         public MapProvinceIds ProvinceIds;
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     マップブロック単位の幅
+        ///     Width per map block
         /// </summary>
         private readonly int _blockWidth;
 
         /// <summary>
-        ///     マップブロック単位の高さ
+        ///     Height in map block units
         /// </summary>
         private readonly int _blockHeight;
 
         /// <summary>
-        ///     マップ画素の配列
+        ///     Arrangement of map pixels
         /// </summary>
         private MapPixels _pixels;
 
         /// <summary>
-        ///     マップブロックの配列
+        ///     Array of map blocks
         /// </summary>
         private MapBlocks _blocks;
 
         /// <summary>
-        ///     ファイル読み込みデータ
+        ///     File read data
         /// </summary>
         private static byte[] _data;
 
         /// <summary>
-        ///     読み込み位置
+        ///     Read position
         /// </summary>
         private static int _index;
 
         /// <summary>
-        ///     マップブロックのオフセット位置
+        ///     Offset position of map block
         /// </summary>
         private static uint[] _offsets;
 
         /// <summary>
-        ///     ツリー展開用スタック
+        ///     Tree expansion stack
         /// </summary>
         private static MapTreeNode[] _stack;
 
         /// <summary>
-        ///     マップピクセル展開用バッファ
+        ///     Buffer for map pixel expansion
         /// </summary>
         private static byte[] _pics;
 
         /// <summary>
-        ///     プロヴィンスID展開用バッファ
+        ///     Providence ID Expansion buffer
         /// </summary>
         private static ushort[] _provs;
 
         /// <summary>
-        ///     ツリー巡回時の対象マップブロック
+        ///     Target map block when patrol the tree
         /// </summary>
         private static MapBlock _block;
 
         /// <summary>
-        ///     ツリー巡回時の基準ピクセル位置
+        ///     Reference pixel position when patrol the tree
         /// </summary>
         private static int _base;
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     マップブロック単位の最大幅
+        ///     Maximum width per map block
         /// </summary>
         private const int MaxWidth = 936;
 
         /// <summary>
-        ///     マップブロック単位の最大高さ
+        ///     Maximum height per map block
         /// </summary>
         private const int MaxHeight = 360;
 
         /// <summary>
-        ///     マップブロック内のプロヴィンスの最大数
+        ///     Maximum number of provisions in a map block
         /// </summary>
         private const int MaxBlockProvinces = 256;
 
         /// <summary>
-        ///     平滑化処理の閾値
+        ///     Smoothing process threshold
         /// </summary>
-        private const int SmoothingThrethold = 0 << 8; // 平滑化なし
+        private const int SmoothingThrethold = 0 << 8; // No smoothing
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="level">マップレベル</param>
+        /// <param name="level">Map level</param>
         public Map(MapLevel level)
         {
             Level = level;
@@ -134,35 +134,35 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     マップファイルを読み込む
+        ///     Load the map file
         /// </summary>
         public void Load()
         {
-            // マップデータを読み込む
+            // Read map data
             LoadLightMap();
 
-            // マップ画像を展開する
+            // Expand the map image
             DecodePixels();
 
-            // マップ画像を生成する
+            // Generate a map image
             CreateImage();
 
-            // プロヴィンスIDの配列を展開する
+            // Province ID Expand an array of
             ExtractIds();
         }
 
         /// <summary>
-        ///     マップデータを読み込む
+        ///     Read map data
         /// </summary>
         private void LoadLightMap()
         {
-            // マップデータをメモリへ展開する
+            // Expand map data to memory
             LoadFile();
 
-            // マップブロックのオフセット位置を読み込む
+            // Read the offset position of the map block
             int count = _blockWidth * _blockHeight;
             LoadOffsets(count);
 
@@ -170,21 +170,21 @@ namespace HoI2Editor.Models
             _blocks = new MapBlocks(_blockWidth, _blockHeight);
             _stack = new MapTreeNode[MapBlock.Width * MapBlock.Height * 2];
 
-            // マップブロックを順に読み込む
+            // Load map blocks in sequence
             for (int i = 0; i < count; i++)
             {
                 _index = offset + (int) _offsets[i];
                 _blocks[i] = LoadBlock();
             }
 
-            // 使用済みのバッファを解放する
+            // Free up used buffers
             _data = null;
             _offsets = null;
             _stack = null;
         }
 
         /// <summary>
-        ///     マップデータをメモリへ展開する
+        ///     Expand map data to memory
         /// </summary>
         private void LoadFile()
         {
@@ -221,9 +221,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロックのオフセット位置を読み込む
+        ///     Read the offset position of the map block
         /// </summary>
-        /// <param name="count">マップブロック数</param>
+        /// <param name="count">Number of map blocks</param>
         private static void LoadOffsets(int count)
         {
             _offsets = new uint[count + 1];
@@ -239,7 +239,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロックを読み込む
+        ///     Load the map block
         /// </summary>
         private static MapBlock LoadBlock()
         {
@@ -254,9 +254,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスIDリストを読み込む
+        ///     Providence ID Read the list
         /// </summary>
-        /// <param name="block">対象マップブロック</param>
+        /// <param name="block">Target map block</param>
         private static void LoadProvinceIds(MapBlock block)
         {
             ushort[] ids = new ushort[MaxBlockProvinces];
@@ -275,9 +275,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップツリーを読み込む
+        ///     Load the map tree
         /// </summary>
-        /// <param name="block">対象マップブロック</param>
+        /// <param name="block">Target map block</param>
         private static void LoadMapTree(MapBlock block)
         {
             MapTreeNode[] stack = _stack;
@@ -361,9 +361,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ツリーノードごとのプロヴィンスIDを読み込む
+        ///     Providence per tree node ID Read
         /// </summary>
-        /// <param name="block">対象マップブロック</param>
+        /// <param name="block">Target map block</param>
         private static void LoadNodeIds(MapBlock block)
         {
             int count = block.NodeCount;
@@ -372,7 +372,7 @@ namespace HoI2Editor.Models
             switch (block.ProvinceIdCount)
             {
                 case 1:
-                    // プロヴィンス数が1の場合は省略
+                    // The number of provisions 1 Omitted in case of
                     break;
 
                 case 2:
@@ -448,9 +448,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ノードごとのカラーインデックスを読み込む
+        ///     Read the color index for each node
         /// </summary>
-        /// <param name="block">対象マップブロック</param>
+        /// <param name="block">Target map block</param>
         private static void LoadNodeColors(MapBlock block)
         {
             int count = block.NodeCount;
@@ -471,20 +471,20 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region マップデータ展開
+        #region Map data expansion
 
         /// <summary>
-        ///     マップ画像を展開する
+        ///     Expand the map image
         /// </summary>
         private void DecodePixels()
         {
             _pixels = new MapPixels(_blockWidth * MapBlock.Width, _blockHeight * MapBlock.Height);
             _pics = new byte[(MapBlock.Width + 1) * (MapBlock.Height + 1)];
 
-            // 右下端のブロックをデコードする
+            // Decode the block at the bottom right
             DecodeBlockBottomRight();
 
-            // 下端のブロックをデコードする
+            // Decode the bottom block
             for (int j = _blocks.Width - 2; j >= 0; j--)
             {
                 DecodeBlockBottom(j);
@@ -492,80 +492,80 @@ namespace HoI2Editor.Models
 
             for (int i = _blocks.Height - 2; i >= 0; i--)
             {
-                // 右端のブロックをデコードする
+                // Decode the rightmost block
                 DecodeBlockRight(i);
 
-                // その他のブロックをデコードする
+                // Decode other blocks
                 for (int j = _blocks.Width - 2; j >= 0; j--)
                 {
                     DecodeBlock(j, i);
                 }
             }
 
-            // 使用済みのバッファを解放する
+            // Free up used buffers
             _pics = null;
         }
 
         /// <summary>
-        ///     右下端のマップブロックをデコードする
+        ///     Decode the map block at the bottom right
         /// </summary>
         private void DecodeBlockBottomRight()
         {
-            // 右下端の領域外ピクセルを準備する
+            // Prepare out-of-area pixels at the bottom right
             _block = _blocks[0, _blocks.Height - 1];
             VisitTreeBottomLeft(_block.Nodes, PrepareBottomRight);
 
-            // 右端の領域外ピクセルを準備する
+            // Prepare the rightmost out-of-area pixel
             VisitTreeLeft(_block.Nodes, PrepareRight);
 
-            // 下端の領域外ピクセルを準備する
+            // Prepare out-of-area pixels at the bottom edge
             _block = _blocks[_blocks.Width - 1, _blocks.Height - 1];
             VisitTreeBottom(_block.Nodes, PrepareBottom);
 
-            // ツリーをデコードする
+            // Decode the tree
             VisitTree(_block.Nodes, DrawNodeBuffer);
 
-            // 展開用バッファからマップピクセルの配列へコピーする
+            // Copy from the expansion buffer to an array of map pixels
             CopyBufferPixels(_blocks.Width - 1, _blocks.Height - 1);
         }
 
         /// <summary>
-        ///     右端のマップブロックをデコードする
+        ///     Decode the rightmost map block
         /// </summary>
-        /// <param name="y">Y座標</param>
+        /// <param name="y">Y Coordinate</param>
         private void DecodeBlockRight(int y)
         {
-            // 右下端の領域外ピクセルを準備する
+            // Prepare out-of-area pixels at the bottom right
             _block = _blocks[0, y];
             VisitTreeBottomLeft(_block.Nodes, PrepareBottomRight);
 
-            // 右端の領域外ピクセルを準備する
+            // Prepare the rightmost out-of-area pixel
             VisitTreeLeft(_block.Nodes, PrepareRight);
 
-            // 下端のピクセルを準備する
+            // Prepare the bottom pixel
             Buffer.BlockCopy(_pixels.Data,
                 (y + 1) * MapBlock.Height * _pixels.Width + (_pixels.Width - 1) * MapBlock.Width,
                 _pics, MapBlock.Height * (MapBlock.Width + 1), MapBlock.Width);
 
-            // ツリーをデコードする
+            // Decode the tree
             _block = _blocks[_blocks.Width - 1, y];
             VisitTree(_block.Nodes, DrawNodeBuffer);
 
-            // 展開用バッファからマップピクセルの配列へコピーする
+            // Copy from the expansion buffer to an array of map pixels
             CopyBufferPixels(_blocks.Width - 1, y);
         }
 
         /// <summary>
-        ///     下端のマップブロックをデコードする
+        ///     Decode the bottom map block
         /// </summary>
-        /// <param name="x">X座標</param>
+        /// <param name="x">X Coordinate</param>
         private void DecodeBlockBottom(int x)
         {
-            // 右下端の領域外ピクセルを準備する
+            // Prepare out-of-area pixels at the bottom right
             _block = _blocks[x + 1, _blocks.Height - 1];
             VisitTreeBottomLeft(_block.Nodes, PrepareBottomRight);
 
-            // 右端の領域外ピクセルを準備する
+            // Prepare the rightmost out-of-area pixel
             int pos = MapBlock.Width;
             int index = (_blocks.Height - 1) * MapBlock.Height * _pixels.Width + (x + 1) * MapBlock.Width;
             for (int i = 0; i < MapBlock.Height; i++)
@@ -575,43 +575,43 @@ namespace HoI2Editor.Models
                 index += _pixels.Width;
             }
 
-            // 下端のピクセルを準備する
+            // Prepare the bottom pixel
             _block = _blocks[x, _blocks.Height - 1];
             VisitTreeBottom(_block.Nodes, PrepareBottom);
 
-            // ツリーをデコードする
+            // Decode the tree
             VisitTree(_block.Nodes, DrawNodeBuffer);
 
-            // 展開用バッファからマップピクセルの配列へコピーする
+            // Copy from the expansion buffer to an array of map pixels
             CopyBufferPixels(x, _blocks.Height - 1);
         }
 
         /// <summary>
-        ///     マップブロックをデコードする
+        ///     Decode the map block
         /// </summary>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
+        /// <param name="x">X Coordinate</param>
+        /// <param name="y">Y Coordinate</param>
         private void DecodeBlock(int x, int y)
         {
-            // ツリーをデコードする
+            // Decode the tree
             _block = _blocks[x, y];
             _base = y * MapBlock.Height * _pixels.Width + x * MapBlock.Width;
             VisitTree(_block.Nodes, DrawNode);
         }
 
         /// <summary>
-        ///     右下端の領域外ピクセルを準備する
+        ///     Prepare out-of-area pixels at the bottom right
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private static void PrepareBottomRight(MapTreeNode node)
         {
             _pics[MapBlock.Height * (MapBlock.Width + 1) + MapBlock.Width] = (byte) (_block.NodeColors[node.No] << 2);
         }
 
         /// <summary>
-        ///     右端の領域外ピクセルを準備する
+        ///     Prepare the rightmost out-of-area pixel
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private static void PrepareRight(MapTreeNode node)
         {
             int pos = node.Y * (MapBlock.Width + 1) + MapBlock.Width;
@@ -634,9 +634,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     下端の領域外ピクセルを準備する
+        ///     Prepare out-of-area pixels at the bottom edge
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private static void PrepareBottom(MapTreeNode node)
         {
             int pos = MapBlock.Height * (MapBlock.Width + 1) + node.X;
@@ -658,9 +658,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ノードを展開用バッファに描画する
+        ///     Draw the node in the expansion buffer
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private static void DrawNodeBuffer(MapTreeNode node)
         {
             int pos = node.Y * (MapBlock.Width + 1) + node.X;
@@ -691,9 +691,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     ノードをマップピクセルの配列に展開する
+        ///     Expand nodes into an array of map pixels
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private void DrawNode(MapTreeNode node)
         {
             int pos = _base + node.Y * _pixels.Width + node.X;
@@ -985,10 +985,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     展開用バッファからマップピクセルの配列へコピーする
+        ///     Copy from the expansion buffer to an array of map pixels
         /// </summary>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
+        /// <param name="x">X Coordinate</param>
+        /// <param name="y">Y Coordinate</param>
         private void CopyBufferPixels(int x, int y)
         {
             int pos = 0;
@@ -1003,7 +1003,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップ画像を生成する
+        ///     Generate a map image
         /// </summary>
         private void CreateImage()
         {
@@ -1016,12 +1016,12 @@ namespace HoI2Editor.Models
             Marshal.Copy(_pixels.Data, 0, data.Scan0, _pixels.Data.Length);
             Image.UnlockBits(data);
 
-            // 使用済みのバッファを解放する
+            // Free up used buffers
             _pixels = null;
         }
 
         /// <summary>
-        ///     プロヴィンスIDの配列を展開する
+        ///     Providence ID Expand an array of
         /// </summary>
         private void ExtractIds()
         {
@@ -1036,34 +1036,34 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // 使用済みのバッファを解放する
+            // Free up used buffers
             _provs = null;
         }
 
         /// <summary>
-        ///     マップブロックのプロヴィンスIDを展開する
+        ///     Map block provision ID To deploy
         /// </summary>
-        /// <param name="x">マップブロック単位のX座標</param>
-        /// <param name="y">マップブロック単位のY座標</param>
+        /// <param name="x">Map block unit X Coordinate</param>
+        /// <param name="y">Map block unit Y Coordinate</param>
         private void ExtractBlock(int x, int y)
         {
             _block = _blocks[x, y];
 
-            // プロヴィンスID展開用バッファを準備する
+            // Province ID Prepare the expansion buffer
             for (int i = 0; i < _block.NodeCount; i++)
             {
                 _provs[i] = _block.ProvinceIds[_block.NodeIds[i]];
             }
 
-            // ツリーをデコードする
+            // Decode the tree
             _base = (y * MapBlock.Height * _blockWidth + x) * MapBlock.Width;
             VisitTree(_block.Nodes, FillNode);
         }
 
         /// <summary>
-        ///     ノードをプロヴィンスIDの配列に展開する
+        ///     Province the node ID Expand to an array of
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private void FillNode(MapTreeNode node)
         {
             int pos = _base + node.Y * ProvinceIds.Width + node.X;
@@ -1188,13 +1188,13 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ツリー巡回
+        #region Tree patrol
 
         /// <summary>
-        ///     マップブロック内のツリーを巡回する
+        ///     Orbit the tree in the map block
         /// </summary>
-        /// <param name="node">開始ノード</param>
-        /// <param name="callback">葉ノードで呼び出す処理</param>
+        /// <param name="node">Starting node</param>
+        /// <param name="callback">Process called by leaf node</param>
         private static void VisitTree(MapTreeNode node, VisitorCallback callback)
         {
             Stack<MapTreeNode> stack = new Stack<MapTreeNode>();
@@ -1220,10 +1220,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロック内のツリーを巡回する(下側ノードのみ)
+        ///     Orbit the tree in the map block (( Lower node only )
         /// </summary>
-        /// <param name="node">開始ノード</param>
-        /// <param name="callback">葉ノードで呼び出す処理</param>
+        /// <param name="node">Starting node</param>
+        /// <param name="callback">Process called by leaf node</param>
         private static void VisitTreeBottom(MapTreeNode node, VisitorCallback callback)
         {
             Stack<MapTreeNode> stack = new Stack<MapTreeNode>();
@@ -1247,10 +1247,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロック内のツリーを巡回する(左側ノードのみ)
+        ///     Orbit the tree in the map block ((Left node only )
         /// </summary>
-        /// <param name="node">開始ノード</param>
-        /// <param name="callback">葉ノードで呼び出す処理</param>
+        /// <param name="node">Starting node</param>
+        /// <param name="callback">Process called by leaf node</param>
         private static void VisitTreeLeft(MapTreeNode node, VisitorCallback callback)
         {
             Stack<MapTreeNode> stack = new Stack<MapTreeNode>();
@@ -1274,10 +1274,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロック内のツリーを巡回する(左下ノードのみ)
+        ///     Tour the tree in the map block (( Lower left node only )
         /// </summary>
-        /// <param name="node">開始ノード</param>
-        /// <param name="callback">葉ノードで呼び出す処理</param>
+        /// <param name="node">Starting node</param>
+        /// <param name="callback">Process called by leaf node</param>
         private static void VisitTreeBottomLeft(MapTreeNode node, VisitorCallback callback)
         {
             while (node.BottomLeftChild != null)
@@ -1288,17 +1288,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     葉ノードで呼び出す処理のデリゲート
+        ///     Delegate of the process called by the leaf node
         /// </summary>
-        /// <param name="node">対象ノード</param>
+        /// <param name="node">Target node</param>
         private delegate void VisitorCallback(MapTreeNode node);
 
         #endregion
 
-        #region マップ画像更新
+        #region Map image update
 
         /// <summary>
-        ///     カラーパレットを更新する
+        ///     Update the color palette
         /// </summary>
         public void UpdateColorPalette()
         {
@@ -1311,9 +1311,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス単位でマップ画像を更新する
+        ///     Update map image by provision
         /// </summary>
-        /// <param name="ids">プロヴィンスIDの配列</param>
+        /// <param name="ids">Providence ID Array of</param>
         public void UpdateProvinces(IEnumerable<ushort> ids)
         {
             BitmapData data = Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height), ImageLockMode.WriteOnly,
@@ -1326,9 +1326,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス単位でマップ画像を更新する
+        ///     Update map image by provision
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="id">Providence ID</param>
         public void UpdateProvince(ushort id)
         {
             BitmapData data = Image.LockBits(new Rectangle(0, 0, Image.Width, Image.Height), ImageLockMode.WriteOnly,
@@ -1338,10 +1338,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス単位でマップ画像を更新する
+        ///     Update map image by provision
         /// </summary>
-        /// <param name="data">マップ画像データ</param>
-        /// <param name="id">プロヴィンスID</param>
+        /// <param name="data">Map image data</param>
+        /// <param name="id">Providence ID</param>
         private void UpdateProvinceImage(BitmapData data, ushort id)
         {
             Rectangle bound = Maps.BoundBoxes[id];
@@ -1362,14 +1362,14 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス単位でマップ画像を更新する
+        ///     Update map image by provision
         /// </summary>
-        /// <param name="data">マップ画像データ</param>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
-        /// <param name="width">幅</param>
-        /// <param name="height">高さ</param>
+        /// <param name="data">Map image data</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="x">X Coordinate</param>
+        /// <param name="y">Y Coordinate</param>
+        /// <param name="width">width</param>
+        /// <param name="height">height</param>
         private unsafe void UpdateProvinceImage(BitmapData data, ushort id, int x, int y, int width, int height)
         {
             byte* ptr = (byte*) data.Scan0;
@@ -1397,17 +1397,17 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     マップ画素の配列
+    ///     Arrangement of map pixels
     /// </summary>
     public class MapPixels
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マップ画素を取得する
+        ///     Get map pixels
         /// </summary>
-        /// <param name="index">配列のインデックス</param>
-        /// <returns>マップ画素</returns>
+        /// <param name="index">Index of array</param>
+        /// <returns>Map pixel</returns>
         public byte this[int index]
         {
             get { return Data[index]; }
@@ -1415,11 +1415,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップ画素を取得する
+        ///     Get map pixels
         /// </summary>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
-        /// <returns>マップ画素</returns>
+        /// <param name="x">X Coordinate</param>
+        /// <param name="y">Y Coordinate</param>
+        /// <returns>Map pixel</returns>
         public byte this[int x, int y]
         {
             get { return Data[y * Width + x]; }
@@ -1427,29 +1427,29 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップ画素の配列
+        ///     Arrangement of map pixels
         /// </summary>
         public byte[] Data { get; }
 
         /// <summary>
-        ///     マップ画素単位の幅
+        ///     Width in map pixel units
         /// </summary>
         public int Width { get; }
 
         /// <summary>
-        ///     マップ画素単位の高さ
+        ///     Height in map pixel units
         /// </summary>
         public int Height { get; private set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="width">マップ画素の配列の幅</param>
-        /// <param name="height">マップ画素の配列の高さ</param>
+        /// <param name="width">Width of array of map pixels</param>
+        /// <param name="height">Height of array of map pixels</param>
         public MapPixels(int width, int height)
         {
             Width = width;
@@ -1462,53 +1462,53 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     マップブロック
+    ///     Map block
     /// </summary>
     public class MapBlock
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     プロヴィンスIDリスト
+        ///     Province ID list
         /// </summary>
         public ushort[] ProvinceIds { get; set; }
 
         /// <summary>
-        ///     プロヴィンスIDの数
+        ///     Providence ID Number of
         /// </summary>
         public int ProvinceIdCount { get; set; }
 
         /// <summary>
-        ///     ツリーノード
+        ///     Tree node
         /// </summary>
         public MapTreeNode Nodes { get; set; }
 
         /// <summary>
-        ///     ツリーノードの数
+        ///     Number of tree nodes
         /// </summary>
         public int NodeCount { get; set; }
 
         /// <summary>
-        ///     ツリーノードごとのプロヴィンスID
+        ///     Providence per tree node ID
         /// </summary>
         public byte[] NodeIds { get; set; }
 
         /// <summary>
-        ///     ツリーノードごとのカラーインデックス
+        ///     Color index per tree node
         /// </summary>
         public byte[] NodeColors { get; set; }
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     マップブロックの幅
+        ///     Map block width
         /// </summary>
         public const int Width = 32;
 
         /// <summary>
-        ///     マップブロックの高さ
+        ///     Map block height
         /// </summary>
         public const int Height = 32;
 
@@ -1516,17 +1516,17 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     マップブロックの配列
+    ///     Array of map blocks
     /// </summary>
     public class MapBlocks
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マップブロックを取得する
+        ///     Get a map block
         /// </summary>
-        /// <param name="index">配列のインデックス</param>
-        /// <returns>マップブロック</returns>
+        /// <param name="index">Index of array</param>
+        /// <returns>Map block</returns>
         public MapBlock this[int index]
         {
             get { return Data[index]; }
@@ -1534,11 +1534,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロックを取得する
+        ///     Get a map block
         /// </summary>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
-        /// <returns>マップブロック</returns>
+        /// <param name="x">X Coordinate</param>
+        /// <param name="y">Y Coordinate</param>
+        /// <returns>Map block</returns>
         public MapBlock this[int x, int y]
         {
             get { return Data[y * Width + x]; }
@@ -1546,29 +1546,29 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップブロックの配列
+        ///     Array of map blocks
         /// </summary>
         public MapBlock[] Data { get; }
 
         /// <summary>
-        ///     マップブロック単位の幅
+        ///     Width per map block
         /// </summary>
         public int Width { get; }
 
         /// <summary>
-        ///     マップブロック単位の高さ
+        ///     Height in map block units
         /// </summary>
         public int Height { get; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="width">マップブロックの配列の幅</param>
-        /// <param name="height">マップブロックの配列の高さ</param>
+        /// <param name="width">Width of array of map blocks</param>
+        /// <param name="height">Height of array of map blocks</param>
         public MapBlocks(int width, int height)
         {
             Width = width;
@@ -1581,58 +1581,58 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     マップツリーのノード
+    ///     Map tree nodes
     /// </summary>
     public class MapTreeNode
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     ノード番号
+        ///     Node number
         /// </summary>
         public int No { get; set; }
 
         /// <summary>
-        ///     ノードレベル
+        ///     Node level
         /// </summary>
         public int Level { get; set; }
 
         /// <summary>
-        ///     マップブロック内のX座標
+        ///     In the map block X Coordinate
         /// </summary>
         public int X { get; set; }
 
         /// <summary>
-        ///     マップブロック内のY座標
+        ///     In the map block Y Coordinate
         /// </summary>
         public int Y { get; set; }
 
         /// <summary>
-        ///     右下の子ノード
+        ///     Lower right child node
         /// </summary>
         public MapTreeNode BottomRightChild { get; set; }
 
         /// <summary>
-        ///     左下の子ノード
+        ///     Lower left child node
         /// </summary>
         public MapTreeNode BottomLeftChild { get; set; }
 
         /// <summary>
-        ///     右上の子ノード
+        ///     Upper right child node
         /// </summary>
         public MapTreeNode TopRightChild { get; set; }
 
         /// <summary>
-        ///     左上の子ノード
+        ///     Upper left child node
         /// </summary>
         public MapTreeNode TopLeftChild { get; set; }
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     最大ノードレベル
+        ///     Maximum node level
         /// </summary>
         public const int MaxLevel = 5;
 
@@ -1640,17 +1640,17 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     プロヴィンスIDの配列
+    ///     Providence ID Array of
     /// </summary>
     public class MapProvinceIds
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     プロヴィンスIDを取得する
+        ///     Providence ID To get
         /// </summary>
-        /// <param name="index">配列のインデックス</param>
-        /// <returns>プロヴィンスID</returns>
+        /// <param name="index">Index of array</param>
+        /// <returns>Providence ID</returns>
         public ushort this[int index]
         {
             get { return Data[index]; }
@@ -1658,11 +1658,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスIDを取得する
+        ///     Providence ID To get
         /// </summary>
-        /// <param name="x">X座標</param>
-        /// <param name="y">Y座標</param>
-        /// <returns>プロヴィンスID</returns>
+        /// <param name="x">X Coordinate</param>
+        /// <param name="y">Y Coordinate</param>
+        /// <returns>Providence ID</returns>
         public ushort this[int x, int y]
         {
             get { return Data[y * Width + x]; }
@@ -1670,29 +1670,29 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスIDの配列
+        ///     Providence ID Array of
         /// </summary>
         public ushort[] Data { get; }
 
         /// <summary>
-        ///     マップ画素単位の幅
+        ///     Width in map pixel units
         /// </summary>
         public int Width { get; }
 
         /// <summary>
-        ///     マップ画素単位の高さ
+        ///     Height in map pixel units
         /// </summary>
         public int Height { get; private set; }
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="width">マップ画素の配列の幅</param>
-        /// <param name="height">マップ画素の配列の高さ</param>
+        /// <param name="width">Width of array of map pixels</param>
+        /// <param name="height">Height of array of map pixels</param>
         public MapProvinceIds(int width, int height)
         {
             Width = width;

@@ -11,129 +11,129 @@ using HoI2Editor.Writers;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     シナリオデータ群
+    ///     Scenario data group
     /// </summary>
     public static class Scenarios
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     シナリオデータ
+        ///     Scenario data
         /// </summary>
         public static Scenario Data { get; private set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     シナリオファイル名
+        ///     Scenario file name
         /// </summary>
         private static string _fileName;
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         /// <summary>
-        ///     国タグと主要国設定の対応付け
+        ///     Correspondence between country tags and major country settings
         /// </summary>
         private static readonly Dictionary<Country, MajorCountrySettings> MajorTable =
             new Dictionary<Country, MajorCountrySettings>();
 
         /// <summary>
-        ///     国タグと国家設定の対応付け
+        ///     Correspondence between country tag and national setting
         /// </summary>
         private static readonly Dictionary<Country, CountrySettings> CountryTable =
             new Dictionary<Country, CountrySettings>();
 
         /// <summary>
-        ///     国タグと国家関係の対応付け
+        ///     Correspondence between country tags and national relations
         /// </summary>
         private static readonly Dictionary<Country, Dictionary<Country, Relation>> RelationTable =
             new Dictionary<Country, Dictionary<Country, Relation>>();
 
         /// <summary>
-        ///     国タグと不可侵条約の対応付け
+        ///     Correspondence of country tag and non-invasion treaty
         /// </summary>
         private static readonly Dictionary<Country, Dictionary<Country, Treaty>> NonAggressionTable =
             new Dictionary<Country, Dictionary<Country, Treaty>>();
 
         /// <summary>
-        ///     国タグと講和条約の対応付け
+        ///     Correspondence between country tag and peace treaty
         /// </summary>
         private static readonly Dictionary<Country, Dictionary<Country, Treaty>> PeaceTable =
             new Dictionary<Country, Dictionary<Country, Treaty>>();
 
         /// <summary>
-        ///     国タグと諜報設定の対応付け
+        ///     Correspondence between country tags and intelligence settings
         /// </summary>
         private static readonly Dictionary<Country, Dictionary<Country, SpySettings>> SpyTable =
             new Dictionary<Country, Dictionary<Country, SpySettings>>();
 
         /// <summary>
-        ///     プロヴィンスIDとプロヴィンス設定の対応付け
+        ///     Providence ID And provision settings mapping
         /// </summary>
         private static readonly Dictionary<int, ProvinceSettings> ProvinceTable =
             new Dictionary<int, ProvinceSettings>();
 
         /// <summary>
-        ///     プロヴィンスIDとプロヴィンス保有国の対応付け
+        ///     Providence ID Correspondence between and Provins holding countries
         /// </summary>
         private static readonly Dictionary<int, Country> OwnedCountries = new Dictionary<int, Country>();
 
         /// <summary>
-        ///     プロヴィンスIDとプロヴィンス支配国の対応付け
+        ///     Providence IDCorrespondence between and province-dominated countries
         /// </summary>
         private static readonly Dictionary<int, Country> ControlledCountries = new Dictionary<int, Country>();
 
         /// <summary>
-        ///     使用済みのtypeとidの組
+        ///     Used type When id Pair of
         /// </summary>
         private static Dictionary<int, HashSet<int>> _usedTypeIds;
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     同盟の標準type
+        ///     Alliance standard type
         /// </summary>
         public const int DefaultAllianceType = 15000;
 
         /// <summary>
-        ///     戦争の標準type
+        ///     War standard type
         /// </summary>
         public const int DefaultWarType = 9430;
 
         /// <summary>
-        ///     外交協定の標準type
+        ///     Diplomatic agreement standard type
         /// </summary>
         public const int DefaultTreatyType = 16384;
 
         /// <summary>
-        ///     指揮官の標準type
+        ///     Commander's standard type
         /// </summary>
         public const int DefaultLeaderType = 6;
 
         /// <summary>
-        ///     閣僚の標準type
+        ///     Ministerial standard type
         /// </summary>
         public const int DefaultMinisterType = 9;
 
         /// <summary>
-        ///     研究機関の標準type
+        ///     Research institute standards type
         /// </summary>
         public const int DefaultTeamType = 10;
 
         /// <summary>
-        ///     月名文字列
+        ///     Month name string
         /// </summary>
         public static readonly string[] MonthStrings =
         {
@@ -152,7 +152,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     外交協定文字列
+        ///     Diplomatic agreement character string
         /// </summary>
         public static readonly string[] TreatyStrings =
         {
@@ -162,7 +162,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     天候文字列
+        ///     Weather string
         /// </summary>
         public static readonly string[] WeatherStrings =
         {
@@ -177,7 +177,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     政体文字列
+        ///     Polity string
         /// </summary>
         public static readonly string[] GovernmentStrings =
         {
@@ -195,7 +195,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     建物文字列
+        ///     Building string
         /// </summary>
         public static readonly string[] BuildingStrings =
         {
@@ -216,7 +216,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     任務文字列
+        ///     Mission string
         /// </summary>
         public static readonly string[] MissionStrings =
         {
@@ -259,7 +259,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     輸送船団文字列
+        ///     Convoy string
         /// </summary>
         public static readonly string[] ConvoyStrings =
         {
@@ -270,47 +270,47 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     初期化処理
+        ///     Initialization process
         /// </summary>
         public static void Init()
         {
-            // 主要国設定を初期化する
+            // Initialize major country settings
             InitMajorCountries();
 
-            // 国家情報を初期化する
+            // Initialize national information
             InitCountries();
 
-            // 不可侵条約を初期化する
+            // Initialize the non-invasion treaty
             InitNonAggressions();
 
-            // 講和条約を初期化する
+            // Initialize the peace treaty
             InitPeaces();
 
-            // 使用済みのtypeとidの組を初期化する
+            // Used type When id id Initialize the set of
             InitTypeIds();
 
-            // プロヴィンス情報を初期化する
+            // Initialize province information
             InitProvinces();
         }
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     ファイルを読み込み済みかを取得する
+        ///     Get if the file has been read
         /// </summary>
-        /// <returns>ファイルを読み込みならばtrueを返す</returns>
+        /// <returns>If you read the file true true return it</returns>
         public static bool IsLoaded()
         {
             return _loaded;
         }
 
         /// <summary>
-        ///     ファイルの再読み込みを要求する
+        ///     Request a file reload
         /// </summary>
         public static void RequestReload()
         {
@@ -318,11 +318,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     シナリオファイル群を再読み込みする
+        ///     Reload the scenario files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -334,11 +334,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     シナリオファイル群を読み込む
+        ///     Read scenario files
         /// </summary>
         public static void Load(string fileName)
         {
-            // 読み込み済みのファイル名と一致すれば何もしない
+            // Do nothing if it matches the loaded file name
             if (_loaded && fileName.Equals(_fileName))
             {
                 return;
@@ -350,11 +350,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     シナリオファイルを読み込む
+        ///     Read the scenario file
         /// </summary>
         private static void LoadFiles()
         {
-            // シナリオファイルを解釈する
+            // Interpret the scenario file
             Log.Verbose("[Scenario] Load: {0}", Path.GetFileName(_fileName));
             try
             {
@@ -369,30 +369,30 @@ namespace HoI2Editor.Models
                 return;
             }
 
-            // 編集済みフラグを全て解除する
+            // Clear all edited flags
             ResetDirtyAll();
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     シナリオファイル群を保存する
+        ///     Save the scenario files
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 読み込み前ならば何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return true;
             }
 
-            // プロヴィンス設定をID順にソートする
+            // Province settings ID Sort in order
             SortProvinceSettings();
 
             Scenario scenario = Data;
@@ -423,7 +423,7 @@ namespace HoI2Editor.Models
                 return false;
             }
 
-            // 国別inc
+            // By country inc
             if (scenario.IsDirtyProvinces())
             {
                 if (scenario.Countries.Any(settings => !SaveCountryFiles(settings)))
@@ -440,22 +440,22 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // シナリオファイル
+            // Scenario file
             if (scenario.IsDirty() && !SaveScenarioFile())
             {
                 return false;
             }
 
-            // 編集済みフラグを解除する
+            // Clear the edited flag
             ResetDirtyAll();
 
             return true;
         }
 
         /// <summary>
-        ///     シナリオファイルを保存する
+        ///     Save the scenario file
         /// </summary>
-        /// <returns>保存に成功すればtrueを返す</returns>
+        /// <returns>If the save is successful true true return it</returns>
         private static bool SaveScenarioFile()
         {
             if (string.IsNullOrEmpty(_fileName))
@@ -463,7 +463,7 @@ namespace HoI2Editor.Models
                 return false;
             }
 
-            // シナリオフォルダが存在しなければ作成する
+            // If the scenario folder does not exist, create it
             string folderName = Game.GetWriteFileName(Game.ScenarioPathName);
             if (!Directory.Exists(folderName))
             {
@@ -473,7 +473,7 @@ namespace HoI2Editor.Models
             string fileName = Path.Combine(folderName, Path.GetFileName(_fileName));
             try
             {
-                // シナリオファイルを保存する
+                // Save the scenario file
                 Log.Info("[Scenario] Save: {0}", Path.GetFileName(fileName));
                 ScenarioWriter.Write(Data, fileName);
             }
@@ -489,12 +489,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     基地定義ファイルを保存する
+        ///     Save the base definition file
         /// </summary>
-        /// <returns>保存に成功すればtrueを返す</returns>
+        /// <returns>If the save is successful true true return it</returns>
         private static bool SaveBasesIncFile()
         {
-            // シナリオインクルードフォルダが存在しなければ作成する
+            // Create a scenario include folder if it does not exist
             string folderName = Game.GetWriteFileName(Path.Combine(Game.ScenarioPathName, Data.IncludeFolder));
             if (!Directory.Exists(folderName))
             {
@@ -519,12 +519,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     基地定義ファイルを保存する (DH Full 33年シナリオ)
+        ///     Save the base definition file(DH Full 33 Year scenario )
         /// </summary>
-        /// <returns>保存に成功すればtrueを返す</returns>
+        /// <returns>If the save is successful true true return it</returns>
         private static bool SaveBasesDodIncFile()
         {
-            // シナリオインクルードフォルダが存在しなければ作成する
+            // Create a scenario include folder if it does not exist
             string folderName = Game.GetWriteFileName(Path.Combine(Game.ScenarioPathName, Data.IncludeFolder));
             if (!Directory.Exists(folderName))
             {
@@ -549,12 +549,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     資源備蓄定義ファイルを保存する
+        ///     Save the resource stockpile definition file
         /// </summary>
-        /// <returns>保存に成功すればtrueを返す</returns>
+        /// <returns>If the save is successful true true return it</returns>
         private static bool SaveDepotsIncFile()
         {
-            // シナリオインクルードフォルダが存在しなければ作成する
+            // Create a scenario include folder if it does not exist
             string folderName = Game.GetWriteFileName(Path.Combine(Game.ScenarioPathName, Data.IncludeFolder));
             if (!Directory.Exists(folderName))
             {
@@ -579,12 +579,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     VP定義ファイルを保存する
+        ///     VP Save the definition file
         /// </summary>
-        /// <returns>保存に成功すればtrueを返す</returns>
+        /// <returns>If the save is successful true true return it</returns>
         private static bool SaveVpIncFile()
         {
-            // シナリオインクルードフォルダが存在しなければ作成する
+            // Create a scenario include folder if it does not exist
             string folderName = Game.GetWriteFileName(Path.Combine(Game.ScenarioPathName, Data.IncludeFolder));
             if (!Directory.Exists(folderName))
             {
@@ -609,12 +609,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国別incファイルを保存する
+        ///     By country inc Save the file
         /// </summary>
-        /// <param name="settings">国家設定</param>
+        /// <param name="settings">National setting</param>
         private static bool SaveCountryFiles(CountrySettings settings)
         {
-            // シナリオインクルードフォルダが存在しなければ作成する
+            // Create a scenario include folder if it does not exist
             string folderName = Game.GetWriteFileName(Path.Combine(Game.ScenarioPathName, Data.IncludeFolder));
             if (!Directory.Exists(folderName))
             {
@@ -642,10 +642,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 国家
+        #region Nation
 
         /// <summary>
-        ///     主要国設定を初期化する
+        ///     Initialize major country settings
         /// </summary>
         private static void InitMajorCountries()
         {
@@ -657,7 +657,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国家情報を初期化する
+        ///     Initialize national information
         /// </summary>
         private static void InitCountries()
         {
@@ -668,10 +668,10 @@ namespace HoI2Editor.Models
             {
                 Country country = settings.Country;
 
-                // 国タグと国家設定の対応付け
+                // Correspondence between country tags and national settings
                 CountryTable[country] = settings;
 
-                // 国タグと国家関係の対応付け
+                // Correspondence between country tags and national relations
                 if (!RelationTable.ContainsKey(country))
                 {
                     RelationTable.Add(country, new Dictionary<Country, Relation>());
@@ -681,7 +681,7 @@ namespace HoI2Editor.Models
                     RelationTable[country][relation.Country] = relation;
                 }
 
-                // 国タグと諜報設定の対応付け
+                // Correspondence between country tags and intelligence settings
                 if (!SpyTable.ContainsKey(country))
                 {
                     SpyTable.Add(country, new Dictionary<Country, SpySettings>());
@@ -694,7 +694,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     不可侵条約を初期化する
+        ///     Initialize the non-aggression treaty
         /// </summary>
         private static void InitNonAggressions()
         {
@@ -715,7 +715,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     講和条約を初期化する
+        ///     Initialize the peace treaty
         /// </summary>
         private static void InitPeaces()
         {
@@ -736,28 +736,28 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     主要国設定を取得する
+        ///     Get major country settings
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>主要国設定</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>Major country setting</returns>
         public static MajorCountrySettings GetMajorCountrySettings(Country country)
         {
             return MajorTable.ContainsKey(country) ? MajorTable[country] : null;
         }
 
         /// <summary>
-        ///     主要国設定を設定する
+        ///     Set major country settings
         /// </summary>
-        /// <param name="major">主要国設定</param>
+        /// <param name="major">Major country setting</param>
         public static void SetMajorCountrySettings(MajorCountrySettings major)
         {
             MajorTable[major.Country] = major;
         }
 
         /// <summary>
-        ///     主要国設定を削除する
+        ///     Delete major country settings
         /// </summary>
-        /// <param name="major">主要国設定</param>
+        /// <param name="major">Major country setting</param>
         public static void RemoveMajorCountrySettings(MajorCountrySettings major)
         {
             if (MajorTable.ContainsKey(major.Country))
@@ -767,20 +767,20 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国家設定を取得する
+        ///     Get the national setting
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>国家設定</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>National setting</returns>
         public static CountrySettings GetCountrySettings(Country country)
         {
             return CountryTable.ContainsKey(country) ? CountryTable[country] : null;
         }
 
         /// <summary>
-        ///     国家設定を作成する
+        ///     Create a national setting
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <returns>国家設定</returns>
+        /// <param name="country">Target country</param>
+        /// <returns>National setting</returns>
         public static CountrySettings CreateCountrySettings(Country country)
         {
             CountrySettings settings = new CountrySettings
@@ -789,27 +789,27 @@ namespace HoI2Editor.Models
                 FileName = country != Country.CON ? $"{Countries.Strings[(int) country].ToLower()}.inc" : "congo.inc"
             };
 
-            // 国家設定テーブルに登録する
+            // Register in the national setting table
             CountryTable[country] = settings;
 
-            // 国家設定リストに追加する
+            // Add to national setting list
             Data.Countries.Add(settings);
 
-            // インクルードファイルを追加する
+            // Add include files
             Data.IncludeFiles.Add($"scenarios\\{Data.IncludeFolder}\\{settings.FileName}");
 
-            // シナリオファイルの編集済みフラグを設定する
+            // Set the edited flag of the scenario file
             Data.SetDirty();
 
             return settings;
         }
 
         /// <summary>
-        ///     国家関係を取得する
+        ///     Acquire national relations
         /// </summary>
-        /// <param name="country1">対象国1</param>
-        /// <param name="country2">対象国2</param>
-        /// <returns>国家関係</returns>
+        /// <param name="country1">Target country 1</param>
+        /// <param name="country2">Target country 2</param>
+        /// <returns>National relations</returns>
         public static Relation GetCountryRelation(Country country1, Country country2)
         {
             return RelationTable.ContainsKey(country1) && RelationTable[country1].ContainsKey(country2)
@@ -818,10 +818,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国家関係を設定する
+        ///     Set up national relations
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <param name="relation">国家関係</param>
+        /// <param name="country">Target country</param>
+        /// <param name="relation">National relations</param>
         public static void SetCountryRelation(Country country, Relation relation)
         {
             if (!RelationTable.ContainsKey(country))
@@ -832,11 +832,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     不可侵条約を取得する
+        ///     Obtain a non-invasion treaty
         /// </summary>
-        /// <param name="country1">対象国1</param>
-        /// <param name="country2">対象国2</param>
-        /// <returns>不可侵条約</returns>
+        /// <param name="country1">Target country 1</param>
+        /// <param name="country2">Target country 2</param>
+        /// <returns>Non-invasion treaty</returns>
         public static Treaty GetNonAggression(Country country1, Country country2)
         {
             return NonAggressionTable.ContainsKey(country1) && NonAggressionTable[country1].ContainsKey(country2)
@@ -845,9 +845,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     不可侵条約を設定する
+        ///     Set up a non-aggression treaty
         /// </summary>
-        /// <param name="treaty">不可侵条約</param>
+        /// <param name="treaty">Non-invasion treaty</param>
         public static void SetNonAggression(Treaty treaty)
         {
             if (!NonAggressionTable.ContainsKey(treaty.Country1))
@@ -864,9 +864,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     不可侵条約を削除する
+        ///     Delete the non-aggression treaty
         /// </summary>
-        /// <param name="treaty">不可侵条約</param>
+        /// <param name="treaty">Non-invasion treaty</param>
         public static void RemoveNonAggression(Treaty treaty)
         {
             if (NonAggressionTable.ContainsKey(treaty.Country1) &&
@@ -883,11 +883,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     講和条約を取得する
+        ///     Obtain a peace treaty
         /// </summary>
-        /// <param name="country1">対象国1</param>
-        /// <param name="country2">対象国2</param>
-        /// <returns>講和条約</returns>
+        /// <param name="country1">Target country 1</param>
+        /// <param name="country2">Target country 2</param>
+        /// <returns>Peace treaty</returns>
         public static Treaty GetPeace(Country country1, Country country2)
         {
             return PeaceTable.ContainsKey(country1) && PeaceTable[country1].ContainsKey(country2)
@@ -896,9 +896,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     講和条約を設定する
+        ///     Set up a peace treaty
         /// </summary>
-        /// <param name="peace">講和条約</param>
+        /// <param name="peace">Peace treaty</param>
         public static void SetPeace(Treaty peace)
         {
             if (!PeaceTable.ContainsKey(peace.Country1))
@@ -915,9 +915,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     講和条約を削除する
+        ///     Delete the peace treaty
         /// </summary>
-        /// <param name="peace">講和条約</param>
+        /// <param name="peace">Peace treaty</param>
         public static void RemovePeace(Treaty peace)
         {
             if (PeaceTable.ContainsKey(peace.Country1) &&
@@ -934,11 +934,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     諜報設定を取得する
+        ///     Get intelligence settings
         /// </summary>
-        /// <param name="country1">対象国1</param>
-        /// <param name="country2">対象国2</param>
-        /// <returns>諜報設定</returns>
+        /// <param name="country1">Target country 1</param>
+        /// <param name="country2">Target country 2</param>
+        /// <returns>Intelligence settings</returns>
         public static SpySettings GetCountryIntelligence(Country country1, Country country2)
         {
             return SpyTable.ContainsKey(country1) && SpyTable[country1].ContainsKey(country2)
@@ -947,10 +947,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     諜報設定を設定する
+        ///     Set intelligence settings
         /// </summary>
-        /// <param name="country">対象国</param>
-        /// <param name="spy">諜報設定</param>
+        /// <param name="country">Target country</param>
+        /// <param name="spy">Intelligence settings</param>
         public static void SetCountryIntelligence(Country country, SpySettings spy)
         {
             if (!SpyTable.ContainsKey(country))
@@ -961,49 +961,49 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国タグと国名の文字列を取得する
+        ///     Get the country tag and country name string
         /// </summary>
-        /// <param name="country">国家</param>
-        /// <returns>国タグと国名の文字列</returns>
+        /// <param name="country">Nation</param>
+        /// <returns>Country tag and country name string</returns>
         public static string GetCountryTagName(Country country)
         {
             return $"{Countries.Strings[(int) country]} {GetCountryName(country)}";
         }
 
         /// <summary>
-        ///     国名文字列を取得する
+        ///     Get the country name string
         /// </summary>
-        /// <param name="country">国家</param>
-        /// <returns>国名文字列</returns>
+        /// <param name="country">Nation</param>
+        /// <returns>Country name string</returns>
         public static string GetCountryName(Country country)
         {
-            // 主要国設定の国名
+            // Country name set in major countries
             MajorCountrySettings major = GetMajorCountrySettings(country);
             if (!string.IsNullOrEmpty(major?.Name))
             {
                 return Config.ExistsKey(major.Name) ? Config.GetText(major.Name) : "";
             }
 
-            // 国家設定の国名
+            // Country name of national setting
             CountrySettings settings = GetCountrySettings(country);
             if (!string.IsNullOrEmpty(settings?.Name))
             {
                 return Config.ExistsKey(settings.Name) ? Config.GetText(settings.Name) : settings.Name;
             }
 
-            // 標準の国名
+            // Standard country name
             return Countries.GetName(country);
         }
 
         #endregion
 
-        #region プロヴィンス
+        #region Providence
 
         /// <summary>
-        ///     プロヴィンス名を取得する
+        ///     Get the Providence name
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>プロヴィンス名</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>Providence name</returns>
         public static string GetProvinceName(int id)
         {
             Province province = Provinces.Items[id];
@@ -1016,11 +1016,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス名を取得する
+        ///     Get the Providence name
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <returns>プロヴィンス名</returns>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
+        /// <returns>Providence name</returns>
         public static string GetProvinceName(Province province, ProvinceSettings settings)
         {
             if (!string.IsNullOrEmpty(settings?.Name))
@@ -1031,11 +1031,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス名を設定する
+        ///     Set the province name
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="settings">プロヴィンス設定</param>
-        /// <param name="s">プロヴィンス名</param>
+        /// <param name="province">Providence</param>
+        /// <param name="settings">Providence settings</param>
+        /// <param name="s">Providence name</param>
         public static void SetProvinceName(Province province, ProvinceSettings settings, string s)
         {
             if (!string.IsNullOrEmpty(settings?.Name))
@@ -1049,18 +1049,18 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス情報を初期化する
+        ///     Initialize provision information
         /// </summary>
         private static void InitProvinces()
         {
-            // プロヴィンスIDとプロヴィンス設定の対応付け
+            // Province ID And the mapping of province settings
             ProvinceTable.Clear();
             foreach (ProvinceSettings settings in Data.Provinces)
             {
                 ProvinceTable[settings.Id] = settings;
             }
 
-            // プロヴィンスIDとプロヴィンス保有国の対応付け
+            // Province ID Correspondence between and Provins holding countries
             OwnedCountries.Clear();
             foreach (CountrySettings settings in Data.Countries)
             {
@@ -1075,7 +1075,7 @@ namespace HoI2Editor.Models
                 }
             }
 
-            // プロヴィンスIDとプロヴィンス支配国の対応付け
+            // Providence ID Correspondence between and province-dominated countries
             ControlledCountries.Clear();
             foreach (CountrySettings settings in Data.Countries)
             {
@@ -1092,10 +1092,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス設定を取得する
+        ///     Get province settings
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>プロヴィンス設定</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>Providence settings</returns>
         public static ProvinceSettings GetProvinceSettings(int id)
         {
             if (!ProvinceTable.ContainsKey(id))
@@ -1106,9 +1106,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス設定を追加する
+        ///     Add provision settings
         /// </summary>
-        /// <param name="settings">プロヴィンス設定</param>
+        /// <param name="settings">Providence settings</param>
         public static void AddProvinceSettings(ProvinceSettings settings)
         {
             ProvinceSettings prev = Data.Provinces.Find(ps => ps.Id == settings.Id);
@@ -1124,10 +1124,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス設定をマージする
+        ///     Merge province settings
         /// </summary>
-        /// <param name="prev">プロヴィンス設定1</param>
-        /// <param name="settings">プロヴィンス設定2</param>
+        /// <param name="prev">Province settings 1</param>
+        /// <param name="settings">Province settings 2</param>
         private static void MergeProvinceSettings(ProvinceSettings prev, ProvinceSettings settings)
         {
             if (!string.IsNullOrEmpty(settings.Name))
@@ -1257,7 +1257,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス設定をID順にソートする
+        ///     Providence settings ID Sort in order
         /// </summary>
         private static void SortProvinceSettings()
         {
@@ -1265,13 +1265,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     中核プロヴィンスを追加する
+        ///     Add core provisions
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void AddCoreProvince(int id, CountrySettings settings)
         {
-            // 中核プロヴィンスを追加する
+            // Add core provisions
             if (!settings.NationalProvinces.Contains(id))
             {
                 settings.NationalProvinces.Add(id);
@@ -1279,13 +1279,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     中核プロヴィンスを削除する
+        ///     Remove core provisions
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void RemoveCoreProvince(int id, CountrySettings settings)
         {
-            // 中核プロヴィンスを削除する
+            // Remove core provinces
             if (settings.NationalProvinces.Contains(id))
             {
                 settings.NationalProvinces.Remove(id);
@@ -1293,93 +1293,93 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     保有プロヴィンスを追加する
+        ///     Add owned provinces
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void AddOwnedProvince(int id, CountrySettings settings)
         {
-            // 保有プロヴィンスを追加する
+            // Add owned provinces
             if (!settings.OwnedProvinces.Contains(id))
             {
                 settings.OwnedProvinces.Add(id);
             }
 
-            // 元の保有国の保有プロヴィンスを削除する
+            // Delete the province owned by the original possession country
             if (OwnedCountries.ContainsKey(id))
             {
                 GetCountrySettings(OwnedCountries[id]).OwnedProvinces.Remove(id);
             }
 
-            // プロヴィンスIDとプロヴィンス保有国の対応付けを更新する
+            // Province ID And update the correspondence between provinces and provinces
             OwnedCountries[id] = settings.Country;
         }
 
         /// <summary>
-        ///     保有プロヴィンスを削除する
+        ///     Delete owned provinces
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void RemoveOwnedProvince(int id, CountrySettings settings)
         {
-            // 保有プロヴィンスを削除する
+            // Delete owned provisions
             if (settings.OwnedProvinces.Contains(id))
             {
                 settings.OwnedProvinces.Remove(id);
             }
 
-            // プロヴィンスIDとプロヴィンス保有国の対応付けを削除する
+            // Providence ID And remove the association between Provins countries
             OwnedCountries.Remove(id);
         }
 
         /// <summary>
-        ///     支配プロヴィンスを追加する
+        ///     Add dominance province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void AddControlledProvince(int id, CountrySettings settings)
         {
-            // 支配プロヴィンスを追加する
+            // Add Dominance Providence
             if (!settings.ControlledProvinces.Contains(id))
             {
                 settings.ControlledProvinces.Add(id);
             }
 
-            // 元の支配国の支配プロヴィンスを削除する
+            // Remove the ruled province of the original ruler
             if (ControlledCountries.ContainsKey(id))
             {
                 GetCountrySettings(ControlledCountries[id]).ControlledProvinces.Remove(id);
             }
 
-            // プロヴィンスIDとプロヴィンス支配国の対応付けを更新する
+            // Providence ID And update the correspondence between provinces and provinces
             ControlledCountries[id] = settings.Country;
         }
 
         /// <summary>
-        ///     支配プロヴィンスを削除する
+        ///     Remove Domination Province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void RemoveControlledProvince(int id, CountrySettings settings)
         {
-            // 支配プロヴィンスを削除する
+            // Remove Dominance Providence
             if (settings.ControlledProvinces.Contains(id))
             {
                 settings.ControlledProvinces.Remove(id);
             }
 
-            // プロヴィンスIDとプロヴィンス支配国の対応付けを削除する
+            // Province ID And remove the correspondence between the province and the province
             ControlledCountries.Remove(id);
         }
 
         /// <summary>
-        ///     領有権主張プロヴィンスを追加する
+        ///     Add territorial claim province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void AddClaimedProvince(int id, CountrySettings settings)
         {
-            // 領有権主張プロヴィンスを追加する
+            // Add territorial claim provision
             if (!settings.ClaimedProvinces.Contains(id))
             {
                 settings.ClaimedProvinces.Add(id);
@@ -1387,13 +1387,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     領有権主張プロヴィンスを削除する
+        ///     Remove territorial claim provisions
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="settings">国家設定</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="settings">National setting</param>
         public static void RemoveClaimedProvince(int id, CountrySettings settings)
         {
-            // 領有権主張プロヴィンスを削除する
+            // Remove territorial claim province
             if (settings.ClaimedProvinces.Contains(id))
             {
                 settings.ClaimedProvinces.Remove(id);
@@ -1402,10 +1402,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region typeとidの組
+        #region type When id id Pair of
 
         /// <summary>
-        ///     typeとidの組を初期化する
+        ///     type When id id Initialize the set of
         /// </summary>
         private static void InitTypeIds()
         {
@@ -1547,21 +1547,21 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     typeとidの組が存在するかを返す
+        ///     type When id id Returns whether a pair of
         /// </summary>
         /// <param name="type">type</param>
-        /// <param name="id">id</param>
-        /// <returns>typeとidの組が存在すればtrueを返す</returns>
+        /// <param name="id id">id id</param>
+        /// <returns>type When id If there is a pair of true true return it</returns>
         public static bool ExistsTypeId(int type, int id)
         {
             return _usedTypeIds.ContainsKey(type) && _usedTypeIds[type].Contains(id);
         }
 
         /// <summary>
-        ///     typeとidの組を登録する
+        ///     type When id id Register a pair of
         /// </summary>
-        /// <param name="id">typeとidの組</param>
-        /// <returns>登録に成功すればtrueを返す</returns>
+        /// <param name="id">type When id id Pair of</param>
+        /// <returns>If registration is successful true true return it</returns>
         public static bool AddTypeId(TypeId id)
         {
             if (id == null)
@@ -1584,10 +1584,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     typeとidの組を削除する
+        ///     type When id Delete the pair of
         /// </summary>
-        /// <param name="id">typeとidの組</param>
-        /// <returns>削除に成功すればtrueを返す</returns>
+        /// <param name="id">type When id id Pair of</param>
+        /// <returns>If the deletion is successful true true return it</returns>
         public static bool RemoveTypeId(TypeId id)
         {
             if (id == null)
@@ -1610,10 +1610,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     新規typeを取得する
+        ///     New type To get
         /// </summary>
-        /// <param name="startType">探索開始type</param>
-        /// <returns>新規type</returns>
+        /// <param name="startType">Start exploration type</param>
+        /// <returns>New type</returns>
         public static int GetNewType(int startType)
         {
             int type = startType;
@@ -1625,11 +1625,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     新規typeを取得する
+        ///     New type To get
         /// </summary>
-        /// <param name="startType">探索開始type</param>
-        /// <param name="id">id</param>
-        /// <returns>新規type</returns>
+        /// <param name="startType">Start exploration type</param>
+        /// <param name="id id">id id</param>
+        /// <returns>New type</returns>
         public static int GetNewType(int startType, int id)
         {
             int type = startType;
@@ -1641,11 +1641,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     新規idを取得する
+        ///     New id id To get
         /// </summary>
         /// <param name="type">type</param>
-        /// <param name="startId">探索開始id</param>
-        /// <returns>新規id</returns>
+        /// <param name="startId">Start exploration id</param>
+        /// <returns>New id</returns>
         public static int GetNewId(int type, int startId)
         {
             int id = startId;
@@ -1662,10 +1662,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     typeを設定する
+        ///     type To set
         /// </summary>
-        /// <param name="typeId">typeとidの組</param>
-        /// <param name="type">typeの値</param>
+        /// <param name="typeId">type When id id Pair of</param>
+        /// <param name="type">type The value of the</param>
         public static void SetType(TypeId typeId, int type)
         {
             RemoveTypeId(typeId);
@@ -1674,10 +1674,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     idを設定する
+        ///     id id To set
         /// </summary>
-        /// <param name="typeId">typeとidの組</param>
-        /// <param name="id">idの値</param>
+        /// <param name="typeId">type When id id Pair of</param>
+        /// <param name="id">id The value of the</param>
         public static void SetId(TypeId typeId, int id)
         {
             RemoveTypeId(typeId);
@@ -1686,11 +1686,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     新規idを取得する
+        ///     New id id To get
         /// </summary>
         /// <param name="type">type</param>
-        /// <param name="startId">探索開始id</param>
-        /// <returns>新規id</returns>
+        /// <param name="startId">Start exploration id</param>
+        /// <returns>New id</returns>
         public static TypeId GetNewTypeId(int type, int startId)
         {
             if (!_usedTypeIds.ContainsKey(type))
@@ -1709,19 +1709,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public static void SetDirty()
         {
@@ -1729,7 +1729,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを全て解除する
+        ///     Clear all edited flags
         /// </summary>
         private static void ResetDirtyAll()
         {

@@ -5,28 +5,28 @@ using System.Text;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     国家データ
+    ///     National data
     /// </summary>
     public static class Countries
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     国タグ一覧
+        ///     Country tag list
         /// </summary>
         public static Country[] Tags { get; private set; }
 
         /// <summary>
-        ///     国タグ文字列とIDの対応付け
+        ///     With country tag string ID Correspondence of
         /// </summary>
         public static Dictionary<string, Country> StringMap { get; }
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     国タグ文字列
+        ///     Country tag string
         /// </summary>
         public static readonly string[] Strings =
         {
@@ -377,10 +377,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     国タグ一覧 (HoI2)
+        ///     Country tag list (HoI2)
         /// </summary>
         private static readonly Country[] TagsHoI2 =
         {
@@ -669,7 +669,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     国タグ一覧 (AoD)
+        ///     Country tag list (AoD)
         /// </summary>
         private static readonly Country[] TagsAoD =
         {
@@ -1019,10 +1019,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Countries()
         {
@@ -1034,7 +1034,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国タグ一覧を初期化する
+        ///     Initialize the country tag list
         /// </summary>
         public static void Init()
         {
@@ -1059,13 +1059,13 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     国名を取得する
+        ///     Get the country name
         /// </summary>
-        /// <param name="country">国家</param>
-        /// <returns>国名</returns>
+        /// <param name="country">Nation</param>
+        /// <returns>Country name</returns>
         public static string GetName(Country country)
         {
             if (country == Country.None)
@@ -1077,10 +1077,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国タグ名と国名を取得する
+        ///     Get country tag name and country name
         /// </summary>
-        /// <param name="country">国家</param>
-        /// <returns>国タグ名と国名</returns>
+        /// <param name="country">Nation</param>
+        /// <returns>Country tag name and country name</returns>
         public static string GetTagName(Country country)
         {
             if (country == Country.None)
@@ -1094,10 +1094,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国タグ名リストの文字列を取得する
+        ///     Get the string of the country tag name list
         /// </summary>
-        /// <param name="countries">国家リスト</param>
-        /// <returns>国タグ名リストの文字列</returns>
+        /// <param name="countries">National list</param>
+        /// <returns>Country tag name list string</returns>
         public static string GetTagList(IEnumerable<Country> countries)
         {
             StringBuilder sb = new StringBuilder();
@@ -1110,10 +1110,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     国名リストの文字列を取得する
+        ///     Get the string of country name list
         /// </summary>
-        /// <param name="countries">国家リスト</param>
-        /// <returns>国名リストの文字列</returns>
+        /// <param name="countries">National list</param>
+        /// <returns>Country name list string</returns>
         public static string GetNameList(IEnumerable<Country> countries)
         {
             StringBuilder sb = new StringBuilder();
@@ -1129,13 +1129,13 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     国タグ
+    ///     Country tag
     /// </summary>
     public enum Country
     {
-        None, // 定義なし
+        None, // No definition
 
-        // ReSharper disable InconsistentNaming
+        // ReSharper disable Inconsistent Naming
         AFG,
         ALB,
         ALG,
@@ -1419,7 +1419,7 @@ namespace HoI2Editor.Models
         U98,
         U99,
 
-        // AoDのみ
+        // AoD only
         UA0,
         UA1,
         UA2,
@@ -1480,6 +1480,6 @@ namespace HoI2Editor.Models
         UF7,
         UF8,
         UF9
-        // ReSharper restore InconsistentNaming
+        // ReSharper restore Inconsistent Naming
     }
 }

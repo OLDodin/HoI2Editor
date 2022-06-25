@@ -23,7 +23,7 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify
+        /// Required method for Designer support --do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -1390,7 +1390,7 @@
             this.defensivenessTextBox.Name = "defensivenessTextBox";
             this.defensivenessTextBox.Validated += new System.EventHandler(this.OnDefensivenessTextBoxValidated);
             // 
-            // defensivenessLabel
+            // defensiveness Label
             // 
             resources.ApplyResources(this.defensivenessLabel, "defensivenessLabel");
             this.defensivenessLabel.Name = "defensivenessLabel";
@@ -1520,13 +1520,13 @@
             resources.ApplyResources(this.moraleLabel, "moraleLabel");
             this.moraleLabel.Name = "moraleLabel";
             // 
-            // defaultOrganisationTextBox
+            // defaultOrganizationTextBox
             // 
             resources.ApplyResources(this.defaultOrganisationTextBox, "defaultOrganisationTextBox");
             this.defaultOrganisationTextBox.Name = "defaultOrganisationTextBox";
             this.defaultOrganisationTextBox.Validated += new System.EventHandler(this.OnDefaultOrganizationTextBoxValidated);
             // 
-            // defaultOrganisationLabel
+            // defaultOrganizationLabel
             // 
             resources.ApplyResources(this.defaultOrganisationLabel, "defaultOrganisationLabel");
             this.defaultOrganisationLabel.Name = "defaultOrganisationLabel";

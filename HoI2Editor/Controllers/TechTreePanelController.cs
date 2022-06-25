@@ -8,167 +8,167 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Controllers
 {
     /// <summary>
-    ///     技術ツリーパネルのコントローラクラス
+    ///     Technical tree panel controller class
     /// </summary>
     public class TechTreePanelController
     {
-        #region 公開プロパティ
+        #region Public property
 
         /// <summary>
-        ///     技術カテゴリ
+        ///     Technical category
         /// </summary>
         public TechCategory Category { get; set; }
 
         /// <summary>
-        ///     項目ラベルの表示に項目の状態を反映するかどうか
+        ///     Whether the status of the item is reflected in the display of the item label
         /// </summary>
         public bool ApplyItemStatus { get; set; }
 
         /// <summary>
-        ///     項目ラベルのドラッグアンドドロップを許可するかどうか
+        ///     Is it possible to allow drug and drop in the item label
         /// </summary>
         public bool AllowDragDrop { get; set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     技術ツリーパネルのピクチャーボックス
+        ///     Picture box of technical tree panel
         /// </summary>
         private readonly PictureBox _pictureBox;
 
         /// <summary>
-        ///     技術ラベルの幅
+        ///     Technical label width
         /// </summary>
         private static int _techLabelWidth;
 
         /// <summary>
-        ///     技術ラベルの高さ
+        ///     Technical label height
         /// </summary>
         private static int _techLabelHeight;
 
         /// <summary>
-        ///     イベントラベルの幅
+        ///     Event label width
         /// </summary>
         private static int _eventLabelWidth;
 
         /// <summary>
-        ///     イベントラベルの高さ
+        ///     Event label height
         /// </summary>
         private static int _eventLabelHeight;
 
         /// <summary>
-        ///     技術ラベルの画像
+        ///     Image of technical label
         /// </summary>
         private static Bitmap _techLabelBitmap;
 
         /// <summary>
-        ///     完了技術ラベルの画像
+        ///     Completed technology label image
         /// </summary>
         private static Bitmap _doneTechLabelBitmap;
 
         /// <summary>
-        ///     青写真付き技術ラベルの画像
+        ///     Image of technology label with blue photo
         /// </summary>
         private static Bitmap _blueprintTechLabelBitmap;
 
         /// <summary>
-        ///     青写真付き完了技術ラベルの画像
+        ///     Image of completion technology label with blue photo
         /// </summary>
         private static Bitmap _blueprintDoneTechLabelBitmap;
 
         /// <summary>
-        ///     イベントラベルの画像
+        ///     Event label image
         /// </summary>
         private static Bitmap _eventLabelBitmap;
 
         /// <summary>
-        ///     完了イベントラベルの画像
+        ///     Completed event label image
         /// </summary>
         private static Bitmap _doneEventLabelBitmap;
 
         /// <summary>
-        ///     技術ラベルのマスク画像
+        ///     Technical label mask image
         /// </summary>
         private static Bitmap _techLabelMask;
 
         /// <summary>
-        ///     イベントラベルのマスク画像
+        ///     Event label mask image
         /// </summary>
         private static Bitmap _eventLabelMask;
 
         /// <summary>
-        ///     技術ラベルの描画領域
+        ///     Drawing area of ​​technical label
         /// </summary>
         private static Region _techLabelRegion;
 
         /// <summary>
-        ///     イベントラベルの描画領域
+        ///     Event label drawing area
         /// </summary>
         private static Region _eventLabelRegion;
 
         /// <summary>
-        ///     ラベル画像の読み込み済みフラグ
+        ///     Label image read flag
         /// </summary>
         private static bool _labelInitialized;
 
         /// <summary>
-        ///     ドラッグアンドドロップの開始位置
+        ///     Start position of drag and drop
         /// </summary>
         private static Point _dragPoint = Point.Empty;
 
         /// <summary>
-        ///     ドラッグ中のカーソル
+        ///     Cursor during dragging
         /// </summary>
         private static Cursor _dragCursor;
 
         #endregion
 
-        #region 内部定数
+        #region Internal fixed number
 
         /// <summary>
-        ///     技術ラベルの幅の基準値
+        ///     Standard value of technical label width
         /// </summary>
         private const int TechLabelWidthBase = 112;
 
         /// <summary>
-        ///     技術ラベルの高さの基準値
+        ///     Standard value of the height of the technical label
         /// </summary>
         private const int TechLabelHeightBase = 16;
 
         /// <summary>
-        ///     イベントラベルの幅の基準値
+        ///     Event label width standard value
         /// </summary>
         private const int EventLabelWidthBase = 112;
 
         /// <summary>
-        ///     イベントラベルの高さの基準値
+        ///     Event label height standard value
         /// </summary>
         private const int EventLabelHeightBase = 24;
 
         /// <summary>
-        ///     青写真アイコンの幅
+        ///     Blue photo icon width
         /// </summary>
         private const int BlueprintIconWidth = 16;
 
         /// <summary>
-        ///     青写真アイコンの幅
+        ///     Blue photo icon width
         /// </summary>
         private const int BlueprintIconHeight = 16;
 
         /// <summary>
-        ///     青写真アイコンのX座標
+        ///     X coordinates of blue photo icon
         /// </summary>
         private const int BlueprintIconX = 88;
 
         /// <summary>
-        ///     青写真アイコンのY座標
+        ///     Y coordinates of blue photo icon
         /// </summary>
         private const int BlueprintIconY = 0;
 
         /// <summary>
-        ///     技術ツリー画像ファイル名
+        ///     Technical tree image file name
         /// </summary>
         private static readonly string[] TechTreeFileNames =
         {
@@ -185,58 +185,58 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 公開イベント
+        #region Public event
 
         /// <summary>
-        ///     項目ラベルクリック時のイベント
+        ///     Event when clicking item label
         /// </summary>
         public event EventHandler<ItemEventArgs> ItemClick;
 
         /// <summary>
-        ///     項目ラベルマウスクリック時のイベント
+        ///     Events at the time of clicking on the item label mouse
         /// </summary>
         public event EventHandler<ItemMouseEventArgs> ItemMouseClick;
 
         /// <summary>
-        ///     項目ラベルマウスダウン時のイベント
+        ///     Events at the time of item label mouse down
         /// </summary>
         public event EventHandler<ItemMouseEventArgs> ItemMouseDown;
 
         /// <summary>
-        ///     項目ラベルドラッグアンドドロップ時のイベント
+        ///     Event at the time of the item label drag and drop
         /// </summary>
         public event EventHandler<ItemDragEventArgs> ItemDragDrop;
 
         /// <summary>
-        ///     項目状態問い合わせイベント
+        ///     Items status inquiry event
         /// </summary>
         public event EventHandler<QueryItemStatusEventArgs> QueryItemStatus;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="pictureBox">技術ツリーピクチャーボックス</param>
+        /// <param name="pictureBox">Technical tree picture box</param>
         public TechTreePanelController(PictureBox pictureBox)
         {
             _pictureBox = pictureBox;
 
-            // ラベル画像を初期化する
+            // Initialize label images
             InitLabelBitmap();
 
-            // イベントハンドラを初期化する
+            // Initialize the event handler
             InitEventHandler();
 
-            // 技術ツリーピクチャーボックスへのドラッグアンドドロップを許可する
-            // 設計時プロパティに存在しないので初期化時に設定する
+            // Available for drag and drop to the Technical Tree Picture Box
+            // Since it does not exist in the design of the design, set it at the time of initialization
             _pictureBox.AllowDrop = true;
         }
 
         /// <summary>
-        ///     イベントハンドラを初期化する
+        ///     Initialize the event handler
         /// </summary>
         private void InitEventHandler()
         {
@@ -246,38 +246,38 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 技術ツリー操作
+        #region Technical tree operation
 
         /// <summary>
-        ///     技術ツリーを更新する
+        ///     Update the technical tree
         /// </summary>
         public void Update()
         {
-            // 技術ツリー画像を更新する
+            // Update the technical tree image
             UpdateTechTreeImage();
 
-            // 項目ラベルを更新する
+            // Update the item label
             UpdateItems();
         }
 
         /// <summary>
-        ///     技術ツリーをクリアする
+        ///     Clear the technical tree
         /// </summary>
         public void Clear()
         {
-            // 技術ツリー画像をクリアする
+            // Clear the technical tree image
             ClearTechTreeImage();
 
-            // 項目ラベルをクリアする
+            // Clear the item label
             ClearItems();
         }
 
         #endregion
 
-        #region 技術ツリー画像
+        #region Technical tree image
 
         /// <summary>
-        ///     技術ツリー画像を更新する
+        ///     Update the technical tree image
         /// </summary>
         private void UpdateTechTreeImage()
         {
@@ -298,7 +298,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリー画像をクリアする
+        ///     Clear the technical tree image
         /// </summary>
         private void ClearTechTreeImage()
         {
@@ -309,10 +309,10 @@ namespace HoI2Editor.Controllers
 
         #endregion
 
-        #region 項目ラベル
+        #region Item label
 
         /// <summary>
-        ///     技術ツリーの項目ラベルを更新する
+        ///     Update the item label of the technical tree
         /// </summary>
         private void UpdateItems()
         {
@@ -324,7 +324,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーの項目ラベルをクリアする
+        ///     Clear the item label of the technical tree
         /// </summary>
         private void ClearItems()
         {
@@ -332,9 +332,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーに項目ラベル群を追加する
+        ///     Add item label group to the technical tree
         /// </summary>
-        /// <param name="item">追加対象の項目</param>
+        /// <param name="item">Additional items</param>
         public void AddItem(ITechItem item)
         {
             foreach (TechPosition position in item.Positions)
@@ -344,10 +344,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーに項目ラベルを追加する
+        ///     Add an item label to the technical tree
         /// </summary>
-        /// <param name="item">追加対象の項目</param>
-        /// <param name="position">追加対象の位置</param>
+        /// <param name="item">Additional items</param>
+        /// <param name="position">Additional position</param>
         public void AddItem(ITechItem item, TechPosition position)
         {
             TechItem tech = item as TechItem;
@@ -372,10 +372,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーに技術項目を追加する
+        ///     Add technical items to the technical tree
         /// </summary>
-        /// <param name="item">追加対象の項目</param>
-        /// <param name="position">追加対象の位置</param>
+        /// <param name="item">Additional items</param>
+        /// <param name="position">Additional position</param>
         private void AddTechItem(TechItem item, TechPosition position)
         {
             Label label = new Label
@@ -387,7 +387,7 @@ namespace HoI2Editor.Controllers
                 Region = _techLabelRegion
             };
 
-            // ラベル画像を設定する
+            // Set the label image
             if (ApplyItemStatus && (QueryItemStatus != null))
             {
                 QueryItemStatusEventArgs e = new QueryItemStatusEventArgs(item);
@@ -413,10 +413,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーに技術ラベルを追加する
+        ///     Add a technical label to the technical tree
         /// </summary>
-        /// <param name="item">追加対象の項目</param>
-        /// <param name="position">追加対象の位置</param>
+        /// <param name="item">Additional items</param>
+        /// <param name="position">Additional position</param>
         private void AddLabelItem(TechLabel item, TechPosition position)
         {
             Label label = new Label
@@ -439,10 +439,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーに発明イベントを追加する
+        ///     Add an invention event to the technical tree
         /// </summary>
-        /// <param name="item">追加対象の項目</param>
-        /// <param name="position">追加対象の位置</param>
+        /// <param name="item">Additional items</param>
+        /// <param name="position">Additional position</param>
         private void AddEventItem(TechEvent item, TechPosition position)
         {
             Label label = new Label
@@ -454,7 +454,7 @@ namespace HoI2Editor.Controllers
                 Region = _eventLabelRegion
             };
 
-            // ラベル画像を設定する
+            // Set the label image
             if (ApplyItemStatus && (QueryItemStatus != null))
             {
                 QueryItemStatusEventArgs e = new QueryItemStatusEventArgs(item);
@@ -477,9 +477,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーの項目群を削除する
+        ///     Delete the item group of the technical tree
         /// </summary>
-        /// <param name="item">削除対象の項目</param>
+        /// <param name="item">Items to be deleted</param>
         public void RemoveItem(ITechItem item)
         {
             Control.ControlCollection labels = _pictureBox.Controls;
@@ -499,10 +499,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーの項目を削除する
+        ///     Delete the technical tree item
         /// </summary>
-        /// <param name="item">削除対象の項目</param>
-        /// <param name="position">削除対象の位置</param>
+        /// <param name="item">Items to be deleted</param>
+        /// <param name="position">Position to be deleted</param>
         public void RemoveItem(ITechItem item, TechPosition position)
         {
             Control.ControlCollection labels = _pictureBox.Controls;
@@ -522,9 +522,9 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーの項目ラベルを更新する
+        ///     Update the item label of the technical tree
         /// </summary>
-        /// <param name="item">更新対象の項目</param>
+        /// <param name="item">Items to be updated</param>
         public void UpdateItem(ITechItem item)
         {
             Control.ControlCollection labels = _pictureBox.Controls;
@@ -541,13 +541,13 @@ namespace HoI2Editor.Controllers
                     continue;
                 }
 
-                // ラベル項目の場合はサイズを再計算する
+                // In the case of label items, recalculate the size
                 if (item is TechLabel)
                 {
                     label.Size = Graphics.FromHwnd(label.Handle).MeasureString(item.ToString(), label.Font).ToSize();
                 }
 
-                // 項目ラベルの表示に項目の状態を反映しないならば再描画のみ
+                // If the status of the item does not reflect the status of the item label, only redraw
                 if (!ApplyItemStatus || (QueryItemStatus == null))
                 {
                     label.Refresh();
@@ -556,7 +556,7 @@ namespace HoI2Editor.Controllers
 
                 if (item is TechItem)
                 {
-                    // ラベル画像を設定する
+                    // Set the label image
                     QueryItemStatusEventArgs e = new QueryItemStatusEventArgs(item);
                     QueryItemStatus(this, e);
                     label.Image = e.Done
@@ -565,7 +565,7 @@ namespace HoI2Editor.Controllers
                 }
                 else if (item is TechEvent)
                 {
-                    // ラベル画像を設定する
+                    // Set the label image
                     QueryItemStatusEventArgs e = new QueryItemStatusEventArgs(item);
                     QueryItemStatus(this, e);
                     label.Image = e.Done ? _doneEventLabelBitmap : _eventLabelBitmap;
@@ -574,10 +574,10 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーの項目を更新する
+        ///     Update the technical tree item
         /// </summary>
-        /// <param name="item">更新対象の項目</param>
-        /// <param name="position">更新対象の座標</param>
+        /// <param name="item">Items to be updated</param>
+        /// <param name="position">Coordinates to be updated</param>
         public void UpdateItem(ITechItem item, TechPosition position)
         {
             Control.ControlCollection labels = _pictureBox.Controls;
@@ -594,14 +594,14 @@ namespace HoI2Editor.Controllers
                     continue;
                 }
 
-                // ラベルの位置を更新する
+                // Update the position of the label
                 if (info.Position == position)
                 {
                     label.Location = new Point(DeviceCaps.GetScaledWidth(position.X),
                         DeviceCaps.GetScaledHeight(position.Y));
                 }
 
-                // 項目ラベルの表示に項目の状態を反映しないならば座標変更のみ
+                // If the status of the item does not reflect the status of the item label, only the coordinate change
                 if (!ApplyItemStatus || (QueryItemStatus == null))
                 {
                     continue;
@@ -609,7 +609,7 @@ namespace HoI2Editor.Controllers
 
                 if (item is TechItem)
                 {
-                    // ラベル画像を設定する
+                    // Set the label image
                     QueryItemStatusEventArgs e = new QueryItemStatusEventArgs(item);
                     QueryItemStatus(this, e);
                     label.Image = e.Done
@@ -618,7 +618,7 @@ namespace HoI2Editor.Controllers
                 }
                 else if (item is TechEvent)
                 {
-                    // ラベル画像を設定する
+                    // Set the label image
                     QueryItemStatusEventArgs e = new QueryItemStatusEventArgs(item);
                     QueryItemStatus(this, e);
                     label.Image = e.Done ? _doneEventLabelBitmap : _eventLabelBitmap;
@@ -627,7 +627,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術項目描画時の処理
+        ///     Processing when drawing technical items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -648,7 +648,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     ラベル項目描画時の処理
+        ///     Processing when drawing label items
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -664,7 +664,7 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 色指定文字列を解釈する
+            // Interpret the color specified character string
             Brush brush;
             if ((s[0] == '%' || s[0] == 'ｧ' || s[0] == '§') &&
                 s.Length > 4 &&
@@ -684,13 +684,13 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目ラベルクリック時の処理
+        ///     Processing when clicking item label
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnItemLabelClick(object sender, EventArgs e)
         {
-            // イベントハンドラを呼び出す
+            // Call the event handler
             if (ItemClick != null)
             {
                 Label label = sender as Label;
@@ -705,13 +705,13 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目ラベルマウスクリック時の処理
+        ///     Item label mouse click processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnItemLabelMouseClick(object sender, MouseEventArgs e)
         {
-            // イベントハンドラを呼び出す
+            // Call the event handler
             if (ItemMouseClick != null)
             {
                 Label label = sender as Label;
@@ -726,7 +726,7 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目ラベルマウスダウン時の処理
+        ///     Item label mouse processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -739,10 +739,10 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // ドラッグアンドドロップの開始準備
+            // Preparing for drag and drop
             if (AllowDragDrop)
             {
-                // 左ボタンダウンでなければドラッグ状態を解除する
+                // Unless the left button down is down, cancel the drag state
                 if (e.Button != MouseButtons.Left)
                 {
                     _dragPoint = Point.Empty;
@@ -750,46 +750,46 @@ namespace HoI2Editor.Controllers
                     return;
                 }
 
-                // ドラッグ開始位置を設定する
+                // Set the drag start position
                 _dragPoint = new Point(label.Left + e.X, label.Top + e.Y);
             }
 
-            // イベントハンドラを呼び出す
+            // Call the event handler
             ItemMouseDown?.Invoke(sender, new ItemMouseEventArgs(info.Item, info.Position, e));
         }
 
         /// <summary>
-        ///     項目ラベルマウスアップ時の処理
+        ///     Item label mouse processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnItemLabelMouseUp(object sender, MouseEventArgs e)
         {
-            // ドラッグアンドドロップが無効ならば何もしない
+            // If drag and drop is invalid, do nothing
             if (!AllowDragDrop)
             {
                 return;
             }
 
-            // ドラッグ状態を解除する
+            // Cancel the drag state
             _dragPoint = Point.Empty;
             Cursor.Current = Cursors.Default;
         }
 
         /// <summary>
-        ///     項目ラベルマウス移動時の処理
+        ///     Item label mouse processing when moving
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnItemLabelMouseMove(object sender, MouseEventArgs e)
         {
-            // ドラッグアンドドロップが無効ならば何もしない
+            // If drag and drop is invalid, do nothing
             if (!AllowDragDrop)
             {
                 return;
             }
 
-            // ドラッグ中でなければ何もしない
+            // If you are not in dragging, do nothing
             if (_dragPoint == Point.Empty)
             {
                 return;
@@ -801,7 +801,7 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // ドラッグ判定サイズを超えていなければ何もしない
+            // Do nothing unless it exceeds the drug judgment size
             Size dragSize = SystemInformation.DragSize;
             Rectangle dragRect = new Rectangle(_dragPoint.X - dragSize.Width / 2, _dragPoint.Y - dragSize.Height / 2,
                 dragSize.Width, dragSize.Height);
@@ -816,7 +816,7 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // カーソル画像を作成する
+            // Create a cursor image
             Bitmap bitmap = new Bitmap(label.Width, label.Height);
             bitmap.MakeTransparent(bitmap.GetPixel(0, 0));
             label.DrawToBitmap(bitmap, new Rectangle(0, 0, label.Width, label.Height));
@@ -836,10 +836,10 @@ namespace HoI2Editor.Controllers
                     _dragPoint.Y - label.Top);
             }
 
-            // ドラッグアンドドロップを開始する
+            // Start drag and drop
             label.DoDragDrop(sender, DragDropEffects.Move);
 
-            // ドラッグ状態を解除する
+            // Cancel the drag state
             _dragPoint = Point.Empty;
             _dragCursor.Dispose();
 
@@ -847,13 +847,13 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目ラベルのカーソル更新処理
+        ///     Items label cursor update process
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnItemLabelGiveFeedback(object sender, GiveFeedbackEventArgs e)
         {
-            // ドラッグアンドドロップが無効ならば何もしない
+            // If drag and drop is invalid, do nothing
             if (!AllowDragDrop)
             {
                 return;
@@ -861,7 +861,7 @@ namespace HoI2Editor.Controllers
 
             if ((e.Effect & DragDropEffects.Move) != 0)
             {
-                // カーソル画像を設定する
+                // Set the cursor image
                 e.UseDefaultCursors = false;
                 Cursor.Current = _dragCursor;
             }
@@ -872,20 +872,20 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーピクチャーボックスにドラッグした時の処理
+        ///     Processing when dragging into a technical tree picture box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureBoxDragOver(object sender, DragEventArgs e)
         {
-            // ドラッグアンドドロップが無効ならば何もしない
+            // If drag and drop is invalid, do nothing
             if (!AllowDragDrop)
             {
                 e.Effect = DragDropEffects.None;
                 return;
             }
 
-            // ラベルでなければ何もしない
+            // Do nothing unless it's a label
             if (!e.Data.GetDataPresent(typeof (Label)))
             {
                 e.Effect = DragDropEffects.None;
@@ -898,7 +898,7 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 技術ツリー画像の範囲外ならばドロップを禁止する
+            // Prohibit drops if it is out of the scope of the technical tree image
             Rectangle dragRect = new Rectangle(0, 0, _pictureBox.Image.Width, _pictureBox.Image.Height);
             Point p = _pictureBox.PointToClient(new Point(e.X, e.Y));
             Rectangle r = new Rectangle(label.Left + p.X - _dragPoint.X, label.Top + p.Y - _dragPoint.Y, label.Width,
@@ -907,19 +907,19 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     技術ツリーピクチャーボックスにドロップした時の処理
+        ///     Processing when dropped into a technical tree picture box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnPictureBoxDragDrop(object sender, DragEventArgs e)
         {
-            // ドラッグアンドドロップが無効ならば何もしない
+            // If drag and drop is invalid, do nothing
             if (!AllowDragDrop)
             {
                 return;
             }
 
-            // ラベルでなければ何もしない
+            // Do nothing unless it's a label
             if (!e.Data.GetDataPresent(typeof (Label)))
             {
                 return;
@@ -931,13 +931,13 @@ namespace HoI2Editor.Controllers
                 return;
             }
 
-            // 技術ツリー上のドロップ座標を計算する
+            // Calculate the drop coordinates on the technology tree
             Point p = new Point(e.X, e.Y);
             p = _pictureBox.PointToClient(p);
             p.X = label.Left + p.X - _dragPoint.X;
             p.Y = label.Top + p.Y - _dragPoint.Y;
 
-            // ラベル情報の座標を更新する
+            // Update the coordinates of label information
             TechLabelInfo info = label.Tag as TechLabelInfo;
             if (info == null)
             {
@@ -946,25 +946,25 @@ namespace HoI2Editor.Controllers
             info.Position.X = DeviceCaps.GetUnscaledWidth(p.X);
             info.Position.Y = DeviceCaps.GetUnscaledHeight(p.Y);
 
-            // ラベルの座標を更新する
+            // Update the coordinates of the label
             label.Location = p;
 
-            // イベントハンドラを呼び出す
+            // Call the event handler
             ItemDragDrop?.Invoke(this, new ItemDragEventArgs(info.Item, info.Position, e));
         }
 
         /// <summary>
-        ///     ラベル画像を初期化する
+        ///     Initialize label images
         /// </summary>
         private static void InitLabelBitmap()
         {
-            // 既に初期化済みならば何もしない
+            // If you have already initialized it will not do anything
             if (_labelInitialized)
             {
                 return;
             }
 
-            // 技術ラベル
+            // Technical label
             Bitmap bitmap = new Bitmap(Game.GetReadFileName(Game.TechLabelPathName));
             _techLabelWidth = DeviceCaps.GetScaledWidth(TechLabelWidthBase);
             _techLabelHeight = DeviceCaps.GetScaledHeight(TechLabelHeightBase);
@@ -976,7 +976,7 @@ namespace HoI2Editor.Controllers
             g.Dispose();
             Color transparent = _techLabelBitmap.GetPixel(0, 0);
 
-            // 青写真付き技術ラベル
+            // Technical label with blue photo
             Bitmap icon = new Bitmap(Game.GetReadFileName(Game.BlueprintIconPathName));
             icon.MakeTransparent(icon.GetPixel(0, 0));
             g = Graphics.FromImage(bitmap);
@@ -992,7 +992,7 @@ namespace HoI2Editor.Controllers
             g.Dispose();
             bitmap.Dispose();
 
-            // 完了技術ラベル
+            // Completion technology label
             bitmap = new Bitmap(Game.GetReadFileName(Game.DoneTechLabelPathName));
             _doneTechLabelBitmap = new Bitmap(_techLabelWidth, _techLabelHeight);
             g = Graphics.FromImage(_doneTechLabelBitmap);
@@ -1001,7 +1001,7 @@ namespace HoI2Editor.Controllers
                 new Rectangle(0, 0, TechLabelWidthBase, TechLabelHeightBase), GraphicsUnit.Pixel);
             g.Dispose();
 
-            // 青写真付き完了技術ラベル
+            // Completed technology label with blue photo
             g = Graphics.FromImage(bitmap);
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
             g.DrawImage(icon, new Rectangle(BlueprintIconX, BlueprintIconY, BlueprintIconWidth, BlueprintIconHeight),
@@ -1016,7 +1016,7 @@ namespace HoI2Editor.Controllers
             g.Dispose();
             bitmap.Dispose();
 
-            // 技術ラベルの領域
+            // Technical label area
             _techLabelMask = new Bitmap(_techLabelWidth, _techLabelHeight);
             _techLabelRegion = new Region(new Rectangle(0, 0, _techLabelWidth, _techLabelHeight));
             for (int y = 0; y < _techLabelBitmap.Height; y++)
@@ -1035,13 +1035,13 @@ namespace HoI2Editor.Controllers
                 }
             }
 
-            // 技術ラベルの透明色設定
+            // Transparent color setting of technical label
             _techLabelBitmap.MakeTransparent(transparent);
             _blueprintTechLabelBitmap.MakeTransparent(transparent);
             _doneTechLabelBitmap.MakeTransparent(transparent);
             _blueprintDoneTechLabelBitmap.MakeTransparent(transparent);
 
-            // 発明イベントラベル
+            // Invention event label
             bitmap = new Bitmap(Game.GetReadFileName(Game.SecretLabelPathName));
             _eventLabelWidth = DeviceCaps.GetScaledWidth(EventLabelWidthBase);
             _eventLabelHeight = DeviceCaps.GetScaledHeight(EventLabelHeightBase);
@@ -1053,7 +1053,7 @@ namespace HoI2Editor.Controllers
             g.Dispose();
             transparent = _eventLabelBitmap.GetPixel(0, 0);
 
-            // 完了発明イベントラベル
+            // Completed invention event label
             _doneEventLabelBitmap = new Bitmap(_eventLabelWidth, _eventLabelHeight);
             g = Graphics.FromImage(_doneEventLabelBitmap);
             g.InterpolationMode = InterpolationMode.NearestNeighbor;
@@ -1062,7 +1062,7 @@ namespace HoI2Editor.Controllers
             g.Dispose();
             bitmap.Dispose();
 
-            // 発明イベントラベルの領域
+            // Invention event label area
             _eventLabelMask = new Bitmap(_eventLabelWidth, _eventLabelHeight);
             _eventLabelRegion = new Region(new Rectangle(0, 0, _eventLabelWidth, _eventLabelHeight));
             for (int y = 0; y < _eventLabelBitmap.Height; y++)
@@ -1081,54 +1081,54 @@ namespace HoI2Editor.Controllers
                 }
             }
 
-            // 発明イベントラベルの透明色設定
+            // Transparent color setting of invention event label
             _eventLabelBitmap.MakeTransparent(transparent);
             _doneEventLabelBitmap.MakeTransparent(transparent);
 
-            // 初期化済みフラグを設定する
+            // Set the initialized flag
             _labelInitialized = true;
         }
 
         #endregion
 
-        #region 内部クラス
+        #region Internal class
 
         /// <summary>
-        ///     技術ラベルに関連付けられる情報
+        ///     Information associated with the technical label
         /// </summary>
         private class TechLabelInfo
         {
             /// <summary>
-            ///     技術項目
+            ///     Technical project
             /// </summary>
             public ITechItem Item;
 
             /// <summary>
-            ///     位置
+            ///     Location Location
             /// </summary>
             public TechPosition Position;
         }
 
         /// <summary>
-        ///     項目ラベルイベントのパラメータ
+        ///     Item label event parameters
         /// </summary>
         public class ItemEventArgs : EventArgs
         {
             /// <summary>
-            ///     技術項目
+            ///     Technical project
             /// </summary>
             public ITechItem Item { get; private set; }
 
             /// <summary>
-            ///     項目ラベルの位置
+            ///     The position of the item label
             /// </summary>
             public TechPosition Position { get; private set; }
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
-            /// <param name="item">技術項目</param>
-            /// <param name="position">項目ラベルの位置</param>
+            /// <param name="item">Technical project</param>
+            /// <param name="position">The position of the item label</param>
             public ItemEventArgs(ITechItem item, TechPosition position)
             {
                 Item = item;
@@ -1137,26 +1137,26 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目ラベルマウスイベントのパラメータ
+        ///     Item label mouse event parameter
         /// </summary>
         public class ItemMouseEventArgs : MouseEventArgs
         {
             /// <summary>
-            ///     技術項目
+            ///     Technical project
             /// </summary>
             public ITechItem Item { get; private set; }
 
             /// <summary>
-            ///     項目ラベルの位置
+            ///     The position of the item label
             /// </summary>
             public TechPosition Position { get; private set; }
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
-            /// <param name="item">技術項目</param>
-            /// <param name="position">項目ラベルの位置</param>
-            /// <param name="e">マウスイベントのパラメータ</param>
+            /// <param name="item">Technical project</param>
+            /// <param name="position">The position of the item label</param>
+            /// <param name="e">Mouse event parameter</param>
             public ItemMouseEventArgs(ITechItem item, TechPosition position, MouseEventArgs e)
                 : base(e.Button, e.Clicks, e.X, e.Y, e.Delta)
             {
@@ -1166,26 +1166,26 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目ラベルドラッグアンドドロップイベントのパラメータ
+        ///     Item label drag and drop event parameter
         /// </summary>
         public class ItemDragEventArgs : DragEventArgs
         {
             /// <summary>
-            ///     技術項目
+            ///     Technical project
             /// </summary>
             public ITechItem Item { get; private set; }
 
             /// <summary>
-            ///     項目ラベルの位置
+            ///     The position of the item label
             /// </summary>
             public TechPosition Position { get; private set; }
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
-            /// <param name="item">技術項目</param>
-            /// <param name="position">項目ラベルの位置</param>
-            /// <param name="e">ドラッグアンドドロップイベントのパラメータ</param>
+            /// <param name="item">Technical project</param>
+            /// <param name="position">The position of the item label</param>
+            /// <param name="e">Drug and drop event parameters</param>
             public ItemDragEventArgs(ITechItem item, TechPosition position, DragEventArgs e)
                 : base(e.Data, e.KeyState, e.X, e.Y, e.AllowedEffect, e.Effect)
             {
@@ -1195,29 +1195,29 @@ namespace HoI2Editor.Controllers
         }
 
         /// <summary>
-        ///     項目状態問い合わせイベントのパラメータ
+        ///     Item status inquiry event parameter
         /// </summary>
         public class QueryItemStatusEventArgs : EventArgs
         {
             /// <summary>
-            ///     技術項目
+            ///     Technical project
             /// </summary>
             public ITechItem Item { get; private set; }
 
             /// <summary>
-            ///     完了したかどうか
+            ///     Whether it was completed
             /// </summary>
             public bool Done;
 
             /// <summary>
-            ///     青写真ありかどうか
+            ///     Whether there is a blue photo
             /// </summary>
             public bool Blueprint;
 
             /// <summary>
-            ///     コンストラクタ
+            ///     constructor
             /// </summary>
-            /// <param name="item">技術項目</param>
+            /// <param name="item">Technical project</param>
             public QueryItemStatusEventArgs(ITechItem item)
             {
                 Item = item;

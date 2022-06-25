@@ -10,86 +10,86 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     マップデータ群
+    ///     Map data group
     /// </summary>
     public static class Maps
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マップデータ
+        ///     Map data
         /// </summary>
         public static Map[] Data;
 
         /// <summary>
-        ///     プロヴィンス境界の配列
+        ///     Arrangement of Providence boundaries
         /// </summary>
         public static Rectangle[] BoundBoxes { get; private set; }
 
         /// <summary>
-        ///     カラースケールテーブル
+        ///     Color scale table
         /// </summary>
         public static Dictionary<string, Color[]> ColorScales { get; private set; }
 
         /// <summary>
-        ///     カラーパレット
+        ///     Color palette
         /// </summary>
         public static Color[] ColorPalette { get; private set; }
 
         /// <summary>
-        ///     カラーマスクの配列
+        ///     Arrangement of color masks
         /// </summary>
         public static byte[] ColorMasks { get; }
 
         /// <summary>
-        ///     マップ読み込みの禁止
+        ///     Prohibition of map loading
         /// </summary>
         public static bool ForbidLoad;
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         public static bool[] IsLoaded;
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For lazy loading
         /// </summary>
         private static readonly BackgroundWorker[] Workers =
             new BackgroundWorker[Enum.GetValues(typeof (MapLevel)).Length];
 
         #endregion
 
-        #region 公開定数
+        #region Public constant
 
         /// <summary>
-        ///     最大プロヴィンス数
+        ///     Maximum number of provisions
         /// </summary>
         public const int MaxProvinces = 10000;
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     カラーインデックスの最大数
+        ///     Maximum number of color indexes
         /// </summary>
         private const int MaxColorIndex = 4;
 
         /// <summary>
-        ///     カラースケールの数
+        ///     Number of color scales
         /// </summary>
         private const int ColorScaleCount = 64;
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Maps()
         {
@@ -109,10 +109,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     マップファイルの再読み込みを要求する
+        ///     Request a reload of the map file
         /// </summary>
         public static void RequestReload()
         {
@@ -126,24 +126,24 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップファイルを読み込む
+        ///     Load the map file
         /// </summary>
-        /// <param name="level">マップレベル</param>
+        /// <param name="level">Map level</param>
         public static void Load(MapLevel level)
         {
-            // 読み込み禁止ならば何もしない
+            // Do nothing if read-protected
             if (ForbidLoad)
             {
                 return;
             }
 
-            // 既に読み込み済みならば何もしない
+            // Do nothing if already loaded
             if (IsLoaded[(int) level])
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Workers[(int) level].IsBusy)
             {
                 WaitLoading(level);
@@ -154,26 +154,26 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップファイルを遅延読み込みする
+        ///     Lazy loading of map file
         /// </summary>
-        /// <param name="level">マップレベル</param>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="level">Map level</param>
+        /// <param name="handler">Read complete event handler</param>
         public static void LoadAsync(MapLevel level, RunWorkerCompletedEventHandler handler)
         {
-            // 読み込み禁止ならば何もしない
+            // Do nothing if read-protected
             if (ForbidLoad)
             {
                 return;
             }
 
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // Call the completion event handler if it has already been read
             if (IsLoaded[(int) level])
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(level, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the read completion event handler
             BackgroundWorker worker = Workers[(int) level];
             if (handler != null)
             {
@@ -181,27 +181,27 @@ namespace HoI2Editor.Models
                 worker.RunWorkerCompleted += OnMapWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if loading is in progress
             if (worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If it has already been read here, the completion event handler has already been called, so return without doing anything.
             if (IsLoaded[(int) level])
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start lazy loading
             worker.DoWork += MapWorkerDoWork;
             worker.RunWorkerAsync(level);
         }
 
         /// <summary>
-        ///     マップ読み込み完了まで待機する
+        ///     Wait for the map to finish loading
         /// </summary>
-        /// <param name="level">マップレベル</param>
+        /// <param name="level">Map level</param>
         public static void WaitLoading(MapLevel level)
         {
             while (Workers[(int) level].IsBusy)
@@ -211,9 +211,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Determine if lazy loading is in progress
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>If delayed reading is in progress true true return it</returns>
         public static bool IsLoading()
         {
             return Workers[(int) MapLevel.Level1].IsBusy ||
@@ -223,7 +223,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     マップ遅延読み込み処理
+        ///     Map deferred read processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -236,20 +236,20 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing when lazy loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnMapWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing when lazy loading is completed
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     マップファイル群を読み込む
+        ///     Read map files
         /// </summary>
-        /// <param name="level">マップレベル</param>
+        /// <param name="level">Map level</param>
         private static void LoadFiles(MapLevel level)
         {
             Stopwatch sw = new Stopwatch();
@@ -257,17 +257,17 @@ namespace HoI2Editor.Models
 
             Map map = new Map(level);
 
-            // マップデータを読み込む
+            // Read map data
             map.Load();
             Data[(int) level] = map;
 
-            // プロヴィンス境界定義ファイルを読み込む
+            // Read the Providence boundary definition file
             if (BoundBoxes == null)
             {
                 LoadBoundBox();
             }
 
-            // カラースケールテーブルを読み込む
+            // Read the color scale table
             if (ColorScales == null)
             {
                 LoadColorScales();
@@ -280,11 +280,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス境界定義ファイルを読み込む
+        ///     Read the Providence boundary definition file
         /// </summary>
         private static void LoadBoundBox()
         {
-            // プロヴィンス境界データをメモリへ展開する
+            // Expand province boundary data to memory
             string fileName = Game.GetReadFileName(Game.GetMapFolderName(), Game.BoundBoxFileName);
             byte[] data;
             int count;
@@ -297,7 +297,7 @@ namespace HoI2Editor.Models
             }
             int index = 0;
 
-            // プロヴィンス境界を順に読み込む
+            // Read the provision boundaries in order
             BoundBoxes = new Rectangle[count];
             for (int i = 0; i < count; i++)
             {
@@ -312,7 +312,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     カラースケールテーブルを読み込む
+        ///     Read the color scale table
         /// </summary>
         private static void LoadColorScales()
         {
@@ -366,10 +366,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     色定義を解析する
+        ///     Analyze the color definition
         /// </summary>
-        /// <param name="s">解析対象の文字列</param>
-        /// <returns>色定義</returns>
+        /// <param name="s">Character string to be analyzed</param>
+        /// <returns>Color definition</returns>
         private static int[] ParseColor(string s)
         {
             if (string.IsNullOrEmpty(s))
@@ -397,10 +397,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     カラースケールを取得する
+        ///     Get the color scale
         /// </summary>
-        /// <param name="colors">色定義の配列</param>
-        /// <returns>カラースケール</returns>
+        /// <param name="colors">Array of color definitions</param>
+        /// <returns>Color scale</returns>
         private static Color[] GetColorScale(int[][] colors)
         {
             Color[] colorScale = new Color[64];
@@ -451,23 +451,23 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region カラースケール
+        #region Color scale
 
         /// <summary>
-        ///     プロヴィンスのカラーインデックスを取得する
+        ///     Get the Provins Color Index
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <returns>カラーインデックス</returns>
+        /// <param name="id">Providence ID</param>
+        /// <returns>Color index</returns>
         public static int GetColorIndex(ushort id)
         {
             return ColorMasks[id] >> 6;
         }
 
         /// <summary>
-        ///     プロヴィンスのカラーインデックスを設定する
+        ///     Set the color index of the province
         /// </summary>
-        /// <param name="ids">プロヴィンスIDの配列</param>
-        /// <param name="index">カラーインデックス</param>
+        /// <param name="ids">Providence ID Array of</param>
+        /// <param name="index">Color index</param>
         public static void SetColorIndex(IEnumerable<ushort> ids, int index)
         {
             foreach (ushort id in ids)
@@ -477,23 +477,23 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスのカラーインデックスを設定する
+        ///     Set the color index of the province
         /// </summary>
-        /// <param name="id">プロヴィンスID</param>
-        /// <param name="index">カラーインデックス</param>
+        /// <param name="id">Providence ID</param>
+        /// <param name="index">Color index</param>
         public static void SetColorIndex(ushort id, int index)
         {
             ColorMasks[id] = (byte) (index << 6);
         }
 
         /// <summary>
-        ///     カラースケールを設定する
+        ///     Set the color scale
         /// </summary>
-        /// <param name="index">カラーインデックス</param>
-        /// <param name="color">カラースケール名</param>
+        /// <param name="index">Color index</param>
+        /// <param name="color">Color scale name</param>
         public static void SetColorPalette(int index, string color)
         {
-            // 存在しない色名ならば何もしない
+            // Do nothing if the color name does not exist
             if (!ColorScales.ContainsKey(color.ToLower()))
             {
                 return;
@@ -507,7 +507,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     カラーパレットを初期化する
+        ///     Initialize the color palette
         /// </summary>
         private static void InitColorPalette()
         {
@@ -525,7 +525,7 @@ namespace HoI2Editor.Models
     }
 
     /// <summary>
-    ///     マップレベル
+    ///     Map level
     /// </summary>
     public enum MapLevel
     {

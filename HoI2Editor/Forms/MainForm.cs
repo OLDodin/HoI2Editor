@@ -9,47 +9,47 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Forms
 {
     /// <summary>
-    ///     メインフォーム
+    ///     Main form
     /// </summary>
     public partial class MainForm : Form
     {
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
         public MainForm()
         {
             InitializeComponent();
 
-            // ウィンドウ位置の初期化
+            // Initialization of window position
             InitPosition();
         }
 
         /// <summary>
-        ///     フォーム読み込み時の処理
+        ///   Processing when loading a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMainFormLoad(object sender, EventArgs e)
         {
-            // バージョン文字列を更新する
+            // Update the version character string
             Text = HoI2EditorController.Version;
 
-            // ログレベルを初期化する
+            // Initialize the log level
             logLevelComboBox.SelectedIndex = Log.Level;
 
-            // ログ初期化前にゲームの種類が確定している時にはここでログ出力する
+            // When the type of game is confirmed before the log initialization, the log outputs here
             if (Game.Type != GameType.None)
             {
                 Game.OutputGameType();
                 Game.OutputGameVersion();
             }
 
-            // マップ読み込みの禁止チェックボックスを初期化する
+            // Initialize the prohibition check box for loading the map
             mapLoadCheckBox.Checked = Maps.ForbidLoad;
 
-            // 初期状態のゲームフォルダ名を設定する
+            // Set the game folder name in the initial state
             if (!string.IsNullOrEmpty(Game.FolderName))
             {
                 gameFolderTextBox.Text = HoI2EditorController.Settings.Main.GameFolder;
@@ -66,17 +66,17 @@ namespace HoI2Editor.Forms
                     Log.Error("Export Name: {0}", HoI2EditorController.Settings.Main.ExportFolder);
                 }
 
-                // 言語リストを更新する
+                // Update the language list
                 UpdateLanguage();
 
-                // ゲームフォルダ名が有効でなければデータ編集を無効化する
+                // If the game folder name is not valid, disable data editing
                 if (!Game.IsGameFolderActive)
                 {
                     editGroupBox.Enabled = false;
                     return;
                 }
 
-                // 他のエディタプロセスで使われていなければ、データ編集を有効化する
+                // If it is not used in other editor processes, enable data editing
                 editGroupBox.Enabled = HoI2EditorController.LockMutex(Game.FolderName);
             }
             else
@@ -87,10 +87,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 終了処理
+        #region End processing
 
         /// <summary>
-        ///     終了ボタン押下時の処理
+        ///     Processing when pressing the end button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -100,25 +100,25 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームクローズ時の処理
+        ///     Processing when closing a form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnMainFormClosing(object sender, FormClosingEventArgs e)
         {
-            // 編集済みでなければフォームを閉じる
+            // Close the form if it is not edited
             if (!HoI2EditorController.IsDirty())
             {
                 return;
             }
 
-            // 既に保存をキャンセルしていればフォームを閉じる
+            // Close the form if you have already canceled the save
             if (HoI2EditorController.SaveCanceled)
             {
                 return;
             }
 
-            // 保存するかを問い合わせる
+            // Ask if you want to save
             DialogResult result = MessageBox.Show(Resources.ConfirmSaveMessage, Text, MessageBoxButtons.YesNoCancel,
                 MessageBoxIcon.Question);
             switch (result)
@@ -134,20 +134,20 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region ウィンドウ位置
+        #region Window position
 
         /// <summary>
-        ///     ウィンドウ位置の初期化
+        ///     Initialization of window position
         /// </summary>
         private void InitPosition()
         {
-            // ウィンドウの位置
+            // Window position
             Location = HoI2EditorController.Settings.Main.Location;
             Size = HoI2EditorController.Settings.Main.Size;
         }
 
         /// <summary>
-        ///     フォーム移動時の処理
+        ///     Processing when moving the form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -160,7 +160,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     フォームリサイズ時の処理
+        ///     Processing for form resization
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -174,10 +174,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 個別エディタ呼び出し
+        #region Individual editor call
 
         /// <summary>
-        ///     指揮官ボタン押下時の処理
+        ///     Commander button pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -187,7 +187,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     閣僚ボタン押下時の処理
+        ///     Processing when pressing the cabinet button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -197,7 +197,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究機関ボタン押下時の処理
+        ///     Processing when pressing the research institution button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -207,7 +207,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     プロヴィンスボタン押下時の処理
+        ///     Processing when pressing Provin button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -217,7 +217,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     技術ツリーボタン押下時の処理
+        ///     Technical tree button processing when pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -227,7 +227,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニットモデルボタン押下時の処理
+        ///     Processing when pressing the unit model button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -237,7 +237,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲーム設定ボタン押下時の処理
+        ///     Processing when pressing the game setting button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -247,7 +247,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     軍団名ボタン押下時の処理
+        ///     Processing when pressing the corps name button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -257,7 +257,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ユニット名ボタン押下時の処理
+        ///     Unit name button pressing when pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -267,7 +267,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     モデル名ボタン押下時の処理
+        ///     Treatment when pressing the model name button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -277,7 +277,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ランダム指揮官名ボタン押下時の処理
+        ///     Random commander's name button pressing processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -287,7 +287,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     研究速度ボタン押下時の処理
+        ///     Research speed button processing when pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -297,7 +297,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     シナリオボタン押下時の処理
+        ///     Processing when pressing the scenario button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -306,12 +306,22 @@ namespace HoI2Editor.Forms
             HoI2EditorController.LaunchScenarioEditorForm();
         }
 
+        /// <summary>
+        ///     Processing when pressing the events button
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventsButtonClick(object sender, EventArgs e)
+        {
+            HoI2EditorController.LaunchLocHelperForm();
+        }
+
         #endregion
 
-        #region フォルダ名
+        #region Folder name
 
         /// <summary>
-        ///     ゲームフォルダ参照ボタン押下時の処理
+        ///     Processing when the game folder reference button is pressed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -330,43 +340,43 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲームフォルダ名文字列変更時の処理
+        ///     Game folder Name character string processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnGameFolderTextBoxTextChanged(object sender, EventArgs e)
         {
-            // ゲームフォルダ名が変更なければ戻る
+            // Return if the game folder name does not change
             if (gameFolderTextBox.Text.Equals(Game.FolderName))
             {
                 return;
             }
 
-            // 言語モードを記憶する
+            // Remember language mode
             LanguageMode prev = Config.LangMode;
 
-            // ゲームフォルダ名を変更する
+            // Change the game folder name
             Game.FolderName = gameFolderTextBox.Text;
 
-            // 言語モードが変更されたら言語リストを更新する
+            // Update the language list when the language mode is changed
             if (Config.LangMode != prev)
             {
                 UpdateLanguage();
             }
 
-            // ゲームフォルダ名が有効でなければデータ編集を無効化する
+            // If the game folder name is not valid, disable data editing
             if (!Game.IsGameFolderActive)
             {
                 editGroupBox.Enabled = false;
                 return;
             }
 
-            // 他のエディタプロセスで使われていなければ、データ編集を有効化する
+            // If it is not used in other editor processes, enable data editing
             editGroupBox.Enabled = HoI2EditorController.LockMutex(Game.FolderName);
         }
 
         /// <summary>
-        ///     MODフォルダ参照ボタン押下時の処理
+        ///     MOD folder reference button processing when pressing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -390,7 +400,7 @@ namespace HoI2Editor.Forms
                 folderName = Path.GetDirectoryName(folderName);
             }
 
-            // MODのゲームフォルダと保存フォルダのゲームフォルダが一致しない場合は保存フォルダをクリアする
+            // If the game folder of the MOD and the game folder of the saved folder do not match, clear the saved folder
             if (Game.IsExportFolderActive && !string.Equals(folderName, Game.FolderName))
             {
                 exportFolderTextBox.Text = "";
@@ -401,7 +411,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     MOD名文字列変更時の処理
+        ///     MOD Name character string processing at the time of change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -411,7 +421,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存フォルダ名参照ボタン押下時の処理
+        ///     Save folder Name Referral processing when pressing button
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -435,7 +445,7 @@ namespace HoI2Editor.Forms
                 folderName = Path.GetDirectoryName(folderName);
             }
 
-            // 保存フォルダのゲームフォルダとMODのゲームフォルダが一致しない場合はMODフォルダをクリアする
+            // If the game folder of the saved folder and the MOD game folder do not match, clear the mod folder
             if (Game.IsModActive && !string.Equals(folderName, Game.FolderName))
             {
                 modTextBox.Text = "";
@@ -446,7 +456,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存フォルダ名文字列変更時の処理
+        ///     Processing when saving folder character string changes
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -456,7 +466,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲームフォルダ名テキストボックスにドラッグした時の処理
+        ///     Processing when dragging into the game folder name text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -466,7 +476,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲームフォルダ名テキストボックスにドロップした時の処理
+        ///     Processing when dropped into a game folder name text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -479,7 +489,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     MOD名テキストボックスにドラッグした時の処理
+        ///     Processing when dragging into a mod name text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -498,7 +508,7 @@ namespace HoI2Editor.Forms
                 folderName = Path.GetDirectoryName(folderName);
             }
 
-            // MODのゲームフォルダと保存フォルダのゲームフォルダが一致しない場合はドロップを許可しない
+            // If the game folder of the MOD and the game folder of the saved folder do not match, do not allow drops
             if (Game.IsExportFolderActive && !string.Equals(folderName, Game.FolderName))
             {
                 e.Effect = DragDropEffects.None;
@@ -509,7 +519,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     MOD名テキストボックスにドロップした時の処理
+        ///     MOD name When dropped into a text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -523,7 +533,7 @@ namespace HoI2Editor.Forms
                 folderName = Path.GetDirectoryName(folderName);
             }
 
-            // ゲームフォルダが有効でない時に保存フォルダ名が設定されていればクリアする
+            // If the game folder is not valid, clear if the saved folder name is set
             if (!Game.IsGameFolderActive && !string.IsNullOrEmpty(Game.ExportName))
             {
                 exportFolderTextBox.Text = "";
@@ -534,7 +544,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存フォルダ名テキストボックスにドラッグした時の処理
+        ///     Processing when dragged into a save folder name text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -553,7 +563,7 @@ namespace HoI2Editor.Forms
                 folderName = Path.GetDirectoryName(folderName);
             }
 
-            // 保存フォルダのゲームフォルダとMODのゲームフォルダが一致しない場合はドロップを許可しない
+            // If the game folder of the saved folder and the MOD game folder do not match, do not allow drops
             if (Game.IsModActive && !string.Equals(folderName, Game.FolderName))
             {
                 e.Effect = DragDropEffects.None;
@@ -564,7 +574,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     保存フォルダ名テキストボックスにドロップした時の処理
+        ///     Processing when dropped into a saved folder name text box
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -578,7 +588,7 @@ namespace HoI2Editor.Forms
                 folderName = Path.GetDirectoryName(folderName);
             }
 
-            // ゲームフォルダが有効でない時にMOD名が設定されていればクリアする
+            // Clear if the MOD name is set when the game folder is not valid
             if (!Game.IsGameFolderActive && !string.IsNullOrEmpty(Game.ModName))
             {
                 modTextBox.Text = "";
@@ -589,7 +599,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     メインフォームにドラッグした時の処理
+        ///     Processing when dragging to the main form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -599,7 +609,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     メインフォームにドロップした時の処理
+        ///     Processing when dropped to the main form
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -610,9 +620,9 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲームフォルダ/MOD名/保存フォルダ名を設定する
+        ///     Set the game folder / MOD name / save folder name
         /// </summary>
-        /// <param name="folderName">対象フォルダ名</param>
+        /// <param name="folderName">Target folder name</param>
         private void SetFolderName(string folderName)
         {
             if (!IsGameFolder(folderName))
@@ -637,32 +647,32 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     指定したフォルダがゲームフォルダかどうかを判定する
+        ///     Judge whether the specified folder is a game folder
         /// </summary>
-        /// <param name="folderName">対象フォルダ名</param>
-        /// <returns>ゲームフォルダならばtrueを返す</returns>
+        /// <param name="folderName">Target folder name</param>
+        /// <returns>If it is a game folder, return True</returns>
         private static bool IsGameFolder(string folderName)
         {
             if (string.IsNullOrEmpty(folderName))
             {
                 return false;
             }
-            // Hearts of Iron 2 日本語版
+            // Hearts of Iron 2 Japanese version
             if (File.Exists(Path.Combine(folderName, "DoomsdayJP.exe")))
             {
                 return true;
             }
-            // Hearts of Iron 2 英語版
+            // Hearts of Iron 2 English version
             if (File.Exists(Path.Combine(folderName, "Hoi2.exe")))
             {
                 return true;
             }
-            // Arsenal of Democracy 日本語版/英語版
+            // Arsenal of Democracy Japanese version / English version
             if (File.Exists(Path.Combine(folderName, "AODGame.exe")))
             {
                 return true;
             }
-            // Darkest Hour 英語版
+            // Darkest Hour English version
             if (File.Exists(Path.Combine(folderName, "Darkest Hour.exe")))
             {
                 return true;
@@ -671,7 +681,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲームフォルダ名/MOD名/保存フォルダ名の変更を許可する
+        ///     Game folder name / MOD name / Save folder Available
         /// </summary>
         public void EnableFolderChange()
         {
@@ -684,7 +694,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     ゲームフォルダ名/MOD名/保存フォルダ名の変更を禁止する
+        ///     Game folder name / MOD name / Save folder No change
         /// </summary>
         public void DisableFolderChange()
         {
@@ -698,14 +708,14 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region 言語
+        #region Language
 
         /// <summary>
-        ///     言語リストを更新する
+        ///     Update the language list
         /// </summary>
         private void UpdateLanguage()
         {
-            // 言語文字列を登録する
+            // Register the language string
             languageComboBox.BeginUpdate();
             languageComboBox.Items.Clear();
             foreach (string s in Config.LanguageStrings[(int) Config.LangMode])
@@ -717,45 +727,45 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     言語変更時の処理
+        ///     Processing at the time of language change
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private void OnLanguageComboBoxSelectedIndexChanged(object sender, EventArgs e)
         {
-            // 言語インデックスを更新する
+            // Update the language index
             Config.LangIndex = languageComboBox.SelectedIndex;
 
-            // コードページを設定する
+            // Set the code page
             switch (Config.LangMode)
             {
                 case LanguageMode.Japanese:
-                    // 日本語は932
+                    // Japanese is 932
                     Game.CodePage = 932;
                     break;
 
                 case LanguageMode.English:
-                    // ロシア語は1251/それ以外は1252
+                    // Russian is 1251 / other 1252
                     Game.CodePage = languageComboBox.SelectedIndex == 7 ? 1251 : 1252;
                     break;
 
                 case LanguageMode.PatchedJapanese:
-                    // 日本語は932/それ以外は1252
+                    // Japanese is 932 / other 1252
                     Game.CodePage = languageComboBox.SelectedIndex == 0 ? 932 : 1252;
                     break;
 
                 case LanguageMode.PatchedKorean:
-                    // 韓国語は949
+                    // Korean is 949
                     Game.CodePage = 949;
                     break;
 
                 case LanguageMode.PatchedTraditionalChinese:
-                    // 繁体字中国語は950
+                    // Traditional Chinese is 950
                     Game.CodePage = 950;
                     break;
 
                 case LanguageMode.PatchedSimplifiedChinese:
-                    // 簡体字中国語は936
+                    // Simplified Chinese is 936
                     Game.CodePage = 936;
                     break;
             }
@@ -763,10 +773,10 @@ namespace HoI2Editor.Forms
 
         #endregion
 
-        #region オプション設定
+        #region Option setting
 
         /// <summary>
-        ///     ログレベルコンボボックスの選択項目変更時の処理
+        ///     Log -level combo box selection item processing when changing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -777,7 +787,7 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
-        ///     マップ読み込み禁止チェックボックスのチェック状態変更時の処理
+        ///     Map loading prohibited check box treatment when changing status
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>

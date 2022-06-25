@@ -12,118 +12,118 @@ using HoI2Editor.Utilities;
 namespace HoI2Editor.Models
 {
     /// <summary>
-    ///     プロヴィンスデータ群
+    ///     Providence data group
     /// </summary>
     public static class Provinces
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     マスタープロヴィンスリスト
+        ///     Master Providence List
         /// </summary>
         public static List<Province> Items { get; }
 
         /// <summary>
-        ///     海域リスト
+        ///     Sea area list
         /// </summary>
         public static List<int> SeaZones { get; }
 
         /// <summary>
-        ///     海域とIDの対応付け
+        ///     With the sea area ID Correspondence of
         /// </summary>
         public static Dictionary<int, Province> SeaZoneMap { get; }
 
         /// <summary>
-        ///     利用可能な大陸ID
+        ///     Available continents ID
         /// </summary>
         public static List<ContinentId> Continents { get; private set; }
 
         /// <summary>
-        ///     利用可能な地方ID
+        ///     Available regions ID
         /// </summary>
         public static List<RegionId> Regions { get; private set; }
 
         /// <summary>
-        ///     利用可能な地域ID
+        ///     Available area ID
         /// </summary>
         public static List<AreaId> Areas { get; private set; }
 
         /// <summary>
-        ///     利用可能な気候ID
+        ///     Available climate ID
         /// </summary>
         public static List<ClimateId> Climates { get; private set; }
 
         /// <summary>
-        ///     利用可能な地形ID
+        ///     Available terrain ID
         /// </summary>
         public static List<TerrainId> Terrains { get; private set; }
 
         /// <summary>
-        ///     大陸と地方の対応付け
+        ///     Correspondence between continents and regions
         /// </summary>
         public static Dictionary<ContinentId, List<RegionId>> ContinentRegionMap { get; private set; }
 
         /// <summary>
-        ///     地方と地域の対応付け
+        ///     Correspondence between regions
         /// </summary>
         public static Dictionary<RegionId, List<AreaId>> RegionAreaMap { get; private set; }
 
         /// <summary>
-        ///     地域とプロヴィンスの対応付け
+        ///     Correspondence between regions and provinces
         /// </summary>
         public static Dictionary<AreaId, List<Province>> AreaProvinceMap { get; private set; }
 
         #endregion
 
-        #region 内部フィールド
+        #region Internal field
 
         /// <summary>
-        ///     地域文字列とIDの対応付け
+        ///     With regional strings ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, AreaId> AreaStringMap = new Dictionary<string, AreaId>();
 
         /// <summary>
-        ///     地方文字列とIDの対応付け
+        ///     With local strings ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, RegionId> RegionStringMap = new Dictionary<string, RegionId>();
 
         /// <summary>
-        ///     大陸文字列とIDの対応付け
+        ///     With continental strings ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, ContinentId> ContinentStringMap =
             new Dictionary<string, ContinentId>();
 
         /// <summary>
-        ///     気候文字列とIDの対応付け
+        ///     With climate string ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, ClimateId> ClimateStringMap = new Dictionary<string, ClimateId>();
 
         /// <summary>
-        ///     地形文字列とIDの対応付け
+        ///     With terrain character string ID Correspondence of
         /// </summary>
         private static readonly Dictionary<string, TerrainId> TerrainStringMap = new Dictionary<string, TerrainId>();
 
         /// <summary>
-        ///     読み込み済みフラグ
+        ///     Loaded flag
         /// </summary>
         private static bool _loaded;
 
         /// <summary>
-        ///     遅延読み込み用
+        ///     For lazy loading
         /// </summary>
         private static readonly BackgroundWorker Worker = new BackgroundWorker();
 
         /// <summary>
-        ///     編集済みフラグ
+        ///     Edited flag
         /// </summary>
         private static bool _dirtyFlag;
 
         #endregion
 
-        #region 内部定数
+        #region Internal constant
 
         /// <summary>
-        ///     地域文字列
+        ///     Regional string
         /// </summary>
         private static readonly string[] AreaStrings =
         {
@@ -736,7 +736,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地域名
+        ///     Area name
         /// </summary>
         private static readonly string[] AreaNames =
         {
@@ -1349,7 +1349,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地方文字列
+        ///     Local character string
         /// </summary>
         private static readonly string[] RegionStrings =
         {
@@ -1508,7 +1508,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地方名
+        ///     Local name
         /// </summary>
         private static readonly string[] RegionNames =
         {
@@ -1667,7 +1667,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     大陸文字列
+        ///     Continent string
         /// </summary>
         private static readonly string[] ContinentStrings =
         {
@@ -1685,7 +1685,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     大陸名
+        ///     Continent name
         /// </summary>
         private static readonly string[] ContinentNames =
         {
@@ -1703,7 +1703,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     気候文字列
+        ///     Climate string
         /// </summary>
         private static readonly string[] ClimateStrings =
         {
@@ -1719,7 +1719,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     気候名
+        ///     Climate name
         /// </summary>
         private static readonly string[] ClimateNames =
         {
@@ -1735,7 +1735,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地形文字列
+        ///     Terrain string
         /// </summary>
         private static readonly string[] TerrainStrings =
         {
@@ -1755,7 +1755,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地形名
+        ///     Topography name
         /// </summary>
         private static readonly string[] TerrainNames =
         {
@@ -1775,7 +1775,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な大陸ID (HoI2)
+        ///     Available continents ID (HoI2)
         /// </summary>
         private static readonly ContinentId[] ContinentsHoI2 =
         {
@@ -1789,7 +1789,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な地方ID (HoI2)
+        ///     Available regions ID (HoI2)
         /// </summary>
         private static readonly RegionId[] RegionsHoI2 =
         {
@@ -1944,7 +1944,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な地方ID (DH)
+        ///     Available regions ID (DH)
         /// </summary>
         private static readonly RegionId[] RegionsDh =
         {
@@ -2103,7 +2103,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な地域ID (HoI2)
+        ///     Available area ID (HoI2)
         /// </summary>
         private static readonly AreaId[] AreasHoI2 =
         {
@@ -2703,7 +2703,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な地域ID (DH)
+        ///     Available area ID (DH)
         /// </summary>
         private static readonly AreaId[] AreasDh =
         {
@@ -3316,7 +3316,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な気候ID (HoI2)
+        ///     Available climate ID (HoI2)
         /// </summary>
         private static readonly ClimateId[] ClimatesHoI2 =
         {
@@ -3332,7 +3332,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     利用可能な地形ID (HoI2)
+        ///     Available terrain ID (HoI2)
         /// </summary>
         private static readonly TerrainId[] TerrainsHoI2 =
         {
@@ -3350,7 +3350,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地域名置き換えテーブル (AoD1.10以降)
+        ///     Region name replacement table (AoD1.10 from )
         /// </summary>
         private static readonly Dictionary<AreaId, string> ReplacingAreaNamesAod = new Dictionary<AreaId, string>
         {
@@ -3371,7 +3371,7 @@ namespace HoI2Editor.Models
         };
 
         /// <summary>
-        ///     地方名置き換えテーブル (AoD1.10以降)
+        ///     Local name replacement table (AoD1.10 from )
         /// </summary>
         private static readonly Dictionary<RegionId, string> ReplacingRegionNamesAod = new Dictionary<RegionId, string>
         {
@@ -3380,47 +3380,47 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     静的コンストラクタ
+        ///     Static constructor
         /// </summary>
         static Provinces()
         {
-            // マスタープロヴィンスリスト
+            // Master Providence List
             Items = new List<Province>();
 
-            // 海域リスト
+            // Sea area list
             SeaZones = new List<int>();
 
-            // 海域とIDの対応付け
+            // With the sea area ID Correspondence of
             SeaZoneMap = new Dictionary<int, Province>();
 
-            // 地域文字列とIDの対応付け
+            // With a regional string ID Correspondence of
             foreach (AreaId area in Enum.GetValues(typeof (AreaId)))
             {
                 AreaStringMap.Add(AreaStrings[(int) area].ToLower(), area);
             }
 
-            // 地方文字列とIDの対応付け
+            // With local strings ID Correspondence of
             foreach (RegionId region in Enum.GetValues(typeof (RegionId)))
             {
                 RegionStringMap.Add(RegionStrings[(int) region].ToLower(), region);
             }
 
-            // 大陸文字列とIDの対応付け
+            // With continental strings ID Correspondence of
             foreach (ContinentId continent in Enum.GetValues(typeof (ContinentId)))
             {
                 ContinentStringMap.Add(ContinentStrings[(int) continent].ToLower(), continent);
             }
 
-            // 気候文字列とIDの対応付け
+            // With climate string ID Correspondence of
             foreach (ClimateId climate in Enum.GetValues(typeof (ClimateId)))
             {
                 ClimateStringMap.Add(ClimateStrings[(int) climate].ToLower(), climate);
             }
 
-            // 地形文字列とIDの対応付け
+            // With terrain strings ID Correspondence of
             foreach (TerrainId terrain in Enum.GetValues(typeof (TerrainId)))
             {
                 TerrainStringMap.Add(TerrainStrings[(int) terrain].ToLower(), terrain);
@@ -3428,32 +3428,32 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     初期化処理
+        ///     Initialization process
         /// </summary>
         public static void Init()
         {
-            // 利用可能な大陸IDの初期化
+            // Available continents IDInitialization of
             Continents = new List<ContinentId>(ContinentsHoI2);
 
-            // 利用可能な地方IDの初期化
+            // Available regions ID Initialization of
             Regions = new List<RegionId>(Game.Type == GameType.DarkestHour ? RegionsDh : RegionsHoI2);
 
-            // 利用可能な地域IDの初期化
+            // Available area ID Initialization of
             Areas = new List<AreaId>(Game.Type == GameType.DarkestHour ? AreasDh : AreasHoI2);
 
-            // 利用可能な気候IDの初期化
+            // Available climate ID Initialization of
             Climates = new List<ClimateId>(ClimatesHoI2);
 
-            // 利用可能な地形IDの初期化
+            // Available terrain ID Initialization of
             Terrains = new List<TerrainId>(TerrainsHoI2);
         }
 
         #endregion
 
-        #region ファイル読み込み
+        #region File reading
 
         /// <summary>
-        ///     プロヴィンスファイルの再読み込みを要求する
+        ///     Request a reload of the provision file
         /// </summary>
         public static void RequestReload()
         {
@@ -3461,11 +3461,11 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスファイル群を再読み込みする
+        ///     Reload the province files
         /// </summary>
         public static void Reload()
         {
-            // 読み込み前なら何もしない
+            // Do nothing before loading
             if (!_loaded)
             {
                 return;
@@ -3477,17 +3477,17 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスファイル群を読み込む
+        ///     Read the Providence files
         /// </summary>
         public static void Load()
         {
-            // 読み込み済みならば戻る
+            // Back if loaded
             if (_loaded)
             {
                 return;
             }
 
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -3498,44 +3498,44 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスファイル群を遅延読み込みする
+        ///     Delay reading of provision files
         /// </summary>
-        /// <param name="handler">読み込み完了イベントハンドラ</param>
+        /// <param name="handler">Read complete event handler</param>
         public static void LoadAsync(RunWorkerCompletedEventHandler handler)
         {
-            // 既に読み込み済みならば完了イベントハンドラを呼び出す
+            // Call the completion event handler if it has already been read
             if (_loaded)
             {
                 handler?.Invoke(null, new RunWorkerCompletedEventArgs(null, null, false));
                 return;
             }
 
-            // 読み込み完了イベントハンドラを登録する
+            // Register the read completion event handler
             if (handler != null)
             {
                 Worker.RunWorkerCompleted += handler;
                 Worker.RunWorkerCompleted += OnWorkerRunWorkerCompleted;
             }
 
-            // 読み込み途中ならば戻る
+            // Return if loading is in progress
             if (Worker.IsBusy)
             {
                 return;
             }
 
-            // ここで読み込み済みならば既に完了イベントハンドラを呼び出しているので何もせずに戻る
+            // If it has already been read here, the completion event handler has already been called, so return without doing anything.
             if (_loaded)
             {
                 return;
             }
 
-            // 遅延読み込みを開始する
+            // Start lazy loading
             Worker.DoWork += OnWorkerDoWork;
             Worker.RunWorkerAsync();
         }
 
         /// <summary>
-        ///     読み込み完了まで待機する
+        ///     Wait until loading is complete
         /// </summary>
         public static void WaitLoading()
         {
@@ -3546,16 +3546,16 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み中かどうかを判定する
+        ///     Determine if lazy loading is in progress
         /// </summary>
-        /// <returns>遅延読み込み中ならばtrueを返す</returns>
+        /// <returns>If delayed reading is in progress true true return it</returns>
         public static bool IsLoading()
         {
             return Worker.IsBusy;
         }
 
         /// <summary>
-        ///     遅延読み込み処理
+        ///     Delayed read processing
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
@@ -3565,24 +3565,24 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     遅延読み込み完了時の処理
+        ///     Processing when lazy loading is completed
         /// </summary>
         /// <param name="sender"></param>
         /// <param name="e"></param>
         private static void OnWorkerRunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-            // 遅延読み込み完了時の処理
+            // Processing when lazy loading is completed
             HoI2EditorController.OnLoadingCompleted();
         }
 
         /// <summary>
-        ///     プロヴィンスファイル群を読み込む
+        ///     Read the Providence files
         /// </summary>
         private static void LoadFiles()
         {
             Items.Clear();
 
-            // プロヴィンスデータを順に読み込む
+            // Read the province data in order
             bool error = false;
             string fileName = Game.GetReadFileName(Game.GetProvinceFolderName(), Game.ProvinceFileName);
             try
@@ -3597,42 +3597,42 @@ namespace HoI2Editor.Models
                     Resources.EditorProvince, MessageBoxButtons.OK, MessageBoxIcon.Error);
             }
 
-            // 大陸/地方/地域の対応付け
+            // Continent / / Local / / Regional mapping
             AttachProvinces();
 
-            // 海域リストを更新する
+            // Update the sea area list
             UpdateSeaZones();
 
-            // 読み込みに失敗していれば戻る
+            // Return if reading fails
             if (error)
             {
                 return;
             }
 
-            // 読み込み済みフラグを設定する
+            // Set the read flag
             _loaded = true;
         }
 
         /// <summary>
-        ///     プロヴィンスファイルを読み込む
+        ///     Read the provision file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void LoadFile(string fileName)
         {
             Log.Verbose("[Province] Load: {0}", Path.GetFileName(fileName));
 
             using (CsvLexer lexer = new CsvLexer(fileName))
             {
-                // 空ファイルを読み飛ばす
+                // Skip empty files
                 if (lexer.EndOfStream)
                 {
                     return;
                 }
 
-                // ヘッダ行読み込み
+                // Read header line
                 lexer.SkipLine();
 
-                // ヘッダ行のみのファイルを読み飛ばす
+                // Skip files with only header lines
                 if (lexer.EndOfStream)
                 {
                     return;
@@ -3642,7 +3642,7 @@ namespace HoI2Editor.Models
                 {
                     Province province = ParseLine(lexer);
 
-                    // 空行を読み飛ばす
+                    // Skip blank lines
                     if (province == null)
                     {
                         continue;
@@ -3656,21 +3656,21 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス定義行を解釈する
+        ///     Interpret the Providence definition line
         /// </summary>
-        /// <param name="lexer">字句解析器</param>
-        /// <returns>プロヴィンスデータ</returns>
+        /// <param name="lexer">Lexical analyzer</param>
+        /// <returns>Providence data</returns>
         private static Province ParseLine(CsvLexer lexer)
         {
             string[] tokens = lexer.GetTokens();
 
-            // ID指定のない行は読み飛ばす
+            // ID Skip lines that are not specified
             if (string.IsNullOrEmpty(tokens?[0]))
             {
                 return null;
             }
 
-            // トークン数が足りない行は読み飛ばす
+            // Skip lines with insufficient tokens
             if (tokens.Length < 49)
             {
                 Log.Warning("[Province] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName,
@@ -3681,7 +3681,7 @@ namespace HoI2Editor.Models
             Province province = new Province();
             int index = 0;
 
-            // プロヴィンスID
+            // Providence ID
             int n;
             if (!int.TryParse(tokens[index], out n))
             {
@@ -3691,11 +3691,11 @@ namespace HoI2Editor.Models
             province.Id = n;
             index++;
 
-            // プロヴィンス名
+            // Province name
             province.Name = tokens[index];
             index++;
 
-            // 地域ID
+            // area ID
             string s = tokens[index].ToLower();
             if (string.IsNullOrEmpty(s))
             {
@@ -3713,7 +3713,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 地方ID
+            // Local ID
             s = tokens[index].ToLower();
             if (string.IsNullOrEmpty(s))
             {
@@ -3731,7 +3731,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 大陸ID
+            // Continent ID
             s = tokens[index].ToLower();
             if (string.IsNullOrEmpty(s))
             {
@@ -3749,7 +3749,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 気候ID
+            // climate ID
             s = tokens[index].ToLower();
             if (string.IsNullOrEmpty(s))
             {
@@ -3767,7 +3767,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 地形ID
+            // terrain ID
             s = tokens[index].ToLower();
             if (string.IsNullOrEmpty(s))
             {
@@ -3785,7 +3785,7 @@ namespace HoI2Editor.Models
             }
             index += 3;
 
-            // インフラ
+            // infrastructure
             double d;
             if (string.IsNullOrEmpty(tokens[index]))
             {
@@ -3802,7 +3802,7 @@ namespace HoI2Editor.Models
             }
             index += 2;
 
-            // 砂浜の有無
+            // Presence or absence of sandy beach
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.Beaches = false;
@@ -3818,7 +3818,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 港の有無
+            // Presence or absence of a port
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.PortAllowed = false;
@@ -3834,7 +3834,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 港の海域
+            // Sea area of the harbor
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.PortSeaZone = 0;
@@ -3850,7 +3850,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // IC
+            // I C
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.Ic = 0;
@@ -3866,7 +3866,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 労働力
+            // Labor force
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.Manpower = 0;
@@ -3882,7 +3882,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 石油
+            // oil
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.Oil = 0;
@@ -3898,7 +3898,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 金属
+            // metal
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.Metal = 0;
@@ -3914,7 +3914,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // エネルギー
+            // energy
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.Energy = 0;
@@ -3930,7 +3930,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 希少資源
+            // Rare resources
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.RareMaterials = 0;
@@ -3946,7 +3946,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 都市のX座標
+            // Of city X Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.CityXPos = 0;
@@ -3962,7 +3962,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 都市のY座標
+            // Of city Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.CityYPos = 0;
@@ -3978,7 +3978,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 軍隊のX座標
+            // Of the armyX Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.ArmyXPos = 0;
@@ -3994,7 +3994,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 軍隊のY座標
+            // Of the army Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.ArmyYPos = 0;
@@ -4010,7 +4010,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 港のX座標
+            // Of the harbor X Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.PortXPos = 0;
@@ -4026,7 +4026,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 港のY座標
+            // Of the harbor Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.PortYPos = 0;
@@ -4042,7 +4042,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 砂浜のX座標
+            // On the sandy beach X Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.BeachXPos = 0;
@@ -4058,7 +4058,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 砂浜のY座標
+            // On the sandy beach Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.BeachYPos = 0;
@@ -4074,7 +4074,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 砂浜のアイコン
+            // Sandy beach icon
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.BeachIcon = 0;
@@ -4090,7 +4090,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 要塞のX座標
+            // Fortress X Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.FortXPos = 0;
@@ -4106,7 +4106,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 要塞のY座標
+            // Fortress Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.FortYPos = 0;
@@ -4122,7 +4122,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 対空砲のX座標
+            // Anti-aircraft gun X Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.AaXPos = 0;
@@ -4138,7 +4138,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 対空砲のY座標
+            // Anti-aircraft gun Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.AaYPos = 0;
@@ -4154,7 +4154,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // カウンターのX座標
+            // Of the counter X Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.CounterXPos = 0;
@@ -4170,7 +4170,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // カウンターのY座標
+            // Of the counter Y Coordinate
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.CounterYPos = 0;
@@ -4186,7 +4186,7 @@ namespace HoI2Editor.Models
             }
             index += 11;
 
-            // 塗りつぶしX座標1
+            // fill X Coordinate 1
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.FillCoordX1 = 0;
@@ -4202,7 +4202,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしY座標1
+            // fill Y Coordinate 1
             if (string.IsNullOrEmpty(tokens[index]))
             {
                 province.FillCoordY1 = 0;
@@ -4218,7 +4218,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしX座標2
+            // fill X Coordinate 2
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4232,7 +4232,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしY座標2
+            // fill Y Coordinate 2
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4246,7 +4246,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしX座標3
+            // fill X Coordinate 3
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4260,7 +4260,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしY座標3
+            // fill Y Coordinate 3
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4274,7 +4274,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしX座標4
+            // fill X Coordinate Four
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4288,7 +4288,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしY座標4
+            // fill Y Coordinate Four
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4302,7 +4302,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしX座標5
+            // fill X Coordinate Five
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4316,7 +4316,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしY座標5
+            // fill Y Coordinate Five
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4330,7 +4330,7 @@ namespace HoI2Editor.Models
             }
             index++;
 
-            // 塗りつぶしX座標6
+            // fillX Coordinate 6
             if (index < tokens.Length)
             {
                 if (string.IsNullOrEmpty(tokens[index]))
@@ -4348,15 +4348,15 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region ファイル書き込み
+        #region File writing
 
         /// <summary>
-        ///     プロヴィンス定義ファイルを保存する
+        ///     Save the province definition file
         /// </summary>
-        /// <returns>保存に失敗すればfalseを返す</returns>
+        /// <returns>If saving fails false false return it</returns>
         public static bool Save()
         {
-            // 読み込み途中ならば完了を待つ
+            // Wait for completion if loading is in progress
             if (Worker.IsBusy)
             {
                 WaitLoading();
@@ -4373,13 +4373,13 @@ namespace HoI2Editor.Models
                 string fileName = Path.Combine(folderName, Game.ProvinceFileName);
                 try
                 {
-                    // フォルダがなければ作成する
+                    // Create a folder if it doesn't exist
                     if (!Directory.Exists(folderName))
                     {
                         Directory.CreateDirectory(folderName);
                     }
 
-                    // プロヴィンス定義ファイルを保存する
+                    // Save the province definition file
                     Log.Info("[Province] Save: {0}", Path.GetFileName(fileName));
                     SaveFile(fileName);
                 }
@@ -4391,13 +4391,13 @@ namespace HoI2Editor.Models
                     return false;
                 }
 
-                // 編集済みフラグを解除する
+                // Clear the edited flag
                 ResetDirty();
             }
 
             if (_loaded)
             {
-                // 文字列定義のみ保存の場合、プロヴィンス名の編集済みフラグがクリアされないためここで全クリアする
+                // When saving only the character string definition, the edited flag of the province name is not cleared, so clear all here.
                 foreach (Province province in Items)
                 {
                     province.ResetDirtyAll();
@@ -4408,19 +4408,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンス定義ファイルを保存する
+        ///     Save the province definition file
         /// </summary>
-        /// <param name="fileName">対象ファイル名</param>
+        /// <param name="fileName">Target file name</param>
         private static void SaveFile(string fileName)
         {
             using (StreamWriter writer = new StreamWriter(fileName, false, Encoding.GetEncoding(Game.CodePage)))
             {
-                // ヘッダ行を書き込む
+                // Write header line
                 writer.WriteLine(
                     "Id;Name;Area;Region;Continent;Climate;Terrain;SizeModifier;AirCapacity;Infrastructure;City;Beaches;Port Allowed;Port Seazone;IC;Manpower;Oil;Metal;Energy;Rare Materials;City XPos;City YPos;Army XPos;Army YPos;Port XPos;Port YPos;Beach XPos;Beach YPos;Beach Icon;Fort XPos;Fort YPos;AA XPos;AA YPos;Counter x;Counter Y;Terrain variant;Terrain x;Terrain Y;Terrain variant;Terrain x;Terrain Y;Terrain variant;Terrain x;Terrain Y;Terrain variant;Fill coord X;Fill coord Y;;;;;;;;;"
                     );
 
-                // プロヴィンス定義行を順に書き込む
+                // Write the province definition lines in order
                 foreach (Province province in Items)
                 {
                     if (Game.Type == GameType.DarkestHour)
@@ -4529,12 +4529,12 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region プロヴィンスリスト操作
+        #region Province list operation
 
         /// <summary>
-        ///     プロヴィンスリストに項目を追加する
+        ///     Add an item to the province list
         /// </summary>
-        /// <param name="province">追加対象の項目</param>
+        /// <param name="province">Items to be added</param>
         public static void AddItem(Province province)
         {
             Items.Add(province);
@@ -4546,10 +4546,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスリストに項目を挿入する
+        ///     Insert an item in the province list
         /// </summary>
-        /// <param name="province">挿入対象の項目</param>
-        /// <param name="position">挿入位置の直前の項目</param>
+        /// <param name="province">Items to be inserted</param>
+        /// <param name="position">Item immediately before the insertion position</param>
         public static void InsertItem(Province province, Province position)
         {
             Items.Insert(Items.IndexOf(position) + 1, province);
@@ -4561,9 +4561,9 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスリストから項目を削除する
+        ///     Remove an item from the province list
         /// </summary>
-        /// <param name="province">削除対象の項目</param>
+        /// <param name="province">Items to be deleted</param>
         public static void RemoveItem(Province province)
         {
             Items.Remove(province);
@@ -4575,10 +4575,10 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     プロヴィンスリストの項目を移動する
+        ///     Move items in the province list
         /// </summary>
-        /// <param name="src">移動元の項目</param>
-        /// <param name="dest">移動先の項目</param>
+        /// <param name="src">Item of move source</param>
+        /// <param name="dest">Item to move to</param>
         public static void MoveItem(Province src, Province dest)
         {
             int srcIndex = Items.IndexOf(src);
@@ -4586,13 +4586,13 @@ namespace HoI2Editor.Models
 
             if (srcIndex > destIndex)
             {
-                // 上へ移動する場合
+                // When moving up
                 Items.Insert(destIndex, src);
                 Items.RemoveAt(srcIndex + 1);
             }
             else
             {
-                // 下へ移動する場合
+                // When moving down
                 Items.Insert(destIndex + 1, src);
                 Items.RemoveAt(srcIndex);
             }
@@ -4600,67 +4600,67 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region プロヴィンスデータ操作
+        #region Province data manipulation
 
         /// <summary>
-        ///     プロヴィンスの地域を変更する
+        ///     Change the region of the province
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="area">地域</param>
+        /// <param name="province">Providence</param>
+        /// <param name="area">area</param>
         public static void ModifyArea(Province province, AreaId area)
         {
-            // 地域とプロヴィンスの対応付けを変更する
+            // Change the correspondence between regions and provinces
             DetachAreaProvince(province.Area, province);
             AttachAreaProvince(area, province);
 
-            // 地方と地域の対応付けを変更する
+            // Change the correspondence between regions
             DetachRegionArea(province.Region, province.Area);
             AttachRegionArea(province.Region, area);
 
-            // 値を更新する
+            // Update value
             province.Area = area;
         }
 
         /// <summary>
-        ///     プロヴィンスの地方を変更する
+        ///     Change the province of Providence
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="region">地方</param>
+        /// <param name="province">Providence</param>
+        /// <param name="region">Local</param>
         public static void ModifyRegion(Province province, RegionId region)
         {
-            // 地方と地域の対応付けを変更する
+            // Change the correspondence between regions
             DetachRegionArea(province.Region, province.Area);
             AttachRegionArea(region, province.Area);
 
-            // 大陸と地方の対応付けを変更する
+            // Change the correspondence between continents and regions
             DetachContinentRegion(province.Continent, province.Region);
             AttachContinentRegion(province.Continent, region);
 
-            // 値を更新する
+            // Update value
             province.Region = region;
         }
 
         /// <summary>
-        ///     プロヴィンスの大陸を変更する
+        ///     Change the continent of province
         /// </summary>
-        /// <param name="province">プロヴィンス</param>
-        /// <param name="continent">大陸</param>
+        /// <param name="province">Providence</param>
+        /// <param name="continent">Continent</param>
         public static void ModifyContinent(Province province, ContinentId continent)
         {
-            // 大陸と地方の対応付けを変更する
+            // Change the correspondence between continents and regions
             DetachContinentRegion(province.Continent, province.Region);
             AttachContinentRegion(continent, province.Region);
 
-            // 値を更新する
+            // Update value
             province.Continent = continent;
         }
 
         #endregion
 
-        #region 海域リスト操作
+        #region Sea area list operation
 
         /// <summary>
-        ///     海域リストを更新する
+        ///     Update the sea area list
         /// </summary>
         private static void UpdateSeaZones()
         {
@@ -4677,12 +4677,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     海域リストに項目を追加する
+        ///     Add an item to the sea area list
         /// </summary>
         /// <param name="province"></param>
         private static void AddSeaZone(Province province)
         {
-            // 名前が空文字列の場合は何もしない
+            // Do nothing if the name is an empty string
             if (!Config.ExistsKey(province.Name) || string.IsNullOrEmpty(province.GetName()))
             {
                 return;
@@ -4693,12 +4693,12 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     海域リストから項目を削除する
+        ///     Remove an item from the sea area list
         /// </summary>
         /// <param name="province"></param>
         private static void RemoveSeaZone(Province province)
         {
-            // 名前が空文字列の場合は何もしない
+            // Do nothing if the name is an empty string
             if (!Config.ExistsKey(province.Name) || string.IsNullOrEmpty(province.GetName()))
             {
                 return;
@@ -4710,10 +4710,10 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 大陸/地方/地域の対応付け
+        #region Continent / / Local / / Regional mapping
 
         /// <summary>
-        ///     大陸/地方/地域を対応付ける
+        ///     Continent / / Local / / Associate regions
         /// </summary>
         private static void AttachProvinces()
         {
@@ -4723,31 +4723,31 @@ namespace HoI2Editor.Models
 
             foreach (Province province in Items)
             {
-                // 大陸と地方の対応付け
+                // Correspondence between continents and regions
                 AttachContinentRegion(province.Continent, province.Region);
 
-                // 地方と地域の対応付け
+                // Correspondence between regions
                 AttachRegionArea(province.Region, province.Area);
 
-                // 地域とプロヴィンスの対応付け
+                // Correspondence between regions and provinces
                 AttachAreaProvince(province.Area, province);
             }
         }
 
         /// <summary>
-        ///     大陸と地方の対応付けを設定する
+        ///     Set the correspondence between continents and regions
         /// </summary>
-        /// <param name="continentId">大陸</param>
-        /// <param name="regionId">地方</param>
+        /// <param name="continentId">Continent</param>
+        /// <param name="regionId">Local</param>
         private static void AttachContinentRegion(ContinentId continentId, RegionId regionId)
         {
-            // 大陸の項目がなければ作成する
+            // Create if there is no continent item
             if (!ContinentRegionMap.ContainsKey(continentId))
             {
                 ContinentRegionMap.Add(continentId, new List<RegionId>());
             }
 
-            // 地方リストに地方を追加する
+            // Add a region to the region list
             if (!ContinentRegionMap[continentId].Contains(regionId))
             {
                 ContinentRegionMap[continentId].Add(regionId);
@@ -4755,23 +4755,23 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     大陸と地方の対応付けを解除する
+        ///     Break the correspondence between continents and regions
         /// </summary>
-        /// <param name="continentId">大陸</param>
-        /// <param name="regionId">地方</param>
+        /// <param name="continentId">Continent</param>
+        /// <param name="regionId">Local</param>
         private static void DetachContinentRegion(ContinentId continentId, RegionId regionId)
         {
-            // 大陸の項目がなければ何もしない
+            // Do nothing if there is no continental item
             if (!ContinentRegionMap.ContainsKey(continentId))
             {
                 return;
             }
 
-            // 地方リストから地方を削除する
+            // Remove a region from the region list
             if (ContinentRegionMap[continentId].Contains(regionId))
             {
                 ContinentRegionMap[continentId].Remove(regionId);
-                // 地方リストの項目がなくなれば大陸の項目を削除する
+                // Delete the continental item when there are no more items in the local list
                 if (ContinentRegionMap[continentId].Count == 0)
                 {
                     ContinentRegionMap.Remove(continentId);
@@ -4780,19 +4780,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     地方と地域の対応付けを設定する
+        ///     Set the correspondence between regions
         /// </summary>
-        /// <param name="regionId">地方</param>
-        /// <param name="areaId">地域</param>
+        /// <param name="regionId">Local</param>
+        /// <param name="areaId">area</param>
         private static void AttachRegionArea(RegionId regionId, AreaId areaId)
         {
-            // 地方の項目がなければ作成する
+            // Create if there is no local item
             if (!RegionAreaMap.ContainsKey(regionId))
             {
                 RegionAreaMap.Add(regionId, new List<AreaId>());
             }
 
-            // 地域リストに地域を追加する
+            // Add a region to the region list
             if (!RegionAreaMap[regionId].Contains(areaId))
             {
                 RegionAreaMap[regionId].Add(areaId);
@@ -4800,23 +4800,23 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     地方と地域の対応付けを解除する
+        ///     Break the association between regions
         /// </summary>
-        /// <param name="regionId">地方</param>
-        /// <param name="areaId">地域</param>
+        /// <param name="regionId">Local</param>
+        /// <param name="areaId">area</param>
         private static void DetachRegionArea(RegionId regionId, AreaId areaId)
         {
-            // 地方の項目がなければ何もしない
+            // Do nothing if there are no local items
             if (!RegionAreaMap.ContainsKey(regionId))
             {
                 return;
             }
 
-            // 地域リストから地域を削除する
+            // Remove a region from the region list
             if (RegionAreaMap[regionId].Contains(areaId))
             {
                 RegionAreaMap[regionId].Remove(areaId);
-                // 地域リストの項目がなくなれば地方の項目を削除する
+                // Delete local items when there are no more items in the area list
                 if (RegionAreaMap[regionId].Count == 0)
                 {
                     RegionAreaMap.Remove(regionId);
@@ -4825,19 +4825,19 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     地域とプロヴィンスの対応付けを設定する
+        ///     Set the correspondence between regions and provinces
         /// </summary>
-        /// <param name="areaId">地域</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="areaId">area</param>
+        /// <param name="province">Providence</param>
         private static void AttachAreaProvince(AreaId areaId, Province province)
         {
-            // 地域の項目がなければ作成する
+            // Create if there is no regional item
             if (!AreaProvinceMap.ContainsKey(areaId))
             {
                 AreaProvinceMap.Add(areaId, new List<Province>());
             }
 
-            // プロヴィンスリストにプロヴィンスを追加する
+            // Add a Providence to the Providence List
             if (!AreaProvinceMap[areaId].Contains(province))
             {
                 AreaProvinceMap[areaId].Add(province);
@@ -4845,23 +4845,23 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     地域とプロヴィンスの対応付けを解除する
+        ///     Disassociate a region with a province
         /// </summary>
-        /// <param name="areaId">地域</param>
-        /// <param name="province">プロヴィンス</param>
+        /// <param name="areaId">area</param>
+        /// <param name="province">Providence</param>
         private static void DetachAreaProvince(AreaId areaId, Province province)
         {
-            // 地域の項目がなければ何もしない
+            // Do nothing if there are no regional items
             if (!AreaProvinceMap.ContainsKey(areaId))
             {
                 return;
             }
 
-            // プロヴィンスリストからプロヴィンスを削除する
+            // Remove Provinces from the Provinces list
             if (AreaProvinceMap[areaId].Contains(province))
             {
                 AreaProvinceMap[areaId].Remove(province);
-                // プロヴィンスリストの項目がなくなれば地域の項目を削除する
+                // Delete regional items when there are no more items on the provision list
                 if (AreaProvinceMap[areaId].Count == 0)
                 {
                     AreaProvinceMap.Remove(areaId);
@@ -4871,26 +4871,26 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 文字列操作
+        #region String operation
 
         /// <summary>
-        ///     大陸名を取得する
+        ///     Get the continent name
         /// </summary>
-        /// <param name="continent">大陸</param>
-        /// <returns>大陸名</returns>
+        /// <param name="continent">Continent</param>
+        /// <returns>Continent name</returns>
         public static string GetContinentName(ContinentId continent)
         {
             return Config.GetText(ContinentNames[(int) continent]);
         }
 
         /// <summary>
-        ///     地方名を取得する
+        ///     Get the local name
         /// </summary>
-        /// <param name="region">地方</param>
-        /// <returns>地方名</returns>
+        /// <param name="region">Local</param>
+        /// <returns>Local name</returns>
         public static string GetRegionName(RegionId region)
         {
-            // AoD1.10以降の場合、文字列定義が変更になっているかをチェックする
+            // AoD1.10 In the following cases, check if the character string definition has changed.
             if ((Game.Type == GameType.ArsenalOfDemocracy) && (Game.Version >= 110))
             {
                 if (ReplacingRegionNamesAod.ContainsKey(region))
@@ -4903,13 +4903,13 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     地域名を取得する
+        ///     Get the area name
         /// </summary>
-        /// <param name="area">地域</param>
-        /// <returns>地域名</returns>
+        /// <param name="area">area</param>
+        /// <returns>Area name</returns>
         public static string GetAreaName(AreaId area)
         {
-            // AoD1.10以降の場合、文字列定義が変更になっているかをチェックする
+            // AoD1.10 In the following cases, check if the character string definition has changed.
             if ((Game.Type == GameType.ArsenalOfDemocracy) && (Game.Version >= 110))
             {
                 if (ReplacingAreaNamesAod.ContainsKey(area))
@@ -4922,20 +4922,20 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     気候名を取得する
+        ///     Get the climate name
         /// </summary>
-        /// <param name="climate">気候</param>
-        /// <returns>気候名</returns>
+        /// <param name="climate">climate</param>
+        /// <returns>Climate name</returns>
         public static string GetClimateName(ClimateId climate)
         {
             return Config.GetText(ClimateNames[(int) climate]);
         }
 
         /// <summary>
-        ///     地形名を取得する
+        ///     Get the terrain name
         /// </summary>
-        /// <param name="terrain">地形</param>
-        /// <returns>地形名</returns>
+        /// <param name="terrain">terrain</param>
+        /// <returns>Topography name</returns>
         public static string GetTerrainName(TerrainId terrain)
         {
             return Config.GetText(TerrainNames[(int) terrain]);
@@ -4943,19 +4943,19 @@ namespace HoI2Editor.Models
 
         #endregion
 
-        #region 編集済みフラグ操作
+        #region Edited flag operation
 
         /// <summary>
-        ///     編集済みかどうかを取得する
+        ///     Get if it has been edited
         /// </summary>
-        /// <returns>編集済みならばtrueを返す</returns>
+        /// <returns>If editedtrue true return it</returns>
         public static bool IsDirty()
         {
             return _dirtyFlag;
         }
 
         /// <summary>
-        ///     編集済みフラグを設定する
+        ///     Set the edited flag
         /// </summary>
         public static void SetDirty()
         {
@@ -4963,7 +4963,7 @@ namespace HoI2Editor.Models
         }
 
         /// <summary>
-        ///     編集済みフラグを解除する
+        ///     Clear the edited flag
         /// </summary>
         private static void ResetDirty()
         {

@@ -1,19 +1,19 @@
 ﻿namespace HoI2Editor.Parsers
 {
     /// <summary>
-    ///     字句解析トークン
+    ///     Lexical analysis token
     /// </summary>
     public class Token
     {
-        #region 公開プロパティ
+        #region Public properties
 
         /// <summary>
-        ///     トークンの種類
+        ///     Token type
         /// </summary>
         public TokenType Type { get; set; }
 
         /// <summary>
-        ///     トークンの値
+        ///     Token value
         /// </summary>
         public object Value { get; set; }
 
@@ -21,18 +21,18 @@
     }
 
     /// <summary>
-    ///     トークンの種類
+    ///     Token type
     /// </summary>
     public enum TokenType
     {
-        Invalid, // 不正な値
-        Identifier, // 識別子
-        Number, // 数字
-        String, // 文字列
-        Equal, // =
+        Invalid, // Illegal value
+        Identifier, // identifier
+        Number, // Numbers
+        String, // Character string
+        Equal, // = =
         OpenBrace, // {
         CloseBrace, // }
-        WhiteSpace, // 空白文字
-        Comment // コメント
+        WhiteSpace, // White space
+        Comment // comment
     }
 }

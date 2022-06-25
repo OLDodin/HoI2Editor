@@ -23,7 +23,7 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify
+        /// Required method for Designer support --do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -35,6 +35,7 @@
             this.modLabel = new System.Windows.Forms.Label();
             this.modTextBox = new System.Windows.Forms.TextBox();
             this.editGroupBox = new System.Windows.Forms.GroupBox();
+            this.button1 = new System.Windows.Forms.Button();
             this.scenarioButton = new System.Windows.Forms.Button();
             this.researchButton = new System.Windows.Forms.Button();
             this.modelNameButton = new System.Windows.Forms.Button();
@@ -101,6 +102,7 @@
             // editGroupBox
             // 
             resources.ApplyResources(this.editGroupBox, "editGroupBox");
+            this.editGroupBox.Controls.Add(this.button1);
             this.editGroupBox.Controls.Add(this.scenarioButton);
             this.editGroupBox.Controls.Add(this.researchButton);
             this.editGroupBox.Controls.Add(this.modelNameButton);
@@ -116,6 +118,13 @@
             this.editGroupBox.Controls.Add(this.ministerButton);
             this.editGroupBox.Name = "editGroupBox";
             this.editGroupBox.TabStop = false;
+            // 
+            // button1
+            // 
+            resources.ApplyResources(this.button1, "button1");
+            this.button1.Name = "button1";
+            this.button1.UseVisualStyleBackColor = true;
+            this.button1.Click += new System.EventHandler(this.OnEventsButtonClick);
             // 
             // scenarioButton
             // 
@@ -357,5 +366,6 @@
         private System.Windows.Forms.Label logLevelLabel;
         private System.Windows.Forms.Button scenarioButton;
         private System.Windows.Forms.CheckBox mapLoadCheckBox;
+        private System.Windows.Forms.Button button1;
     }
 }

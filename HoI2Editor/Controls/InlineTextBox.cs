@@ -6,15 +6,15 @@ using System.Windows.Forms;
 namespace HoI2Editor.Controls
 {
     /// <summary>
-    ///     項目編集用テキストボックス
+    ///     Text box for editing items
     /// </summary>
     [ToolboxItem(false)]
     public partial class InlineTextBox : TextBox
     {
-        #region 公開イベント
+        #region Public event
 
         /// <summary>
-        ///     項目編集完了時の処理
+        ///     Processing when item editing is completed
         /// </summary>
         [Category("動作")]
         [Description("項目の編集を完了したときに発生します。")]
@@ -22,15 +22,15 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 初期化
+        #region Initialization
 
         /// <summary>
-        ///     コンストラクタ
+        ///     constructor
         /// </summary>
-        /// <param name="text">初期文字列</param>
-        /// <param name="location">座標</param>
-        /// <param name="size">サイズ</param>
-        /// <param name="parent">親コントロール</param>
+        /// <param name="text">Initial character string</param>
+        /// <param name="location">Coordinate</param>
+        /// <param name="size">size</param>
+        /// <param name="parent">Parent control</param>
         public InlineTextBox(string text, Point location, Size size, Control parent)
         {
             InitializeComponent();
@@ -39,12 +39,12 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     初期化処理
+        ///     Initialization process
         /// </summary>
-        /// <param name="text">初期文字列</param>
-        /// <param name="location">座標</param>
-        /// <param name="size">サイズ</param>
-        /// <param name="parent">親コントロール</param>
+        /// <param name="text">Initial character string</param>
+        /// <param name="location">Coordinate</param>
+        /// <param name="size">size</param>
+        /// <param name="parent">Parent control</param>
         private void Init(string text, Point location, Size size, Control parent)
         {
             Parent = parent;
@@ -53,19 +53,19 @@ namespace HoI2Editor.Controls
             Text = text;
             Multiline = false;
 
-            // 文字列を全選択する
+            // Select all strings
             SelectAll();
 
-            // フォーカスを設定する
+            // Set focus
             Focus();
         }
 
         #endregion
 
-        #region イベントハンドラ
+        #region Event handler
 
         /// <summary>
-        ///     キー押下時の処理
+        ///     Processing when a key is pressed
         /// </summary>
         protected override void OnKeyDown(KeyEventArgs e)
         {
@@ -83,7 +83,7 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     フォーカス解除時の処理
+        ///     Processing when defocusing
         /// </summary>
         protected override void OnLostFocus(EventArgs e)
         {
@@ -92,7 +92,7 @@ namespace HoI2Editor.Controls
         }
 
         /// <summary>
-        ///     描画更新時の処理
+        ///     Processing when updating drawing
         /// </summary>
         protected override void OnPaint(PaintEventArgs pe)
         {
@@ -101,12 +101,12 @@ namespace HoI2Editor.Controls
 
         #endregion
 
-        #region 内部メソッド
+        #region Internal method
 
         /// <summary>
-        ///     編集完了時の処理
+        ///     Processing when editing is completed
         /// </summary>
-        /// <param name="cancel">キャンセルされたかどうか</param>
+        /// <param name="cancel">Whether it was canceled</param>
         private void Finish(bool cancel)
         {
             CancelEventArgs e = new CancelEventArgs(cancel);

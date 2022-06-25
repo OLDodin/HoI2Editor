@@ -23,7 +23,7 @@
         #region Windows Form Designer generated code
 
         /// <summary>
-        /// Required method for Designer support - do not modify
+        /// Required method for Designer support --do not modify
         /// the contents of this method with the code editor.
         /// </summary>
         private void InitializeComponent()
@@ -260,7 +260,7 @@
             // 
             resources.ApplyResources(this.endYearColumnHeader, "endYearColumnHeader");
             // 
-            // specialityColumnHeader
+            // specialtyColumnHeader
             // 
             resources.ApplyResources(this.specialityColumnHeader, "specialityColumnHeader");
             // 
@@ -351,7 +351,7 @@
             resources.ApplyResources(this.skillLabel, "skillLabel");
             this.skillLabel.Name = "skillLabel";
             // 
-            // specialityGroupBox
+            // specialtyGroupBox
             // 
             resources.ApplyResources(this.specialityGroupBox, "specialityGroupBox");
             this.specialityGroupBox.Controls.Add(this.sortAbcButton);
@@ -380,7 +380,7 @@
             this.sortIdButton.UseVisualStyleBackColor = true;
             this.sortIdButton.Click += new System.EventHandler(this.OnSortIdButtonClick);
             // 
-            // specialityComboBox7
+            // specialtyComboBox7
             // 
             this.specialityComboBox7.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox7.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -390,7 +390,7 @@
             this.specialityComboBox7.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnSpecialityComboBoxDrawItem);
             this.specialityComboBox7.SelectedIndexChanged += new System.EventHandler(this.OnSpecialityComboBoxSelectedIndexChanged);
             // 
-            // specialityComboBox6
+            // specialtyComboBox6
             // 
             this.specialityComboBox6.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox6.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -400,7 +400,7 @@
             this.specialityComboBox6.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnSpecialityComboBoxDrawItem);
             this.specialityComboBox6.SelectedIndexChanged += new System.EventHandler(this.OnSpecialityComboBoxSelectedIndexChanged);
             // 
-            // specialityComboBox5
+            // specialtyComboBox5
             // 
             this.specialityComboBox5.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox5.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -410,7 +410,7 @@
             this.specialityComboBox5.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnSpecialityComboBoxDrawItem);
             this.specialityComboBox5.SelectedIndexChanged += new System.EventHandler(this.OnSpecialityComboBoxSelectedIndexChanged);
             // 
-            // specialityComboBox4
+            // specialtyComboBox4
             // 
             this.specialityComboBox4.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox4.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -420,7 +420,7 @@
             this.specialityComboBox4.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnSpecialityComboBoxDrawItem);
             this.specialityComboBox4.SelectedIndexChanged += new System.EventHandler(this.OnSpecialityComboBoxSelectedIndexChanged);
             // 
-            // specialityComboBox3
+            // specialtyComboBox3
             // 
             this.specialityComboBox3.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox3.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -430,7 +430,7 @@
             this.specialityComboBox3.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnSpecialityComboBoxDrawItem);
             this.specialityComboBox3.SelectedIndexChanged += new System.EventHandler(this.OnSpecialityComboBoxSelectedIndexChanged);
             // 
-            // specialityComboBox2
+            // specialtyComboBox2
             // 
             this.specialityComboBox2.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox2.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
@@ -440,7 +440,7 @@
             this.specialityComboBox2.DrawItem += new System.Windows.Forms.DrawItemEventHandler(this.OnSpecialityComboBoxDrawItem);
             this.specialityComboBox2.SelectedIndexChanged += new System.EventHandler(this.OnSpecialityComboBoxSelectedIndexChanged);
             // 
-            // specialityComboBox1
+            // specialtyComboBox1
             // 
             this.specialityComboBox1.DrawMode = System.Windows.Forms.DrawMode.OwnerDrawFixed;
             this.specialityComboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;

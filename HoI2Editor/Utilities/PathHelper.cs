@@ -6,26 +6,26 @@ using System.Text;
 namespace HoI2Editor.Utilities
 {
     /// <summary>
-    ///     パス操作のヘルパークラス
+    ///     Path operation helper class
     /// </summary>
     public static class PathHelper
     {
         /// <summary>
-        ///     パス名の最大サイズ
+        ///     Maximum size of path name
         /// </summary>
         private const int MaxPath = 260;
 
         /// <summary>
-        ///     パスの区切り文字
+        ///     Path delimiter
         /// </summary>
         private static readonly char[] PathSeparator = { Path.DirectorySeparatorChar, Path.AltDirectorySeparatorChar };
 
         /// <summary>
-        ///     相対パス名を取得する
+        ///     Get relative path name
         /// </summary>
-        /// <param name="pathName">対象パス名</param>
-        /// <param name="baseDirName">基準ディレクトリ名</param>
-        /// <returns>相対パス名</returns>
+        /// <param name="pathName">Target path name</param>
+        /// <param name="baseDirName">Base directory name</param>
+        /// <returns>Relative path name</returns>
         public static string GetRelativePathName(string pathName, string baseDirName)
         {
             string[] targets = pathName.Split(PathSeparator);
@@ -52,7 +52,7 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     P/Invokeメソッド定義用クラス
+        ///     P / Invoke Method definition class
         /// </summary>
         private static class NativeMethods
         {
