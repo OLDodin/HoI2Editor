@@ -119,6 +119,9 @@ namespace HoI2Editor.Forms
             this.comboBoxRUS = new System.Windows.Forms.ComboBox();
             this.button9 = new System.Windows.Forms.Button();
             this.timer1 = new System.Windows.Forms.Timer(this.components);
+            this.textBoxCustomEvent = new System.Windows.Forms.TextBox();
+            this.buttonCustomEvent = new System.Windows.Forms.Button();
+            this.label21 = new System.Windows.Forms.Label();
             this.groupBox1.SuspendLayout();
             this.groupBox2.SuspendLayout();
             this.groupBox13.SuspendLayout();
@@ -220,6 +223,9 @@ namespace HoI2Editor.Forms
             // 
             // groupBox1
             // 
+            this.groupBox1.Controls.Add(this.label21);
+            this.groupBox1.Controls.Add(this.textBoxCustomEvent);
+            this.groupBox1.Controls.Add(this.buttonCustomEvent);
             this.groupBox1.Controls.Add(this.progressBar1);
             this.groupBox1.Controls.Add(this.checkBoxBackup);
             this.groupBox1.Controls.Add(this.exportButton);
@@ -227,7 +233,7 @@ namespace HoI2Editor.Forms
             this.groupBox1.Controls.Add(this.label1);
             this.groupBox1.Location = new System.Drawing.Point(12, 12);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(423, 95);
+            this.groupBox1.Size = new System.Drawing.Size(599, 95);
             this.groupBox1.TabIndex = 38;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Export texts from events";
@@ -236,7 +242,7 @@ namespace HoI2Editor.Forms
             // 
             this.progressBar1.Location = new System.Drawing.Point(328, 59);
             this.progressBar1.Name = "progressBar1";
-            this.progressBar1.Size = new System.Drawing.Size(89, 23);
+            this.progressBar1.Size = new System.Drawing.Size(153, 23);
             this.progressBar1.Style = System.Windows.Forms.ProgressBarStyle.Marquee;
             this.progressBar1.TabIndex = 39;
             this.progressBar1.Visible = false;
@@ -246,7 +252,7 @@ namespace HoI2Editor.Forms
             this.checkBoxBackup.AutoSize = true;
             this.checkBoxBackup.Checked = true;
             this.checkBoxBackup.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.checkBoxBackup.Location = new System.Drawing.Point(328, 26);
+            this.checkBoxBackup.Location = new System.Drawing.Point(501, 63);
             this.checkBoxBackup.Name = "checkBoxBackup";
             this.checkBoxBackup.Size = new System.Drawing.Size(92, 17);
             this.checkBoxBackup.TabIndex = 38;
@@ -1002,6 +1008,32 @@ namespace HoI2Editor.Forms
             this.timer1.Interval = 1000;
             this.timer1.Tick += new System.EventHandler(this.OnTimerTick);
             // 
+            // textBoxCustomEvent
+            // 
+            this.textBoxCustomEvent.Location = new System.Drawing.Point(432, 24);
+            this.textBoxCustomEvent.Name = "textBoxCustomEvent";
+            this.textBoxCustomEvent.Size = new System.Drawing.Size(119, 20);
+            this.textBoxCustomEvent.TabIndex = 82;
+            // 
+            // buttonCustomEvent
+            // 
+            this.buttonCustomEvent.Location = new System.Drawing.Point(557, 24);
+            this.buttonCustomEvent.Name = "buttonCustomEvent";
+            this.buttonCustomEvent.Size = new System.Drawing.Size(27, 20);
+            this.buttonCustomEvent.TabIndex = 83;
+            this.buttonCustomEvent.Text = "...";
+            this.buttonCustomEvent.UseVisualStyleBackColor = true;
+            this.buttonCustomEvent.Click += new System.EventHandler(this.OnCustomEventClick);
+            // 
+            // label21
+            // 
+            this.label21.AutoSize = true;
+            this.label21.Location = new System.Drawing.Point(325, 27);
+            this.label21.Name = "label21";
+            this.label21.Size = new System.Drawing.Size(101, 13);
+            this.label21.TabIndex = 84;
+            this.label21.Text = "Custom event folder";
+            // 
             // LocHelperForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
@@ -1149,5 +1181,8 @@ namespace HoI2Editor.Forms
         private System.Windows.Forms.CheckBox checkBoxBackup;
         private System.Windows.Forms.ProgressBar progressBar1;
         private System.Windows.Forms.Timer timer1;
+        private System.Windows.Forms.Label label21;
+        private System.Windows.Forms.TextBox textBoxCustomEvent;
+        private System.Windows.Forms.Button buttonCustomEvent;
     }
 }

@@ -126,7 +126,7 @@ namespace HoI2Editor.Forms
 
             _eventsExtractTask = Task.Factory.StartNew(() => {
                 HoI2Editor.Models.Events.Load(selectedCodepage);
-                _locHelperController.ExtractAllTextFromEvents(selectedCodepage, checkBoxBackup.Checked);
+                _locHelperController.ExtractAllTextFromEvents(selectedCodepage, checkBoxBackup.Checked, textBoxCustomEvent.Text);
             });
 
             progressBar1.Visible = true;
@@ -304,6 +304,15 @@ namespace HoI2Editor.Forms
                     timer1.Stop();
                     progressBar1.Visible = false;
                 }
+            }
+        }
+
+        private void OnCustomEventClick(object sender, EventArgs e)
+        {
+            if (openFileDialog2.ShowDialog() == DialogResult.OK)
+            {
+                string resultFolder = openFileDialog2.FileName;
+                textBoxCustomEvent.Text = resultFolder.Substring(0, resultFolder.LastIndexOf("\\") + 1);
             }
         }
     }

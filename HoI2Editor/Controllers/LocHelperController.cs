@@ -116,7 +116,7 @@ namespace HoI2Editor.Controllers
             if (File.Exists(resultFilepath))
                 File.Delete(resultFilepath);
 
-            FileStream fs = new FileStream(resultFilepath, FileMode.Append);
+            
             string[] IDsLines = ReadAllFileLines(mergeFilesInfo["IDs"].FilePath);
             string[] ENGLines = ReadAllFileLines(mergeFilesInfo["ENG"].FilePath);
             string[] FRALines = ReadAllFileLines(mergeFilesInfo["FRA"].FilePath);
@@ -145,6 +145,7 @@ namespace HoI2Editor.Controllers
                 MessageBox.Show("Column files has different number of lines!");
                 return;
             }
+            FileStream fs = new FileStream(resultFilepath, FileMode.Append);
             StreamWriter fileWriterIDs = new StreamWriter(fs, Encoding.GetEncoding(mergeFilesInfo["IDs"].ResultCodePage));
             StreamWriter fileWriterENG = new StreamWriter(fs, Encoding.GetEncoding(mergeFilesInfo["ENG"].ResultCodePage));
             StreamWriter fileWriterFRA = new StreamWriter(fs, Encoding.GetEncoding(mergeFilesInfo["FRA"].ResultCodePage));
@@ -250,11 +251,18 @@ namespace HoI2Editor.Controllers
         /// </summary>
         /// <param name="textCodePage">Events files encoding</param>
         /// <param name="makeBackup">Backup events files</param>
-        public void ExtractAllTextFromEvents(int textCodePage, bool makeBackup)
+        public void ExtractAllTextFromEvents(int textCodePage, bool makeBackup, string customEventDirPath)
         {
+            string eventPathName = Game.EventsPathName;
+            if (customEventDirPath != "" && customEventDirPath != null)
+                eventPathName = customEventDirPath;
+            if (!CheckPaths(eventPathName))
+            {
+                return;
+            }
             if (makeBackup)
             {
-                MakeBackup(Game.GetReadFileName(Game.EventsPathName), Game.GetReadFileName(Game.DatabasePathName) + "/" + "eventBackup");
+                MakeBackup(Game.GetReadFileName(eventPathName), Game.GetReadFileName(Game.DatabasePathName) + "/" + "eventBackup");
             }
             // read exist text keys
             _alreadyExistEventKeysList.Clear();
@@ -265,7 +273,7 @@ namespace HoI2Editor.Controllers
                 LoadCsvFile(filePath);
             }
             // make new text ID
-            string pathName = Game.GetReadFileName(Game.EventsPathName);
+            string pathName = Game.GetReadFileName(eventPathName);
             Dictionary<string, string> eventToExportTextList = new Dictionary<string, string>();
             foreach (Event ev in Events.TotalEventsList)
             {
@@ -511,6 +519,64 @@ namespace HoI2Editor.Controllers
             fsExportedIDs.Close();
             fileTextWriter.Close();
             fsExportedText.Close();
+        }
+
+        /// <summary>
+        ///     Check exist all needed paths
+        /// </summary>
+        /// <param name="eventPathName">event path name</param>
+        /// <returns>True if all path exists</returns>
+        private bool CheckPaths(string eventPathName)
+        {
+            if (CheckFileName(eventPathName) == null)
+            {
+                MessageBox.Show("Not found event directory");
+                return false;
+            }
+            if (CheckFileName(Game.DatabasePathName) == null)
+            {
+                MessageBox.Show("Not found db directory");
+                return false;
+            }
+            if (CheckFileName(Game.ConfigPathName) == null)
+            {
+                MessageBox.Show("Not found config directory");
+                return false;
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        ///     Get a file name for reading in consideration of MOD folder / saved folder
+        /// </summary>
+        /// <param name="pathName">Pass name</param>
+        /// <returns>file name</returns>
+        private string CheckFileName(string pathName)
+        {
+            string fileName;
+            if (Game.IsModActive)
+            {
+                fileName = Game.GetModFileName(pathName);
+                if (File.Exists(fileName) || Directory.Exists(fileName))
+                {
+                    return fileName;
+                }
+                else
+                {
+                    return null;
+                }
+            }
+
+            fileName = Game.GetVanillaFileName(pathName);
+            if (File.Exists(fileName) || Directory.Exists(fileName))
+            {
+                return fileName;
+            }
+            else
+            {
+                return null;
+            }
         }
         #endregion
 
