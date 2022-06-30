@@ -209,29 +209,35 @@ namespace HoI2Editor.Controllers
             string resultFilepath = resultDirPath + columnInfo.FileName;
             if (File.Exists(resultFilepath))
                 File.Delete(resultFilepath);
-            FileStream fs = new FileStream(resultFilepath, FileMode.Create);
-            StreamWriter fileWriter = new StreamWriter(fs, Encoding.Unicode);
-            for (int i = 0; i < lines.Length; i++)
+            using (FileStream fs = new FileStream(resultFilepath, FileMode.Create))
             {
-                string[] splittedByComment = lines[i].Split('#');
-                string[] columnValues = splittedByComment[0].Split(';');
-                int expectedCount = 12;
-                if (Path.GetFileName(srcFilepath).Equals("famous_quotes.csv"))
-                    expectedCount = 16; ;
-                if (columnValues.Length != expectedCount)
+                using (StreamWriter fileWriter = new StreamWriter(fs, Encoding.Unicode))
                 {
-                    if (splittedByComment.Length == 1 || splittedByComment[0].Contains(';'))
+                    for (int i = 0; i < lines.Length; i++)
                     {
-                        MessageBox.Show("Number of columns on line" + (i + 1).ToString() + " not equal " + expectedCount.ToString());
-                        return;
+                        string[] splittedByComment = lines[i].Split('#');
+                        string[] columnValues = splittedByComment[0].Split(';');
+                        int expectedCount = 12;
+                        if (Path.GetFileName(srcFilepath).Equals("famous_quotes.csv"))
+                        {
+                            expectedCount = 16;
+                            MessageBox.Show("famous_quotes.csv not supported");
+                            return;
+                        }
+                        if (columnValues.Length != expectedCount)
+                        {
+                            if (splittedByComment.Length == 1 || splittedByComment[0].Contains(';'))
+                            {
+                                MessageBox.Show("Number of columns on line" + (i + 1).ToString() + " not equal " + expectedCount.ToString());
+                                return;
+                            }
+                            fileWriter.WriteLine("");
+                        }
+                        else
+                            fileWriter.WriteLine(columnValues[columnIndex]);
                     }
-                    fileWriter.WriteLine("");
                 }
-                else
-                    fileWriter.WriteLine(columnValues[columnIndex]);
             }
-            fileWriter.Close();
-            fs.Close();
         }
         #endregion
 
