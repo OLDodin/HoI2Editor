@@ -72,19 +72,6 @@ namespace HoI2Editor.Controllers
         /// </summary>
         private List<string> _alreadyExistEventKeysList = new List<string>();
 
-        /// <summary>
-        ///     Files that may contain event text ID
-        /// </summary>
-        private readonly string[] _eventKeysFiles =
-        {
-            "event_text.csv",
-            "doomsdaytext.csv",
-            "extra_text.csv",
-            "new_text.csv",
-            "mods.csv",
-            "Additional/addon.csv"
-        };
-
         #region Build localization csv file helper
         /// <summary>
         ///     Splite the source file to several files
@@ -228,11 +215,14 @@ namespace HoI2Editor.Controllers
             {
                 string[] splittedByComment = lines[i].Split('#');
                 string[] columnValues = splittedByComment[0].Split(';');
-                if (columnValues.Length != 12)
+                int expectedCount = 12;
+                if (Path.GetFileName(srcFilepath).Equals("famous_quotes.csv"))
+                    expectedCount = 16; ;
+                if (columnValues.Length != expectedCount)
                 {
                     if (splittedByComment.Length == 1 || splittedByComment[0].Contains(';'))
                     {
-                        MessageBox.Show("Number of columns on line" + (i + 1).ToString() + "not equal 12");
+                        MessageBox.Show("Number of columns on line" + (i + 1).ToString() + " not equal " + expectedCount.ToString());
                         return;
                     }
                     fileWriter.WriteLine("");
@@ -251,10 +241,11 @@ namespace HoI2Editor.Controllers
         /// </summary>
         /// <param name="textCodePage">Events files encoding</param>
         /// <param name="makeBackup">Backup events files</param>
+        /// <param name="customEventDirPath">Custom events folder</param>
         public void ExtractAllTextFromEvents(int textCodePage, bool makeBackup, string customEventDirPath)
         {
             string eventPathName = Game.EventsPathName;
-            if (customEventDirPath != "" && customEventDirPath != null)
+            if (!string.IsNullOrEmpty(customEventDirPath))
                 eventPathName = customEventDirPath;
             if (!CheckPaths(eventPathName))
             {
@@ -262,16 +253,25 @@ namespace HoI2Editor.Controllers
             }
             if (makeBackup)
             {
-                MakeBackup(Game.GetReadFileName(eventPathName), Game.GetReadFileName(Game.DatabasePathName) + "/" + "eventBackup");
+                MakeBackup(Game.GetReadFileName(eventPathName), Path.Combine(Game.GetReadFileName(Game.DatabasePathName), "eventBackup"));
             }
             // read exist text keys
             _alreadyExistEventKeysList.Clear();
-            foreach (string fileName in _eventKeysFiles)
+            foreach (string fileName in Directory.GetFiles(Game.GetReadFileName(Game.ConfigPathName), "*.csv"))
             {
-                string filePath = Game.GetReadFileName(Game.ConfigPathName) + "/" + fileName;
-
-                LoadCsvFile(filePath);
+                string name = Path.GetFileName(fileName);
+                if (name.Equals("editor.csv") || name.Equals("launcher.csv") || name.Equals("famous_quotes.csv")) 
+                    continue;
+                LoadCsvFile(fileName);
             }
+            if (Game.Type == GameType.ArsenalOfDemocracy)
+            {
+                foreach (string fileName in Directory.GetFiles(Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "Additional"), "*.csv"))
+                {
+                    LoadCsvFile(fileName);
+                }
+            }
+            
             // make new text ID
             string pathName = Game.GetReadFileName(eventPathName);
             Dictionary<string, string> eventToExportTextList = new Dictionary<string, string>();
@@ -354,7 +354,7 @@ namespace HoI2Editor.Controllers
                 return null;
             }
 
-            if (tokens.Length < 12)
+            if (tokens.Length != 12)
             {
                 Log.Warning("[Event text] Invalid token count: {0} ({1} L{2})", tokens.Length, lexer.FileName,
                     lexer.LineNo);
@@ -494,13 +494,13 @@ namespace HoI2Editor.Controllers
         /// <param name="linesDictionary">Text ID and text value for save</param>
         private void WriteCvsFile(Dictionary<string, string> linesDictionary)
         {
-            string pathName = Game.GetReadFileName(Game.ConfigPathName) + "/exported";
+            string pathName = Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "exported");
             if (!Directory.Exists(pathName))
                 Directory.CreateDirectory(pathName);
             else
-                MakeBackup(pathName, Game.GetReadFileName(Game.ConfigPathName) + "/exportedBackup");
-            string exprotFileName = pathName + "/exported.csv";
-            string keysFileName = pathName + "/ids.csv";
+                MakeBackup(pathName, Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "exportedBackup"));
+            string exprotFileName = Path.Combine(pathName, "exported.csv");
+            string keysFileName = Path.Combine(pathName, "ids.csv");
             if (File.Exists(exprotFileName))
                 File.Delete(exprotFileName);
             if (File.Exists(keysFileName))

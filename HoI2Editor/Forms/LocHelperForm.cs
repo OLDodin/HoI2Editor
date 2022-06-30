@@ -125,7 +125,7 @@ namespace HoI2Editor.Forms
             int selectedCodepage = ((ComboboxItem)eventslanguageComboBox.SelectedItem).Value;
 
             _eventsExtractTask = Task.Factory.StartNew(() => {
-                HoI2Editor.Models.Events.Load(selectedCodepage);
+                HoI2Editor.Models.Events.Load(selectedCodepage, textBoxCustomEvent.Text);
                 _locHelperController.ExtractAllTextFromEvents(selectedCodepage, checkBoxBackup.Checked, textBoxCustomEvent.Text);
             });
 
@@ -303,6 +303,7 @@ namespace HoI2Editor.Forms
                     this.Enabled = true;
                     timer1.Stop();
                     progressBar1.Visible = false;
+                    textBoxCustomEvent.Text = "";
                 }
             }
         }

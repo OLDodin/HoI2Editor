@@ -35,9 +35,13 @@ namespace HoI2Editor.Models
         ///     Read the events files
         /// </summary>
         /// <param name="textCodePage">text file encoding</param>
-        public static void Load(int textCodePage)
+        /// <param name="customEventDirPath">Custom events folder</param>
+        public static void Load(int textCodePage, string customEventDirPath)
         {
-            string pathName = Game.GetReadFileName(Game.EventsPathName);
+            string eventPathName = Game.EventsPathName;
+            if (!string.IsNullOrEmpty(customEventDirPath))
+                eventPathName = customEventDirPath;
+            string pathName = Game.GetReadFileName(eventPathName);
             try
             {
                 TotalEventsList.Clear();
