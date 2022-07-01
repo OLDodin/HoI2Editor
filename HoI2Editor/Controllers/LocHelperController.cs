@@ -272,10 +272,12 @@ namespace HoI2Editor.Controllers
             }
             if (Game.Type == GameType.ArsenalOfDemocracy)
             {
-                foreach (string fileName in Directory.GetFiles(Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "Additional"), "*.csv"))
-                {
-                    LoadCsvFile(fileName);
-                }
+                string additionalPath = Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "Additional");
+                if (Directory.Exists(additionalPath))
+                    foreach (string fileName in Directory.GetFiles(additionalPath, "*.csv"))
+                    {
+                        LoadCsvFile(fileName);
+                    }
             }
             
             // make new text ID
