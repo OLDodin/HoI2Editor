@@ -213,6 +213,11 @@ namespace HoI2Editor.Parsers
                         {
                             scenario.EventFiles.Add(s);
                         }
+                        if (!File.Exists(Game.GetReadFileName(s)))
+                        {
+                            Log.Error("[Scenario] Event file not found: {0} in {1} line: {2}", s, lexer.PathName, lexer.LineNo);
+                        }
+                        scenario.AllEventFiles.Add(s);
                         continue;
                     }
 

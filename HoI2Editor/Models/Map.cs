@@ -267,7 +267,7 @@ namespace HoI2Editor.Models
             {
                 work = _data[_index++];
                 work |= (ushort) (_data[_index++] << 8);
-                ids[no++] = (work & 0x4000) == 0 ? (ushort) (work & 0x7FFF) : ids[((work & 0x3F00) >> 8) - 4];
+                ids[no++] = (work & 0x4000) == 0 ? (ushort) (work & 0x7FFF) : ids[((work & 0x3F00) >> 8) - 4];                
             } while ((work & 0x8000) == 0);
 
             block.ProvinceIds = ids;

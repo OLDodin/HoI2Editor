@@ -3,6 +3,7 @@ using System.IO;
 using System.Text;
 using HoI2Editor.Models;
 using HoI2Editor.Utilities;
+using System.Reflection;
 
 namespace HoI2Editor.Parsers
 {
@@ -27,6 +28,32 @@ namespace HoI2Editor.Parsers
         ///     Line number being analyzed
         /// </summary>
         public int LineNo { get; private set; }
+
+        /// <summary>
+        ///     Char position  being analyzed
+        /// </summary>
+        public long Position
+        {
+            get
+            {
+                if (_reader == null)
+                    return 0;
+
+                Int32 charpos = (Int32)_reader.GetType().InvokeMember("charPos",
+                BindingFlags.DeclaredOnly |
+                BindingFlags.Public | BindingFlags.NonPublic |
+                BindingFlags.Instance | BindingFlags.GetField
+                 , null, _reader, null);
+
+                Int32 charlen = (Int32)_reader.GetType().InvokeMember("charLen",
+                BindingFlags.DeclaredOnly |
+                BindingFlags.Public | BindingFlags.NonPublic |
+                BindingFlags.Instance | BindingFlags.GetField
+                    , null, _reader, null);
+
+                return (Int32)_reader.BaseStream.Position - charlen + charpos;
+            }
+        }
 
         #endregion
 

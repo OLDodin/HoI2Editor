@@ -9,6 +9,7 @@ using HoI2Editor.Controllers;
 using HoI2Editor.Models;
 using HoI2Editor.Properties;
 using HoI2Editor.Utilities;
+using System.Threading.Tasks;
 
 namespace HoI2Editor.Forms
 {
@@ -105,6 +106,36 @@ namespace HoI2Editor.Forms
         /// </summary>
         private Branch _lastDivisionBranch;
 
+        /// <summary>
+        ///     Localization helper panel controller
+        /// </summary>
+        private LocHelperController _locHelperController;
+
+        /// <summary>
+        ///     last free event ID
+        /// </summary>
+        private int _lastFreeEventID = 1000;
+
+        /// <summary>
+        ///     Last Text char postion for hypertext hightlight
+        /// </summary>
+        private Point _lastEventHighlighPos = new Point(-1, -1);
+
+        /// <summary>
+        ///     Current Text char postion for hypertext hightlight
+        /// </summary>
+        private Point _currEventHighlighPos = new Point(-1, -1);
+
+        /// <summary>
+        ///     Flag for visited event history
+        /// </summary>
+        private bool _canAddToHistory = true;
+
+        /// <summary>
+        ///     Task for async comment events text
+        /// </summary>
+        private Task _eventsCommentTask = null;
+
         #endregion
 
         #region Internal constant
@@ -122,7 +153,8 @@ namespace HoI2Editor.Forms
             Government, // government
             Technology, // Technology
             Province, // Providence
-            Oob // Early troops
+            Oob, // Early troops
+            Events // Events
         }
 
         /// <summary>
@@ -213,6 +245,7 @@ namespace HoI2Editor.Forms
             OnTechTabPageFileLoad();
             OnProvinceTabPageFileLoad();
             OnOobTabPageFileLoad();
+            OnEventsTabPageFileLoad();
         }
 
         /// <summary>
@@ -292,6 +325,8 @@ namespace HoI2Editor.Forms
 
             // controller
             _controller = new ScenarioEditorController(this, _mapPanelController, _unitTreeController);
+
+            _locHelperController = new LocHelperController();
         }
 
         /// <summary>
@@ -347,6 +382,7 @@ namespace HoI2Editor.Forms
             OnTechTabPageFormLoad();
             OnProvinceTabPageFormLoad();
             OnOobTabPageFormLoad();
+            OnEventsTabPageFormLoad();
 
             // Update the edit items if the scenario file has already been read
             if (Scenarios.IsLoaded())
@@ -524,6 +560,10 @@ namespace HoI2Editor.Forms
 
                 case TabPageNo.Oob:
                     OnOobTabPageSelected();
+                    break;
+
+                case TabPageNo.Events:
+                    OnEventsTabPageSelected();
                     break;
             }
         }
@@ -739,6 +779,9 @@ namespace HoI2Editor.Forms
             if (File.Exists(pathName))
             {
                 Scenarios.Load(pathName);
+                // Delay reading events data
+                HoI2Editor.Models.Events.LoadAsync(Game.CodePage, Scenarios.Data.AllEventFiles);
+                loadEventsProgressBar.Visible = true;
             }
 
             // Processing after reading data
@@ -759,6 +802,7 @@ namespace HoI2Editor.Forms
             }
         }
 
+        
         #endregion
 
         #region Main tab ―――― Scenario information
@@ -10096,7 +10140,7 @@ namespace HoI2Editor.Forms
             // Update the display at the first transition
             UpdateOobTab();
         }
-
+        
         #endregion
 
         #region Initial unit tab ―――― Nation
@@ -11300,6 +11344,582 @@ namespace HoI2Editor.Forms
 
         #endregion
 
+        #region Events tab
+
+        #region Events tab ―――― common
+
+        /// <summary>
+        ///     Initialize the Events stub
+        /// </summary>
+        private void InitEventsTab()
+        {
+            eventsLanguageComboBox.Items.Clear();
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Western European", 1252));
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Сentral European", 1250));
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Russian", 1251));
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Japanese", 932));
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Korean", 949));
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Traditional Chinese", 950));
+            eventsLanguageComboBox.Items.Add(new ComboboxItem("Simplified Chinese", 936));
+
+            for (int i=0; i < eventsLanguageComboBox.Items.Count; i++)
+            {
+                ComboboxItem item = (ComboboxItem)eventsLanguageComboBox.Items[i];
+                if (item.Value == Game.CodePage)
+                {
+                    eventsLanguageComboBox.SelectedIndex = i;
+                    break;
+                }
+            }
+            
+            HoI2Editor.Models.Events.SetHandlers(OnEventFilesLoad, OnEventFilesLoadProgressChanged);
+
+            eventNavigator.BindingSource = new BindingSource();
+        }
+
+
+        /// <summary>
+        ///     Update the display of the Events stub
+        /// </summary>
+        private void UpdateEventsTab()
+        {
+            // Do nothing if initialized
+            if (_tabPageInitialized[(int)TabPageNo.Events])
+            {
+                return;
+            }
+
+            loadEventsProgressBar.Visible = false;
+            EnableEventTabElements();
+
+            UpdateEventCountryListBox(eventCountryListBox);
+
+            // Set the initialized flag
+            _tabPageInitialized[(int)TabPageNo.Events] = true;
+        }
+
+        /// <summary>
+        ///     Processing when loading a form of Events stub
+        /// </summary>
+        private void OnEventsTabPageFormLoad()
+        {
+            // Initialize the Events stub
+            InitEventsTab();
+            
+        }
+
+        /// <summary>
+        ///     Processing when reading a file of Events stub
+        /// </summary>
+        private void OnEventsTabPageFileLoad()
+        {
+            // Do nothing unless Events stub is selected
+            if (_tabPageNo != TabPageNo.Province)
+            {
+                return;
+            }
+
+            // Wait until the provision data has been read
+            HoI2Editor.Models.Events.WaitLoading();
+
+            // Update the display at the first transition
+            UpdateEventsTab();
+        }
+
+        /// <summary>
+        ///     Processing when Events stub is selected
+        /// </summary>
+        private void OnEventsTabPageSelected()
+        {
+            // Do nothing if scenario not loaded
+            if (!Scenarios.IsLoaded())
+            {
+                return;
+            }
+
+            // Wait until the Events data has been read
+            HoI2Editor.Models.Events.WaitLoading();
+
+            // Update the display at the first transition
+            UpdateEventsTab();
+        }
+
+        /// <summary>
+        ///     Get the selected nation
+        /// </summary>
+        /// <returns>Selected nation</returns>
+        private Country GetEventSelectedCountry()
+        {
+            return eventCountryListBox.SelectedIndex >= 0 ? Countries.Tags[eventCountryListBox.SelectedIndex] : Country.None;
+        }
+
+        /// <summary>
+        ///     Update Country list box
+        /// </summary>
+        /// <param name="control">Control</param>
+        private static void UpdateEventCountryListBox(ListBox control)
+        {
+            control.BeginUpdate();
+            control.Items.Clear();
+            foreach (Country country in Countries.Tags)
+            {
+                control.Items.Add(Scenarios.GetCountryTagName(country));
+            }
+            control.Items.Add("COMMON");
+            control.EndUpdate();
+        }
+
+        #endregion
+
+        #region Events tab ―――― Button reactions
+
+        /// <summary>
+        ///     Finish async load event files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventFilesLoad(object sender, RunWorkerCompletedEventArgs e)
+        {
+            loadEventsProgressBar.Visible = false;
+            EnableEventTabElements();
+
+            eventNavigator.BindingSource.Clear();
+        }
+
+        /// <summary>
+        ///     Progress async loading of event files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventFilesLoadProgressChanged(object sender, ProgressChangedEventArgs e)
+        {
+            loadEventsProgressBar.Value = e.ProgressPercentage;
+        }
+
+        /// <summary>
+        ///     Change interface to wait loading style
+        /// </summary>
+        private void ShowLoadEventsInterface()
+        {
+            loadEventsProgressBar.Value = 0;
+            loadEventsProgressBar.Visible = true;
+            DisableEventTabElements();
+
+            eventCountryListBox.SelectedIndex = -1;
+            eventsByCountryListBox.SelectedIndex = -1;
+            eventTextBox.Text = "";
+        }
+
+        /// <summary>
+        ///     Start async reload of event files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnLoadEventButtonClick(object sender, EventArgs e)
+        {
+            ShowLoadEventsInterface();
+
+            HoI2Editor.Models.Events.LoadAsync(((ComboboxItem)eventsLanguageComboBox.SelectedItem).Value, Scenarios.Data.AllEventFiles);
+        }
+
+        /// <summary>
+        ///     Change enable state of event tab
+        /// </summary>
+        private void SetEnableEventTabElements(bool enable)
+        {
+            eventCountryListBox.Enabled = enable;
+            eventsByCountryListBox.Enabled = enable;
+            eventTextBox.Enabled = enable;
+            findEventIDTextBox.Enabled = enable;
+            findEventButton.Enabled = enable;
+            getFreeIDBtn.Enabled = enable;
+            loadEventBtn.Enabled = enable;
+            eventsLanguageComboBox.Enabled = enable;
+            genCommentsBtn.Enabled = enable;
+            eventNavigator.Enabled = enable;
+            labelTextEncode.Enabled = enable;
+        }
+
+        /// <summary>
+        ///     Disable event tab
+        /// </summary>
+        private void DisableEventTabElements()
+        {
+            SetEnableEventTabElements(false);
+        }
+
+        /// <summary>
+        ///     Enable event tab
+        /// </summary>
+        private void EnableEventTabElements()
+        {
+            SetEnableEventTabElements(true);
+        }
+
+        /// <summary>
+        ///     Add to history navigation
+        /// </summary>
+        /// <param name="eventID">hoi2 event ID</param>
+        private void AddToHistory(int eventID)
+        {
+            if (eventNavigator.BindingSource.Count > 0)
+                while (eventNavigator.BindingSource.Position + 1 != eventNavigator.BindingSource.Count)
+                    eventNavigator.BindingSource.RemoveAt(eventNavigator.BindingSource.Count - 1);
+            eventNavigator.BindingSource.Add(eventID);
+            eventNavigator.BindingSource.MoveLast();
+        }
+
+        /// <summary>
+        ///     Start async change of event files
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnGenerateCommentsButtonClick(object sender, EventArgs e)
+        {
+            ShowLoadEventsInterface();
+
+            int selectedCodepage = ((ComboboxItem)eventsLanguageComboBox.SelectedItem).Value;
+            _eventsCommentTask = Task.Factory.StartNew(() => {
+                _locHelperController.AddCommentForEvents(selectedCodepage, true);
+
+                HoI2Editor.Models.Events.Load(null, selectedCodepage, Scenarios.Data.AllEventFiles);
+            });
+
+            eventOperationTimer.Start();
+        }
+
+        /// <summary>
+        ///     Timer for Generate Comments progress
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnTimerTick(object sender, EventArgs e)
+        {
+            if (_eventsCommentTask != null)
+            {
+                if (_eventsCommentTask.IsCompleted)
+                {
+                    OnEventFilesLoad(null, null);
+                    eventOperationTimer.Stop();
+                }
+            }
+            loadEventsProgressBar.Value += 10;
+        }
+
+        /// <summary>
+        ///     Find end word pos in text
+        /// </summary>
+        /// <param name="charPos">current char position</param>
+        /// <param name="entireTxt">analysing text</param>
+        /// <returns>char position</returns>
+        private int GetEndWordPos(int charPos, string entireTxt)
+        {
+            if (string.IsNullOrEmpty(entireTxt))
+                return -1;
+            if (!char.IsLetterOrDigit(entireTxt[charPos]) && entireTxt[charPos] != '_')
+                return -1;
+            for (int i = charPos; i < entireTxt.Length; i++)
+            {
+                if (!char.IsLetterOrDigit(entireTxt[i]) && entireTxt[i] != '_')
+                {
+                    return i;
+                }
+                if (i == entireTxt.Length - 1)
+                    return entireTxt.Length;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        ///     Find start word pos in text
+        /// </summary>
+        /// <param name="charPos">current char position</param>
+        /// <param name="entireTxt">analysing text</param>
+        /// <returns>char position</returns>
+        private int GetStartWordPos(int charPos, string entireTxt)
+        {
+            if (string.IsNullOrEmpty(entireTxt))
+                return -1;
+            if (!char.IsLetterOrDigit(entireTxt[charPos]) && entireTxt[charPos] != '_')
+                return -1;
+            for (int i = charPos; i >= 0; i--)
+            {
+                if (!char.IsLetterOrDigit(entireTxt[i]) && entireTxt[i] != '_')
+                {
+                    return i + 1;
+                }
+                if (i == 0)
+                    return 0;
+            }
+            return -1;
+        }
+
+        /// <summary>
+        ///    MouseMove in eventTextBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnMouseMoveEventTextBox(object sender, MouseEventArgs e)
+        {
+            _currEventHighlighPos.X = -1;
+            _currEventHighlighPos.Y = -1;
+
+            int charIndUnderMouse = eventTextBox.GetCharIndexFromPosition(((MouseEventArgs)e).Location);
+            int startPos = GetStartWordPos(charIndUnderMouse, eventTextBox.Text);
+            int endPos = GetEndWordPos(charIndUnderMouse, eventTextBox.Text);
+
+            if (startPos != -1 && endPos != -1 && startPos != endPos)
+            {
+                string selectedWord = eventTextBox.Text.Substring(startPos, (endPos - startPos));
+                int mouseID = 0;
+                if (Int32.TryParse(selectedWord, out mouseID))
+                {
+                    _currEventHighlighPos.X = startPos;
+                    _currEventHighlighPos.Y = endPos;
+                }
+            }
+            
+            if (_currEventHighlighPos != _lastEventHighlighPos)
+            {
+                int savePos = eventTextBox.SelectionStart;
+                int saveLen = eventTextBox.SelectionLength;
+                Color saveColor = eventTextBox.SelectionColor;
+
+                if (_lastEventHighlighPos.X != -1 && _lastEventHighlighPos.Y != -1)
+                {
+                    eventTextBox.Select(_lastEventHighlighPos.X, (_lastEventHighlighPos.Y - _lastEventHighlighPos.X));
+                    eventTextBox.SelectionFont = new Font(eventTextBox.Font, FontStyle.Regular);
+                    eventTextBox.SelectionColor = Color.Black;
+                }
+
+                if (_currEventHighlighPos.X != -1 && _currEventHighlighPos.Y != -1)
+                {
+                    eventTextBox.Select(_currEventHighlighPos.X, (_currEventHighlighPos.Y - _currEventHighlighPos.X));
+                    eventTextBox.SelectionFont = new Font(eventTextBox.Font, FontStyle.Underline);
+                    eventTextBox.SelectionColor = Color.Blue;
+
+                    eventTextBox.Cursor = Cursors.Hand;
+                }
+                else
+                {
+                    eventTextBox.Cursor = Cursors.IBeam;
+                }
+
+                eventTextBox.SelectionStart = savePos;
+                eventTextBox.SelectionLength = saveLen;
+                eventTextBox.SelectionColor = saveColor;
+
+                _lastEventHighlighPos.X = _currEventHighlighPos.X;
+                _lastEventHighlighPos.Y = _currEventHighlighPos.Y;
+            }
+        }
+
+        /// <summary>
+        ///    Click in eventTextBox
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnTextLinkClick(object sender, EventArgs e)
+        {
+            int charIndUnderMouse = eventTextBox.GetCharIndexFromPosition(((MouseEventArgs)e).Location);
+            int startPos = GetStartWordPos(charIndUnderMouse, eventTextBox.Text);
+            int endPos = GetEndWordPos(charIndUnderMouse, eventTextBox.Text);
+            string selectedWord = "";
+            if (startPos != -1 && endPos != -1 && startPos != endPos)
+            {
+                selectedWord = eventTextBox.Text.Substring(startPos, (endPos - startPos));
+            }
+
+            int clickedID = 0;
+            if (Int32.TryParse(selectedWord, out clickedID))
+            {
+                OpenEvent(clickedID);
+            }
+        }
+
+        /// <summary>
+        ///    Find free event ID button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnGetFreeIDButtonClick(object sender, EventArgs e)
+        {
+            int freeID = 0;
+            for (freeID = _lastFreeEventID + 1; freeID < int.MaxValue; freeID++)
+            {
+                bool foundFree = true;
+                foreach (HoI2Editor.Models.Event hoi2Event in HoI2Editor.Models.Events.TotalEventsList)
+                {
+                    if (hoi2Event.Id == freeID)
+                    {
+                        foundFree = false;
+                        break;
+                    }
+                }
+                if (foundFree)
+                    break;
+            }
+            MessageBox.Show("Free event ID = " + freeID.ToString());
+            _lastFreeEventID = freeID;
+        }
+
+        /// <summary>
+        ///    Find event by ID button click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnFindEventButtonClick(object sender, EventArgs e)
+        {
+            int searchingEventID = 0;
+            if (Int32.TryParse(findEventIDTextBox.Text, out searchingEventID))
+            {
+                bool eventFounded = OpenEvent(searchingEventID);
+                if (!eventFounded)
+                    MessageBox.Show("Event ID " + searchingEventID.ToString() + " not found");
+            }
+            else
+            {
+                MessageBox.Show("Event ID must be a number");
+            }
+        }
+
+        /// <summary>
+        ///     Select country in eventCountryListBox, and event in eventsByCountryListBox
+        /// </summary>
+        /// <param name="searchingEventID">event ID of hoi2 event</param>
+        /// <returns>true if event founded</returns>
+        private bool OpenEvent(int searchingEventID)
+        {
+            foreach (HoI2Editor.Models.Event hoi2Event in HoI2Editor.Models.Events.TotalEventsList)
+            {
+                if (hoi2Event.Id == searchingEventID)
+                {
+                    if (string.IsNullOrEmpty(hoi2Event.Country))
+                        eventCountryListBox.SelectedIndex = Countries.Tags.Length;
+                    else
+                        eventCountryListBox.SelectedIndex = (int)(Countries.StringMap[hoi2Event.Country]) - 1;
+                    BuildEventsByCountryList(eventCountryListBox.SelectedIndex, searchingEventID);
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
+        ///     Select event in eventsByCountryListBox and trigger set text to eventTextBox
+        /// </summary>
+        /// <param name="selectedCountryInd">Country index</param>
+        /// <param name="eventIDToSelect">event ID of hoi2 event</param>
+        private void BuildEventsByCountryList(int selectedCountryInd, int eventIDToSelect)
+        {
+            List<Event> countryEventList = null;
+            if (selectedCountryInd == Countries.Tags.Length)
+                countryEventList = HoI2Editor.Models.Events.GetCommonEventList();
+            else
+            {
+                Country country = GetEventSelectedCountry();
+                string countryTag = Countries.Strings[(int)country];
+                countryEventList = HoI2Editor.Models.Events.GetCountryEventList(countryTag);
+            }
+
+            int selectIndex = -1;
+            eventsByCountryListBox.BeginUpdate();
+            eventsByCountryListBox.Items.Clear();
+            foreach (Event hoi2Event in countryEventList)
+            {
+                if (eventIDToSelect == hoi2Event.Id)
+                {
+                    selectIndex = eventsByCountryListBox.Items.Count;
+                }
+                eventsByCountryListBox.Items.Add(hoi2Event);
+            }
+
+            if (selectIndex != -1)
+            {
+                eventsByCountryListBox.SelectedIndex = selectIndex;
+            }
+            eventsByCountryListBox.EndUpdate();
+        }
+
+        /// <summary>
+        ///     Processing when changing the selection item of the national list box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventCountryListBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Disable edit items if there are no selections
+            if (eventCountryListBox.SelectedIndex < 0)
+            {
+                eventsByCountryListBox.BeginUpdate();
+                eventsByCountryListBox.Items.Clear();
+                eventsByCountryListBox.EndUpdate();
+                return;
+            }
+
+            BuildEventsByCountryList(eventCountryListBox.SelectedIndex, -1);
+        }
+
+        /// <summary>
+        ///     Processing when changing the selection item of the event list box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventIDListBoxSelectedIndexChanged(object sender, EventArgs e)
+        {
+            // Disable edit items if there are no selections
+            if (eventsByCountryListBox.SelectedIndex < 0)
+            {
+                return;
+            }
+
+            Event item = (Event)(eventsByCountryListBox.Items[eventsByCountryListBox.SelectedIndex]);
+            if (_canAddToHistory)
+                AddToHistory(item.Id);
+            eventTextBox.Text = item.EventText;
+            eventPathLabel.Text = item.PathName;
+        }
+
+        /// <summary>
+        ///    Find free event ID enter pressed
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnKeyDownInFindEventIDTextBox(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.Enter)
+                OnFindEventButtonClick(sender, e);
+        }
+
+        /// <summary>
+        ///    Navigate to prev event history click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventNavigatorPrevClick(object sender, EventArgs e)
+        {
+            _canAddToHistory = false;
+            OpenEvent((int)eventNavigator.BindingSource.Current);
+            _canAddToHistory = true;
+        }
+
+        /// <summary>
+        ///    Navigate to next event history click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void OnEventNavigatorNextClick(object sender, EventArgs e)
+        {
+            _canAddToHistory = false;
+            OpenEvent((int)eventNavigator.BindingSource.Current);
+            _canAddToHistory = true;
+        }
+
+        #endregion
+
+        #endregion
+
+
         #region common
 
         #region common ―――― Nation
@@ -11405,8 +12025,19 @@ namespace HoI2Editor.Forms
             return _itemControls.ContainsKey(itemId) ? _itemControls[itemId] : null;
         }
 
+
+
+
+
+
+
+
+
+
         #endregion
 
         #endregion
+
+        
     }
 }

@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using HoI2Editor.Models;
 using HoI2Editor.Utilities;
+using System.IO;
+using System.Text;
 
 namespace HoI2Editor.Parsers
 {
@@ -29,9 +31,10 @@ namespace HoI2Editor.Parsers
         /// <returns>Events List</returns>
         public static List<Event> Parse(string fileName, int textCodePage)
         {
+            string fileContent = File.ReadAllText(fileName, Encoding.GetEncoding(textCodePage));
             using (TextLexer lexer = new TextLexer(fileName, true, textCodePage))
             {
-                return ParseEvents(lexer);
+                return ParseEvents(lexer, fileContent);
             }
         }
 
@@ -40,7 +43,7 @@ namespace HoI2Editor.Parsers
         /// </summary>
         /// <param name="lexer">Word parser</param>
         /// <returns>Events List</returns>
-        private static List<Event> ParseEvents(TextLexer lexer)
+        private static List<Event> ParseEvents(TextLexer lexer, string eventFileContent)
         {
             Token token;
             List<Event> allEvents = new List<Event>();
@@ -74,14 +77,18 @@ namespace HoI2Editor.Parsers
                 // event event
                 if (keyword.Equals("event"))
                 {
+                    //5 length "event"
+                    long startPos = lexer.Position - 5;
                     Event hoi2Event = ParseEvent(lexer);
+                    hoi2Event.PathName = lexer.PathName;
+                    
                     if (hoi2Event == null)
                     {
                         Log.InvalidSection(LogCategory, "hoi2Event", lexer);
                         continue;
                     }
 
-                    
+                    hoi2Event.EventText = eventFileContent.Substring((int)startPos, (int)(lexer.Position - startPos));
                     allEvents.Add(hoi2Event);
                     continue;
                 }
@@ -109,6 +116,8 @@ namespace HoI2Editor.Parsers
                 return null;
             }
 
+            int openBraceCnt = 0;
+
             // {
             token = lexer.GetToken();
             if (token.Type != TokenType.OpenBrace)
@@ -116,9 +125,9 @@ namespace HoI2Editor.Parsers
                 Log.InvalidToken(LogCategory, token, lexer);
                 return null;
             }
+            openBraceCnt++;
 
-            int openBraceCnt = 0;
-            Event group = new Event();
+            Event hoi2Event = new Event();
             while (true)
             {
                 token = lexer.GetToken();
@@ -137,9 +146,9 @@ namespace HoI2Editor.Parsers
                 // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
+                    openBraceCnt--;
                     if (openBraceCnt == 0)
                         break;
-                    openBraceCnt--;
                 }
 
                 // Invalid tokens
@@ -176,8 +185,8 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    // Technical group ID
-                    group.Id = (int)(double)token.Value;
+                    // event ID
+                    hoi2Event.Id = (int)(double)token.Value;
                     continue;
                 }
 
@@ -202,7 +211,7 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    group.Name = token.Value as string;
+                    hoi2Event.Name = token.Value as string;
                     continue;
                 }
 
@@ -227,7 +236,32 @@ namespace HoI2Editor.Parsers
                         continue;
                     }
 
-                    group.Desc = token.Value as string;
+                    hoi2Event.Desc = token.Value as string;
+                    continue;
+                }
+
+                // country
+                if (keyword.Equals("country"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Identifier)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    hoi2Event.Country = token.Value as string;
                     continue;
                 }
 
@@ -248,12 +282,15 @@ namespace HoI2Editor.Parsers
                 {
                     string actionName = ParseAction(lexer);
                     if (actionName != null)
-                        group.ActionNames.Add(actionName);
+                        hoi2Event.ActionNames.Add(actionName);
                     continue;
                 }
             }
-
-            return group;
+            if (openBraceCnt != 0)
+            {
+                Log.MissingCloseBrace(LogCategory, "event", lexer);
+            }
+            return hoi2Event;
         }
 
         /// <summary>
@@ -410,6 +447,7 @@ namespace HoI2Editor.Parsers
         /// <returns>none none</returns>
         private static string ParseTrigger(TextLexer lexer)
         {
+            int startLine = lexer.LineNo;
             // = =
             Token token = lexer.GetToken();
             if (token.Type != TokenType.Equal)
@@ -417,7 +455,7 @@ namespace HoI2Editor.Parsers
                 Log.InvalidToken(LogCategory, token, lexer);
                 return null;
             }
-
+            int openBraceCnt = 0;
             // {
             token = lexer.GetToken();
             if (token.Type != TokenType.OpenBrace)
@@ -425,8 +463,9 @@ namespace HoI2Editor.Parsers
                 Log.InvalidToken(LogCategory, token, lexer);
                 return null;
             }
+            openBraceCnt++;
 
-            int openBraceCnt = 0;
+
             while (true)
             {
                 token = lexer.GetToken();
@@ -445,10 +484,14 @@ namespace HoI2Editor.Parsers
                 // } (End of section)
                 if (token.Type == TokenType.CloseBrace)
                 {
+                    openBraceCnt--;
                     if (openBraceCnt == 0)
                         break;
-                    openBraceCnt--;
                 }
+            }
+            if (openBraceCnt != 0)
+            {
+                Log.Error("[Event] Missing close brace. Section begin L{0}  ({1} L{2})", startLine, lexer.PathName, lexer.LineNo);
             }
 
             return "";

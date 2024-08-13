@@ -421,6 +421,7 @@
     <EmbeddedResource Include="Properties\Resources.ja.resx">
       <SubType>Designer</SubType>
     </EmbeddedResource>
+    <None Include="app.config" />
     <None Include="Documents\Design\commands.xlsx" />
     <None Include="Documents\Design\misc.xlsx" />
     <None Include="Documents\Design\miscedit.xlsx" />

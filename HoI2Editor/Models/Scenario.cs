@@ -66,6 +66,11 @@ namespace HoI2Editor.Models
         public List<string> EventFiles { get; } = new List<string>();
 
         /// <summary>
+        ///     All event files
+        /// </summary>
+        public List<string> AllEventFiles { get; } = new List<string>();
+
+        /// <summary>
         ///     Include file
         /// </summary>
         public List<string> IncludeFiles { get; } = new List<string>();

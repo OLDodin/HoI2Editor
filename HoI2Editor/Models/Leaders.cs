@@ -624,7 +624,7 @@ namespace HoI2Editor.Models
             int id;
             if (!int.TryParse(tokens[index], out id))
             {
-                Log.Warning("[Leader] Invalid id: {0} [{1}] ({1} L{2})", tokens[index], leader.Name, lexer.FileName,
+                Log.Warning("[Leader] Invalid id: {0} [{1}] ({2} L{3})", tokens[index], leader.Name, lexer.FileName,
                     lexer.LineNo);
                 return null;
             }

@@ -35,7 +35,6 @@
             this.modLabel = new System.Windows.Forms.Label();
             this.modTextBox = new System.Windows.Forms.TextBox();
             this.editGroupBox = new System.Windows.Forms.GroupBox();
-            this.button1 = new System.Windows.Forms.Button();
             this.scenarioButton = new System.Windows.Forms.Button();
             this.researchButton = new System.Windows.Forms.Button();
             this.modelNameButton = new System.Windows.Forms.Button();
@@ -60,6 +59,7 @@
             this.exportFolderBrowseButton = new System.Windows.Forms.Button();
             this.exportFolderTextBox = new System.Windows.Forms.TextBox();
             this.exportFolderLabel = new System.Windows.Forms.Label();
+            this.locHelperBtn = new System.Windows.Forms.Button();
             this.editGroupBox.SuspendLayout();
             this.optionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -102,7 +102,7 @@
             // editGroupBox
             // 
             resources.ApplyResources(this.editGroupBox, "editGroupBox");
-            this.editGroupBox.Controls.Add(this.button1);
+            this.editGroupBox.Controls.Add(this.locHelperBtn);
             this.editGroupBox.Controls.Add(this.scenarioButton);
             this.editGroupBox.Controls.Add(this.researchButton);
             this.editGroupBox.Controls.Add(this.modelNameButton);
@@ -118,13 +118,6 @@
             this.editGroupBox.Controls.Add(this.ministerButton);
             this.editGroupBox.Name = "editGroupBox";
             this.editGroupBox.TabStop = false;
-            // 
-            // button1
-            // 
-            resources.ApplyResources(this.button1, "button1");
-            this.button1.Name = "button1";
-            this.button1.UseVisualStyleBackColor = true;
-            this.button1.Click += new System.EventHandler(this.OnEventsButtonClick);
             // 
             // scenarioButton
             // 
@@ -302,6 +295,13 @@
             resources.ApplyResources(this.exportFolderLabel, "exportFolderLabel");
             this.exportFolderLabel.Name = "exportFolderLabel";
             // 
+            // locHelperBtn
+            // 
+            resources.ApplyResources(this.locHelperBtn, "locHelperBtn");
+            this.locHelperBtn.Name = "locHelperBtn";
+            this.locHelperBtn.UseVisualStyleBackColor = true;
+            this.locHelperBtn.Click += new System.EventHandler(this.locHelperBtn_Click);
+            // 
             // MainForm
             // 
             this.AllowDrop = true;
@@ -366,6 +366,6 @@
         private System.Windows.Forms.Label logLevelLabel;
         private System.Windows.Forms.Button scenarioButton;
         private System.Windows.Forms.CheckBox mapLoadCheckBox;
-        private System.Windows.Forms.Button button1;
+        private System.Windows.Forms.Button locHelperBtn;
     }
 }

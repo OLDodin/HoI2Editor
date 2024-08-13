@@ -113,6 +113,7 @@ namespace HoI2Editor
             RandomLeaders.RequestReload();
             Scenarios.RequestReload();
             Maps.RequestReload();
+            HoI2Editor.Models.Events.RequestReload();
 
             SaveCanceled = false;
 
@@ -139,6 +140,7 @@ namespace HoI2Editor
             UnitNames.Reload();
             RandomLeaders.Reload();
             Scenarios.Reload();
+            HoI2Editor.Models.Events.Reload();
 
             // Update processing call after data reading
             OnFileLoaded();
@@ -341,6 +343,7 @@ namespace HoI2Editor
                    Provinces.IsLoading() ||
                    Techs.IsLoading() ||
                    Units.IsLoading() ||
+                   HoI2Editor.Models.Events.IsLoading() ||
                    Maps.IsLoading();
         }
 

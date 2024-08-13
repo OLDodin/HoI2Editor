@@ -30,9 +30,24 @@ namespace HoI2Editor.Models
         public string Desc { get; set; }
 
         /// <summary>
+        ///     Event country
+        /// </summary>
+        public string Country { get; set; }
+
+        /// <summary>
         ///     Event action names
         /// </summary>
         public List<string> ActionNames { get; }
+
+        /// <summary>
+        ///     Event path
+        /// </summary>
+        public string PathName { get; set; }
+
+        /// <summary>
+        ///     All Event Text
+        /// </summary>
+        public string EventText { get; set; }
 
         #endregion
 
@@ -44,6 +59,44 @@ namespace HoI2Editor.Models
         public Event()
         {
             ActionNames = new List<string>();
+            Name = "";
+            Desc = "";
+            Country = "";
+            EventText = "";
+        }
+
+        /// <summary>
+        ///     Return event name from cvs by ID
+        /// </summary>
+        /// <param name="eventName">event name ID</param>
+        public string GetEventNameWithConverID()
+        {
+            if (Config.ExistsKey(Name))
+            {
+                return Config.GetText(Name);
+            }
+            return Name;
+        }
+
+        /// <summary>
+        ///     Return event desc from cvs by ID
+        /// </summary>
+        /// <param name="eventName">event name ID</param>
+        public string GetEventDescWithConverID()
+        {
+            if (Config.ExistsKey(Desc))
+            {
+                return Config.GetText(Desc);
+            }
+            return Name;
+        }
+
+        /// <summary>
+        ///     ToString
+        /// </summary>
+        public override string ToString()
+        {
+            return Id.ToString() + "  " + GetEventNameWithConverID();
         }
         #endregion
     }

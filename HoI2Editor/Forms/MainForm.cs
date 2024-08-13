@@ -306,16 +306,10 @@ namespace HoI2Editor.Forms
             HoI2EditorController.LaunchScenarioEditorForm();
         }
 
-        /// <summary>
-        ///     Processing when pressing the events button
-        /// </summary>
-        /// <param name="sender"></param>
-        /// <param name="e"></param>
-        private void OnEventsButtonClick(object sender, EventArgs e)
+        private void locHelperBtn_Click(object sender, EventArgs e)
         {
             HoI2EditorController.LaunchLocHelperForm();
         }
-
         #endregion
 
         #region Folder name
@@ -797,5 +791,7 @@ namespace HoI2Editor.Forms
         }
 
         #endregion
+
+        
     }
 }

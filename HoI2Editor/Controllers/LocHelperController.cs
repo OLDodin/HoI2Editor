@@ -261,25 +261,9 @@ namespace HoI2Editor.Controllers
             {
                 MakeBackup(Game.GetReadFileName(eventPathName), Path.Combine(Game.GetReadFileName(Game.DatabasePathName), "eventBackup"));
             }
-            // read exist text keys
-            _alreadyExistEventKeysList.Clear();
-            foreach (string fileName in Directory.GetFiles(Game.GetReadFileName(Game.ConfigPathName), "*.csv"))
-            {
-                string name = Path.GetFileName(fileName);
-                if (name.Equals("editor.csv") || name.Equals("launcher.csv") || name.Equals("famous_quotes.csv")) 
-                    continue;
-                LoadCsvFile(fileName);
-            }
-            if (Game.Type == GameType.ArsenalOfDemocracy)
-            {
-                string additionalPath = Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "Additional");
-                if (Directory.Exists(additionalPath))
-                    foreach (string fileName in Directory.GetFiles(additionalPath, "*.csv"))
-                    {
-                        LoadCsvFile(fileName);
-                    }
-            }
-            
+
+            LoadTextKeysFromCvs();
+
             // make new text ID
             string pathName = Game.GetReadFileName(eventPathName);
             Dictionary<string, string> eventToExportTextList = new Dictionary<string, string>();
@@ -305,6 +289,96 @@ namespace HoI2Editor.Controllers
             PatchEventFiles(pathName, eventToExportTextList, textCodePage);
             
             WriteCvsFile(eventToExportTextList);
+        }
+
+        /// <summary>
+        ///     Add comment to every event and to file begining
+        /// </summary>
+        /// <param name="textCodePage">Events files encoding</param>
+        /// <param name="makeBackup">Backup events files</param>
+        public void AddCommentForEvents(int textCodePage, bool makeBackup)
+        {
+            List<string> eventFilesList = new List<string>();
+            foreach (Event hoi2Event in Events.TotalEventsList)
+            {
+                if (!eventFilesList.Contains(hoi2Event.PathName))
+                    eventFilesList.Add(hoi2Event.PathName);
+            }
+            if (makeBackup)
+            {
+                string backupPath = GetBackupPath(Path.Combine(Game.GetReadFileName(Game.DatabasePathName), "eventBackup"));
+                Directory.CreateDirectory(backupPath);
+                foreach (string eventFilePath in eventFilesList)
+                {
+                    File.Copy(eventFilePath, Path.Combine(backupPath, Path.GetFileName(eventFilePath)), true);
+                }
+            }
+
+            // add list of all events in the file
+            Dictionary<string, List<string>> changedFilesContent = new Dictionary<string, List<string>>();
+            foreach (Event hoi2Event in Events.TotalEventsList)
+            {
+                if (!changedFilesContent.ContainsKey(hoi2Event.PathName))
+                {
+                    changedFilesContent.Add(hoi2Event.PathName, new List<string>());
+                    changedFilesContent[hoi2Event.PathName].Add("##########################################################");
+                }
+                List<string> newFileContent = changedFilesContent[hoi2Event.PathName];
+                newFileContent.Add("#\t" + hoi2Event.Id.ToString() + " - " + hoi2Event.Country + "\t\t" + hoi2Event.GetEventNameWithConverID()); 
+            }
+            foreach (string eventFilePath in eventFilesList)
+            {
+                changedFilesContent[eventFilePath].Add("##########################################################");
+                changedFilesContent[eventFilePath].Add("");
+            }
+            // add events with comment
+            foreach (Event hoi2Event in Events.TotalEventsList)
+            {
+                
+                if (!changedFilesContent.ContainsKey(hoi2Event.PathName))
+                {
+                    changedFilesContent.Add(hoi2Event.PathName, new List<string>());
+                }
+
+                List<string> newFileContent = changedFilesContent[hoi2Event.PathName];
+                newFileContent.Add("");
+                newFileContent.Add("##########################################################");
+                newFileContent.Add("#\t" + hoi2Event.GetEventNameWithConverID());
+                newFileContent.Add("##########################################################");
+
+                newFileContent.Add(hoi2Event.EventText);
+
+            }
+            // write to the files
+            foreach (string eventFilePath in eventFilesList)
+            {
+                File.WriteAllLines(eventFilePath, changedFilesContent[eventFilePath].ToArray(), Encoding.GetEncoding(textCodePage));
+            }
+        }
+
+        /// <summary>
+        ///     Load text ID from file
+        /// </summary>
+        private void LoadTextKeysFromCvs()
+        {
+            // read exist text keys
+            _alreadyExistEventKeysList.Clear();
+            foreach (string fileName in Directory.GetFiles(Game.GetReadFileName(Game.ConfigPathName), "*.csv"))
+            {
+                string name = Path.GetFileName(fileName);
+                if (name.Equals("editor.csv") || name.Equals("launcher.csv") || name.Equals("famous_quotes.csv"))
+                    continue;
+                LoadCsvFile(fileName);
+            }
+            if (Game.Type == GameType.ArsenalOfDemocracy)
+            {
+                string additionalPath = Path.Combine(Game.GetReadFileName(Game.ConfigPathName), "Additional");
+                if (Directory.Exists(additionalPath))
+                    foreach (string fileName in Directory.GetFiles(additionalPath, "*.csv"))
+                    {
+                        LoadCsvFile(fileName);
+                    }
+            }
         }
 
         /// <summary>
@@ -632,6 +706,15 @@ namespace HoI2Editor.Controllers
         /// <param name="backupDirPath">Destination backup directory</param>
         private void MakeBackup(string dirToBackupPath, string backupDirPath)
         {
+            Copy(dirToBackupPath, GetBackupPath(backupDirPath));
+        }
+
+        /// <summary>
+        ///     Backup directory
+        /// </summary>
+        /// <param name="backupDirPath">Destination backup directory</param>
+        private string GetBackupPath(string backupDirPath)
+        {
             int cnt = 0;
             string backupPathName;
             do
@@ -641,7 +724,7 @@ namespace HoI2Editor.Controllers
             }
             while (Directory.Exists(backupPathName));
 
-            Copy(dirToBackupPath, backupPathName);
+            return backupPathName;
         }
         #endregion
     }
