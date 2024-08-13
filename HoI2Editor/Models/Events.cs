@@ -81,17 +81,17 @@ namespace HoI2Editor.Models
                 if (_completeHandler != null)
                 {
                     Worker.RunWorkerCompleted -= _completeHandler;
-                    _completeHandler = completeHandler;
                 }
+                _completeHandler = completeHandler;
                 Worker.RunWorkerCompleted += completeHandler;
             }
             if (progressHandler != null)
             {
-                if (_completeHandler != null)
+                if (_progressHandler != null)
                 {
                     Worker.ProgressChanged -= _progressHandler;
-                    _progressHandler = progressHandler;
                 }
+                _progressHandler = progressHandler;
                 Worker.ProgressChanged += progressHandler;
             }
         }

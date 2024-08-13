@@ -11457,7 +11457,7 @@ namespace HoI2Editor.Forms
         ///     Update Country list box
         /// </summary>
         /// <param name="control">Control</param>
-        private static void UpdateEventCountryListBox(ListBox control)
+        private void UpdateEventCountryListBox(ListBox control)
         {
             control.BeginUpdate();
             control.Items.Clear();
@@ -11482,7 +11482,6 @@ namespace HoI2Editor.Forms
         {
             loadEventsProgressBar.Visible = false;
             EnableEventTabElements();
-
             eventNavigator.BindingSource.Clear();
         }
 
