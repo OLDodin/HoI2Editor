@@ -4781,8 +4781,8 @@
             // 
             // eventsLanguageComboBox
             // 
-            this.eventsLanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             resources.ApplyResources(this.eventsLanguageComboBox, "eventsLanguageComboBox");
+            this.eventsLanguageComboBox.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.eventsLanguageComboBox.FormattingEnabled = true;
             this.eventsLanguageComboBox.Name = "eventsLanguageComboBox";
             // 
@@ -5427,15 +5427,15 @@
         private System.Windows.Forms.Button genCommentsBtn;
         private System.Windows.Forms.ListBox eventCountryListBox;
         private System.Windows.Forms.ListBox eventsByCountryListBox;
-        private System.Windows.Forms.Label eventPathLabel;
         private System.Windows.Forms.Button getFreeIDBtn;
         private System.Windows.Forms.RichTextBox eventTextBox;
         private System.Windows.Forms.Button findEventButton;
         private System.Windows.Forms.TextBox findEventIDTextBox;
+        private System.Windows.Forms.Timer eventOperationTimer;
         private System.Windows.Forms.BindingNavigator eventNavigator;
         private System.Windows.Forms.ToolStripButton eventNavigatorPrev;
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
         private System.Windows.Forms.ToolStripButton eventNavigatorNext;
-        private System.Windows.Forms.Timer eventOperationTimer;
+        private System.Windows.Forms.Label eventPathLabel;
     }
 }
