@@ -344,10 +344,10 @@ namespace HoI2Editor.Controllers
                 newFileContent.Add("");
                 newFileContent.Add("##########################################################");
                 newFileContent.Add("#\t" + hoi2Event.GetEventNameWithConverID());
-                newFileContent.Add("ACTIONS:");
+                newFileContent.Add("#\tACTIONS:");
                 for (int i = 0; i < hoi2Event.ActionNames.Count; i++)
                 {
-                    newFileContent.Add("\t" + (i+1).ToString() + ")\t" + hoi2Event.GetActionNameWithConverID(i));
+                    newFileContent.Add("#\t" + (i+1).ToString() + ")\t" + hoi2Event.GetActionNameWithConverID(i));
                 }
                 newFileContent.Add("##########################################################");
 
