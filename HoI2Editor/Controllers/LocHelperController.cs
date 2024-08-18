@@ -324,7 +324,7 @@ namespace HoI2Editor.Controllers
                     changedFilesContent[hoi2Event.PathName].Add("##########################################################");
                 }
                 List<string> newFileContent = changedFilesContent[hoi2Event.PathName];
-                newFileContent.Add("#\t" + hoi2Event.Id.ToString() + " - " + hoi2Event.Country + "\t\t" + hoi2Event.GetEventNameWithConverID()); 
+                newFileContent.Add("#\t" + hoi2Event.Id.ToString() + " - " + hoi2Event.Country + "\t\t" + hoi2Event.GetEventNameWithConverID());
             }
             foreach (string eventFilePath in eventFilesList)
             {
@@ -344,6 +344,11 @@ namespace HoI2Editor.Controllers
                 newFileContent.Add("");
                 newFileContent.Add("##########################################################");
                 newFileContent.Add("#\t" + hoi2Event.GetEventNameWithConverID());
+                newFileContent.Add("ACTIONS:");
+                for (int i = 0; i < hoi2Event.ActionNames.Count; i++)
+                {
+                    newFileContent.Add("\t" + (i+1).ToString() + ")\t" + hoi2Event.GetActionNameWithConverID(i));
+                }
                 newFileContent.Add("##########################################################");
 
                 newFileContent.Add(hoi2Event.EventText);

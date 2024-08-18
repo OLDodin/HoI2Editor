@@ -68,7 +68,6 @@ namespace HoI2Editor.Models
         /// <summary>
         ///     Return event name from cvs by ID
         /// </summary>
-        /// <param name="eventName">event name ID</param>
         public string GetEventNameWithConverID()
         {
             if (Config.ExistsKey(Name))
@@ -81,7 +80,6 @@ namespace HoI2Editor.Models
         /// <summary>
         ///     Return event desc from cvs by ID
         /// </summary>
-        /// <param name="eventName">event name ID</param>
         public string GetEventDescWithConverID()
         {
             if (Config.ExistsKey(Desc))
@@ -89,6 +87,22 @@ namespace HoI2Editor.Models
                 return Config.GetText(Desc);
             }
             return Name;
+        }
+
+        /// <summary>
+        ///     Return action name from cvs by ID
+        /// </summary>
+        /// <param name="actionIndex">action index</param>
+        public string GetActionNameWithConverID(int actionIndex)
+        {
+            if (actionIndex >= ActionNames.Count)
+                return "";
+            string actionName = ActionNames[actionIndex];
+            if (Config.ExistsKey(actionName))
+            {
+                return Config.GetText(actionName);
+            }
+            return actionName;
         }
 
         /// <summary>

@@ -317,7 +317,7 @@ namespace HoI2Editor.Parsers
             }
 
             int openBraceCnt = 0;
-            string actionName = "";
+            string actionName = "UNKNOWN_STRING";
             while (true)
             {
                 token = lexer.GetToken();
