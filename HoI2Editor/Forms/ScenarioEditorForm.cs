@@ -11394,6 +11394,8 @@ namespace HoI2Editor.Forms
 
             UpdateEventCountryListBox(eventCountryListBox);
 
+            UpdateEventImage("");
+
             // Set the initialized flag
             _tabPageInitialized[(int)TabPageNo.Events] = true;
         }
@@ -11469,6 +11471,36 @@ namespace HoI2Editor.Forms
             control.EndUpdate();
         }
 
+        /// <summary>
+        ///     Update event image
+        /// </summary>
+        /// <param name="sender"></param>
+        public void UpdateEventImage(string fileName)
+        {
+            Image prev = eventPictureBox.Image;
+            if (!string.IsNullOrEmpty(fileName) && fileName.IndexOfAny(Path.GetInvalidPathChars()) == -1)
+            {
+                string imgFileName = Path.Combine(Game.EventPicturePathName, fileName);
+                imgFileName += ".bmp";
+                string pathName = Game.GetReadFileName(imgFileName);
+                if (File.Exists(pathName))
+                {
+                    Bitmap bitmap = new Bitmap(pathName);
+                    bitmap.MakeTransparent(Color.Lime);
+                    eventPictureBox.Image = bitmap;
+                }
+                else
+                {
+                    eventPictureBox.Image = null;
+                }
+            }
+            else
+            {
+                eventPictureBox.Image = null;
+            }
+            prev?.Dispose();
+        }
+
         #endregion
 
         #region Events tab ―――― Button reactions
@@ -11507,6 +11539,9 @@ namespace HoI2Editor.Forms
             eventCountryListBox.SelectedIndex = -1;
             eventsByCountryListBox.SelectedIndex = -1;
             eventTextBox.Text = "";
+            eventPathLabel.Text = "";
+
+            UpdateEventImage("");
         }
 
         /// <summary>
@@ -11877,6 +11912,8 @@ namespace HoI2Editor.Forms
                 AddToHistory(item.Id);
             eventTextBox.Text = item.EventText;
             eventPathLabel.Text = item.PathName;
+
+            UpdateEventImage(item.Picture);
         }
 
         /// <summary>

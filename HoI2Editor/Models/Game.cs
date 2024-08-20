@@ -273,6 +273,11 @@ namespace HoI2Editor.Models
         public const string PicturePathName = "gfx\\interface";
 
         /// <summary>
+        ///     Events image folder
+        /// </summary>
+        public const string EventPicturePathName = "gfx\\events_pics";
+
+        /// <summary>
         ///     Advocacy / Ministerial / Research Institute Image Folder
         /// </summary>
         public const string PersonPicturePathName = "gfx\\interface\\pics";

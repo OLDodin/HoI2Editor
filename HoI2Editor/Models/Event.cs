@@ -35,6 +35,11 @@ namespace HoI2Editor.Models
         public string Country { get; set; }
 
         /// <summary>
+        ///     Event picture
+        /// </summary>
+        public string Picture { get; set; }
+
+        /// <summary>
         ///     Event action names
         /// </summary>
         public List<string> ActionNames { get; }

@@ -4,6 +4,7 @@ using HoI2Editor.Models;
 using HoI2Editor.Utilities;
 using System.IO;
 using System.Text;
+using System.Text.RegularExpressions;
 
 namespace HoI2Editor.Parsers
 {
@@ -89,7 +90,17 @@ namespace HoI2Editor.Parsers
                     }
 
                     hoi2Event.EventText = eventFileContent.Substring((int)startPos, (int)(lexer.Position - startPos));
+
+                    foreach (Event existEvent in allEvents)
+                    {
+                        if (existEvent.Id == hoi2Event.Id)
+                        {
+                            Log.Error("[Event] Duplicate event ID {0} in file {1}", hoi2Event.Id, lexer.PathName);
+                            break;
+                        }
+                    }
                     allEvents.Add(hoi2Event);
+                    
                     continue;
                 }
                 
@@ -262,6 +273,46 @@ namespace HoI2Editor.Parsers
                     }
 
                     hoi2Event.Country = token.Value as string;
+                    continue;
+                }
+
+                // picture
+                if (keyword.Equals("picture"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Identifier && token.Type != TokenType.String && token.Type != TokenType.Number)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+                    hoi2Event.Picture = token.Value as string;
+
+                    if (hoi2Event.Picture.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 || Regex.IsMatch(hoi2Event.Picture, @"\p{IsCyrillic}"))
+                    {
+                        Log.Error("[Event] Picture name contains invalid char {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                    }
+                    else
+                    {
+                        string imgFileName = Path.Combine(Game.EventPicturePathName, hoi2Event.Picture);
+                        imgFileName += ".bmp";
+                        string pathName = Game.GetReadFileName(imgFileName);
+                        if (!File.Exists(pathName))
+                        {
+                            Log.Error("[Event] Picture not exist {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                        }
+                    }
+                    
                     continue;
                 }
 

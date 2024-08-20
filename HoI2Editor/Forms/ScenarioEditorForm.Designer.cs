@@ -579,6 +579,7 @@
             this.unitTreeView = new System.Windows.Forms.TreeView();
             this.oobCountryListBox = new System.Windows.Forms.ListBox();
             this.eventTabPage = new System.Windows.Forms.TabPage();
+            this.eventPictureBox = new System.Windows.Forms.PictureBox();
             this.eventNavigator = new System.Windows.Forms.BindingNavigator(this.components);
             this.eventNavigatorPrev = new System.Windows.Forms.ToolStripButton();
             this.bindingNavigatorSeparator = new System.Windows.Forms.ToolStripSeparator();
@@ -690,6 +691,7 @@
             this.divisionGroupBox.SuspendLayout();
             this.unitGroupBox.SuspendLayout();
             this.eventTabPage.SuspendLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventPictureBox)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventNavigator)).BeginInit();
             this.eventNavigator.SuspendLayout();
             this.SuspendLayout();
@@ -4661,6 +4663,7 @@
             // 
             // eventTabPage
             // 
+            this.eventTabPage.Controls.Add(this.eventPictureBox);
             this.eventTabPage.Controls.Add(this.eventNavigator);
             this.eventTabPage.Controls.Add(this.loadEventsProgressBar);
             this.eventTabPage.Controls.Add(this.findEventButton);
@@ -4676,6 +4679,12 @@
             this.eventTabPage.Controls.Add(this.labelTextEncode);
             resources.ApplyResources(this.eventTabPage, "eventTabPage");
             this.eventTabPage.Name = "eventTabPage";
+            // 
+            // eventPictureBox
+            // 
+            resources.ApplyResources(this.eventPictureBox, "eventPictureBox");
+            this.eventPictureBox.Name = "eventPictureBox";
+            this.eventPictureBox.TabStop = false;
             // 
             // eventNavigator
             // 
@@ -4902,6 +4911,7 @@
             this.unitGroupBox.PerformLayout();
             this.eventTabPage.ResumeLayout(false);
             this.eventTabPage.PerformLayout();
+            ((System.ComponentModel.ISupportInitialize)(this.eventPictureBox)).EndInit();
             ((System.ComponentModel.ISupportInitialize)(this.eventNavigator)).EndInit();
             this.eventNavigator.ResumeLayout(false);
             this.eventNavigator.PerformLayout();
@@ -5437,5 +5447,6 @@
         private System.Windows.Forms.ToolStripSeparator bindingNavigatorSeparator;
         private System.Windows.Forms.ToolStripButton eventNavigatorNext;
         private System.Windows.Forms.Label eventPathLabel;
+        private System.Windows.Forms.PictureBox eventPictureBox;
     }
 }

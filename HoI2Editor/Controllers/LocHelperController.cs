@@ -310,7 +310,9 @@ namespace HoI2Editor.Controllers
                 Directory.CreateDirectory(backupPath);
                 foreach (string eventFilePath in eventFilesList)
                 {
-                    File.Copy(eventFilePath, Path.Combine(backupPath, Path.GetFileName(eventFilePath)), true);
+                    string newPath = eventFilePath.Replace(Path.GetFullPath(Game.GetReadFileName(Game.DatabasePathName)), Path.GetFullPath(backupPath));
+                    Directory.CreateDirectory(Path.GetDirectoryName(newPath));
+                    File.Copy(eventFilePath, newPath, true);
                 }
             }
 
