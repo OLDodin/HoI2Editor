@@ -545,6 +545,21 @@ namespace HoI2Editor.Models
             team.PictureName = tokens[index];
             index++;
 
+            if (team.PictureName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 || System.Text.RegularExpressions.Regex.IsMatch(team.PictureName, @"\p{IsCyrillic}"))
+            {
+                Log.Warning("[Team] Picture name contains invalid char {0}:  L{1}", lexer.PathName, lexer.LineNo);
+            }
+            else
+            {
+                string imgFileName = Path.Combine(Game.PersonPicturePathName, team.PictureName);
+                imgFileName += ".bmp";
+                string pathName = Game.GetReadFileName(imgFileName);
+                if (!File.Exists(pathName))
+                {
+                    Log.Error("[Team] Picture not exist {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                }
+            }
+
             // skill
             int skill;
             if (int.TryParse(tokens[index], out skill))

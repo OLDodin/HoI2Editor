@@ -1528,6 +1528,21 @@ namespace HoI2Editor.Models
             // Image file name
             minister.PictureName = tokens[index];
 
+            if (minister.PictureName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 || System.Text.RegularExpressions.Regex.IsMatch(minister.PictureName, @"\p{IsCyrillic}"))
+            {
+                Log.Warning("[Minister] Picture name contains invalid char {0}:  L{1}", lexer.PathName, lexer.LineNo);
+            }
+            else
+            {
+                string imgFileName = Path.Combine(Game.PersonPicturePathName, minister.PictureName);
+                imgFileName += ".bmp";
+                string pathName = Game.GetReadFileName(imgFileName);
+                if (!File.Exists(pathName))
+                {
+                    Log.Error("[Minister] Picture not exist {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                }
+            }
+
             return minister;
         }
 

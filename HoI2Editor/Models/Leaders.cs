@@ -760,6 +760,21 @@ namespace HoI2Editor.Models
             leader.PictureName = tokens[index];
             index++;
 
+            if (leader.PictureName.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 || System.Text.RegularExpressions.Regex.IsMatch(leader.PictureName, @"\p{IsCyrillic}"))
+            {
+                Log.Warning("[Leader] Picture name contains invalid char {0}:  L{1}", lexer.PathName, lexer.LineNo);
+            }
+            else
+            {
+                string imgFileName = Path.Combine(Game.PersonPicturePathName, leader.PictureName);
+                imgFileName += ".bmp";
+                string pathName = Game.GetReadFileName(imgFileName);
+                if (!File.Exists(pathName))
+                {
+                    Log.Error("[Leader] Picture not exist {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                }
+            }
+
             // Start year
             int startYear;
             if (int.TryParse(tokens[index], out startYear))

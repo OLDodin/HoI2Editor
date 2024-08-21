@@ -300,7 +300,7 @@ namespace HoI2Editor.Parsers
 
                     if (hoi2Event.Picture.IndexOfAny(Path.GetInvalidFileNameChars()) != -1 || Regex.IsMatch(hoi2Event.Picture, @"\p{IsCyrillic}"))
                     {
-                        Log.Error("[Event] Picture name contains invalid char {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                        Log.Warning("[Event] Picture name contains invalid char {0}:  L{1}", lexer.PathName, lexer.LineNo);
                     }
                     else
                     {

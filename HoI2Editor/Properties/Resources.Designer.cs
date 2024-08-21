@@ -11158,6 +11158,24 @@ namespace HoI2Editor.Properties {
         }
         
         /// <summary>
+        ///   Looks up a localized string similar to Trickle-back factor for manpower from air losses. (ie, ground troops freed).
+        /// </summary>
+        internal static string MiscLabelTrickleBackFactorManpowerFromAirLosses {
+            get {
+                return ResourceManager.GetString("MiscLabelTrickleBackFactorManpowerFromAirLosses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized string similar to Trickle-back factor for manpower from sea losses. (ie, people who didnt drown).
+        /// </summary>
+        internal static string MiscLabelTrickleBackFactorManpowerFromSeaLosses {
+            get {
+                return ResourceManager.GetString("MiscLabelTrickleBackFactorManpowerFromSeaLosses", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Looks up a localized string similar to Unit Modifiers Statistics Page.
         /// </summary>
         internal static string MiscLabelUnitModifiersStatisticsPages {

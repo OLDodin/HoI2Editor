@@ -4077,4 +4077,10 @@
   <data name="MiscLabelSupplyToUpdateModifier" xml:space="preserve">
     <value>Reinforce to Upgrade Modifier</value>
   </data>
+  <data name="MiscLabelTrickleBackFactorManpowerFromAirLosses" xml:space="preserve">
+    <value>Trickle-back factor for manpower from air losses</value>
+  </data>
+  <data name="MiscLabelTrickleBackFactorManpowerFromSeaLosses" xml:space="preserve">
+    <value>Trickle-back factor for manpower from sea losses</value>
+  </data>
 </root>
