@@ -24,7 +24,7 @@ namespace HoI2Editor.Parsers
         /// <summary>
         ///     Category name at the time of log output
         /// </summary>
-        private const string LogCategory = "Command";
+        private const string LogCategory = "Command-Trigger";
 
         #endregion
 
@@ -174,6 +174,11 @@ namespace HoI2Editor.Parsers
 
                 // Remember the final interpretation line
                 lastLineNo = lexer.LineNo;
+            }
+
+            if (list.Count == 0)
+            {
+                Log.Info("[Trigger] Empty trigger {0}:  L{1}", lexer.PathName, lexer.LineNo);
             }
 
             return list.Count > 0 ? list : null;

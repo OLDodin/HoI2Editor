@@ -265,7 +265,7 @@ namespace HoI2Editor.Parsers
 
                     // Invalid tokens
                     token = lexer.GetToken();
-                    if (token.Type != TokenType.Identifier)
+                    if (token.Type != TokenType.Identifier && token.Type != TokenType.Number)
                     {
                         Log.InvalidToken(LogCategory, token, lexer);
                         lexer.SkipLine();
@@ -290,7 +290,7 @@ namespace HoI2Editor.Parsers
 
                     // Invalid tokens
                     token = lexer.GetToken();
-                    if (token.Type != TokenType.Identifier && token.Type != TokenType.String && token.Type != TokenType.Number)
+                    if (token.Type != TokenType.String)
                     {
                         Log.InvalidToken(LogCategory, token, lexer);
                         lexer.SkipLine();
@@ -318,22 +318,51 @@ namespace HoI2Editor.Parsers
 
                 if (keyword.Equals("trigger"))
                 {
-                    ParseTrigger(lexer);
+                    List<Trigger> triggers = TriggerParser.Parse(lexer);
+                    if (triggers == null)
+                    {
+                        continue;
+                    }
+                    hoi2Event.Triggers.AddRange(triggers);
+                    
                     continue;
                 }
 
                 if (keyword.Equals("decision_trigger"))
                 {
-                    ParseTrigger(lexer);
+                    List<Trigger> triggers = TriggerParser.Parse(lexer);
+                    if (triggers == null)
+                    {
+                        continue;
+                    }
+                    hoi2Event.DecisionTriggers.AddRange(triggers);
+
+                    continue;
+                }
+
+                if (keyword.Equals("decision"))
+                {
+                    List<Trigger> triggers = TriggerParser.Parse(lexer);
+                    if (triggers == null)
+                    {
+                        continue;
+                    }
+                    hoi2Event.Decision.AddRange(triggers);
+
                     continue;
                 }
 
                 //event action names
                 if (keyword.Equals("action") || keyword.IndexOf("action_") == 0)
                 {
-                    string actionName = ParseAction(lexer);
-                    if (actionName != null)
-                        hoi2Event.ActionNames.Add(actionName);
+                    EventAction action = ParseAction(lexer);
+                    if (action == null)
+                    {
+                        Log.InvalidSection(LogCategory, "action", lexer);
+                        continue;
+                    }
+                    hoi2Event.Actions.Add(action);
+
                     continue;
                 }
             }
@@ -348,8 +377,8 @@ namespace HoI2Editor.Parsers
         ///     Synthetic analysis of Event action section
         /// </summary>
         /// <param name="lexer">Word parser</param>
-        /// <returns>action name</returns>
-        private static string ParseAction(TextLexer lexer)
+        /// <returns>action class</returns>
+        private static EventAction ParseAction(TextLexer lexer)
         {
             // = =
             Token token = lexer.GetToken();
@@ -367,8 +396,10 @@ namespace HoI2Editor.Parsers
                 return null;
             }
 
+            EventAction eventAction = new EventAction();
             int openBraceCnt = 0;
             string actionName = "UNKNOWN_STRING";
+
             while (true)
             {
                 token = lexer.GetToken();
@@ -405,7 +436,7 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // id id
+                // name
                 if (keyword.Equals("name"))
                 {
                     token = lexer.GetToken();
@@ -432,120 +463,24 @@ namespace HoI2Editor.Parsers
 
                 if (keyword.Equals("command"))
                 {
-                    ParseCommand(lexer);
+                    Command command = CommandParser.Parse(lexer);
+                    if (command == null)
+                    {
+                        Log.InvalidSection(LogCategory, "command", lexer);
+                        continue;
+                    }
+                    if (command.Type == CommandType.None)
+                    {
+                        continue;
+                    }
+
+                    eventAction.СommandList.Add(command);
                     continue;
                 }
             }
 
-            return actionName;
-        }
-
-        /// <summary>
-        ///     Synthetic analysis of Event command section
-        /// </summary>
-        /// <param name="lexer">Word parser</param>
-        /// <returns>none none</returns>
-        private static string ParseCommand(TextLexer lexer)
-        {
-            // = =
-            Token token = lexer.GetToken();
-            if (token.Type != TokenType.Equal)
-            {
-                Log.InvalidToken(LogCategory, token, lexer);
-                return null;
-            }
-
-            // {
-            token = lexer.GetToken();
-            if (token.Type != TokenType.OpenBrace)
-            {
-                Log.InvalidToken(LogCategory, token, lexer);
-                return null;
-            }
-
-            int openBraceCnt = 0;
-            while (true)
-            {
-                token = lexer.GetToken();
-
-                // End of file
-                if (token == null)
-                {
-                    break;
-                }
-
-                if (token.Type == TokenType.OpenBrace)
-                {
-                    openBraceCnt++;
-                }
-
-                // } (End of section)
-                if (token.Type == TokenType.CloseBrace)
-                {
-                    if (openBraceCnt == 0)
-                        break;
-                    openBraceCnt--;
-                }
-            }
-
-            return "";
-        }
-
-        /// <summary>
-        ///     Synthetic analysis of Event trigger section
-        /// </summary>
-        /// <param name="lexer">Word parser</param>
-        /// <returns>none none</returns>
-        private static string ParseTrigger(TextLexer lexer)
-        {
-            int startLine = lexer.LineNo;
-            // = =
-            Token token = lexer.GetToken();
-            if (token.Type != TokenType.Equal)
-            {
-                Log.InvalidToken(LogCategory, token, lexer);
-                return null;
-            }
-            int openBraceCnt = 0;
-            // {
-            token = lexer.GetToken();
-            if (token.Type != TokenType.OpenBrace)
-            {
-                Log.InvalidToken(LogCategory, token, lexer);
-                return null;
-            }
-            openBraceCnt++;
-
-
-            while (true)
-            {
-                token = lexer.GetToken();
-
-                // End of file
-                if (token == null)
-                {
-                    break;
-                }
-
-                if (token.Type == TokenType.OpenBrace)
-                {
-                    openBraceCnt++;
-                }
-
-                // } (End of section)
-                if (token.Type == TokenType.CloseBrace)
-                {
-                    openBraceCnt--;
-                    if (openBraceCnt == 0)
-                        break;
-                }
-            }
-            if (openBraceCnt != 0)
-            {
-                Log.Error("[Event] Missing close brace. Section begin L{0}  ({1} L{2})", startLine, lexer.PathName, lexer.LineNo);
-            }
-
-            return "";
+            eventAction.Name = actionName;
+            return eventAction;
         }
 
         #endregion

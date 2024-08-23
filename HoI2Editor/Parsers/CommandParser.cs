@@ -250,6 +250,236 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
+                // new in dh
+                if (Game.Type == GameType.DarkestHour)
+                {
+                    // org
+                    if (keyword.Equals("org"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        //command.When = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //cost
+                    if (keyword.Equals("cost"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Cost = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //energy
+                    if (keyword.Equals("energy"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Energy = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //metal
+                    if (keyword.Equals("metal"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Metal = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //rare_materials
+                    if (keyword.Equals("rare_materials"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.RareMaterials = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //oil
+                    if (keyword.Equals("oil"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Oil = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //supplies
+                    if (keyword.Equals("supplies"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Supplies = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    //money
+                    if (keyword.Equals("money"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Number)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Money = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                    // name
+                    if (keyword.Equals("name"))
+                    {
+                        // = =
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.Equal)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        // Invalid token
+                        token = lexer.GetToken();
+                        if (token.Type != TokenType.String)
+                        {
+                            Log.InvalidToken(LogCategory, token, lexer);
+                            continue;
+                        }
+
+                        command.Name = token.Value;
+
+                        // Remember the final interpretation line
+                        lastLineNo = lexer.LineNo;
+                        continue;
+                    }
+                }
+
                 // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 if (lexer.LineNo != lastLineNo)

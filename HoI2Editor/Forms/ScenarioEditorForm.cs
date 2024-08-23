@@ -780,8 +780,9 @@ namespace HoI2Editor.Forms
             {
                 Scenarios.Load(pathName);
                 // Delay reading events data
-                HoI2Editor.Models.Events.LoadAsync(Game.CodePage, Scenarios.Data.AllEventFiles);
                 loadEventsProgressBar.Visible = true;
+                HoI2Editor.Models.Events.WaitLoading();
+                HoI2Editor.Models.Events.LoadAsync(Game.CodePage, Scenarios.Data.AllEventFiles);
             }
 
             // Processing after reading data
@@ -11512,9 +11513,12 @@ namespace HoI2Editor.Forms
         /// <param name="e"></param>
         private void OnEventFilesLoad(object sender, RunWorkerCompletedEventArgs e)
         {
-            loadEventsProgressBar.Visible = false;
-            EnableEventTabElements();
-            eventNavigator.BindingSource.Clear();
+            if (eventNavigator.BindingSource != null)
+            {
+                loadEventsProgressBar.Visible = false;
+                EnableEventTabElements();
+                eventNavigator.BindingSource.Clear();
+            }
         }
 
         /// <summary>

@@ -93,7 +93,7 @@ namespace HoI2Editor.Models
             "strategic_bomber",
             "tactical_bomber",
             "transport_plane",
-            "battle_cruiser",
+            "battlecruiser",
             "battleship",
             "carrier",
             "escort_carrier",
@@ -128,6 +128,15 @@ namespace HoI2Editor.Models
             "air_percentage",
             "country",
             "relation",
+            "province",
+            "data",
+            "value",
+            "type",
+            "id",
+            "min",
+            "max",
+            "size",
+            "which",
             "team",
             "areaowned",
             "areacontrol",
@@ -136,7 +145,7 @@ namespace HoI2Editor.Models
             "big_alliance",
             "national_idea",
             "land_combat",
-            "tech_ream",
+            "tech_team",
             "money",
             "military_control",
             "losses",
@@ -162,7 +171,10 @@ namespace HoI2Editor.Models
             "area",
             "region",
             "research_mod",
-            "alliance_leader"
+            "alliance_leader",
+            "days",
+            "when",
+            "where"
         };
 
         /// <summary>
@@ -268,6 +280,15 @@ namespace HoI2Editor.Models
             TriggerParamType.CountryDouble, // air_percentage
             TriggerParamType.Country, // country country
             TriggerParamType.Relation, // relation
+            TriggerParamType.ProvinceInt, //Province
+            TriggerParamType.Int, //Data
+            TriggerParamType.Int, //Value
+            TriggerParamType.Int, //Type
+            TriggerParamType.Int, //Id
+            TriggerParamType.Int, //Min
+            TriggerParamType.Int, //Max
+            TriggerParamType.Int, //Size
+            TriggerParamType.Int, //Which
             TriggerParamType.Int, // team
             TriggerParamType.ProvinceCountry2, // areaowned
             TriggerParamType.ProvinceCountry2, // areacontrol
@@ -276,7 +297,7 @@ namespace HoI2Editor.Models
             TriggerParamType.CountryAlliance, // big_alliance
             TriggerParamType.CountryIdea, // national_idea
             TriggerParamType.Int, // land_combat
-            TriggerParamType.TechTeam, // tech_ream
+            TriggerParamType.TechTeam, // tech_team
             TriggerParamType.Int, // money
             TriggerParamType.CountryPair, // military_control
             TriggerParamType.Losses, // losses losses
@@ -302,7 +323,10 @@ namespace HoI2Editor.Models
             TriggerParamType.Area, // area
             TriggerParamType.Region, // region
             TriggerParamType.ResearchMod, // research_mod
-            TriggerParamType.Int // alliance_leader
+            TriggerParamType.Int, // alliance_leader
+            TriggerParamType.Int, // Days
+            TriggerParamType.Int, // When
+            TriggerParamType.Int // Where
         };
 
         #endregion
@@ -474,6 +498,16 @@ namespace HoI2Editor.Models
         AirPercentage,
         Country,
         Relation,
+        Province,
+        // values
+        Data,
+        Value,
+        Type,
+        Id,
+        Min, 
+        Max, 
+        Size,
+        Which, 
         // AoD Add with
         Team,
         AreaOwned,
@@ -510,7 +544,10 @@ namespace HoI2Editor.Models
         Area,
         Region,
         ResearchMod,
-        AllianceLeader
+        AllianceLeader,
+        Days,
+        When,
+        Where
     }
 
     /// <summary>

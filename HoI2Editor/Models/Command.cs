@@ -38,6 +38,51 @@ namespace HoI2Editor.Models
         public object Where { get; set; }
 
         /// <summary>
+        ///     Parameters --name
+        /// </summary>
+        public object Name { get; set; }
+
+        /// <summary>
+        ///     Parameters --org
+        /// </summary>
+        public object Org { get; set; }
+
+        /// <summary>
+        ///     Parameters --cost
+        /// </summary>
+        public object Cost { get; set; }
+
+        /// <summary>
+        ///     Parameters --energy
+        /// </summary>
+        public object Energy { get; set; }
+
+        /// <summary>
+        ///     Parameters --metal
+        /// </summary>
+        public object Metal { get; set; }
+
+        /// <summary>
+        ///     Parameters --rare_materials
+        /// </summary>
+        public object RareMaterials { get; set; }
+
+        /// <summary>
+        ///     Parameters --oil
+        /// </summary>
+        public object Oil { get; set; }
+
+        /// <summary>
+        ///     Parameters --supplies
+        /// </summary>
+        public object Supplies { get; set; }
+
+        /// <summary>
+        ///     Parameters --money
+        /// </summary>
+        public object Money { get; set; }
+
+        /// <summary>
         ///     Command trigger
         /// </summary>
         public List<Trigger> Triggers { get; } = new List<Trigger>();
@@ -494,7 +539,16 @@ namespace HoI2Editor.Models
         WakeMinister,
         Demobilize,
         StrengthCap,
-        RemoveUnits
+        RemoveUnits,
+        BuildBrigade,
+        AddCoreArea,
+        AddCoreRegion,
+        RemoveCoreArea,
+        RemoveCoreRegion,
+        AddClaimArea,
+        AddClaimRegion,
+        RemoveClaimArea,
+        RemoveClaimRegion
     }
 
     /// <summary>

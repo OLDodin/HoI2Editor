@@ -40,9 +40,24 @@ namespace HoI2Editor.Models
         public string Picture { get; set; }
 
         /// <summary>
-        ///     Event action names
+        ///     Event actions
         /// </summary>
-        public List<string> ActionNames { get; }
+        public List<EventAction> Actions { get; }
+
+        /// <summary>
+        ///     Event triggers
+        /// </summary>
+        public List<Trigger> Triggers { get; }
+
+        /// <summary>
+        ///     Event decision
+        /// </summary>
+        public List<Trigger> Decision { get; }
+
+        /// <summary>
+        ///     Event decision trigger
+        /// </summary>
+        public List<Trigger> DecisionTriggers { get; }
 
         /// <summary>
         ///     Event path
@@ -63,7 +78,10 @@ namespace HoI2Editor.Models
         /// </summary>
         public Event()
         {
-            ActionNames = new List<string>();
+            Actions = new List<EventAction>();
+            Triggers = new List<Trigger>();
+            Decision = new List<Trigger>();
+            DecisionTriggers = new List<Trigger>();
             Name = "";
             Desc = "";
             Country = "";
@@ -100,14 +118,9 @@ namespace HoI2Editor.Models
         /// <param name="actionIndex">action index</param>
         public string GetActionNameWithConverID(int actionIndex)
         {
-            if (actionIndex >= ActionNames.Count)
+            if (actionIndex >= Actions.Count)
                 return "";
-            string actionName = ActionNames[actionIndex];
-            if (Config.ExistsKey(actionName))
-            {
-                return Config.GetText(actionName);
-            }
-            return actionName;
+            return Actions[actionIndex].GetActionNameWithConverID();
         }
 
         /// <summary>

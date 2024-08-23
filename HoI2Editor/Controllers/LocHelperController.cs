@@ -274,9 +274,9 @@ namespace HoI2Editor.Controllers
                 if (CheckEventString(ev.Desc))
                     AddToDictionary(eventToExportTextList, "EVT_" + ev.Id + "_DESC", ev.Desc);
 
-                for (int i = 0; i < ev.ActionNames.Count; i++)
+                for (int i = 0; i < ev.Actions.Count; i++)
                 {
-                    string actionName = ev.ActionNames[i];
+                    string actionName = ev.Actions[i].Name;
                     if (CheckEventString(actionName))
                     {
                         char actionIndex = 'A';
@@ -347,7 +347,7 @@ namespace HoI2Editor.Controllers
                 newFileContent.Add("##########################################################");
                 newFileContent.Add("#\t" + hoi2Event.GetEventNameWithConverID());
                 newFileContent.Add("#\tACTIONS:");
-                for (int i = 0; i < hoi2Event.ActionNames.Count; i++)
+                for (int i = 0; i < hoi2Event.Actions.Count; i++)
                 {
                     newFileContent.Add("#\t" + (i+1).ToString() + ")\t" + hoi2Event.GetActionNameWithConverID(i));
                 }

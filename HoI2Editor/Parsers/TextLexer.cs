@@ -471,8 +471,8 @@ namespace HoI2Editor.Parsers
                     break;
                 }
 
-                // Continue reading if it is an alphabetic letter or number
-                if (char.IsLetter((char) c) || char.IsNumber((char) c) || c == '_')
+                // Continue reading if it is an alphabetic letter or number or filename
+                if (char.IsLetter((char) c) || char.IsNumber((char) c) || c == '_' || c == '.' || c == '-')
                 {
                     _reader.Read();
                     sb.Append((char) c);
