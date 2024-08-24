@@ -128,7 +128,9 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
-                Trigger trigger = new Trigger { Type = TypeMap[keyword] };
+                Trigger trigger = new Trigger();
+                trigger.Type = TypeMap[keyword];
+                trigger.LineNum = lexer.LineNo;
 
                 // = =
                 token = lexer.GetToken();

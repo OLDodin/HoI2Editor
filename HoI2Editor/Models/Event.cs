@@ -5,7 +5,6 @@ using System.Text;
 
 namespace HoI2Editor.Models
 {
-    
     /// <summary>
     ///     Hoi Event
     /// </summary>
@@ -33,6 +32,42 @@ namespace HoI2Editor.Models
         ///     Event country
         /// </summary>
         public string Country { get; set; }
+
+        /// <summary>
+        ///     Event style
+        /// </summary>
+        public int Style { get; set; }
+
+        /// <summary>
+        ///     Event date offset
+        /// </summary>
+        public int Offset { get; set; }
+
+        /// <summary>
+        ///     Can the event fire more than once
+        /// </summary>
+        public bool Persistent { get; set; }
+
+        /// <summary>
+        ///     Can only trigger once per country
+        /// </summary>
+        public bool Invention { get; set; }
+
+        /// <summary>
+        ///     Is the event a random event or not
+        /// </summary>
+        public bool Random { get; set; }
+
+        /// <summary>
+        ///     The earliest date this event can fire
+        /// </summary>
+        public GameDate StartDate { get; set; }
+
+        /// <summary>
+        ///    The last possible date the event can trigger. Note day = 30 or higher will set deathdate at end of year
+        /// </summary>
+        public GameDate DeathDate { get; set; }
+
 
         /// <summary>
         ///     Event picture
@@ -86,6 +121,13 @@ namespace HoI2Editor.Models
             Desc = "";
             Country = "";
             EventText = "";
+            PathName = "";
+            Picture = "";
+            Id = -1;
+            Style = 0;
+            Offset = 0;
+            Persistent = false;
+            Invention = false;
         }
 
         /// <summary>

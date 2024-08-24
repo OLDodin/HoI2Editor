@@ -11711,13 +11711,9 @@ namespace HoI2Editor.Forms
                 {
                     if (eventCommand.Type == CommandType.Trigger || eventCommand.Type == CommandType.SleepEvent || eventCommand.Type == CommandType.Event)
                     {
-                        if (eventCommand.Which is int || eventCommand.Which is double)
+                        if (eventCommand.Which is double)
                         {
-                            int eventID;
-                            if (eventCommand.Which is double)
-                                eventID = (int)((double)eventCommand.Which);
-                            else
-                                eventID = (int)eventCommand.Which;
+                            int eventID = (int)((double)eventCommand.Which);
                             if (eventID == potentialEventID)
                                 return true;
                         }
@@ -11753,13 +11749,9 @@ namespace HoI2Editor.Forms
                 }
                 else if (eventTrigger.Type == TriggerType.Event || (parentType == TriggerType.Event && eventTrigger.Type == TriggerType.Id))
                 {
-                    if (eventTrigger.Value is int || eventTrigger.Value is double) 
+                    if (eventTrigger.Value is double) 
                     {
-                        int eventID;
-                        if (eventTrigger.Value is double)
-                            eventID = (int)((double)eventTrigger.Value);
-                        else
-                            eventID = (int)eventTrigger.Value;
+                        int eventID = (int)((double)eventTrigger.Value);
                         if (eventID == potentialEventID)
                             return true;
                     }

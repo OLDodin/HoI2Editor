@@ -82,7 +82,7 @@ namespace HoI2Editor.Parsers
                     long startPos = lexer.Position - 5;
                     Event hoi2Event = ParseEvent(lexer);
                     hoi2Event.PathName = lexer.PathName;
-                    
+
                     if (hoi2Event == null)
                     {
                         Log.InvalidSection(LogCategory, "hoi2Event", lexer);
@@ -100,16 +100,49 @@ namespace HoI2Editor.Parsers
                         }
                     }
                     allEvents.Add(hoi2Event);
-                    
+
                     continue;
                 }
-                
+
                 // Invalid tokens
-               // Log.InvalidToken (LogCategory, token, lexer);
+                // Log.InvalidToken (LogCategory, token, lexer);
                 lexer.SkipLine();
             }
 
+            foreach (Event existEvent in allEvents)
+            { 
+                CheckTriggers(existEvent.Triggers, existEvent.PathName);
+                CheckTriggers(existEvent.Decision, existEvent.PathName);
+                CheckTriggers(existEvent.DecisionTriggers, existEvent.PathName);
+            }
+
             return allEvents;
+        }
+
+        /// <summary>
+        ///     check syntacs triggers
+        /// </summary>
+        /// <param name="triggersList">event triggers</param>
+        /// /// <param name="eventPathName">event Path</param>
+        /// <returns>Event data</returns>
+        private static void CheckTriggers(List<Trigger> triggersList, string eventPathName)
+        {
+            foreach (Trigger eventTrigger in triggersList)
+            {
+                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
+                {
+                    CheckTriggers((List<Trigger>)eventTrigger.Value, eventPathName);
+                }
+                else if (eventTrigger.Type == TriggerType.Day)
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        double day = (double)eventTrigger.Value;
+                        if (day < 0 || day > 29)
+                            Log.Warning("[Event-trigger] Day ({0}) must be from [0-29] {1}:  L{2}", day, eventPathName, eventTrigger.LineNum);
+                    }
+                }
+            }
         }
 
         /// <summary>
@@ -365,15 +398,406 @@ namespace HoI2Editor.Parsers
 
                     continue;
                 }
+                //date
+                if (keyword.Equals("date"))
+                {
+                    GameDate gameDate = ParseDate(lexer);
+                    if (gameDate == null)
+                    {
+                        Log.InvalidSection(LogCategory, "date", lexer);
+                    }
+                    hoi2Event.StartDate = gameDate;
+                }
+                //deathdate
+                if (keyword.Equals("deathdate"))
+                {
+                    GameDate gameDate = ParseDate(lexer);
+                    if (gameDate == null)
+                    {
+                        Log.InvalidSection(LogCategory, "deathdate", lexer);
+                    }
+                    hoi2Event.DeathDate = gameDate;
+                }
 
-                //date = { day = 10 month = september year = 1937 }
-                //deathdate = { day = 1 month = february year = 1941 }
+                // random
+                if (keyword.Equals("random"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Identifier)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+                    string s = token.Value as string;
+                    s = s.ToLower();
+
+                    if (s.Equals("yes"))
+                    {
+                        hoi2Event.Random = true;
+                        continue;
+                    }
+                    else if (s.Equals("no"))
+                    {
+                        hoi2Event.Random = false;
+                        continue;
+                    }
+                    else
+                    {
+                        Log.Info("[Event] Random must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                    }
+
+                    continue;
+                }
+
+                // invention
+                if (keyword.Equals("invention"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Identifier)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+                    string s = token.Value as string;
+                    s = s.ToLower();
+
+                    if (s.Equals("yes"))
+                    {
+                        hoi2Event.Invention = true;
+                        continue;
+                    }
+                    else if (s.Equals("no"))
+                    {
+                        hoi2Event.Invention = false;
+                        continue;
+                    }
+                    else
+                    {
+                        Log.Info("[Event] invention must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                    }
+
+                    continue;
+                }
+
+                // persistent
+                if (keyword.Equals("persistent"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Identifier)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+                    string s = token.Value as string;
+                    s = s.ToLower();
+
+                    if (s.Equals("yes"))
+                    {
+                        hoi2Event.Persistent = true;
+                        continue;
+                    }
+                    else if (s.Equals("no"))
+                    {
+                        hoi2Event.Persistent = false;
+                        continue;
+                    }
+                    else
+                    {
+                        Log.Info("[Event] persistent must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                    }
+
+                    continue;
+                }
+                // offset
+                if (keyword.Equals("offset"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Number)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    hoi2Event.Offset = (int)((double)token.Value);
+
+                    continue;
+                }
+                // style
+                if (keyword.Equals("style"))
+                {
+                    // = =
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Number)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    hoi2Event.Style = (int)((double)token.Value);
+
+                    continue;
+                }
+
             }
             if (openBraceCnt != 0)
             {
                 Log.MissingCloseBrace(LogCategory, "event", lexer);
             }
             return hoi2Event;
+        }
+
+        /// <summary>
+        ///     Synthetic analysis of Event date section
+        /// </summary>
+        /// <param name="lexer">Word parser</param>
+        /// <returns>Game Date</returns>
+        private static GameDate ParseDate(TextLexer lexer)
+        {
+            // = =
+            Token token = lexer.GetToken();
+            if (token.Type != TokenType.Equal)
+            {
+                Log.InvalidToken(LogCategory, token, lexer);
+                return null;
+            }
+
+            // {
+            token = lexer.GetToken();
+            if (token.Type != TokenType.OpenBrace)
+            {
+                Log.InvalidToken(LogCategory, token, lexer);
+                return null;
+            }
+
+            GameDate gameDate = new GameDate();
+            int openBraceCnt = 0;
+            while (true)
+            {
+                token = lexer.GetToken();
+
+                // End of file
+                if (token == null)
+                {
+                    break;
+                }
+
+                if (token.Type == TokenType.OpenBrace)
+                {
+                    openBraceCnt++;
+                }
+
+                // } (End of section)
+                if (token.Type == TokenType.CloseBrace)
+                {
+                    if (openBraceCnt == 0)
+                        break;
+                    openBraceCnt--;
+                }
+
+                // Invalid tokens
+                if (token.Type != TokenType.Identifier)
+                {
+                    continue;
+                }
+
+                string keyword = token.Value as string;
+                if (string.IsNullOrEmpty(keyword))
+                {
+                    continue;
+                }
+                keyword = keyword.ToLower();
+
+                // hour
+                if (keyword.Equals("hour"))
+                {
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Number)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    double hour = (double)token.Value;
+                    if (hour < 0 || hour > 23)
+                    {
+                        Log.Info("[Event] Hour ({0}) must be from [0-23] {1}:  L{2}", hour, lexer.PathName, lexer.LineNo);
+                    }
+
+                    gameDate.Hour = (int)hour;
+
+                    continue;
+                }
+
+                // day
+                if (keyword.Equals("day"))
+                {
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Number)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    double day = (double)token.Value;
+                    if (day < 0 || day > 29)
+                    {
+                        Log.Info("[Event] Day ({0}) must be from [0-29] {1}:  L{2}", day, lexer.PathName, lexer.LineNo);
+                    }
+
+                    gameDate.Day = (int)day;
+
+                    continue;
+                }
+                // month
+                if (keyword.Equals("month"))
+                {
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Number && token.Type != TokenType.Identifier)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    if (token.Value is double)
+                    {
+                        double month = (double)token.Value;
+                        if (month < 0 || month > 11)
+                        {
+                            Log.Info("[Event] Month ({0}) must be from [0-11] {1}:  L{2}", month, lexer.PathName, lexer.LineNo);
+                        }
+
+                        gameDate.Month = (int)month;
+                    }
+                    else
+                    {
+                        string monthStr = token.Value as string;
+                        monthStr = monthStr.ToLower();
+                        int month = Array.IndexOf(Scenarios.MonthStrings, monthStr);
+                        if (month == -1)
+                        {
+                            Log.Warning("[Event] Month ({0}) incorrect {1}:  L{2}", monthStr, lexer.PathName, lexer.LineNo);
+                        }
+                        gameDate.Month = month;
+                    }
+
+                    continue;
+                }
+                // year
+                if (keyword.Equals("year"))
+                {
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Equal)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    // Invalid tokens
+                    token = lexer.GetToken();
+                    if (token.Type != TokenType.Number)
+                    {
+                        Log.InvalidToken(LogCategory, token, lexer);
+                        lexer.SkipLine();
+                        continue;
+                    }
+
+                    double year = (double)token.Value;
+
+                    gameDate.Year = (int)year;
+                    continue;
+                }
+
+                // Invalid tokens
+                Log.InvalidToken(LogCategory, token, lexer);
+                lexer.SkipLine();
+            }
+
+            return gameDate;
         }
 
         /// <summary>

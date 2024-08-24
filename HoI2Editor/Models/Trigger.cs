@@ -21,6 +21,11 @@ namespace HoI2Editor.Models
         /// </summary>
         public object Value { get; set; }
 
+        /// <summary>
+        ///     Trigger text line
+        /// </summary>
+        public int LineNum { get; set; }
+
         #endregion
 
         #region Public constant
@@ -186,6 +191,7 @@ namespace HoI2Editor.Models
         /// </summary>
         public Trigger()
         {
+            LineNum = -1;
         }
 
         /// <summary>
@@ -206,6 +212,7 @@ namespace HoI2Editor.Models
             else
             {
                 Value = original.Value;
+                LineNum = original.LineNum;
             }
         }
 
