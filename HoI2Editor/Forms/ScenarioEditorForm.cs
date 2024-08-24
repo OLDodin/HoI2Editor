@@ -11640,6 +11640,7 @@ namespace HoI2Editor.Forms
                 {
                     OnEventFilesLoad(null, null);
                     eventOperationTimer.Stop();
+                    MessageBox.Show("Original event files are backuped. All event files of this scenario are modified.");
                 }
             }
             loadEventsProgressBar.Value += 10;
@@ -11723,8 +11724,16 @@ namespace HoI2Editor.Forms
                     }
                 }
             }
-
-            return IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.Triggers, TriggerType.None);
+            bool result = IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.Triggers, TriggerType.None);
+            if (result)
+                return true;
+            result = IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.Decision, TriggerType.None);
+            if (result)
+                return true;
+            result = IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.DecisionTriggers, TriggerType.None);
+            if (result)
+                return true;
+            return false;
         }
 
         /// <summary>

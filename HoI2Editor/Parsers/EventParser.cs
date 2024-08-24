@@ -365,6 +365,9 @@ namespace HoI2Editor.Parsers
 
                     continue;
                 }
+
+                //date = { day = 10 month = september year = 1937 }
+                //deathdate = { day = 1 month = february year = 1941 }
             }
             if (openBraceCnt != 0)
             {
