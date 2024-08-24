@@ -126,6 +126,16 @@ namespace HoI2Editor.Models
             When = original.When;
             Where = original.Where;
 
+            Name = original.Name;
+            Org = original.Org;
+            Cost = original.Cost;
+            Energy = original.Energy;
+            Metal = original.Metal;
+            RareMaterials = original.RareMaterials;
+            Oil = original.Oil;
+            Supplies = original.Supplies;
+            Money = original.Money;
+
             foreach (Trigger trigger in original.Triggers)
             {
                 Triggers.Add(new Trigger(trigger));
@@ -169,6 +179,43 @@ namespace HoI2Editor.Models
             {
                 sb.AppendFormat(" value = {0}", ObjectHelper.ToString(Value));
             }
+            if (Name != null)
+            {
+                sb.AppendFormat(" name = {0}", ObjectHelper.ToString(Name));
+            }
+            if (Org != null)
+            {
+                sb.AppendFormat(" org = {0}", ObjectHelper.ToString(Org));
+            }
+            if (Cost != null)
+            {
+                sb.AppendFormat(" cost = {0}", ObjectHelper.ToString(Cost));
+            }
+            if (Energy != null)
+            {
+                sb.AppendFormat(" energy = {0}", ObjectHelper.ToString(Energy));
+            }
+            if (Metal != null)
+            {
+                sb.AppendFormat(" metal = {0}", ObjectHelper.ToString(Metal));
+            }
+            if (RareMaterials != null)
+            {
+                sb.AppendFormat(" rare_materials = {0}", ObjectHelper.ToString(RareMaterials));
+            }
+            if (Oil != null)
+            {
+                sb.AppendFormat(" oil = {0}", ObjectHelper.ToString(Oil));
+            }
+            if (Supplies != null)
+            {
+                sb.AppendFormat(" supplies = {0}", ObjectHelper.ToString(Supplies));
+            }
+            if (Money != null)
+            {
+                sb.AppendFormat(" money = {0}", ObjectHelper.ToString(Money));
+            }
+
             return sb.ToString();
         }
 

@@ -782,6 +782,7 @@ namespace HoI2Editor.Forms
                 // Delay reading events data
                 loadEventsProgressBar.Visible = true;
                 HoI2Editor.Models.Events.WaitLoading();
+                ShowLoadEventsInterface();
                 HoI2Editor.Models.Events.LoadAsync(Game.CodePage, Scenarios.Data.AllEventFiles);
             }
 
@@ -11693,6 +11694,72 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
+        ///     Check number under mouse 
+        /// </summary>
+        /// <param name="potentialEventID">number under mouse</param>
+        /// <returns>true if potentialEventID equal eventID</returns>
+        private bool IsEqualEventID(int potentialEventID)
+        {
+            if (eventsByCountryListBox.SelectedIndex == -1)
+                return false;
+            Event currentHoi2Event = (Event)(eventsByCountryListBox.Items[eventsByCountryListBox.SelectedIndex]);
+            
+            foreach (EventAction eventAction in currentHoi2Event.Actions)
+            {
+                foreach (Command eventCommand in eventAction.СommandList)
+                {
+                    if (eventCommand.Type == CommandType.Trigger || eventCommand.Type == CommandType.SleepEvent || eventCommand.Type == CommandType.Event)
+                    {
+                        if (eventCommand.Which is int || eventCommand.Which is double)
+                        {
+                            int eventID;
+                            if (eventCommand.Which is double)
+                                eventID = (int)((double)eventCommand.Which);
+                            else
+                                eventID = (int)eventCommand.Which;
+                            if (eventID == potentialEventID)
+                                return true;
+                        }
+                    }
+                }
+            }
+
+            return IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.Triggers, TriggerType.None);
+        }
+
+        /// <summary>
+        ///     Check number under mouse 
+        /// </summary>
+        /// <param name="potentialEventID">number under mouse</param>
+        /// /// <param name="triggersList">triggers List</param>
+        /// /// <param name="parentType">caller Trigger type</param>
+        /// <returns>true if potentialEventID equal eventID</returns>
+        private bool IsEqualEventIDInTriggers(int potentialEventID, List<Trigger> triggersList, TriggerType parentType)
+        {
+            foreach (Trigger eventTrigger in triggersList)
+            {
+                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
+                {
+                    return IsEqualEventIDInTriggers(potentialEventID, (List<Trigger>)eventTrigger.Value, eventTrigger.Type);
+                }
+                else if (eventTrigger.Type == TriggerType.Event || (parentType == TriggerType.Event && eventTrigger.Type == TriggerType.Id))
+                {
+                    if (eventTrigger.Value is int || eventTrigger.Value is double) 
+                    {
+                        int eventID;
+                        if (eventTrigger.Value is double)
+                            eventID = (int)((double)eventTrigger.Value);
+                        else
+                            eventID = (int)eventTrigger.Value;
+                        if (eventID == potentialEventID)
+                            return true;
+                    }
+                }
+            }
+            return false;
+        }
+
+        /// <summary>
         ///    MouseMove in eventTextBox
         /// </summary>
         /// <param name="sender"></param>
@@ -11712,11 +11779,14 @@ namespace HoI2Editor.Forms
                 int mouseID = 0;
                 if (Int32.TryParse(selectedWord, out mouseID))
                 {
-                    _currEventHighlighPos.X = startPos;
-                    _currEventHighlighPos.Y = endPos;
+                    if (IsEqualEventID(mouseID))
+                    {
+                        _currEventHighlighPos.X = startPos;
+                        _currEventHighlighPos.Y = endPos;
+                    }
                 }
             }
-            
+
             if (_currEventHighlighPos != _lastEventHighlighPos)
             {
                 int savePos = eventTextBox.SelectionStart;
@@ -11771,7 +11841,8 @@ namespace HoI2Editor.Forms
             int clickedID = 0;
             if (Int32.TryParse(selectedWord, out clickedID))
             {
-                OpenEvent(clickedID);
+                if (IsEqualEventID(clickedID))
+                    OpenEvent(clickedID);
             }
         }
 
