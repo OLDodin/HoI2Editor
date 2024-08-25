@@ -18,6 +18,11 @@ namespace HoI2Editor.Models
         public CommandType Type { get; set; }
 
         /// <summary>
+        ///     Command text line
+        /// </summary>
+        public int LineNum { get; set; }
+
+        /// <summary>
         ///     Parameters --which which
         /// </summary>
         public object Which { get; set; }
@@ -110,6 +115,7 @@ namespace HoI2Editor.Models
         /// </summary>
         public Command()
         {
+            LineNum = -1;
         }
 
         /// <summary>
@@ -135,6 +141,7 @@ namespace HoI2Editor.Models
             Oil = original.Oil;
             Supplies = original.Supplies;
             Money = original.Money;
+            LineNum = original.LineNum;
 
             foreach (Trigger trigger in original.Triggers)
             {

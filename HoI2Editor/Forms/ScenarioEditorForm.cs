@@ -348,6 +348,9 @@ namespace HoI2Editor.Forms
             // Initialize province data
             Provinces.Init();
 
+            // Initialize research characteristics
+            Techs.InitSpecialities();
+
             // Load the game settings file
             Misc.Load();
 
@@ -365,6 +368,9 @@ namespace HoI2Editor.Forms
 
             // Delay reading technical data
             Techs.LoadAsync(null);
+
+            // Delay reading teams data
+            Teams.LoadAsync(null);
 
             // Delay reading of provision data
             Provinces.LoadAsync(null);
@@ -11519,6 +11525,12 @@ namespace HoI2Editor.Forms
                 loadEventsProgressBar.Visible = false;
                 EnableEventTabElements();
                 eventNavigator.BindingSource.Clear();
+
+                Ministers.WaitLoading();
+                Leaders.WaitLoading();
+                Teams.WaitLoading();
+                Techs.WaitLoading();
+                HoI2Editor.Models.Events.VerifyEventsByIDs(Ministers.Items, Leaders.Items, Teams.Items, Techs.TechIds);
             }
         }
 

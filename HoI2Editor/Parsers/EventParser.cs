@@ -109,40 +109,7 @@ namespace HoI2Editor.Parsers
                 lexer.SkipLine();
             }
 
-            foreach (Event existEvent in allEvents)
-            { 
-                CheckTriggers(existEvent.Triggers, existEvent.PathName);
-                CheckTriggers(existEvent.Decision, existEvent.PathName);
-                CheckTriggers(existEvent.DecisionTriggers, existEvent.PathName);
-            }
-
             return allEvents;
-        }
-
-        /// <summary>
-        ///     check syntacs triggers
-        /// </summary>
-        /// <param name="triggersList">event triggers</param>
-        /// /// <param name="eventPathName">event Path</param>
-        /// <returns>Event data</returns>
-        private static void CheckTriggers(List<Trigger> triggersList, string eventPathName)
-        {
-            foreach (Trigger eventTrigger in triggersList)
-            {
-                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
-                {
-                    CheckTriggers((List<Trigger>)eventTrigger.Value, eventPathName);
-                }
-                else if (eventTrigger.Type == TriggerType.Day)
-                {
-                    if (eventTrigger.Value is double)
-                    {
-                        double day = (double)eventTrigger.Value;
-                        if (day < 0 || day > 29)
-                            Log.Warning("[Event-trigger] Day ({0}) must be from [0-29] {1}:  L{2}", day, eventPathName, eventTrigger.LineNum);
-                    }
-                }
-            }
         }
 
         /// <summary>
@@ -454,7 +421,7 @@ namespace HoI2Editor.Parsers
                     }
                     else
                     {
-                        Log.Info("[Event] Random must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                        Log.Error("[Event] Random must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
                     }
 
                     continue;
@@ -495,7 +462,7 @@ namespace HoI2Editor.Parsers
                     }
                     else
                     {
-                        Log.Info("[Event] invention must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                        Log.Error("[Event] invention must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
                     }
 
                     continue;
@@ -536,7 +503,7 @@ namespace HoI2Editor.Parsers
                     }
                     else
                     {
-                        Log.Info("[Event] persistent must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                        Log.Error("[Event] persistent must be yes or no {0}:  L{1}", lexer.PathName, lexer.LineNo);
                     }
 
                     continue;
@@ -759,7 +726,7 @@ namespace HoI2Editor.Parsers
                         int month = Array.IndexOf(Scenarios.MonthStrings, monthStr);
                         if (month == -1)
                         {
-                            Log.Warning("[Event] Month ({0}) incorrect {1}:  L{2}", monthStr, lexer.PathName, lexer.LineNo);
+                            Log.Error("[Event] Month ({0}) incorrect {1}:  L{2}", monthStr, lexer.PathName, lexer.LineNo);
                         }
                         gameDate.Month = month;
                     }

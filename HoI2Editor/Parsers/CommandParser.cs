@@ -115,6 +115,7 @@ namespace HoI2Editor.Parsers
 
                     // Command type
                     command.Type = Commands.StringMap[s];
+                    command.LineNum = lexer.LineNo;
 
                     // Remember the final interpretation line
                     lastLineNo = lexer.LineNo;

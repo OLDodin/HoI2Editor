@@ -280,6 +280,15 @@ namespace HoI2Editor.Models
                     }
                 }
             }
+
+            foreach (Event currentHoi2Event in TotalEventsList)
+            {
+                VerifyTriggers(currentHoi2Event.Triggers, currentHoi2Event.PathName, TriggerType.None);
+                VerifyTriggers(currentHoi2Event.Decision, currentHoi2Event.PathName, TriggerType.None);
+                VerifyTriggers(currentHoi2Event.DecisionTriggers, currentHoi2Event.PathName, TriggerType.None);
+
+                VerifyCommands(currentHoi2Event);
+            }
         }
 
         /// <summary>
@@ -336,6 +345,332 @@ namespace HoI2Editor.Models
                 }
             }
             return commonEventList;
+        }
+
+        /// <summary>
+        ///     check semantic commands
+        /// </summary>
+        /// <param name="hoi2Event">event with commands</param>
+        private static void VerifyCommands(Event hoi2Event)
+        {
+            foreach (EventAction eventAction in hoi2Event.Actions)
+            {
+                foreach (Command eventCommand in eventAction.СommandList)
+                {
+                    if (eventCommand.Type == CommandType.Trigger || eventCommand.Type == CommandType.SleepEvent || eventCommand.Type == CommandType.Event)
+                    {
+                        if (eventCommand.Which is double)
+                        {
+                            int eventID = (int)((double)eventCommand.Which);
+                            bool eventExist = false;
+                            foreach (Event searchingEvent in TotalEventsList)
+                            {
+                                if (searchingEvent.Id == eventID)
+                                {
+                                    eventExist = true;
+                                    break;
+                                }
+                            }
+                            if (!eventExist)
+                            {
+                                Log.Error("[Event] Command with non exist eventID ({0})  {1}:  L{2}", eventID, hoi2Event.PathName, eventCommand.LineNum);
+                            }
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     check semantic triggers
+        /// </summary>
+        /// <param name="triggersList">event triggers</param>
+        /// <param name="eventPathName">event Path</param>
+        /// <param name="parentType">trigger parent type</param>
+        private static void VerifyTriggers(List<Trigger> triggersList, string eventPathName, TriggerType parentType)
+        {
+            foreach (Trigger eventTrigger in triggersList)
+            {
+                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
+                {
+                    VerifyTriggers((List<Trigger>)eventTrigger.Value, eventPathName, eventTrigger.Type);
+                }
+                else if (eventTrigger.Type == TriggerType.Day)
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        double day = (double)eventTrigger.Value;
+                        if (day < 0 || day > 29)
+                            Log.Warning("[Event-trigger] Day ({0}) must be from [0-29] {1}:  L{2}", day, eventPathName, eventTrigger.LineNum);
+                    }
+                }
+                else if (eventTrigger.Type == TriggerType.Event || (parentType == TriggerType.Event && eventTrigger.Type == TriggerType.Id))
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        int eventID = (int)((double)eventTrigger.Value);
+                        bool eventExist = false;
+                        foreach (Event searchingEvent in TotalEventsList)
+                        {
+                            if (searchingEvent.Id == eventID)
+                            {
+                                eventExist = true;
+                                break;
+                            }
+                        }
+                        if (!eventExist)
+                        {
+                            Log.Error("[Event-trigger] Trigger with non exist eventID ({0})  {1}:  L{2}", eventID, eventPathName, eventTrigger.LineNum);
+                        }
+                    }
+                }
+            }
+        }
+
+        /// <summary>
+        ///     Verify events refers to exist minister, leader, tech teams
+        /// </summary>
+        /// <param name="ministers">parsed ministers</param>
+        /// <param name="leaders">parsed leaders</param>
+        /// <param name="techTeams">parsed tech teams</param>
+        public static void VerifyEventsByIDs(List<Minister> ministers, List<Leader> leaders, List<Team> techTeams, List<int> techIDs)
+        {
+            foreach (Event currentHoi2Event in TotalEventsList)
+            {
+                VerifyTriggersByIDs(ministers, leaders, techTeams, techIDs, currentHoi2Event.Triggers, currentHoi2Event.PathName, TriggerType.None);
+                VerifyTriggersByIDs(ministers, leaders, techTeams, techIDs, currentHoi2Event.Decision, currentHoi2Event.PathName, TriggerType.None);
+                VerifyTriggersByIDs(ministers, leaders, techTeams, techIDs, currentHoi2Event.DecisionTriggers, currentHoi2Event.PathName, TriggerType.None);
+
+                VerifyCommandsByIDs(currentHoi2Event, ministers, leaders, techTeams, techIDs);
+            }
+        }
+
+        /// <summary>
+        ///     Verify events commands refers to exist minister, leader, tech teams
+        /// </summary>
+        /// <param name="hoi2Event">event with commands</param>
+        /// <param name="ministers">parsed ministers</param>
+        /// <param name="leaders">parsed leaders</param>
+        /// <param name="techTeams">parsed tech teams</param>
+        private static void VerifyCommandsByIDs(Event hoi2Event, List<Minister> ministers, List<Leader> leaders, List<Team> techTeams, List<int> techIDs)
+        {
+            foreach (EventAction eventAction in hoi2Event.Actions)
+            {
+                foreach (Command eventCommand in eventAction.СommandList)
+                {
+                    if (eventCommand.Type == CommandType.SleepMinister || eventCommand.Type == CommandType.WakeMinister)
+                    {
+                        if (eventCommand.Which is double)
+                        {
+                            int someID = (int)((double)eventCommand.Which);
+                            if (someID > 0)
+                            {
+                                bool idExist = false;
+                                foreach (Minister searchingObj in ministers)
+                                {
+                                    if (searchingObj.Id == someID)
+                                    {
+                                        idExist = true;
+                                        break;
+                                    }
+                                }
+                                if (!idExist)
+                                {
+                                    Log.Error("[Event] Command with non exist minister ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                }
+                            }
+                        }
+                    }
+                    else if (eventCommand.Type == CommandType.SleepLeader || eventCommand.Type == CommandType.WakeLeader || eventCommand.Type == CommandType.SetLeaderSkill
+                        || eventCommand.Type == CommandType.AddLeaderSkill || eventCommand.Type == CommandType.AddLeaderTrait || eventCommand.Type == CommandType.RemoveLeaderTrait
+                        || eventCommand.Type == CommandType.ChangeLeaderXp || eventCommand.Type == CommandType.SetLeaderXp
+                        || eventCommand.Type == CommandType.AddCorps)
+                    {
+                        int someID = -1;
+                        if (eventCommand.Type == CommandType.AddCorps)
+                        {
+                            if (eventCommand.When is double)
+                            {
+                                someID = (int)((double)eventCommand.When);
+                            }
+                        }
+                        else
+                        {
+                            if (eventCommand.Which is double)
+                            {
+                                someID = (int)((double)eventCommand.Which);
+                            }
+                        }
+                        if (someID > 0)
+                        {
+                            bool idExist = false;
+                            foreach (Leader searchingObj in leaders)
+                            {
+                                if (searchingObj.Id == someID)
+                                {
+                                    idExist = true;
+                                    break;
+                                }
+                            }
+                            if (!idExist)
+                            {
+                                Log.Error("[Event] Command with non exist leader ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                            }
+                        }
+                    }
+                    else if (eventCommand.Type == CommandType.SetTeamSkill || eventCommand.Type == CommandType.AddTeamSkill || eventCommand.Type == CommandType.AddTeamResearchType
+                        || eventCommand.Type == CommandType.RemoveTeamResearchType || eventCommand.Type == CommandType.SleepTeam || eventCommand.Type == CommandType.WakeTeam
+                        || eventCommand.Type == CommandType.GiveTeam)
+                    {
+                        if (eventCommand.Which is double)
+                        {
+                            int someID = (int)((double)eventCommand.Which);
+                            if (someID > 0)
+                            {
+                                bool idExist = false;
+                                foreach (Team searchingObj in techTeams)
+                                {
+                                    if (searchingObj.Id == someID)
+                                    {
+                                        idExist = true;
+                                        break;
+                                    }
+                                }
+                                if (!idExist)
+                                {
+                                    Log.Error("[Event] Command with non exist team ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                }
+                            }
+                        }
+                    }
+                    else if (eventCommand.Type == CommandType.GainTech || eventCommand.Type == CommandType.Deactivate 
+                        || eventCommand.Type == CommandType.InfoMayCause || eventCommand.Type == CommandType.Activate)
+                    {
+                        if (eventCommand.Which is double)
+                        {
+                            int someID = (int)((double)eventCommand.Which);
+                            if (someID > 0)
+                            {
+                                bool idExist = false;
+                                foreach (int techID in techIDs)
+                                {
+                                    if (techID == someID)
+                                    {
+                                        idExist = true;
+                                        break;
+                                    }
+                                }
+                                if (!idExist)
+                                {
+                                    Log.Error("[Event] Command with non exist technology ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                }
+                            }
+                        }
+                    }
+                }
+            }  
+        }
+
+        /// <summary>
+        ///     Verify events triggers refers to exist minister, leader, tech teams
+        /// </summary>
+        /// <param name="ministers">parsed ministers</param>
+        /// <param name="leaders">parsed leaders</param>
+        /// <param name="techTeams">parsed tech teams</param>
+        /// <param name="triggersList">event triggers</param>
+        /// <param name="eventPathName">event Path</param>
+        /// <param name="parentType">trigger parent type</param>
+        private static void VerifyTriggersByIDs(List<Minister> ministers, List<Leader> leaders, List<Team> techTeams, List<int> techIDs, List<Trigger> triggersList, string eventPathName, TriggerType parentType)
+        {
+            foreach (Trigger eventTrigger in triggersList)
+            {
+                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
+                {
+                    VerifyTriggersByIDs(ministers, leaders, techTeams, techIDs, (List<Trigger>)eventTrigger.Value, eventPathName, eventTrigger.Type);
+                }
+                else if (eventTrigger.Type == TriggerType.HeadOfState || eventTrigger.Type == TriggerType.HeadOfGovernment
+                    || eventTrigger.Type == TriggerType.Minister || eventTrigger.Type == TriggerType.InCabinet)
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        int someID = (int)((double)eventTrigger.Value);
+                        bool idExist = false;
+                        foreach (Minister searchingObj in ministers)
+                        {
+                            if (searchingObj.Id == someID)
+                            {
+                                idExist = true;
+                                break;
+                            }
+                        }
+                        if (!idExist)
+                        {
+                            Log.Error("[Event-trigger] Trigger with non exist minister ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                        }
+                    }
+                }
+                else if (eventTrigger.Type == TriggerType.Leader)
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        int someID = (int)((double)eventTrigger.Value);
+                        bool idExist = false;
+                        foreach (Leader searchingObj in leaders)
+                        {
+                            if (searchingObj.Id == someID)
+                            {
+                                idExist = true;
+                                break;
+                            }
+                        }
+                        if (!idExist)
+                        {
+                            Log.Error("[Event-trigger] Trigger with non exist leader ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                        }
+                    }
+                }
+                else if (eventTrigger.Type == TriggerType.TechTeam || (parentType == TriggerType.TechTeam && eventTrigger.Type == TriggerType.Id))
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        int someID = (int)((double)eventTrigger.Value);
+                        bool idExist = false;
+                        foreach (Team searchingObj in techTeams)
+                        {
+                            if (searchingObj.Id == someID)
+                            {
+                                idExist = true;
+                                break;
+                            }
+                        }
+                        if (!idExist)
+                        {
+                            Log.Error("[Event-trigger] Trigger with non exist team ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                        }
+                    }
+                }
+                else if (eventTrigger.Type == TriggerType.Technology || (parentType == TriggerType.Technology && eventTrigger.Type == TriggerType.Value)
+                    || eventTrigger.Type == TriggerType.IsTechActive)
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        int someID = (int)((double)eventTrigger.Value);
+                        bool idExist = false;
+                        foreach (int techID in techIDs)
+                        {
+                            if (techID == someID)
+                            {
+                                idExist = true;
+                                break;
+                            }
+                        }
+                        if (!idExist)
+                        {
+                            Log.Error("[Event-trigger] Trigger with non exist technology ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                        }
+                    }
+                }
+            }
         }
     }
 }
