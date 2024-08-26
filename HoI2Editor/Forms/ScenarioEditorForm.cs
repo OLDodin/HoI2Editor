@@ -11707,6 +11707,60 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
+        ///     build event ids array form event text 
+        /// </summary>
+        /// <param name="hoi2Event">hoi2 Event</param>
+        /// <returns>tarray of eventID</returns>
+        private List<int> GetEventIDsFromEventText(Event hoi2Event)
+        {
+            List<int> resultEventIDs = new List<int>();
+
+            foreach (EventAction eventAction in hoi2Event.Actions)
+            {
+                foreach (Command eventCommand in eventAction.СommandList)
+                {
+                    if (eventCommand.Type == CommandType.Trigger || eventCommand.Type == CommandType.SleepEvent || eventCommand.Type == CommandType.Event)
+                    {
+                        if (eventCommand.Which is double)
+                        {
+                            resultEventIDs.Add((int)((double)eventCommand.Which));
+                        }
+                    }
+                }
+            }
+
+            AddEventIDsFromTriggers(resultEventIDs, hoi2Event.Triggers, TriggerType.None);
+            AddEventIDsFromTriggers(resultEventIDs, hoi2Event.Decision, TriggerType.None);
+            AddEventIDsFromTriggers(resultEventIDs, hoi2Event.DecisionTriggers, TriggerType.None);
+
+            return resultEventIDs;
+        }
+
+        /// <summary>
+        ///     Check number under mouse 
+        /// </summary>
+        /// <param name="potentialEventID">number under mouse</param>
+        /// /// <param name="triggersList">triggers List</param>
+        /// /// <param name="parentType">caller Trigger type</param>
+        private void AddEventIDsFromTriggers(List<int> resultList, List<Trigger> triggersList, TriggerType parentType)
+        {
+            foreach (Trigger eventTrigger in triggersList)
+            {
+                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
+                {
+                    AddEventIDsFromTriggers(resultList, (List<Trigger>)eventTrigger.Value, eventTrigger.Type);
+                }
+                else if (eventTrigger.Type == TriggerType.Event || (parentType == TriggerType.Event && eventTrigger.Type == TriggerType.Id))
+                {
+                    if (eventTrigger.Value is double)
+                    {
+                        resultList.Add((int)((double)eventTrigger.Value));
+                    }
+                }
+            }
+        }
+
+        /// <summary>
         ///     Check number under mouse 
         /// </summary>
         /// <param name="potentialEventID">number under mouse</param>
@@ -11716,59 +11770,15 @@ namespace HoI2Editor.Forms
             if (eventsByCountryListBox.SelectedIndex == -1)
                 return false;
             Event currentHoi2Event = (Event)(eventsByCountryListBox.Items[eventsByCountryListBox.SelectedIndex]);
-            
-            foreach (EventAction eventAction in currentHoi2Event.Actions)
-            {
-                foreach (Command eventCommand in eventAction.СommandList)
-                {
-                    if (eventCommand.Type == CommandType.Trigger || eventCommand.Type == CommandType.SleepEvent || eventCommand.Type == CommandType.Event)
-                    {
-                        if (eventCommand.Which is double)
-                        {
-                            int eventID = (int)((double)eventCommand.Which);
-                            if (eventID == potentialEventID)
-                                return true;
-                        }
-                    }
-                }
-            }
-            bool result = IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.Triggers, TriggerType.None);
-            if (result)
-                return true;
-            result = IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.Decision, TriggerType.None);
-            if (result)
-                return true;
-            result = IsEqualEventIDInTriggers(potentialEventID, currentHoi2Event.DecisionTriggers, TriggerType.None);
-            if (result)
-                return true;
-            return false;
-        }
 
-        /// <summary>
-        ///     Check number under mouse 
-        /// </summary>
-        /// <param name="potentialEventID">number under mouse</param>
-        /// /// <param name="triggersList">triggers List</param>
-        /// /// <param name="parentType">caller Trigger type</param>
-        /// <returns>true if potentialEventID equal eventID</returns>
-        private bool IsEqualEventIDInTriggers(int potentialEventID, List<Trigger> triggersList, TriggerType parentType)
-        {
-            foreach (Trigger eventTrigger in triggersList)
+            List<int> eventIDs = GetEventIDsFromEventText(currentHoi2Event);
+
+            foreach (int eventID in eventIDs)
             {
-                if (eventTrigger.Value.GetType() == typeof(List<Trigger>))
-                {
-                    return IsEqualEventIDInTriggers(potentialEventID, (List<Trigger>)eventTrigger.Value, eventTrigger.Type);
-                }
-                else if (eventTrigger.Type == TriggerType.Event || (parentType == TriggerType.Event && eventTrigger.Type == TriggerType.Id))
-                {
-                    if (eventTrigger.Value is double) 
-                    {
-                        int eventID = (int)((double)eventTrigger.Value);
-                        if (eventID == potentialEventID)
-                            return true;
-                    }
-                }
+                if (potentialEventID == eventID)
+                    return true;
             }
+            
             return false;
         }
 
@@ -11800,8 +11810,10 @@ namespace HoI2Editor.Forms
                 }
             }
 
+            
             if (_currEventHighlighPos != _lastEventHighlighPos)
             {
+                /*
                 int savePos = eventTextBox.SelectionStart;
                 int saveLen = eventTextBox.SelectionLength;
                 Color saveColor = eventTextBox.SelectionColor;
@@ -11812,24 +11824,25 @@ namespace HoI2Editor.Forms
                     eventTextBox.SelectionFont = new Font(eventTextBox.Font, FontStyle.Regular);
                     eventTextBox.SelectionColor = Color.Black;
                 }
-
+                */
                 if (_currEventHighlighPos.X != -1 && _currEventHighlighPos.Y != -1)
                 {
+                    /*
                     eventTextBox.Select(_currEventHighlighPos.X, (_currEventHighlighPos.Y - _currEventHighlighPos.X));
                     eventTextBox.SelectionFont = new Font(eventTextBox.Font, FontStyle.Underline);
                     eventTextBox.SelectionColor = Color.Blue;
-
+                    */
                     eventTextBox.Cursor = Cursors.Hand;
                 }
                 else
                 {
                     eventTextBox.Cursor = Cursors.IBeam;
                 }
-
+                /*
                 eventTextBox.SelectionStart = savePos;
                 eventTextBox.SelectionLength = saveLen;
                 eventTextBox.SelectionColor = saveColor;
-
+                */
                 _lastEventHighlighPos.X = _currEventHighlighPos.X;
                 _lastEventHighlighPos.Y = _currEventHighlighPos.Y;
             }
@@ -11995,13 +12008,37 @@ namespace HoI2Editor.Forms
                 return;
             }
 
-            Event item = (Event)(eventsByCountryListBox.Items[eventsByCountryListBox.SelectedIndex]);
+            Event currentHoi2Event = (Event)(eventsByCountryListBox.Items[eventsByCountryListBox.SelectedIndex]);
             if (_canAddToHistory)
-                AddToHistory(item.Id);
-            eventTextBox.Text = item.EventText;
-            eventPathLabel.Text = item.PathName;
+                AddToHistory(currentHoi2Event.Id);
+            eventTextBox.Text = currentHoi2Event.EventText;
+            eventPathLabel.Text = currentHoi2Event.PathName;
 
-            UpdateEventImage(item.Picture);
+            int savePos = eventTextBox.SelectionStart;
+            int saveLen = eventTextBox.SelectionLength;
+            Color saveColor = eventTextBox.SelectionColor;
+
+            List<int> eventIDs = GetEventIDsFromEventText(currentHoi2Event);
+            foreach (int eventID in eventIDs)
+            {
+                string eventIDStr = eventID.ToString();
+                int startPos = eventTextBox.Text.IndexOf(eventIDStr);
+                while (startPos > 0)
+                {
+                    eventTextBox.Select(startPos, eventIDStr.Length);
+                    eventTextBox.SelectionFont = new Font(eventTextBox.Font, FontStyle.Underline);
+                    eventTextBox.SelectionColor = Color.Blue;
+
+                    startPos = eventTextBox.Text.IndexOf(eventIDStr, startPos + eventIDStr.Length);
+                }
+            }
+
+            eventTextBox.SelectionStart = savePos;
+            eventTextBox.SelectionLength = saveLen;
+            eventTextBox.SelectionColor = saveColor;
+            
+
+            UpdateEventImage(currentHoi2Event.Picture);
         }
 
         /// <summary>

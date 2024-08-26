@@ -373,7 +373,7 @@ namespace HoI2Editor.Models
                             }
                             if (!eventExist)
                             {
-                                Log.Error("[Event] Command with non exist eventID ({0})  {1}:  L{2}", eventID, hoi2Event.PathName, eventCommand.LineNum);
+                                Log.Error("[Event] Command with not exist eventID ({0})  {1}:  L{2}", eventID, hoi2Event.PathName, eventCommand.LineNum);
                             }
                         }
                     }
@@ -420,7 +420,7 @@ namespace HoI2Editor.Models
                         }
                         if (!eventExist)
                         {
-                            Log.Error("[Event-trigger] Trigger with non exist eventID ({0})  {1}:  L{2}", eventID, eventPathName, eventTrigger.LineNum);
+                            Log.Error("[Event-trigger] Trigger with not exist eventID ({0})  {1}:  L{2}", eventID, eventPathName, eventTrigger.LineNum);
                         }
                     }
                 }
@@ -458,7 +458,10 @@ namespace HoI2Editor.Models
             {
                 foreach (Command eventCommand in eventAction.СommandList)
                 {
-                    if (eventCommand.Type == CommandType.SleepMinister || eventCommand.Type == CommandType.WakeMinister)
+                    if (eventCommand.Type == CommandType.SleepMinister || eventCommand.Type == CommandType.WakeMinister || eventCommand.Type == CommandType.HeadOfState
+                        || eventCommand.Type == CommandType.HeadOfGovernment || eventCommand.Type == CommandType.MinisterOfSecurity || eventCommand.Type == CommandType.MinisterOfIntelligence
+                        || eventCommand.Type == CommandType.ArmamentMinister || eventCommand.Type == CommandType.ForeignMinister || eventCommand.Type == CommandType.ChiefOfStaff
+                        || eventCommand.Type == CommandType.ChiefOfAir || eventCommand.Type == CommandType.ChiefOfArmy || eventCommand.Type == CommandType.ChiefOfNavy)
                     {
                         if (eventCommand.Which is double)
                         {
@@ -476,7 +479,7 @@ namespace HoI2Editor.Models
                                 }
                                 if (!idExist)
                                 {
-                                    Log.Error("[Event] Command with non exist minister ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                    Log.Error("[Event] Command with not exist minister ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
                                 }
                             }
                         }
@@ -514,7 +517,7 @@ namespace HoI2Editor.Models
                             }
                             if (!idExist)
                             {
-                                Log.Error("[Event] Command with non exist leader ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                Log.Error("[Event] Command with not exist leader ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
                             }
                         }
                     }
@@ -538,7 +541,7 @@ namespace HoI2Editor.Models
                                 }
                                 if (!idExist)
                                 {
-                                    Log.Error("[Event] Command with non exist team ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                    Log.Error("[Event] Command with not exist team ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
                                 }
                             }
                         }
@@ -562,7 +565,7 @@ namespace HoI2Editor.Models
                                 }
                                 if (!idExist)
                                 {
-                                    Log.Error("[Event] Command with non exist technology ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
+                                    Log.Error("[Event] Command with not exist technology ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
                                 }
                             }
                         }
@@ -605,7 +608,7 @@ namespace HoI2Editor.Models
                         }
                         if (!idExist)
                         {
-                            Log.Error("[Event-trigger] Trigger with non exist minister ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                            Log.Error("[Event-trigger] Trigger with not exist minister ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
                         }
                     }
                 }
@@ -625,7 +628,7 @@ namespace HoI2Editor.Models
                         }
                         if (!idExist)
                         {
-                            Log.Error("[Event-trigger] Trigger with non exist leader ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                            Log.Error("[Event-trigger] Trigger with not exist leader ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
                         }
                     }
                 }
@@ -645,7 +648,7 @@ namespace HoI2Editor.Models
                         }
                         if (!idExist)
                         {
-                            Log.Error("[Event-trigger] Trigger with non exist team ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                            Log.Error("[Event-trigger] Trigger with not exist team ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
                         }
                     }
                 }
@@ -666,7 +669,7 @@ namespace HoI2Editor.Models
                         }
                         if (!idExist)
                         {
-                            Log.Error("[Event-trigger] Trigger with non exist technology ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
+                            Log.Error("[Event-trigger] Trigger with not exist technology ID ({0})  {1}:  L{2}", someID, eventPathName, eventTrigger.LineNum);
                         }
                     }
                 }
