@@ -3005,6 +3005,20 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
+                // speed_step
+                if (keyword.Equals("speed_step"))
+                {
+                    int? n = ParseInt(lexer);
+                    if (!n.HasValue)
+                    {
+                        Log.InvalidClause(LogCategory, "speed_step", lexer);
+                        continue;
+                    }
+
+                    building.SpeedStep = (int)n;
+                    continue;
+                }
+
                 // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 lexer.SkipLine();
@@ -3336,7 +3350,7 @@ namespace HoI2Editor.Parsers
                 }
                 keyword = keyword.ToLower();
 
-                // id id
+                // id
                 if (keyword.Equals("id"))
                 {
                     TypeId id = ParseTypeId(lexer);
@@ -3350,6 +3364,21 @@ namespace HoI2Editor.Parsers
                     treaty.Id = id;
                     continue;
                 }
+
+                // tradeconvoy_id
+                if (keyword.Equals("tradeconvoy_id"))
+                {
+                    TypeId id = ParseTypeId(lexer);
+                    if (id == null)
+                    {
+                        Log.InvalidSection(LogCategory, "tradeconvoy_id", lexer);
+                        continue;
+                    }
+
+                    treaty.TradeConvoyId = id;
+                    continue;
+                }
+                
 
                 // type
                 if (keyword.Equals("type"))
@@ -4384,7 +4413,7 @@ namespace HoI2Editor.Parsers
                     }
 
                     // Supplies I C ratio
-                    settings.ConsumerSlider = (double) d;
+                    settings.SupplySlider = (double) d;
                     continue;
                 }
 
@@ -4399,7 +4428,7 @@ namespace HoI2Editor.Parsers
                     }
 
                     // production I C ratio
-                    settings.ConsumerSlider = (double) d;
+                    settings.ProductionSlider = (double) d;
                     continue;
                 }
 
@@ -4414,7 +4443,52 @@ namespace HoI2Editor.Parsers
                     }
 
                     // Replenishment I C ratio
-                    settings.ConsumerSlider = (double) d;
+                    settings.ReinforcementSlider = (double) d;
+                    continue;
+                }
+
+                // upgrading
+                if (keyword.Equals("upgrading"))
+                {
+                    double? d = ParseDouble(lexer);
+                    if (!d.HasValue)
+                    {
+                        Log.InvalidClause(LogCategory, "upgrading", lexer);
+                        continue;
+                    }
+
+                    // upgrading IC ratio
+                    settings.UpgradingSlider = (double)d;
+                    continue;
+                }
+
+                // expense_synthetic
+                if (keyword.Equals("expense_synthetic"))
+                {
+                    double? d = ParseDouble(lexer);
+                    if (!d.HasValue)
+                    {
+                        Log.InvalidClause(LogCategory, "expense_synthetic", lexer);
+                        continue;
+                    }
+
+                    // upgrading IC ratio
+                    settings.ExpenseSyntheticSlider = (double)d;
+                    continue;
+                }
+
+                // expense_synthetic
+                if (keyword.Equals("expense_synthetic_rares"))
+                {
+                    double? d = ParseDouble(lexer);
+                    if (!d.HasValue)
+                    {
+                        Log.InvalidClause(LogCategory, "expense_synthetic_rares", lexer);
+                        continue;
+                    }
+
+                    // upgrading IC ratio
+                    settings.ExpenseSyntheticRaresSlider = (double)d;
                     continue;
                 }
 
@@ -8355,6 +8429,21 @@ namespace HoI2Editor.Parsers
                     continue;
                 }
 
+                // location
+                if (keyword.Equals("location"))
+                {
+                    int? n = ParseInt(lexer);
+                    if (!n.HasValue)
+                    {
+                        Log.InvalidClause(LogCategory, "location", lexer);
+                        continue;
+                    }
+
+                    // position
+                    division.Location = (int)n;
+                    continue;
+                }
+
                 // Invalid token
                 Log.InvalidToken(LogCategory, token, lexer);
                 if (lexer.LineNo != lastLineNo)
@@ -8756,6 +8845,7 @@ namespace HoI2Editor.Parsers
 
                     // Whether it is a convoy for trade
                     convoy.IsTrade = (bool) b;
+                    continue;
                 }
 
                 // transports

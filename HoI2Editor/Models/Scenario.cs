@@ -1302,6 +1302,11 @@ namespace HoI2Editor.Models
         /// </summary>
         public bool WaitingForClosure { get; set; }
 
+        /// <summary>
+        ///     Speed Step of production
+        /// </summary>
+        public int SpeedStep { get; set; }
+
         #endregion
     }
 
@@ -1583,6 +1588,11 @@ namespace HoI2Editor.Models
         public TypeId Id { get; set; }
 
         /// <summary>
+        ///     Pair of id and type
+        /// </summary>
+        public TypeId TradeConvoyId { get; set; }
+
+        /// <summary>
         ///     Types of diplomatic agreements
         /// </summary>
         public TreatyType Type { get; set; }
@@ -1686,7 +1696,8 @@ namespace HoI2Editor.Models
             Metal, // metal
             RareMaterials, // Rare resources
             Oil, // oil
-            Cancel // Whether it can be canceled
+            Cancel, // Whether it can be canceled
+            TradeConvoyId
         }
 
         #endregion
@@ -2104,6 +2115,22 @@ namespace HoI2Editor.Models
         ///     Replenishment I C ratio
         /// </summary>
         public double ReinforcementSlider { get; set; }
+
+        /// <summary>
+        ///     upgrading I C ratio
+        /// </summary>
+        public double UpgradingSlider { get; set; }
+
+        /// <summary>
+        ///     Expense Synthetic
+        /// </summary>
+        public double ExpenseSyntheticSlider { get; set; }
+
+        /// <summary>
+        ///     Expense Synthetic Rares
+        /// </summary>
+        public double ExpenseSyntheticRaresSlider { get; set; }
+
 
         /// <summary>
         ///     Diplomatic relations
@@ -4064,6 +4091,11 @@ namespace HoI2Editor.Models
         ///     Model number of the attached brigade
         /// </summary>
         public int BrigadeModel5 { get; set; } = UndefinedModelNo;
+
+        /// <summary>
+        ///     position
+        /// </summary>
+        public int Location { get; set; }
 
         #endregion
 

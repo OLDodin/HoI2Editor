@@ -545,6 +545,12 @@ namespace HoI2Editor.Writers
                 WriteTypeId(treaty.Id, writer);
                 writer.WriteLine();
             }
+            if (treaty.TradeConvoyId != null)
+            {
+                writer.Write("    tradeconvoy_id             = ");
+                WriteTypeId(treaty.TradeConvoyId, writer);
+                writer.WriteLine();
+            }
             if (treaty.IsOverSea && (Game.Type == GameType.ArsenalOfDemocracy))
             {
                 writer.WriteLine("    isoversea      = yes");
@@ -1588,6 +1594,13 @@ namespace HoI2Editor.Writers
             if (building.GearingBonus > 0)
             {
                 writer.WriteLine("    gearing_bonus  = {0}", DoubleHelper.ToString4(building.GearingBonus));
+            }
+            if (Game.Type == GameType.ArsenalOfDemocracy)
+            {
+                if (building.SpeedStep > 0)
+                {
+                    writer.WriteLine("    speed_step           = {0}", building.SpeedStep);
+                }
             }
             writer.WriteLine("    type           = {0}", Scenarios.BuildingStrings[(int) building.Type]);
             writer.WriteLine("  }");
@@ -3270,6 +3283,10 @@ namespace HoI2Editor.Writers
                 if (division.RetoolingTime > 0)
                 {
                     writer.WriteLine("    retooling_time = {0}", DoubleHelper.ToString4(division.RetoolingTime));
+                }
+                if (division.Location > 0)
+                {
+                    writer.WriteLine("    location       = {0}", division.Location);
                 }
             }
             if (division.TotalProgress > 0)

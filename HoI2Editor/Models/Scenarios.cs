@@ -204,7 +204,7 @@ namespace HoI2Editor.Models
             "infrastructure",
             "coastal_fort",
             "land_fort",
-            "anti_air",
+            "flak",
             "air_base",
             "naval_base",
             "radar_station",
