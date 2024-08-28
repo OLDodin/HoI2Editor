@@ -33,6 +33,8 @@ namespace HoI2Editor.Forms
         /// <param name="e"></param>
         private void OnMainFormLoad(object sender, EventArgs e)
         {
+            Log.SetTextBox(logTextBox);
+
             // Update the version character string
             Text = HoI2EditorController.Version;
 

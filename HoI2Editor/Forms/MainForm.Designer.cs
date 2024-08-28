@@ -35,6 +35,7 @@
             this.modLabel = new System.Windows.Forms.Label();
             this.modTextBox = new System.Windows.Forms.TextBox();
             this.editGroupBox = new System.Windows.Forms.GroupBox();
+            this.locHelperBtn = new System.Windows.Forms.Button();
             this.scenarioButton = new System.Windows.Forms.Button();
             this.researchButton = new System.Windows.Forms.Button();
             this.modelNameButton = new System.Windows.Forms.Button();
@@ -59,7 +60,7 @@
             this.exportFolderBrowseButton = new System.Windows.Forms.Button();
             this.exportFolderTextBox = new System.Windows.Forms.TextBox();
             this.exportFolderLabel = new System.Windows.Forms.Label();
-            this.locHelperBtn = new System.Windows.Forms.Button();
+            this.logTextBox = new System.Windows.Forms.RichTextBox();
             this.editGroupBox.SuspendLayout();
             this.optionGroupBox.SuspendLayout();
             this.SuspendLayout();
@@ -118,6 +119,13 @@
             this.editGroupBox.Controls.Add(this.ministerButton);
             this.editGroupBox.Name = "editGroupBox";
             this.editGroupBox.TabStop = false;
+            // 
+            // locHelperBtn
+            // 
+            resources.ApplyResources(this.locHelperBtn, "locHelperBtn");
+            this.locHelperBtn.Name = "locHelperBtn";
+            this.locHelperBtn.UseVisualStyleBackColor = true;
+            this.locHelperBtn.Click += new System.EventHandler(this.locHelperBtn_Click);
             // 
             // scenarioButton
             // 
@@ -295,18 +303,20 @@
             resources.ApplyResources(this.exportFolderLabel, "exportFolderLabel");
             this.exportFolderLabel.Name = "exportFolderLabel";
             // 
-            // locHelperBtn
+            // logTextBox
             // 
-            resources.ApplyResources(this.locHelperBtn, "locHelperBtn");
-            this.locHelperBtn.Name = "locHelperBtn";
-            this.locHelperBtn.UseVisualStyleBackColor = true;
-            this.locHelperBtn.Click += new System.EventHandler(this.locHelperBtn_Click);
+            resources.ApplyResources(this.logTextBox, "logTextBox");
+            this.logTextBox.DetectUrls = false;
+            this.logTextBox.HideSelection = false;
+            this.logTextBox.Name = "logTextBox";
+            this.logTextBox.ReadOnly = true;
             // 
             // MainForm
             // 
             this.AllowDrop = true;
             resources.ApplyResources(this, "$this");
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Dpi;
+            this.Controls.Add(this.logTextBox);
             this.Controls.Add(this.exportFolderBrowseButton);
             this.Controls.Add(this.exportFolderTextBox);
             this.Controls.Add(this.exportFolderLabel);
@@ -367,5 +377,6 @@
         private System.Windows.Forms.Button scenarioButton;
         private System.Windows.Forms.CheckBox mapLoadCheckBox;
         private System.Windows.Forms.Button locHelperBtn;
+        private System.Windows.Forms.RichTextBox logTextBox;
     }
 }

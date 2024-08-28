@@ -69,6 +69,7 @@ namespace HoI2Editor.Models
                 }
 
                 _folderName = value;
+                Log.ClearOutputTextBox();
                 Log.Error("Game Folder: {0}", _folderName);
 
                 // Determine the type of game

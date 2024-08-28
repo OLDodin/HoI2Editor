@@ -556,7 +556,7 @@ namespace HoI2Editor.Models
                 string pathName = Game.GetReadFileName(imgFileName);
                 if (!File.Exists(pathName))
                 {
-                    Log.Warning("[Team] Picture not exist {0}:  L{1}", lexer.PathName, lexer.LineNo);
+                    Log.Info("[Team] Picture not exist {0}:  L{1}", lexer.PathName, lexer.LineNo);
                 }
             }
 

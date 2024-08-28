@@ -55,6 +55,11 @@ namespace HoI2Editor.Utilities
         private static readonly TraceSwitch Sw = new TraceSwitch(LogFileIdentifier, HoI2EditorController.Name);
 
         /// <summary>
+        ///     Log output textbox
+        /// </summary>
+        private static RichTextBox _outputTextBox = null;
+
+        /// <summary>
         ///     For writing log files
         /// </summary>
         private static StreamWriter _writer;
@@ -100,6 +105,14 @@ namespace HoI2Editor.Utilities
                 Terminate();
             }
             Verbose("[Log] Init");
+        }
+
+        /// <summary>
+        ///     Set the log output text
+        /// </summary>
+        public static void SetTextBox(RichTextBox outputTextBox)
+        {
+            _outputTextBox = outputTextBox;
         }
 
         /// <summary>
@@ -287,6 +300,24 @@ namespace HoI2Editor.Utilities
             }
             string t = string.Format(s, args);
             Trace.WriteLineIf(condition, t);
+            if (condition && _outputTextBox != null)
+            {
+                _outputTextBox.Invoke((MethodInvoker)delegate
+                {
+                    _outputTextBox.AppendText(t+"\r\n");
+                });
+            }
+        }
+
+        /// <summary>
+        ///     Output log
+        /// </summary>
+        public static void ClearOutputTextBox()
+        {
+            if (_outputTextBox != null)
+            {
+                _outputTextBox.Text = "";
+            }
         }
 
         #endregion

@@ -346,7 +346,7 @@ namespace HoI2Editor
             /// <summary>
             ///     Default height
             /// </summary>
-            private const int DefaultHeight = 350;
+            private const int DefaultHeight = 520;
 
             #endregion
 
