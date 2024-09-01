@@ -308,9 +308,24 @@ namespace HoI2Editor.Forms
             HoI2EditorController.LaunchScenarioEditorForm();
         }
 
-        private void locHelperBtn_Click(object sender, EventArgs e)
+        /// <summary>
+        ///     Start the event localization helper form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void LocHelperBtnClick(object sender, EventArgs e)
         {
             HoI2EditorController.LaunchLocHelperForm();
+        }
+
+        /// <summary>
+        ///     Clear log textbox by context menu click
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
+        private void ClearAllMenuClick(object sender, EventArgs e)
+        {
+            logTextBox.Text = "";
         }
         #endregion
 
@@ -792,8 +807,9 @@ namespace HoI2Editor.Forms
             Maps.ForbidLoad = mapLoadCheckBox.Checked;
         }
 
+
+
         #endregion
 
-        
     }
 }

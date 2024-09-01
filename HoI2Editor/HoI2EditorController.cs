@@ -670,7 +670,7 @@ namespace HoI2Editor
         }
 
         /// <summary>
-        ///     Start the event editor form
+        ///     Start the event localization helper form
         /// </summary>
         public static void LaunchLocHelperForm()
         {

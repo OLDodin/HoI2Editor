@@ -310,7 +310,7 @@ namespace HoI2Editor.Utilities
         }
 
         /// <summary>
-        ///     Output log
+        ///     Clear Output TextBox
         /// </summary>
         public static void ClearOutputTextBox()
         {

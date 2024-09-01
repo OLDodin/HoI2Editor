@@ -28,6 +28,7 @@
         /// </summary>
         private void InitializeComponent()
         {
+            this.components = new System.ComponentModel.Container();
             System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainForm));
             this.ministerButton = new System.Windows.Forms.Button();
             this.gameFolderLabel = new System.Windows.Forms.Label();
@@ -61,8 +62,11 @@
             this.exportFolderTextBox = new System.Windows.Forms.TextBox();
             this.exportFolderLabel = new System.Windows.Forms.Label();
             this.logTextBox = new System.Windows.Forms.RichTextBox();
+            this.contextMenuStrip = new System.Windows.Forms.ContextMenuStrip(this.components);
+            this.clearAllToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.editGroupBox.SuspendLayout();
             this.optionGroupBox.SuspendLayout();
+            this.contextMenuStrip.SuspendLayout();
             this.SuspendLayout();
             // 
             // ministerButton
@@ -125,7 +129,7 @@
             resources.ApplyResources(this.locHelperBtn, "locHelperBtn");
             this.locHelperBtn.Name = "locHelperBtn";
             this.locHelperBtn.UseVisualStyleBackColor = true;
-            this.locHelperBtn.Click += new System.EventHandler(this.locHelperBtn_Click);
+            this.locHelperBtn.Click += new System.EventHandler(this.LocHelperBtnClick);
             // 
             // scenarioButton
             // 
@@ -306,10 +310,24 @@
             // logTextBox
             // 
             resources.ApplyResources(this.logTextBox, "logTextBox");
+            this.logTextBox.ContextMenuStrip = this.contextMenuStrip;
             this.logTextBox.DetectUrls = false;
             this.logTextBox.HideSelection = false;
             this.logTextBox.Name = "logTextBox";
             this.logTextBox.ReadOnly = true;
+            // 
+            // contextMenuStrip
+            // 
+            this.contextMenuStrip.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.clearAllToolStripMenuItem});
+            this.contextMenuStrip.Name = "contextMenuStrip";
+            resources.ApplyResources(this.contextMenuStrip, "contextMenuStrip");
+            // 
+            // clearAllToolStripMenuItem
+            // 
+            this.clearAllToolStripMenuItem.Name = "clearAllToolStripMenuItem";
+            resources.ApplyResources(this.clearAllToolStripMenuItem, "clearAllToolStripMenuItem");
+            this.clearAllToolStripMenuItem.Click += new System.EventHandler(this.ClearAllMenuClick);
             // 
             // MainForm
             // 
@@ -339,6 +357,7 @@
             this.editGroupBox.ResumeLayout(false);
             this.optionGroupBox.ResumeLayout(false);
             this.optionGroupBox.PerformLayout();
+            this.contextMenuStrip.ResumeLayout(false);
             this.ResumeLayout(false);
             this.PerformLayout();
 
@@ -378,5 +397,7 @@
         private System.Windows.Forms.CheckBox mapLoadCheckBox;
         private System.Windows.Forms.Button locHelperBtn;
         private System.Windows.Forms.RichTextBox logTextBox;
+        private System.Windows.Forms.ContextMenuStrip contextMenuStrip;
+        private System.Windows.Forms.ToolStripMenuItem clearAllToolStripMenuItem;
     }
 }
