@@ -253,11 +253,11 @@ namespace HoI2Editor.Controllers
         /// </summary>
         public void Update()
         {
-            // Update the technical tree image
-            UpdateTechTreeImage();
-
             // Update the item label
             UpdateItems();
+
+            // Update the technical tree image
+            UpdateTechTreeImage();
         }
 
         /// <summary>
@@ -284,14 +284,23 @@ namespace HoI2Editor.Controllers
             Bitmap original = new Bitmap(Game.GetReadFileName(Game.PicturePathName, TechTreeFileNames[(int) Category]));
             original.MakeTransparent(Color.Lime);
 
+            int maxLabelHeight = 0;
+            int maxLabelWidth = 0;
+            foreach (Label label in _pictureBox.Controls)
+            {
+                maxLabelHeight = Math.Max(maxLabelHeight, label.Location.Y + label.Size.Height);
+                maxLabelWidth = Math.Max(maxLabelWidth, label.Location.X + label.Size.Width);
+            }
+
             int width = DeviceCaps.GetScaledWidth(original.Width);
             int height = DeviceCaps.GetScaledHeight(original.Height);
-            Bitmap bitmap = new Bitmap(width, height);
+            Bitmap bitmap = new Bitmap(Math.Max(width, maxLabelWidth), Math.Max(height, maxLabelHeight));
             Graphics g = Graphics.FromImage(bitmap);
             g.DrawImage(original, 0, 0, width, height);
             g.Dispose();
             original.Dispose();
 
+            
             Image prev = _pictureBox.Image;
             _pictureBox.Image = bitmap;
             prev?.Dispose();
