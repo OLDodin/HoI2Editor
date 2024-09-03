@@ -281,6 +281,7 @@ namespace HoI2Editor.Models
                 }
             }
 
+            VerifyEventID();
             foreach (Event currentHoi2Event in TotalEventsList)
             {
                 VerifyTriggers(currentHoi2Event.Triggers, currentHoi2Event.PathName, TriggerType.None);
@@ -345,6 +346,26 @@ namespace HoI2Editor.Models
                 }
             }
             return commonEventList;
+        }
+
+        /// <summary>
+        ///     check event ID duplicate
+        /// </summary>
+        private static void VerifyEventID()
+        {
+            Dictionary<int, bool> existIDs = new Dictionary<int, bool>();
+
+            foreach (Event existEvent in TotalEventsList)
+            {
+                if (!existIDs.ContainsKey(existEvent.Id))
+                {
+                    existIDs.Add(existEvent.Id, true);
+                }
+                else
+                {
+                    Log.Error("[Event] Duplicate event ID {0} in file {1}", existEvent.Id, existEvent.PathName);
+                }
+            }
         }
 
         /// <summary>
@@ -568,6 +589,25 @@ namespace HoI2Editor.Models
                                     Log.Error("[Event] Command with not exist technology ID ({0})  {1}:  L{2}", someID, hoi2Event.PathName, eventCommand.LineNum);
                                 }
                             }
+                        }
+                    }
+                    else if (eventCommand.Type == CommandType.Ai)
+                    {
+                        if (eventCommand.Which is string)
+                        {
+                            string someFile = (string)eventCommand.Which;
+                            if (!string.IsNullOrEmpty(someFile))
+                            {
+                                string pathName = Game.GetReadFileName(Path.Combine(Game.AiPathName, someFile));                               
+                                if (!File.Exists(pathName))
+                                {
+                                    Log.Error("[Event] Command with not exist ai file ({0})  {1}:  L{2}", someFile, hoi2Event.PathName, eventCommand.LineNum);
+                                }
+                            }
+                        }
+                        else
+                        {
+                            Log.Error("[Event] Command with not correct ai file name ({0})  {1}:  L{2}", eventCommand.Which, hoi2Event.PathName, eventCommand.LineNum);
                         }
                     }
                 }

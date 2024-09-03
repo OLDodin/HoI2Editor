@@ -90,15 +90,7 @@ namespace HoI2Editor.Parsers
                     }
 
                     hoi2Event.EventText = eventFileContent.Substring((int)startPos, (int)(lexer.Position - startPos));
-
-                    foreach (Event existEvent in allEvents)
-                    {
-                        if (existEvent.Id == hoi2Event.Id)
-                        {
-                            Log.Error("[Event] Duplicate event ID {0} in file {1}", hoi2Event.Id, lexer.PathName);
-                            break;
-                        }
-                    }
+                    
                     allEvents.Add(hoi2Event);
 
                     continue;
