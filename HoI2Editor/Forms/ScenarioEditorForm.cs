@@ -9228,6 +9228,7 @@ namespace HoI2Editor.Forms
                 return;
             }
 
+            
             ProvinceSettings settings = Scenarios.GetProvinceSettings(province.Id);
             Country country = GetSelectedProvinceCountry();
             CountrySettings countrySettings = Scenarios.GetCountrySettings(country);
@@ -9237,6 +9238,8 @@ namespace HoI2Editor.Forms
             UpdateProvinceInfoItems(province, settings);
             UpdateProvinceResourceItems(settings);
             UpdateProvinceBuildingItems(settings);
+            UpdateProvinceResourceFromMap(province);
+            UpdateProvinceBuildingFromMap(province);
 
             // Enable edit items
             if (country != Country.None)
@@ -9480,6 +9483,19 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
+        ///     Update the items of map resource information
+        /// </summary>
+        /// <param name="province">Province info</param>
+        private void UpdateProvinceResourceFromMap(Province province)
+        {
+            manpowerMapTextBox.Text = ObjectHelper.ToString(province.Manpower);
+            energyMapTextBox.Text = ObjectHelper.ToString(province.Energy);
+            metalMapTextBox.Text = ObjectHelper.ToString(province.Metal);
+            rareMaterialsMapTextBox.Text = ObjectHelper.ToString(province.RareMaterials);
+            oilMapTextBox.Text = ObjectHelper.ToString(province.Oil);
+        }
+
+        /// <summary>
         ///     Clear the display of edit items of province resource information
         /// </summary>
         private void ClearProvinceResourceItems()
@@ -9499,6 +9515,11 @@ namespace HoI2Editor.Forms
             oilCurrentTextBox.Text = "";
             oilMaxTextBox.Text = "";
             suppliesPoolTextBox.Text = "";
+            manpowerMapTextBox.Text = "";
+            energyMapTextBox.Text = "";
+            metalMapTextBox.Text = "";
+            rareMaterialsMapTextBox.Text = "";
+            oilMapTextBox.Text = "";
         }
 
         /// <summary>
@@ -9695,6 +9716,17 @@ namespace HoI2Editor.Forms
         }
 
         /// <summary>
+        ///     Update the items of map resource information
+        /// </summary>
+        /// <param name="province">Province info</param>
+        private void UpdateProvinceBuildingFromMap(Province province)
+        {
+            icMapTextBox.Text = ObjectHelper.ToString(province.Ic);
+            infrastructureMapTextBox.Text = ObjectHelper.ToString(province.Infrastructure);
+            airBaseMapTextBox.Text = ObjectHelper.ToString(province.AirCapacity);
+        }
+
+        /// <summary>
         ///     Clear the display of edit items of Providence building information
         /// </summary>
         private void ClearProvinceBuildingItems()
@@ -9738,6 +9770,10 @@ namespace HoI2Editor.Forms
             nuclearPowerCurrentTextBox.Text = "";
             nuclearPowerMaxTextBox.Text = "";
             nuclearPowerRelativeTextBox.Text = "";
+
+            icMapTextBox.Text = "";
+            infrastructureMapTextBox.Text = "";
+            airBaseMapTextBox.Text = "";
         }
 
         /// <summary>

@@ -71,6 +71,8 @@
             System.Windows.Forms.Label tradeIdLabel;
             System.Windows.Forms.Label relationValueLabel;
             System.Windows.Forms.Label spyNumLabel;
+            System.Windows.Forms.Label label1;
+            System.Windows.Forms.Label label2;
             this.techTreePanel = new System.Windows.Forms.Panel();
             this.techTreePictureBox = new System.Windows.Forms.PictureBox();
             this.inventionsListView = new System.Windows.Forms.ListView();
@@ -598,6 +600,14 @@
             this.labelTextEncode = new System.Windows.Forms.Label();
             this.checkButton = new System.Windows.Forms.Button();
             this.eventOperationTimer = new System.Windows.Forms.Timer(this.components);
+            this.manpowerMapTextBox = new System.Windows.Forms.TextBox();
+            this.energyMapTextBox = new System.Windows.Forms.TextBox();
+            this.metalMapTextBox = new System.Windows.Forms.TextBox();
+            this.rareMaterialsMapTextBox = new System.Windows.Forms.TextBox();
+            this.oilMapTextBox = new System.Windows.Forms.TextBox();
+            this.infrastructureMapTextBox = new System.Windows.Forms.TextBox();
+            this.icMapTextBox = new System.Windows.Forms.TextBox();
+            this.airBaseMapTextBox = new System.Windows.Forms.TextBox();
             provinceIcLabel = new System.Windows.Forms.Label();
             provinceInfrastructureLabel = new System.Windows.Forms.Label();
             provinceLandFortLabel = new System.Windows.Forms.Label();
@@ -639,6 +649,8 @@
             tradeIdLabel = new System.Windows.Forms.Label();
             relationValueLabel = new System.Windows.Forms.Label();
             spyNumLabel = new System.Windows.Forms.Label();
+            label1 = new System.Windows.Forms.Label();
+            label2 = new System.Windows.Forms.Label();
             technologyTabPage.SuspendLayout();
             this.techTreePanel.SuspendLayout();
             ((System.ComponentModel.ISupportInitialize)(this.techTreePictureBox)).BeginInit();
@@ -1194,6 +1206,12 @@
             // provinceResourceGroupBox
             // 
             resources.ApplyResources(this.provinceResourceGroupBox, "provinceResourceGroupBox");
+            this.provinceResourceGroupBox.Controls.Add(label1);
+            this.provinceResourceGroupBox.Controls.Add(this.oilMapTextBox);
+            this.provinceResourceGroupBox.Controls.Add(this.rareMaterialsMapTextBox);
+            this.provinceResourceGroupBox.Controls.Add(this.metalMapTextBox);
+            this.provinceResourceGroupBox.Controls.Add(this.energyMapTextBox);
+            this.provinceResourceGroupBox.Controls.Add(this.manpowerMapTextBox);
             this.provinceResourceGroupBox.Controls.Add(this.manpowerCurrentTextBox);
             this.provinceResourceGroupBox.Controls.Add(this.suppliesPoolTextBox);
             this.provinceResourceGroupBox.Controls.Add(this.oilMaxTextBox);
@@ -1344,6 +1362,10 @@
             // provinceBuildingGroupBox
             // 
             resources.ApplyResources(this.provinceBuildingGroupBox, "provinceBuildingGroupBox");
+            this.provinceBuildingGroupBox.Controls.Add(this.infrastructureMapTextBox);
+            this.provinceBuildingGroupBox.Controls.Add(this.icMapTextBox);
+            this.provinceBuildingGroupBox.Controls.Add(this.airBaseMapTextBox);
+            this.provinceBuildingGroupBox.Controls.Add(label2);
             this.provinceBuildingGroupBox.Controls.Add(this.nuclearPowerRelativeTextBox);
             this.provinceBuildingGroupBox.Controls.Add(this.nuclearPowerMaxTextBox);
             this.provinceBuildingGroupBox.Controls.Add(this.nuclearPowerCurrentTextBox);
@@ -4812,6 +4834,64 @@
             this.eventOperationTimer.Interval = 500;
             this.eventOperationTimer.Tick += new System.EventHandler(this.OnTimerTick);
             // 
+            // manpowerMapTextBox
+            // 
+            resources.ApplyResources(this.manpowerMapTextBox, "manpowerMapTextBox");
+            this.manpowerMapTextBox.Name = "manpowerMapTextBox";
+            this.manpowerMapTextBox.ReadOnly = true;
+            // 
+            // energyMapTextBox
+            // 
+            resources.ApplyResources(this.energyMapTextBox, "energyMapTextBox");
+            this.energyMapTextBox.Name = "energyMapTextBox";
+            this.energyMapTextBox.ReadOnly = true;
+            // 
+            // metalMapTextBox
+            // 
+            resources.ApplyResources(this.metalMapTextBox, "metalMapTextBox");
+            this.metalMapTextBox.Name = "metalMapTextBox";
+            this.metalMapTextBox.ReadOnly = true;
+            // 
+            // rareMaterialsMapTextBox
+            // 
+            resources.ApplyResources(this.rareMaterialsMapTextBox, "rareMaterialsMapTextBox");
+            this.rareMaterialsMapTextBox.Name = "rareMaterialsMapTextBox";
+            this.rareMaterialsMapTextBox.ReadOnly = true;
+            // 
+            // oilMapTextBox
+            // 
+            resources.ApplyResources(this.oilMapTextBox, "oilMapTextBox");
+            this.oilMapTextBox.Name = "oilMapTextBox";
+            this.oilMapTextBox.ReadOnly = true;
+            // 
+            // label1
+            // 
+            resources.ApplyResources(label1, "label1");
+            label1.Name = "label1";
+            // 
+            // label2
+            // 
+            resources.ApplyResources(label2, "label2");
+            label2.Name = "label2";
+            // 
+            // infrastructureMapTextBox
+            // 
+            resources.ApplyResources(this.infrastructureMapTextBox, "infrastructureMapTextBox");
+            this.infrastructureMapTextBox.Name = "infrastructureMapTextBox";
+            this.infrastructureMapTextBox.ReadOnly = true;
+            // 
+            // icMapTextBox
+            // 
+            resources.ApplyResources(this.icMapTextBox, "icMapTextBox");
+            this.icMapTextBox.Name = "icMapTextBox";
+            this.icMapTextBox.ReadOnly = true;
+            // 
+            // airBaseMapTextBox
+            // 
+            resources.ApplyResources(this.airBaseMapTextBox, "airBaseMapTextBox");
+            this.airBaseMapTextBox.Name = "airBaseMapTextBox";
+            this.airBaseMapTextBox.ReadOnly = true;
+            // 
             // ScenarioEditorForm
             // 
             resources.ApplyResources(this, "$this");
@@ -5448,5 +5528,13 @@
         private System.Windows.Forms.ToolStripButton eventNavigatorNext;
         private System.Windows.Forms.Label eventPathLabel;
         private System.Windows.Forms.PictureBox eventPictureBox;
+        private System.Windows.Forms.TextBox oilMapTextBox;
+        private System.Windows.Forms.TextBox rareMaterialsMapTextBox;
+        private System.Windows.Forms.TextBox metalMapTextBox;
+        private System.Windows.Forms.TextBox energyMapTextBox;
+        private System.Windows.Forms.TextBox manpowerMapTextBox;
+        private System.Windows.Forms.TextBox infrastructureMapTextBox;
+        private System.Windows.Forms.TextBox icMapTextBox;
+        private System.Windows.Forms.TextBox airBaseMapTextBox;
     }
 }
