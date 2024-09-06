@@ -2313,6 +2313,11 @@ namespace HoI2Editor.Models
         public List<DivisionDevelopment> DivisionDevelopments { get; } = new List<DivisionDevelopment>();
 
         /// <summary>
+        ///     During production brigade
+        /// </summary>
+        public List<DivisionDevelopment> BrigadeDevelopments { get; } = new List<DivisionDevelopment>();
+
+        /// <summary>
         ///     Convoy in production
         /// </summary>
         public List<ConvoyDevelopment> ConvoyDevelopments { get; } = new List<ConvoyDevelopment>();
@@ -2731,6 +2736,12 @@ namespace HoI2Editor.Models
             {
                 division.ResetDirtyAll();
             }
+
+            foreach (DivisionDevelopment division in BrigadeDevelopments)
+            {
+                division.ResetDirtyAll();
+            }
+            
         }
 
         #endregion

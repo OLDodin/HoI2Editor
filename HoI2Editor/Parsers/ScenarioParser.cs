@@ -5011,7 +5011,7 @@ namespace HoI2Editor.Parsers
                 // division_development
                 if (keyword.Equals("division_development"))
                 {
-                    DivisionDevelopment division = ParseDivisionDevelopment(lexer);
+                    DivisionDevelopment division = ParseDivisionDevelopment(lexer, false);
                     if (division == null)
                     {
                         Log.InvalidSection(LogCategory, "division_development", lexer);
@@ -5020,6 +5020,21 @@ namespace HoI2Editor.Parsers
 
                     // Division in production
                     settings.DivisionDevelopments.Add(division);
+                    continue;
+                }
+
+                // brigade_development
+                if (keyword.Equals("brigade_development"))
+                {
+                    DivisionDevelopment division = ParseDivisionDevelopment(lexer, true);
+                    if (division == null)
+                    {
+                        Log.InvalidSection(LogCategory, "division_development", lexer);
+                        continue;
+                    }
+
+                    // Brigade in production
+                    settings.BrigadeDevelopments.Add(division);
                     continue;
                 }
 
@@ -6619,7 +6634,7 @@ namespace HoI2Editor.Parsers
                 // type
                 if (keyword.Equals("type"))
                 {
-                    UnitType? type = ParseDivisionType(lexer);
+                    UnitType? type = ParseDivisionType(lexer, false);
                     if (type == null)
                     {
                         Log.InvalidClause(LogCategory, "type", lexer);
@@ -7801,8 +7816,9 @@ namespace HoI2Editor.Parsers
         ///     Parsing the production division
         /// </summary>
         /// <param name="lexer">Lexical analyzer</param>
+        /// <param name="isBrigade">parse brigade development</param>
         /// <returns>Division in production</returns>
-        private static DivisionDevelopment ParseDivisionDevelopment(TextLexer lexer)
+        private static DivisionDevelopment ParseDivisionDevelopment(TextLexer lexer, bool isBrigade)
         {
             // = =
             Token token = lexer.GetToken();
@@ -8180,7 +8196,7 @@ namespace HoI2Editor.Parsers
                 // type
                 if (keyword.Equals("type"))
                 {
-                    UnitType? type = ParseDivisionType(lexer);
+                    UnitType? type = ParseDivisionType(lexer, isBrigade);
                     if (type == null)
                     {
                         Log.InvalidClause(LogCategory, "type", lexer);
@@ -10113,8 +10129,9 @@ namespace HoI2Editor.Parsers
         ///     Parsing division unit types
         /// </summary>
         /// <param name="lexer">Lexical analyzer</param>
+        /// <param name="isBrigade">parse brigade development</param>
         /// <returns>Unit type</returns>
-        private static UnitType? ParseDivisionType(TextLexer lexer)
+        private static UnitType? ParseDivisionType(TextLexer lexer, bool isBrigade)
         {
             // = =
             Token token = lexer.GetToken();
@@ -10149,10 +10166,21 @@ namespace HoI2Editor.Parsers
 
             // Unsupported unit type
             UnitType type = Units.StringMap[s];
-            if (!Units.DivisionTypes.Contains(type))
+            if (!isBrigade)
             {
-                Log.InvalidToken(LogCategory, token, lexer);
-                return null;
+                if (!Units.DivisionTypes.Contains(type))
+                {
+                    Log.InvalidToken(LogCategory, token, lexer);
+                    return null;
+                }
+            }
+            else
+            {
+                if (!Units.BrigadeTypes.Contains(type))
+                {
+                    Log.InvalidToken(LogCategory, token, lexer);
+                    return null;
+                }
             }
 
             return type;

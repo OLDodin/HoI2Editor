@@ -1529,6 +1529,11 @@ namespace HoI2Editor.Models
                     AddTypeId(division.Id);
                 }
 
+                foreach (DivisionDevelopment division in settings.BrigadeDevelopments)
+                {
+                    AddTypeId(division.Id);
+                }
+
                 foreach (BuildingDevelopment building in settings.BuildingDevelopments)
                 {
                     AddTypeId(building.Id);

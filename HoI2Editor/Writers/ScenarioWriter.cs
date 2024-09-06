@@ -1651,6 +1651,7 @@ namespace HoI2Editor.Writers
                 WriteNavalUnits(settings, writer);
                 WriteAirUnits(settings, writer);
                 WriteDivisionDevelopments(settings, writer);
+                WriteBrigadeDevelopments(settings, writer);
                 WriteBuildingDevelopments(settings, writer);
                 WriteConvoyDevelopments(settings, writer);
                 WriteDormantLandDivisions(settings, writer);
@@ -3225,6 +3226,24 @@ namespace HoI2Editor.Writers
             }
             writer.WriteLine();
             foreach (DivisionDevelopment division in settings.DivisionDevelopments)
+            {
+                WriteDivisionDevelopment(division, writer);
+            }
+        }
+
+        /// <summary>
+        ///     Export a list of brigades in production
+        /// </summary>
+        /// <param name="settings">National setting</param>
+        /// <param name="writer">For writing files</param>
+        private static void WriteBrigadeDevelopments(CountrySettings settings, TextWriter writer)
+        {
+            if (settings.BrigadeDevelopments.Count == 0)
+            {
+                return;
+            }
+            writer.WriteLine();
+            foreach (DivisionDevelopment division in settings.BrigadeDevelopments)
             {
                 WriteDivisionDevelopment(division, writer);
             }
