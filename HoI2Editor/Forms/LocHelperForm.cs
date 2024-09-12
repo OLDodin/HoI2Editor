@@ -124,6 +124,8 @@ namespace HoI2Editor.Forms
         {
             int selectedCodepage = ((ComboboxItem)eventslanguageComboBox.SelectedItem).Value;
 
+            Commands.Init();
+
             _eventsExtractTask = Task.Factory.StartNew(() => {
                 HoI2Editor.Models.Events.LoadAll(selectedCodepage, textBoxCustomEvent.Text);
                 _locHelperController.ExtractAllTextFromEvents(selectedCodepage, checkBoxBackup.Checked, textBoxCustomEvent.Text);

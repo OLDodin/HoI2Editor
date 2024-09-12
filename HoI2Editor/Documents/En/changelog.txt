@@ -1,5 +1,23 @@
 Alternative HoI2 Editor Changelog
 
+- 12 Sep 2024; Ver 0.61
+Added log output to main form
+Update misc parser for aod 1.11-1.12
+Checking the correctness of identifiers in events
+Leaders, ministers, teams now check picture file
+Fix some errors in parsing scenario
+Tech tree size fix
+Add map values to province tab (scenario form)
+
+Added Event tab
+1) Parsing events
+2) Display events by country
+3) Navigates by events + Event text - eventID as hyperlink 
+4) Get free event ID 
+5) Add auto comments in event files (based on event name tag)
+
+
+
 - 25 Jun 2022; Ver 0.6
 Added "Loc Helper" button. 
 A tool to split and merge back columns in ñsv files in separate text encodings for each column. 
